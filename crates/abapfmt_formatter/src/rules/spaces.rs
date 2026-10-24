@@ -150,3 +150,134 @@ pub fn space_around_comment_sign(doc: &mut Doc, config: &RuleConfig) {
         }
     }
 }
+
+const SQL_LITERAL_TYPES: &[&str] = &[
+    "INT1",
+    "INT2",
+    "INT4",
+    "INT8",
+    "DEC",
+    "DECFLOAT16",
+    "D16N",
+    "DF16_RAW",
+    "D16R",
+    "DECFLOAT34",
+    "D34N",
+    "DF34_RAW",
+    "D34R",
+    "DF16_DEC",
+    "D16D",
+    "DF34_DEC",
+    "D34D",
+    "FLTP",
+    "CHAR",
+    "STRING",
+    "SSTRING",
+    "RAW",
+    "RAWSTRING",
+    "NUMC",
+    "CLNT",
+    "LANG",
+    "DATS",
+    "DATN",
+    "TIMS",
+    "TIMN",
+    "UTCLONG",
+    "CURR",
+    "CUKY",
+    "QUAN",
+    "UNIT",
+];
+
+fn is_character_literal(doc: &Doc, i: usize) -> bool {
+    doc.syn.types[i] == TokenType::Literal && doc.syn.text(i).starts_with(['\'', '`'])
+}
+
+fn is_attached(doc: &Doc, i: usize) -> bool {
+    doc.lines[i] == 0 && doc.spaces[i] == 0
+}
+
+/// Put a space between token `t` and its predecessor, moving the rest of the command's lines along.
+fn detach(doc: &mut Doc, cmd: &Command, t: usize) {
+    let start = doc.start_x(cmd.first, t);
+    doc.spaces[t] = 1;
+    doc.add_indent(cmd.last, t, 1, start, true);
+}
+
+/// SPACES_IN_EMPTY_BRACKETS (upstream class `SpaceAroundTextLiteralRule`): spaces before and after
+/// text field literals `'...'` and text string literals `` `...` ``.
+pub fn space_around_text_literal(doc: &mut Doc, config: &RuleConfig) {
+    let from_keywords = config.bool("SeparateFromKeywords", true);
+    let from_operators = config.bool("SeparateFromOperators", true);
+    let from_comments = config.bool("SeparateFromComments", true);
+    let from_brackets = config.bool(
+        "SeparateFromBrackets",
+        config.bool("SeparateFromCharLiterals", true),
+    );
+    let from_bracket_pairs = config.bool(
+        "SeparateFromBracketPairs",
+        config.bool("SeparateCondensedCases", true),
+    );
+
+    for cmd in doc.commands().to_vec() {
+        for t in cmd.first..=cmd.last {
+            if !is_character_literal(doc, t) {
+                continue;
+            }
+            if t > cmd.first && is_attached(doc, t) {
+                let prev = t - 1;
+                let prev_text = doc.syn.text(prev);
+                let prev_type = doc.syn.types[prev];
+                let prev_is_textual_op = prev_type == TokenType::ComparisonOp
+                    && prev_text.starts_with(|c: char| c.is_alphabetic());
+                let opener_close = doc.syn.bracket_match[prev].filter(|c| *c > prev);
+                let detach_from_prev = if SQL_LITERAL_TYPES
+                    .iter()
+                    .any(|w| prev_text.eq_ignore_ascii_case(w))
+                {
+                    false
+                } else if let Some(close) = opener_close {
+                    // exclude ('...') where spaces could be a syntax error, as in CALL METHOD ('NAME')
+                    // or ls_struc-('COMPONENT'); harmless cases such as CONV #('12.34') are optional
+                    if close == t + 1 && is_attached(doc, close) {
+                        let dynamic = matches!(prev_text, "(" | "[")
+                            || ["->(", "=>(", "-("].iter().any(|s| prev_text.ends_with(s));
+                        if dynamic || !from_bracket_pairs {
+                            continue;
+                        }
+                    }
+                    from_brackets
+                } else if prev_text == "&&" {
+                    from_operators
+                } else if prev_type == TokenType::Keyword || prev_is_textual_op {
+                    from_keywords
+                } else {
+                    matches!(
+                        prev_type,
+                        TokenType::AssignmentOp
+                            | TokenType::OtherOp
+                            | TokenType::Comma
+                            | TokenType::Colon
+                            | TokenType::ComparisonOp
+                    ) && from_operators
+                };
+                if detach_from_prev {
+                    detach(doc, &cmd, t);
+                }
+            }
+            let next = t + 1;
+            if next <= cmd.last && is_attached(doc, next) {
+                let detach_from_next = if doc.syn.types[next] == TokenType::Comment {
+                    from_comments
+                } else {
+                    doc.syn.bracket_match[next].is_some_and(|o| o < next)
+                        && doc.syn.text(next).starts_with(')')
+                        && from_brackets
+                };
+                if detach_from_next {
+                    detach(doc, &cmd, next);
+                }
+            }
+        }
+    }
+}

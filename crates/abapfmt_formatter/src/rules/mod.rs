@@ -17,6 +17,10 @@ pub const ALL: &[(&str, RuleFn)] = &[
         empty_lines::in_class_definition,
     ),
     ("NEEDLESS_SPACES", needless_spaces::needless_spaces),
+    (
+        "SPACES_IN_EMPTY_BRACKETS",
+        spaces::space_around_text_literal,
+    ),
     ("SPACE_BEFORE_PERIOD", spaces::space_before_period),
     (
         "SPACE_AROUND_COMMENT_SIGN",
