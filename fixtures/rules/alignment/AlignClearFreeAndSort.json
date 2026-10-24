@@ -1,0 +1,464 @@
+{
+ "ruleId": "ALIGN_CLEAR_FREE_AND_SORT",
+ "testClass": "AlignClearFreeAndSortTest",
+ "defaults": {
+  "MaxLineLength": 120,
+  "DistinctLineClear": "DistinctLineClear.ALWAYS",
+  "DistinctLineFree": "DistinctLineFree.ALWAYS",
+  "DistinctLineSort": "DistinctLineSort.ALWAYS",
+  "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+ },
+ "cases": [
+  {
+   "name": "testClearAlwaysToDistinctLine",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    CLEAR: mv_any_value,\n      mv_other_value,\n         ls_any_structure-any_component,\n        ls_any_structure-other_component,\n        mt_any_table, mt_other_table, mt_third_table.\n\n    CLEAR:   mv_any_value,\n      mv_other_value WITH lv_initial_value IN CHARACTER MODE,\n      mv_third_value WITH NULL,\n         mv_fourth_value WITH lv_initial_value IN BYTE MODE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR: mv_any_value,\n           mv_other_value,\n           ls_any_structure-any_component,\n           ls_any_structure-other_component,\n           mt_any_table,\n           mt_other_table,\n           mt_third_table.\n\n    CLEAR: mv_any_value,\n           mv_other_value WITH lv_initial_value IN CHARACTER MODE,\n           mv_third_value WITH NULL,\n           mv_fourth_value WITH lv_initial_value IN BYTE MODE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testClearOnlyAdditionsToDistinctLine",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ONLY_WITH_ADDITIONS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    CLEAR: mv_any_value,\n      mv_other_value,\n         ls_any_structure-any_component,\n        ls_any_structure-other_component,\n        mt_any_table, mt_other_table, mt_third_table.\n\n    CLEAR:   mv_any_value,\n      mv_other_value WITH lv_initial_value IN CHARACTER MODE,\n      mv_third_value WITH NULL,\n         mv_fourth_value WITH lv_initial_value IN BYTE MODE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR: mv_any_value, mv_other_value, ls_any_structure-any_component, ls_any_structure-other_component, mt_any_table,\n           mt_other_table, mt_third_table.\n\n    CLEAR: mv_any_value,\n           mv_other_value WITH lv_initial_value IN CHARACTER MODE,\n           mv_third_value WITH NULL,\n           mv_fourth_value WITH lv_initial_value IN BYTE MODE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testClearNeverToDistinctLine",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.NEVER",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    CLEAR: mv_any_value,\n      mv_other_value,\n         ls_any_structure-any_component,\n        ls_any_structure-other_component,\n        mt_any_table, mt_other_table, mt_third_table.\n\n    CLEAR:   mv_any_value,\n      mv_other_value WITH lv_initial_value IN CHARACTER MODE,\n      mv_third_value WITH NULL,\n         mv_fourth_value WITH lv_initial_value IN BYTE MODE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR: mv_any_value, mv_other_value, ls_any_structure-any_component, ls_any_structure-other_component, mt_any_table,\n           mt_other_table, mt_third_table.\n\n    CLEAR: mv_any_value, mv_other_value WITH lv_initial_value IN CHARACTER MODE, mv_third_value WITH NULL,\n           mv_fourth_value WITH lv_initial_value IN BYTE MODE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testClearWithShortLines",
+   "config": {
+    "MaxLineLength": 80,
+    "DistinctLineClear": "DistinctLineClear.NEVER",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    CLEAR: mv_any_value,\n      mv_other_value,\n         ls_any_structure-any_component,\n        ls_any_structure-other_component,\n        mt_any_table, mt_other_table, mt_third_table.\n\n    CLEAR:   mv_any_value,\n      mv_other_value WITH lv_initial_value IN CHARACTER MODE,\n      mv_third_value WITH NULL,\n         mv_fourth_value WITH lv_initial_value IN BYTE MODE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR: mv_any_value, mv_other_value, ls_any_structure-any_component,\n           ls_any_structure-other_component, mt_any_table, mt_other_table,\n           mt_third_table.\n\n    CLEAR: mv_any_value, mv_other_value WITH lv_initial_value IN CHARACTER MODE,\n           mv_third_value WITH NULL,\n           mv_fourth_value WITH lv_initial_value IN BYTE MODE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testClearWithLineBreakAfterKeyword",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    CLEAR:\n      mv_any_value,\n       mv_other_value,\n         ls_any_structure-any_component,\nls_any_structure-other_component,\n      mt_any_table, mt_other_table, mt_third_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR:\n      mv_any_value,\n      mv_other_value,\n      ls_any_structure-any_component,\n      ls_any_structure-other_component,\n      mt_any_table,\n      mt_other_table,\n      mt_third_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testClearWithFunction",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "    CLEAR:   lv_any_value WITH get_initial_value( iv_any_param   = 1\n                                                  iv_other_param = 2 ) IN CHARACTER MODE,\n   lv_other_value,\nlv_third_value WITH get_initial_value(\n                        iv_any_param   = 3\n                        \" comment\n                        iv_other_param = 4 ) IN BYTE MODE.",
+   "exp": "    CLEAR: lv_any_value WITH get_initial_value( iv_any_param   = 1\n                                                iv_other_param = 2 ) IN CHARACTER MODE,\n           lv_other_value,\n           lv_third_value WITH get_initial_value(\n                                   iv_any_param   = 3\n                                   \" comment\n                                   iv_other_param = 4 ) IN BYTE MODE.",
+   "flags": {}
+  },
+  {
+   "name": "testClearUnchanged",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.KEEP_AS_IS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    CLEAR: mv_any_value,\n      mv_other_value,\n         ls_any_structure-any_component,\n        ls_any_structure-other_component,\n        mt_any_table, mt_other_table, mt_third_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR: mv_any_value,\n      mv_other_value,\n         ls_any_structure-any_component,\n        ls_any_structure-other_component,\n        mt_any_table, mt_other_table, mt_third_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testFreeAlwaysToDistinctLine",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    FREE: mt_any_table, mts_other_table,\n         mth_third_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    FREE: mt_any_table,\n          mts_other_table,\n          mth_third_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testFreeNeverToDistinctLine",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.NEVER",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    FREE: mt_any_table, mts_other_table,\n         mth_third_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    FREE: mt_any_table, mts_other_table, mth_third_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testFreeWithComments",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.NEVER",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    FREE:  mt_any_table, mts_other_table, \" comment\n         mth_third_table,\n* comment\n       mth_fourth_table,\n      mts_fifth_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    FREE: mt_any_table, mts_other_table, \" comment\n          mth_third_table,\n* comment\n          mth_fourth_table, mts_fifth_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testFreeUnchanged",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.KEEP_AS_IS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    FREE: mt_any_table, mts_other_table,\n         mth_third_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    FREE: mt_any_table, mts_other_table,\n         mth_third_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortAlwaysToDistinctLine",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    SORT mt_any_table STABLE BY comp1 comp2\n     comp3\n     comp4.\n\n    SORT mt_other_table BY   comp1 comp2 DESCENDING\n     comp3 comp4 AS TEXT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SORT mt_any_table STABLE BY comp1\n                                comp2\n                                comp3\n                                comp4.\n\n    SORT mt_other_table BY comp1\n                           comp2 DESCENDING\n                           comp3\n                           comp4 AS TEXT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortOnlyAdditionsToDistinctLine",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ONLY_WITH_ADDITIONS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    SORT mt_any_table STABLE DESCENDING BY comp1 comp2\n     comp3\n     comp4.\n\n    SORT mt_other_table BY   comp1 comp2 DESCENDING\n     comp3 comp4 AS TEXT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SORT mt_any_table STABLE DESCENDING BY comp1 comp2 comp3 comp4.\n\n    SORT mt_other_table BY comp1\n                           comp2 DESCENDING\n                           comp3\n                           comp4 AS TEXT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortNeverToDistinctLine",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.NEVER",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    SORT mt_any_table STABLE BY comp1 comp2\n     comp3\n     comp4.\n\n    SORT mt_other_table BY   comp1 comp2 DESCENDING\n     comp3 comp4 AS TEXT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SORT mt_any_table STABLE BY comp1 comp2 comp3 comp4.\n\n    SORT mt_other_table BY comp1 comp2 DESCENDING comp3 comp4 AS TEXT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortWithDistinctLineSections",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "    SORT mt_other_table\n      BY comp1\n      comp2\n        \" comment explaining DESCENDING\n        DESCENDING\n        \" comment explaining AS TEXT\n        AS TEXT\n      comp3\n        \" comment between components\n     comp4 AS TEXT.",
+   "exp": "    SORT mt_other_table\n      BY comp1\n         comp2\n           \" comment explaining DESCENDING\n           DESCENDING\n           \" comment explaining AS TEXT\n           AS TEXT\n         comp3\n           \" comment between components\n         comp4 AS TEXT.",
+   "flags": {}
+  },
+  {
+   "name": "testNothingToAlign",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    \" comment\n    CLEAR: mv_any_value.\n    FREE: mt_any_table.\n    SORT mt_any_table BY comp1.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" comment\n    CLEAR: mv_any_value.\n    FREE: mt_any_table.\n    SORT mt_any_table BY comp1.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortWithoutByUnchanged",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    SORT mt_any_table.\n    SORT mt_any_table DESCENDING.\n    SORT mt_other_table STABLE AS TEXT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SORT mt_any_table.\n    SORT mt_any_table DESCENDING.\n    SORT mt_other_table STABLE AS TEXT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortBySortOrderTabUnchanged",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    SORT mt_any_table STABLE BY (lt_sortorder_tab).\n\n    SORT mt_any_table BY VALUE #( ( name = 'comp1' )\n                                  ( name = 'comp2' ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SORT mt_any_table STABLE BY (lt_sortorder_tab).\n\n    SORT mt_any_table BY VALUE #( ( name = 'comp1' )\n                                  ( name = 'comp2' ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortChain",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    SORT: lt_any    BY comp1 comp2 comp3,\n          lt_other  BY comp1 component2,\n          lt_third  BY (otab),\n          lt_fourth STABLE AS TEXT\n                    BY component1 ASCENDING component2 DESCENDING,\n          lt_fifth  DESCENDING\n                    BY component1 AS TEXT component2.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SORT: lt_any    BY comp1\n                       comp2\n                       comp3,\n          lt_other  BY comp1\n                       component2,\n          lt_third  BY (otab),\n          lt_fourth STABLE AS TEXT\n                    BY component1 ASCENDING\n                       component2 DESCENDING,\n          lt_fifth  DESCENDING\n                    BY component1 AS TEXT\n                       component2.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortChainWithByInDifferentPlaces",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    SORT: lt_any BY comp1 comp2 comp3,\n          lt_other BY comp1 component2,\n          lt_third BY (otab),\n          lt_fourth STABLE AS TEXT BY component1 ASCENDING component2 DESCENDING,\n          lt_fifth DESCENDING BY component1 AS TEXT component2.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SORT: lt_any BY comp1\n                    comp2\n                    comp3,\n          lt_other BY comp1\n                      component2,\n          lt_third BY (otab),\n          lt_fourth STABLE AS TEXT BY component1 ASCENDING\n                                      component2 DESCENDING,\n          lt_fifth DESCENDING BY component1 AS TEXT\n                                 component2.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortUnchanged",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.KEEP_AS_IS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    SORT mt_any_table STABLE BY comp1 comp2\n     comp3\n     comp4.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SORT mt_any_table STABLE BY comp1 comp2\n     comp3\n     comp4.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCatchAlwaysToDistinctLine",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    TRY.\n        any_method( ).\n\n      CATCH   cx_any_exception  cx_other_exception\n        cx_third_exception.\n\n      CATCH cx_fourth_exception cx_fifth_exception   cx_sixth_exception cx_seventh_exception cx_eighth_exception  cx_ninth_exception INTO lx_exception.\n    ENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        any_method( ).\n\n      CATCH cx_any_exception\n            cx_other_exception\n            cx_third_exception.\n\n      CATCH cx_fourth_exception\n            cx_fifth_exception\n            cx_sixth_exception\n            cx_seventh_exception\n            cx_eighth_exception\n            cx_ninth_exception INTO lx_exception.\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCatchAlwaysToDistinctLineIntoMovedUp",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.ALWAYS"
+   },
+   "src": "  METHOD any_method.\n    TRY.\n        any_method( ).\n      CATCH cx_any_exception  cx_other_exception\n        cx_third_exception\n        INTO DATA(lx_exception) ##NO_HANDLER.\n\n      CATCH cx_fourth_exception cx_fifth_exception   cx_sixth_exception\n      INTO lx_exception.\n    ENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        any_method( ).\n      CATCH cx_any_exception\n            cx_other_exception\n            cx_third_exception INTO DATA(lx_exception) ##NO_HANDLER.\n\n      CATCH cx_fourth_exception\n            cx_fifth_exception\n            cx_sixth_exception INTO lx_exception.\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCatchNeverToDistinctLine",
+   "config": {
+    "MaxLineLength": 120,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.NEVER"
+   },
+   "src": "  METHOD any_method.\n    TRY.\n        any_method( ).\n\n      CATCH BEFORE UNWIND cx_any_exception  cx_other_exception\n        cx_third_exception.\n\n      CATCH cx_fourth_exception cx_fifth_exception   cx_sixth_exception cx_seventh_exception cx_eighth_exception  cx_ninth_exception INTO DATA(lx_exception).\n    ENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        any_method( ).\n\n      CATCH BEFORE UNWIND cx_any_exception cx_other_exception cx_third_exception.\n\n      CATCH cx_fourth_exception cx_fifth_exception cx_sixth_exception cx_seventh_exception cx_eighth_exception\n            cx_ninth_exception INTO DATA(lx_exception).\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCatchNeverToDistinctLineIntoOnOwnLine",
+   "config": {
+    "MaxLineLength": 80,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.NEVER"
+   },
+   "src": "  METHOD any_method.\n    TRY.\n        any_method( ).\n      CATCH cx_any_exception  cx_other_exception\n        cx_third_exception INTO DATA(lx_exception) ##NO_HANDLER.\n\n      CATCH cx_fourth_exception cx_fifth_exception   cx_sixth_exception\n      INTO lx_exception.\n        \" handle exceptions\n    ENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        any_method( ).\n      CATCH cx_any_exception cx_other_exception cx_third_exception\n            INTO DATA(lx_exception) ##NO_HANDLER.\n\n      CATCH cx_fourth_exception cx_fifth_exception cx_sixth_exception\n            INTO lx_exception.\n        \" handle exceptions\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCatchWithShortLines",
+   "config": {
+    "MaxLineLength": 80,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.NEVER"
+   },
+   "src": "  METHOD any_method.\n    TRY.\n        any_method( ).\n\n      CATCH cx_any_exception  cx_other_exception\n        cx_third_exception INTO lx_exception.\n        \" handle exceptions\n\n      CATCH cx_fourth_exception cx_fifth_exception   cx_sixth_exception cx_seventh_exception cx_eighth_exception  cx_ninth_exception INTO lx_exception.\n        \" handle other exceptions\n    ENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        any_method( ).\n\n      CATCH cx_any_exception cx_other_exception cx_third_exception\n            INTO lx_exception.\n        \" handle exceptions\n\n      CATCH cx_fourth_exception cx_fifth_exception cx_sixth_exception\n            cx_seventh_exception cx_eighth_exception cx_ninth_exception\n            INTO lx_exception.\n        \" handle other exceptions\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCatchUnchanged",
+   "config": {
+    "MaxLineLength": 80,
+    "DistinctLineClear": "DistinctLineClear.ALWAYS",
+    "DistinctLineFree": "DistinctLineFree.ALWAYS",
+    "DistinctLineSort": "DistinctLineSort.ALWAYS",
+    "DistinctLineCatch": "DistinctLineCatch.KEEP_AS_IS"
+   },
+   "src": "  METHOD any_method.\n    TRY.\n        any_method( ).\n\n      CATCH cx_any_exception  cx_other_exception\n        cx_third_exception INTO lx_exception.\n        \" handle exceptions\n\n      CATCH cx_fourth_exception cx_fifth_exception cx_sixth_exception cx_seventh_exception INTO lx_exception.\n        \" handle other exceptions\n    ENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        any_method( ).\n\n      CATCH cx_any_exception  cx_other_exception\n        cx_third_exception INTO lx_exception.\n        \" handle exceptions\n\n      CATCH cx_fourth_exception cx_fifth_exception cx_sixth_exception cx_seventh_exception INTO lx_exception.\n        \" handle other exceptions\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

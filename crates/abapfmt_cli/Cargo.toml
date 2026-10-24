@@ -1,0 +1,13 @@
+[package]
+name = "abapfmt_cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+abapfmt_formatter = { path = "../abapfmt_formatter" }
+abapfmt_config = { path = "../abapfmt_config" }

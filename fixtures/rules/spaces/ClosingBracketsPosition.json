@@ -1,0 +1,119 @@
+{
+ "ruleId": "CLOSING_BRACKETS_POSITION",
+ "testClass": "ClosingBracketsPositionTest",
+ "defaults": {},
+ "cases": [
+  {
+   "name": "testValueStatement",
+   "config": {},
+   "src": "  METHOD any_method.\n    ev_result = VALUE #( ( a = 2\n                           b = 4\n                         )\n                       ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_result = VALUE #( ( a = 2\n                           b = 4 ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testValueStatementWithComment",
+   "config": {},
+   "src": "  METHOD any_method.\n    ev_result = VALUE #( ( a = 1\n                           b = 2\n                         )\n                         ( a = 2\n                           b = 4 \" comment\n                         )\n                       ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_result = VALUE #( ( a = 1\n                           b = 2 )\n                         ( a = 2\n                           b = 4 ) ). \" comment\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testParameterList",
+   "config": {},
+   "src": "  METHOD any_method.\n    any_operation( iv_param_a = 1\n                   iv_param_b = 2\n                 ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    any_operation( iv_param_a = 1\n                   iv_param_b = 2 ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testParameterListWithComment",
+   "config": {},
+   "src": "  METHOD any_method.\n    any_operation( iv_param = 1 \" comment\n                 ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    any_operation( iv_param = 1 ). \" comment\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testParameterListWithConflictingComments",
+   "config": {},
+   "src": "  METHOD any_method.\n    any_operation( iv_param = 1 \" comment\n                 ). \" conflicting comment\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    any_operation( iv_param = 1 ). \" comment; conflicting comment\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testParameterListWithCommentAndPseudoCommentUnchanged",
+   "config": {},
+   "src": "  METHOD any_method.\n    any_operation( iv_param = 1 \" comment\n                 ). \"#EC NEEDED\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    any_operation( iv_param = 1 ) \" comment\n                 . \"#EC NEEDED\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testParameterListWithPseudoCommentAndCommentUnchanged",
+   "config": {},
+   "src": "  METHOD any_method.\n    any_operation( iv_param = 1 \"#EC NEEDED\n                 ). \" comment\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    any_operation( iv_param = 1 ) \"#EC NEEDED\n                 . \" comment\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testPragma",
+   "config": {},
+   "src": "    any_method( EXPORTING iv_param1 = lv_value1\n                IMPORTING ev_param2 = lv_param2 ##NEEDED\n               ).",
+   "exp": "    any_method( EXPORTING iv_param1 = lv_value1\n                IMPORTING ev_param2 = lv_param2 ) ##NEEDED.",
+   "flags": {}
+  },
+  {
+   "name": "testPragmas",
+   "config": {},
+   "src": "    any_method( EXPORTING iv_param1 = lv_value1\n                IMPORTING ev_param2 = lv_param2 ##NEEDED ##OTHER_PRAGMA\n               ).",
+   "exp": "    any_method( EXPORTING iv_param1 = lv_value1\n                IMPORTING ev_param2 = lv_param2 ) ##NEEDED ##OTHER_PRAGMA.",
+   "flags": {}
+  },
+  {
+   "name": "testPragmaAndComment",
+   "config": {},
+   "src": "    any_method( EXPORTING iv_param1 = lv_value1\n                IMPORTING ev_param2 = lv_param2 ##NEEDED \" comment\n               ).",
+   "exp": "    any_method( EXPORTING iv_param1 = lv_value1\n                IMPORTING ev_param2 = lv_param2 ) ##NEEDED. \" comment",
+   "flags": {}
+  },
+  {
+   "name": "testPragmaAndConflictingComments",
+   "config": {},
+   "src": "    any_method( EXPORTING iv_param1 = lv_value1\n                IMPORTING ev_param2 = lv_param2 ##NEEDED \" comment\n               ). \" conflicting comment",
+   "exp": "    any_method( EXPORTING iv_param1 = lv_value1\n                IMPORTING ev_param2 = lv_param2 ) ##NEEDED. \" comment; conflicting comment",
+   "flags": {}
+  },
+  {
+   "name": "testArithmeticExpr",
+   "config": {},
+   "src": "    a = ( 1 + 2 \" comment\n        ) * (\n        3 + 4 ).",
+   "exp": "    a = ( 1 + 2 ) \" comment\n        * (\n        3 + 4 ).",
+   "flags": {}
+  }
+ ]
+}

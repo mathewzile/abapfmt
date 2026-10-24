@@ -1,0 +1,450 @@
+{
+ "ruleId": "DDL_ALIGN_FIELD_LISTS",
+ "testClass": "DdlAlignFieldListsTest",
+ "defaults": {
+  "MaxLineLength": 120,
+  "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+  "NameListLayout": "SelectListLayout.MULTI_LINE",
+  "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+  "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+  "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+  "ConsiderDotAsComplex": true
+ },
+ "cases": [
+  {
+   "name": "testAlignNameListBelowLineStartPlus2",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n  AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView\n(\n  AnyFieldAlias,\n  OtherFieldAlias,\n  ThirdFieldAlias,\n  FourthFieldAliasWithLongName,\n  FifthFieldAlias\n)\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListBelowLineStartPlus4",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_4",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n  AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView\n  (\n    AnyFieldAlias,\n    OtherFieldAlias,\n    ThirdFieldAlias,\n    FourthFieldAliasWithLongName,\n    FifthFieldAlias\n  )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListBelowViewNamePlus2",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.VIEW_NAME_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n  AnyFieldAlias,\nOtherFieldAlias,\n//CommentedOutFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView\n            (\n              AnyFieldAlias,\n              OtherFieldAlias,\n//              CommentedOutFieldAlias,\n              ThirdFieldAlias,\n              FourthFieldAliasWithLongName,\n              FifthFieldAlias\n            )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListBelowViewNamePlus4",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.VIEW_NAME_PLUS_4",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n//CommentedOutFieldAlias,\n  AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias\n//CommentedOutFieldAlias2\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView\n              (\n//                CommentedOutFieldAlias,\n                AnyFieldAlias,\n                OtherFieldAlias,\n                ThirdFieldAlias,\n                FourthFieldAliasWithLongName,\n                FifthFieldAlias\n//                CommentedOutFieldAlias2\n              )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListKeepAsIs",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.KEEP_AS_IS",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n//CommentedOutFieldAlias,\n    AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias\n//CommentedOutFieldAlias2\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView\n (\n//    CommentedOutFieldAlias,\n    AnyFieldAlias,\n    OtherFieldAlias,\n    ThirdFieldAlias,\n    FourthFieldAliasWithLongName,\n    FifthFieldAlias\n//    CommentedOutFieldAlias2\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListAfterViewName",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.CONTINUE",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n    AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView( AnyFieldAlias,\n                                OtherFieldAlias,\n                                ThirdFieldAlias,\n                                FourthFieldAliasWithLongName,\n                                FifthFieldAlias )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListAfterViewNameWithComments",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.CONTINUE",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n//CommentedOutFieldAlias,\n    AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias\n//CommentedOutFieldAlias2\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView(\n//                                CommentedOutFieldAlias,\n                                AnyFieldAlias,\n                                OtherFieldAlias,\n                                ThirdFieldAlias,\n                                FourthFieldAliasWithLongName,\n                                FifthFieldAlias\n//                                CommentedOutFieldAlias2\n                              )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListSingleLine",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.ONE_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n    AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView\n( AnyFieldAlias, OtherFieldAlias, ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListContinueWithSingleLine",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.CONTINUE",
+    "NameListLayout": "SelectListLayout.ONE_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n    AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName,\n  FifthFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView( AnyFieldAlias, OtherFieldAlias, ThirdFieldAlias, FourthFieldAliasWithLongName,\n                                FifthFieldAlias )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListContinueWithSingleLineNarrow",
+   "config": {
+    "MaxLineLength": 100,
+    "NameListPos": "DdlNameListPos.CONTINUE",
+    "NameListLayout": "SelectListLayout.ONE_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n    AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName,\n  FifthFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView( AnyFieldAlias, OtherFieldAlias, ThirdFieldAlias,\n                                FourthFieldAliasWithLongName, FifthFieldAlias )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListDeriveSingleLine",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.DERIVE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n    AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView\n( AnyFieldAlias, OtherFieldAlias, ThirdFieldAlias, FourthFieldAliasWithLongName, FifthFieldAlias )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListDeriveMultiLine",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.DERIVE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n    AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName,\n  FifthFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView\n(\n  AnyFieldAlias,\n  OtherFieldAlias,\n  ThirdFieldAlias,\n  FourthFieldAliasWithLongName,\n  FifthFieldAlias\n)\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignNameListKeepLayoutAsIs",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.VIEW_NAME_PLUS_2",
+    "NameListLayout": "SelectListLayout.KEEP_AS_IS",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n    AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName,\n  FifthFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyDDicBasedView\n            (\n    AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias, FourthFieldAliasWithLongName,\n  FifthFieldAlias\n            )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignGroupByContinue",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by AnyAlias.AnyField,\n         OtherAlias.OtherField,\n//         OtherAlias.CommentedOutField,\n         OtherAlias.ThirdField,\n         _ThirdAlias.FourthFieldWithLongName,\n         _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testAlignGroupByBelowListStartPlus2",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.LINE_START_PLUS_2",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n  AnyAlias.AnyField,\n  OtherAlias.OtherField,\n//  OtherAlias.CommentedOutField,\n  OtherAlias.ThirdField,\n  _ThirdAlias.FourthFieldWithLongName,\n  _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testAlignGroupByBelowListStartPlus4",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.LINE_START_PLUS_4",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n    AnyAlias.AnyField,\n    OtherAlias.OtherField,\n//    OtherAlias.CommentedOutField,\n    OtherAlias.ThirdField,\n    _ThirdAlias.FourthFieldWithLongName,\n    _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testAlignGroupByListKeepPosAsIs",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.KEEP_AS_IS",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n       OtherAlias.OtherField,\n//       OtherAlias.CommentedOutField,\n       OtherAlias.ThirdField,\n       _ThirdAlias.FourthFieldWithLongName,\n       _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testAlignComplexGroupByListSingleLine",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.ONE_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by AnyAlias.AnyField, OtherAlias.OtherField,\n//         OtherAlias.CommentedOutField,\n         OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName, _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testAlignComplexGroupByListDeriveMultiLine",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.DERIVE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by AnyAlias.AnyField,\n         OtherAlias.OtherField,\n//         OtherAlias.CommentedOutField,\n         OtherAlias.ThirdField,\n         _ThirdAlias.FourthFieldWithLongName,\n         _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testAlignComplexGroupByListKeepAsIs",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.KEEP_AS_IS",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testAlignSimpleGroupByListMultiLine",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": false
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by AnyAlias.AnyField,\n         OtherAlias.OtherField,\n//         OtherAlias.CommentedOutField,\n         OtherAlias.ThirdField,\n         _ThirdAlias.FourthFieldWithLongName,\n         _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testAlignSimpleGroupByListSingleLine",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.ONE_LINE",
+    "ConsiderDotAsComplex": false
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by AnyAlias.AnyField, OtherAlias.OtherField,\n//         OtherAlias.CommentedOutField,\n         OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName, _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testAlignSimpleGroupByListDeriveSingleLine",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ConsiderDotAsComplex": false
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField, OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by AnyAlias.AnyField, OtherAlias.OtherField,\n//         OtherAlias.CommentedOutField,\n         OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName, _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testAlignSimpleGroupByListKeepLayoutAsIs",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.KEEP_AS_IS",
+    "ConsiderDotAsComplex": false
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField, OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField, OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n OtherAlias.ThirdField, _ThirdAlias.FourthFieldWithLongName,\n      _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testVerySimpleGroupByListSingleLine",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.ONE_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyField,\n     OtherField,\n// CommentedOutField,\n ThirdField, FourthFieldWithLongName,\n      FifthField",
+   "exp": "define view I_AnyDDicBasedView\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by AnyField, OtherField,\n//         CommentedOutField,\n         ThirdField, FourthFieldWithLongName, FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testContinueBlockedByComment",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.CONTINUE",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView // comment\n (\n  AnyFieldAlias,\nOtherFieldAlias,\n ThirdFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by // comment\n       AnyAlias.AnyField,\n     OtherAlias.OtherField,\n OtherAlias.ThirdField",
+   "exp": "define view I_AnyDDicBasedView // comment\n                              ( AnyFieldAlias,\n                                OtherFieldAlias,\n                                ThirdFieldAlias )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by // comment\n         AnyAlias.AnyField,\n         OtherAlias.OtherField,\n         OtherAlias.ThirdField",
+   "flags": {}
+  },
+  {
+   "name": "testMoveCommentsBehindFieldNames",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.LINE_START_PLUS_2",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView // comment\n (\n  AnyFieldAlias // comment\n  ,\nOtherFieldAlias\n\n,\n ThirdFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by // comment\n       AnyAlias.AnyField\n          ,\n     OtherAlias.OtherField\n    , OtherAlias.ThirdField",
+   "exp": "define view I_AnyDDicBasedView // comment\n(\n  AnyFieldAlias // comment\n  ,\n  OtherFieldAlias,\n  ThirdFieldAlias\n)\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by // comment\n         AnyAlias.AnyField,\n         OtherAlias.OtherField,\n         OtherAlias.ThirdField",
+   "flags": {}
+  },
+  {
+   "name": "testContinueWithComments",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.CONTINUE",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n  // comment 1\n  AnyFieldAlias,\n-- comment 2\nOtherFieldAlias,\n// comment 3\n ThirdFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n  /* comment A */\n       AnyAlias.AnyField,\n// comment B\n     OtherAlias.OtherField,\n     -- comment C\n   OtherAlias.ThirdField",
+   "exp": "define view I_AnyDDicBasedView( // comment 1\n                                AnyFieldAlias,\n                                -- comment 2\n                                OtherFieldAlias,\n//                                comment 3\n                                ThirdFieldAlias )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by /* comment A */\n         AnyAlias.AnyField,\n//         comment B\n         OtherAlias.OtherField,\n         -- comment C\n         OtherAlias.ThirdField",
+   "flags": {}
+  },
+  {
+   "name": "testCommentsWithoutText",
+   "config": {
+    "MaxLineLength": 120,
+    "NameListPos": "DdlNameListPos.VIEW_NAME_PLUS_4",
+    "NameListLayout": "SelectListLayout.MULTI_LINE",
+    "GroupByListPos": "DdlGroupByListPos.CONTINUE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.ONE_LINE",
+    "ConsiderDotAsComplex": true
+   },
+   "src": "define view I_AnyDDicBasedView\n (\n  AnyFieldAlias,\n//\n   OtherFieldAlias\n    )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by\n       AnyAlias.AnyField,\n////\n     OtherAlias.OtherField",
+   "exp": "define view I_AnyDDicBasedView\n              (\n                AnyFieldAlias,\n//\n                OtherFieldAlias\n              )\n\n  as select from  I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField\n}\ngroup by AnyAlias.AnyField,\n////\n         OtherAlias.OtherField",
+   "flags": {}
+  }
+ ]
+}

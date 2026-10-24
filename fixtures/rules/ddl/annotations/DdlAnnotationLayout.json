@@ -1,0 +1,256 @@
+{
+ "ruleId": "DDL_ANNO_LAYOUT",
+ "testClass": "DdlAnnotationLayoutTest",
+ "defaults": {
+  "SpaceAfterColon": true,
+  "SpaceInsideBraces": true,
+  "SpaceInsideBrackets": true,
+  "MaxLineLength": 120,
+  "MaxOneLinerElemCountMain": 4,
+  "MaxOneLinerElemCountList": 4,
+  "AlignValues": false,
+  "AlignTablesInArrays": true
+ },
+ "cases": [
+  {
+   "name": "testAllSpaces",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@ObjectModel.lifecycle.draft.notificationBeforeExpiryInterval: 'PT10D'\n@ObjectModel. lifecycle. draft .expiryInterval:'PT28D'\n@ObjectModel.usageType: { serviceQuality: #D,\n                            sizeCategory:#XXL,\n                                 dataClass :#MIXED }\n\n@ObjectModel.supportedCapabilities: [#ANALYTICAL_QUERY,\n                                      #ANALYTICAL_DOCUMENT_STORE,\n                                    #ANALYTICAL_KPI,\n                                        #ANALYTICAL_PROVIDER ]\n@ObjectModel.action:[{instance:{bound:true}},{enabled:true},{feature:''}]",
+   "exp": "@ObjectModel.lifecycle.draft.notificationBeforeExpiryInterval: 'PT10D'\n@ObjectModel.lifecycle.draft.expiryInterval: 'PT28D'\n@ObjectModel.usageType: { serviceQuality: #D, sizeCategory: #XXL, dataClass: #MIXED }\n\n@ObjectModel.supportedCapabilities: [ #ANALYTICAL_QUERY,\n                                      #ANALYTICAL_DOCUMENT_STORE,\n                                      #ANALYTICAL_KPI,\n                                      #ANALYTICAL_PROVIDER ]\n@ObjectModel.action: [ { instance: { bound: true } },\n                       { enabled: true },\n                       { feature: '' } ]",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceAfterColon",
+   "config": {
+    "SpaceAfterColon": false,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@ObjectModel.lifecycle.draft.notificationBeforeExpiryInterval: 'PT10D'\n@ObjectModel. lifecycle. draft .expiryInterval:'PT28D'\n@ObjectModel.usageType: { serviceQuality: #D,\n                            sizeCategory:#XXL,\n                                 dataClass :#MIXED }",
+   "exp": "@ObjectModel.lifecycle.draft.notificationBeforeExpiryInterval:'PT10D'\n@ObjectModel.lifecycle.draft.expiryInterval:'PT28D'\n@ObjectModel.usageType:{ serviceQuality:#D, sizeCategory:#XXL, dataClass:#MIXED }",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceinsideBraces",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": false,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 2,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@ObjectModel.usageType: { serviceQuality: #D,\n                            sizeCategory:#XXL,\n                                 dataClass :#MIXED }\n\n@ObjectModel.supportedCapabilities: [#ANALYTICAL_QUERY,\n                                      #ANALYTICAL_DOCUMENT_STORE,\n                                    #ANALYTICAL_KPI,\n                                        #ANALYTICAL_PROVIDER ]\n@ObjectModel.action:[{instance:{bound:true}},{enabled:true},{feature:''}]",
+   "exp": "@ObjectModel.usageType: {serviceQuality: #D,\n                         sizeCategory: #XXL,\n                         dataClass: #MIXED}\n\n@ObjectModel.supportedCapabilities: [ #ANALYTICAL_QUERY,\n                                      #ANALYTICAL_DOCUMENT_STORE,\n                                      #ANALYTICAL_KPI,\n                                      #ANALYTICAL_PROVIDER ]\n@ObjectModel.action: [ {instance: {bound: true}},\n                       {enabled: true},\n                       {feature: ''} ]",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpacesInsideBrackets",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": false,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@ObjectModel.supportedCapabilities: [#ANALYTICAL_QUERY,\n                                      #ANALYTICAL_DOCUMENT_STORE,\n                                    #ANALYTICAL_KPI,\n                                        #ANALYTICAL_PROVIDER ]\n@ObjectModel.action:[{instance:{bound:true}},{enabled:true},{feature:''}]",
+   "exp": "@ObjectModel.supportedCapabilities: [#ANALYTICAL_QUERY,\n                                     #ANALYTICAL_DOCUMENT_STORE,\n                                     #ANALYTICAL_KPI,\n                                     #ANALYTICAL_PROVIDER]\n@ObjectModel.action: [{ instance: { bound: true } },\n                      { enabled: true },\n                      { feature: '' }]",
+   "flags": {}
+  },
+  {
+   "name": "testHighOneLinerLength",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 130,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@ObjectModel.usageType: { serviceQuality: #D,\n                            sizeCategory:#XXL,\n                                 dataClass :#MIXED }\n\n@ObjectModel.supportedCapabilities: [#ANALYTICAL_QUERY,\n                                      #ANALYTICAL_DOCUMENT_STORE,\n                                    #ANALYTICAL_KPI,\n                                        #ANALYTICAL_PROVIDER ]",
+   "exp": "@ObjectModel.usageType: { serviceQuality: #D, sizeCategory: #XXL, dataClass: #MIXED }\n\n@ObjectModel.supportedCapabilities: [ #ANALYTICAL_QUERY, #ANALYTICAL_DOCUMENT_STORE, #ANALYTICAL_KPI, #ANALYTICAL_PROVIDER ]",
+   "flags": {}
+  },
+  {
+   "name": "testLowOneLinerLength",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 80,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@ObjectModel.usageType: { serviceQuality: #D,\n                            sizeCategory:#XXL,\n                                 dataClass :#MIXED }\n\n@ObjectModel.supportedCapabilities: [#ANALYTICAL_QUERY,\n                                      #ANALYTICAL_DOCUMENT_STORE,\n                                    #ANALYTICAL_KPI,\n                                        #ANALYTICAL_PROVIDER ]",
+   "exp": "@ObjectModel.usageType: { serviceQuality: #D,\n                          sizeCategory: #XXL,\n                          dataClass: #MIXED }\n\n@ObjectModel.supportedCapabilities: [ #ANALYTICAL_QUERY,\n                                      #ANALYTICAL_DOCUMENT_STORE,\n                                      #ANALYTICAL_KPI,\n                                      #ANALYTICAL_PROVIDER ]",
+   "flags": {}
+  },
+  {
+   "name": "testMaxOneElementPerLineInMain",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 1,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@UI.selectionVariant: [ {\n  qualifier: 'params',\n  parameters: [ {\n    name: 'P_AnyParam',\n    value: 'any'\n  }, {\n    name: 'P_OtherParam',\n    value: 'other'\n  }, {\n    name:  'P_Third',\n    value: 'third'\n} ] } ]\n\ndefine view entity C_AnyEntity\n  as select from I_OtherEntity\n\n{\n      @Consumption.filter: { selectionType: #SINGLE,\n                             multipleSelections  :false,\n                            mandatory:false}\n  key AnyKeyField,\n\n      @Consumption.valueHelpDefinition:\n      [\n        {\n          entity:\n          {\n            name: 'I_AnyName',\n            element: 'ElementName'\n          }\n        }\n      ]\n      AnyNonKeyField\n}",
+   "exp": "@UI.selectionVariant: [ { qualifier: 'params',\n                          parameters: [ { name: 'P_AnyParam',\n                                          value: 'any' },\n                                        { name: 'P_OtherParam',\n                                          value: 'other' },\n                                        { name: 'P_Third',\n                                          value: 'third' } ] } ]\n\ndefine view entity C_AnyEntity\n  as select from I_OtherEntity\n\n{\n      @Consumption.filter: { selectionType: #SINGLE, multipleSelections: false, mandatory: false }\n  key AnyKeyField,\n\n      @Consumption.valueHelpDefinition: [ { entity: { name: 'I_AnyName', element: 'ElementName' } } ]\n      AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testMaxOneElementPerLineInSelectList",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 1,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@UI.selectionVariant: [ {\n  qualifier: 'params',\n  parameters: [ {\n    name: 'P_AnyParam',\n    value: 'any'\n  }, {\n    name: 'P_OtherParam',\n    value: 'other'\n  }, {\n    name:  'P_Third',\n    value: 'third'\n} ] } ]\n\ndefine view entity C_AnyEntity\n  as select from I_OtherEntity\n\n{\n      @Consumption.filter: { selectionType: #SINGLE,\n                             multipleSelections  :false,\n                            mandatory:false}\n  key AnyKeyField,\n\n      @Consumption.valueHelpDefinition:\n      [\n        {\n          entity:\n          {\n            name: 'I_AnyName',\n            element: 'ElementName'\n          }\n        }\n      ]\n      AnyNonKeyField\n}",
+   "exp": "@UI.selectionVariant: [ { qualifier: 'params',\n                          parameters: [ { name: 'P_AnyParam',   value: 'any'   },\n                                        { name: 'P_OtherParam', value: 'other' },\n                                        { name: 'P_Third',      value: 'third' } ] } ]\n\ndefine view entity C_AnyEntity\n  as select from I_OtherEntity\n\n{\n      @Consumption.filter: { selectionType: #SINGLE,\n                             multipleSelections: false,\n                             mandatory: false }\n  key AnyKeyField,\n\n      @Consumption.valueHelpDefinition: [ { entity: { name: 'I_AnyName',\n                                                      element: 'ElementName' } } ]\n      AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignValues",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 1,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": true,
+    "AlignTablesInArrays": true
+   },
+   "src": "@ObjectModel.usageType: { serviceQuality: #D,\n                            sizeCategory:#XXL,\n                                 dataClass :#MIXED }\n\n@UI.selectionVariant: [ {\n  qualifier: 'params',\n  parameters: [ {\n    name: 'P_AnyParam',\n    value: 'any'\n  }, {\n    name: 'P_OtherParam',\n    value: 'other'\n  }, {\n    name:  'P_Third',\n    value: 'third'\n} ] } ]",
+   "exp": "@ObjectModel.usageType: { serviceQuality: #D,\n                          sizeCategory:   #XXL,\n                          dataClass:      #MIXED }\n\n@UI.selectionVariant: [ { qualifier:  'params',\n                          parameters: [ { name:  'P_AnyParam',\n                                          value: 'any' },\n                                        { name:  'P_OtherParam',\n                                          value: 'other' },\n                                        { name:  'P_Third',\n                                          value: 'third' } ] } ]",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignTables",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": false
+   },
+   "src": "@UI.selectionVariant: [ {\n  qualifier: 'params',\n  parameters: [ {\n    name: 'P_AnyParam',\n    value: 'any'\n  }, {\n    name: 'P_OtherParam',\n    value: 'other'\n  }, {\n    name:  'P_Third',\n    value: 'third'\n} ] } ]",
+   "exp": "@UI.selectionVariant: [ { qualifier: 'params',\n                          parameters: [ { name: 'P_AnyParam', value: 'any' },\n                                        { name: 'P_OtherParam', value: 'other' },\n                                        { name: 'P_Third', value: 'third' } ] } ]",
+   "flags": {}
+  },
+  {
+   "name": "testNestingKeptButNotFilledUp",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@ObjectModel . usageType  .  sizeCategory  :  #XXL\n@ObjectModel.  usageType: {serviceQuality: #D   }\n@ObjectModel .usageType  .dataClass  :#MIXED",
+   "exp": "@ObjectModel.usageType.sizeCategory: #XXL\n@ObjectModel.usageType: { serviceQuality: #D }\n@ObjectModel.usageType.dataClass: #MIXED",
+   "flags": {}
+  },
+  {
+   "name": "testSingleAnnotation",
+   "config": {
+    "SpaceAfterColon": false,
+    "SpaceInsideBraces": false,
+    "SpaceInsideBrackets": false,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "  @ObjectModel: { usageType: { sizeCategory: #XXL } }\n  define view entity C_AnyEntity as select from I_OtherEntity\n  {\n    key AnyKeyField,\n  }",
+   "exp": "  @ObjectModel:{usageType:{sizeCategory:#XXL}}\n  define view entity C_AnyEntity as select from I_OtherEntity\n  {\n    key AnyKeyField,\n  }",
+   "flags": {}
+  },
+  {
+   "name": "testNestedArrays",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@Anno:[{subAnno:[{subSubAnno:'value'}]}]\n@ArrayAnno1:[[['value']]]\n@ArrayAnno2:[[['valueA1a','valueA1b','valueA1c'],['valueA2a','valueA2b'],['valueA3']],[['valueB1']]]",
+   "exp": "@Anno: [ { subAnno: [ { subSubAnno: 'value' } ] } ]\n@ArrayAnno1: [ [ [ 'value' ] ] ]\n@ArrayAnno2: [ [ [ 'valueA1a', 'valueA1b', 'valueA1c' ],\n                 [ 'valueA2a', 'valueA2b' ],\n                 [ 'valueA3' ] ],\n               [ [ 'valueB1' ] ] ]",
+   "flags": {}
+  },
+  {
+   "name": "testUncheckedExpressions",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@ObjectModel . usageType  .  sizeCategory  :  #('XXL')\n@ObjectModel.  usageType: {serviceQuality: #('D') }\n@ObjectModel .usageType  .dataClass  :#('MIXED')",
+   "exp": "@ObjectModel.usageType.sizeCategory: #('XXL')\n@ObjectModel.usageType: { serviceQuality: #('D') }\n@ObjectModel.usageType.dataClass: #('MIXED')",
+   "flags": {}
+  },
+  {
+   "name": "testDefineRole",
+   "config": {
+    "SpaceAfterColon": true,
+    "SpaceInsideBraces": true,
+    "SpaceInsideBrackets": true,
+    "MaxLineLength": 120,
+    "MaxOneLinerElemCountMain": 4,
+    "MaxOneLinerElemCountList": 4,
+    "AlignValues": false,
+    "AlignTablesInArrays": true
+   },
+   "src": "@EndUserText . label : 'Any text'\n@MappingRole  : true\n\ndefine role I_AnyView {\n  grant select on I_AnyView\n    where (Field1, Field2) = aspect pfcg_auth(auth_object, mapped_field1, mapped_field2, auth_field1 = 'value');\n}",
+   "exp": "@EndUserText.label: 'Any text'\n@MappingRole: true\n\ndefine role I_AnyView {\n  grant select on I_AnyView\n    where (Field1, Field2) = aspect pfcg_auth(auth_object, mapped_field1, mapped_field2, auth_field1 = 'value');\n}",
+   "flags": {}
+  }
+ ]
+}

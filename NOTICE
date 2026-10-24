@@ -1,0 +1,26 @@
+abapfmt
+
+abapfmt is an ABAP code formatter. It adopts the formatting options and behaviour
+of ABAP cleaner, an Eclipse/Java plugin originally developed by SAP:
+
+    https://github.com/SAP/abap-cleaner
+
+ABAP cleaner is licensed under the Apache License, Version 2.0:
+
+    Copyright 2023 SAP SE or an SAP affiliate company and ABAP cleaner
+    contributors
+
+Material derived from ABAP cleaner distributed in this repository:
+
+  - `fixtures/rules/` - JSON test fixtures mechanically derived from upstream
+    JUnit test source (v1.29.0) by `tools/import-java-fixtures.mjs`.
+  - `fixtures/samples/` - byte-identical copies of the sample files under
+    upstream `vscode-extension/samples/`.
+  - Rust code ported from upstream Java (via the earlier TypeScript port) carries
+    a `// Ported from <upstream file> @ v1.29.0` header.
+
+Planned: Rust grammar tables generated from abaplint (https://github.com/abaplint/abaplint,
+MIT License, (c) Lars Hvam). Its license notice will be added here with the generator.
+
+"ABAP" and "SAP" are trademarks or registered trademarks of SAP SE. This project
+is not affiliated with, endorsed by, or sponsored by SAP SE.

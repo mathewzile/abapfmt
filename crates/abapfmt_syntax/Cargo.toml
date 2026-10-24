@@ -1,0 +1,13 @@
+[package]
+name = "abapfmt_syntax"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+abapfmt_lexer = { path = "../abapfmt_lexer" }
+abapfmt_grammar = { path = "../abapfmt_grammar" }

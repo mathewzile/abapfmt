@@ -1,0 +1,535 @@
+{
+ "ruleId": "ALIGN_SELECT_CLAUSES",
+ "testClass": "AlignSelectClausesTest",
+ "defaults": {
+  "MaxLineLength": 120,
+  "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+  "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+  "MaxSelectListLengthBeforeFrom": 30,
+  "NewLineForFromWithJoins": true,
+  "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+  "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+  "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+  "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+ },
+ "cases": [
+  {
+   "name": "testKeepOneLiners",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE any_col INTO lv_any_value FROM any_dtab WHERE other_col = gc_any_constant.\n\n    SELECT any_col\n    FROM any_dtab\n    INTO TABLE lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE any_col INTO lv_any_value FROM any_dtab WHERE other_col = gc_any_constant.\n\n    SELECT any_col FROM any_dtab\n      INTO TABLE lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCreateOneLinerButSplitOverlength",
+   "config": {
+    "MaxLineLength": 90,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.CREATE",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE any_col INTO lv_any_value FROM any_dtab WHERE other_col = gc_any_constant.\n\n    SELECT any_col\n    FROM any_dtab\n    INTO TABLE lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE any_col INTO lv_any_value\n      FROM any_dtab\n      WHERE other_col = gc_any_constant.\n\n    SELECT any_col FROM any_dtab INTO TABLE lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlwaysSplitOneLiner",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.ALWAYS_SPLIT",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE any_col INTO lv_any_value FROM any_dtab WHERE other_col = gc_any_constant.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE any_col INTO lv_any_value\n      FROM any_dtab\n      WHERE other_col = gc_any_constant.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSplitSubQueryOneLiner",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.ALWAYS_SPLIT",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col, other_col, third_col FROM any_dtab APPENDING CORRESPONDING FIELDS OF TABLE @lt_any_table\n           WHERE other_col IN ( SELECT other_col FROM other_dtab WHERE fourth_col = @lv_any_value )\n             AND third_col IN ( SELECT third_col FROM third_dtab WHERE fifth_col > @lv_other_value ). \"#EC CI_BUFFSUBQ.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col, other_col, third_col\n      FROM any_dtab\n      APPENDING CORRESPONDING FIELDS OF TABLE @lt_any_table\n      WHERE other_col IN ( SELECT other_col FROM other_dtab\n                             WHERE fourth_col = @lv_any_value )\n        AND third_col IN ( SELECT third_col FROM third_dtab\n                             WHERE fifth_col > @lv_other_value ). \"#EC CI_BUFFSUBQ.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMoveFromToNextLine",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 10,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col FROM any_dtab\n        WHERE any_col IN ( SELECT any_col FROM other_dtab\n         WHERE other_col = 'X' )\n          INTO CORRESPONDING FIELDS OF @ls_any_struc. \"#EC CI_BUFFSUBQ\n    ENDSELECT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col\n      FROM any_dtab\n      WHERE any_col IN ( SELECT any_col\n                           FROM other_dtab\n                           WHERE other_col = 'X' )\n      INTO CORRESPONDING FIELDS OF @ls_any_struc. \"#EC CI_BUFFSUBQ\n    ENDSELECT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepFromWithJoinsBehindSelect",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": false,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT FROM any_dtab AS t1\n                INNER JOIN other_dtab AS t2 ON  t1~any_col   = t2~any_col\n                                            AND t1~other_col = t2~other_col\n                LEFT OUTER JOIN third_dtab AS t3 ON t1~third_col = t3~third_col\n      FIELDS (lt_fields)\n       GROUP BY (lt_group)\n             INTO CORRESPONDING FIELDS OF TABLE @lts_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT FROM any_dtab AS t1\n                INNER JOIN other_dtab AS t2 ON  t1~any_col   = t2~any_col\n                                            AND t1~other_col = t2~other_col\n                LEFT OUTER JOIN third_dtab AS t3 ON t1~third_col = t3~third_col\n      FIELDS (lt_fields)\n      GROUP BY (lt_group)\n      INTO CORRESPONDING FIELDS OF TABLE @lts_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMoveFromWithJoinsToNextLine",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT FROM any_dtab AS t1\n                INNER JOIN other_dtab AS t2 ON  t1~any_col   = t2~any_col\n                                            AND t1~other_col = t2~other_col\n                LEFT OUTER JOIN third_dtab AS t3 ON t1~third_col = t3~third_col\n      FIELDS (lt_fields)\n       GROUP BY (lt_group)\n             INTO CORRESPONDING FIELDS OF TABLE @lts_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n           INNER JOIN other_dtab AS t2 ON  t1~any_col   = t2~any_col\n                                       AND t1~other_col = t2~other_col\n           LEFT OUTER JOIN third_dtab AS t3 ON t1~third_col = t3~third_col\n      FIELDS (lt_fields)\n      GROUP BY (lt_group)\n      INTO CORRESPONDING FIELDS OF TABLE @lts_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepFromWithJoinsBehindSelectForPlus7",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_7",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT FROM any_dtab AS t1\n                INNER JOIN other_dtab AS t2 ON  t1~any_col   = t2~any_col\n                                            AND t1~other_col = t2~other_col\n                LEFT OUTER JOIN third_dtab AS t3 ON t1~third_col = t3~third_col\n      FIELDS (lt_fields)\n       GROUP BY (lt_group)\n             INTO CORRESPONDING FIELDS OF TABLE @lts_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT FROM any_dtab AS t1\n                INNER JOIN other_dtab AS t2 ON  t1~any_col   = t2~any_col\n                                            AND t1~other_col = t2~other_col\n                LEFT OUTER JOIN third_dtab AS t3 ON t1~third_col = t3~third_col\n           FIELDS (lt_fields)\n           GROUP BY (lt_group)\n           INTO CORRESPONDING FIELDS OF TABLE @lts_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIndentClausesBy7",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.ALWAYS_SPLIT",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_7",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col, other_col, third_col FROM any_dtab APPENDING CORRESPONDING FIELDS OF TABLE @lt_any_table\n           WHERE other_col IN ( SELECT other_col FROM other_dtab WHERE fourth_col = @lv_any_value )\n             AND third_col IN ( SELECT third_col FROM third_dtab WHERE fifth_col > @lv_other_value ). \"#EC CI_BUFFSUBQ.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col, other_col, third_col\n           FROM any_dtab\n           APPENDING CORRESPONDING FIELDS OF TABLE @lt_any_table\n           WHERE other_col IN ( SELECT other_col FROM other_dtab\n                                       WHERE fourth_col = @lv_any_value )\n             AND third_col IN ( SELECT third_col FROM third_dtab\n                                       WHERE fifth_col > @lv_other_value ). \"#EC CI_BUFFSUBQ.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testUnionAndSelectBelow",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT a AS c1, b AS c2, c AS c3\n           FROM any_dtab\n           UNION DISTINCT\n    SELECT d AS c1, e AS c2, f AS c3\n          FROM other_dtab\n      UNION DISTINCT\n        SELECT g AS c1, h AS c2, i AS c3\n          FROM third_dtab\n            INTO TABLE @FINAL(lt_distinct_result).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT a AS c1, b AS c2, c AS c3\n      FROM any_dtab\n    UNION DISTINCT\n    SELECT d AS c1, e AS c2, f AS c3\n      FROM other_dtab\n    UNION DISTINCT\n    SELECT g AS c1, h AS c2, i AS c3\n      FROM third_dtab\n    INTO TABLE @FINAL(lt_distinct_result).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testUnionAdd2SelectAdd2",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_2",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_2",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT a AS c1, b AS c2, c AS c3\n           FROM any_dtab\n           UNION DISTINCT\n    SELECT d AS c1, e AS c2, f AS c3\n          FROM other_dtab\n      UNION DISTINCT\n        SELECT g AS c1, h AS c2, i AS c3\n          FROM third_dtab\n            INTO TABLE @FINAL(lt_distinct_result).\n\n    SELECT a AS c1, b AS c2, c AS c3, d AS c4\n            FROM any_dtab\n    INTERSECT ( SELECT d AS c1, e AS c2, f AS c3, g AS c4\n        FROM other_dtab\n    UNION\n    SELECT i AS c1, j AS c2, k AS c3, l AS c4\n               FROM third_dtab )\n               INTO TABLE @FINAL(lt_result).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT a AS c1, b AS c2, c AS c3\n      FROM any_dtab\n      UNION DISTINCT\n        SELECT d AS c1, e AS c2, f AS c3\n          FROM other_dtab\n          UNION DISTINCT\n            SELECT g AS c1, h AS c2, i AS c3\n              FROM third_dtab\n    INTO TABLE @FINAL(lt_distinct_result).\n\n    SELECT a AS c1, b AS c2, c AS c3, d AS c4\n      FROM any_dtab\n      INTERSECT\n        ( SELECT d AS c1, e AS c2, f AS c3, g AS c4\n            FROM other_dtab\n            UNION\n              SELECT i AS c1, j AS c2, k AS c3, l AS c4\n                FROM third_dtab )\n    INTO TABLE @FINAL(lt_result).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testUnionAdd2SelectContinueOrBelowSecond",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_7",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_7",
+    "NextSelectPos": "SelectUnionNextSelectPos.CONTINUE_OR_BELOW_SECOND",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT a AS c1, b AS c2, c AS c3\n           FROM any_dtab\n           UNION DISTINCT\n    SELECT d AS c1, e AS c2, f AS c3\n          FROM other_dtab\n      UNION DISTINCT\n        SELECT g AS c1, h AS c2, i AS c3\n          FROM third_dtab\n            INTO TABLE @FINAL(lt_distinct_result).\n\n    SELECT a AS c1, b AS c2, c AS c3, d AS c4\n            FROM any_dtab\n    INTERSECT ( SELECT d AS c1, e AS c2, f AS c3, g AS c4\n        FROM other_dtab\n    UNION\n    SELECT i AS c1, j AS c2, k AS c3, l AS c4\n               FROM third_dtab )\n               INTO TABLE @FINAL(lt_result).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT a AS c1, b AS c2, c AS c3\n           FROM any_dtab\n           UNION DISTINCT\n                 SELECT d AS c1, e AS c2, f AS c3\n                        FROM other_dtab\n                        UNION DISTINCT\n                              SELECT g AS c1, h AS c2, i AS c3\n                                     FROM third_dtab\n    INTO TABLE @FINAL(lt_distinct_result).\n\n    SELECT a AS c1, b AS c2, c AS c3, d AS c4\n           FROM any_dtab\n           INTERSECT ( SELECT d AS c1, e AS c2, f AS c3, g AS c4\n                              FROM other_dtab\n                              UNION SELECT i AS c1, j AS c2, k AS c3, l AS c4\n                                           FROM third_dtab )\n    INTO TABLE @FINAL(lt_result).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testUnionAdd4SelectContinueIntoAdd2",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_4",
+    "NextSelectPos": "SelectUnionNextSelectPos.CONTINUE",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_2"
+   },
+   "src": "  METHOD any_method.\n    SELECT a AS c1, b AS c2, c AS c3\n           FROM any_dtab\n           UNION DISTINCT\n    SELECT d AS c1, e AS c2, f AS c3\n          FROM other_dtab\n      UNION DISTINCT\n        SELECT g AS c1, h AS c2, i AS c3\n          FROM third_dtab\n            INTO TABLE @FINAL(lt_distinct_result).\n\n    SELECT a AS c1, b AS c2, c AS c3, d AS c4\n            FROM any_dtab\n    INTERSECT ( SELECT d AS c1, e AS c2, f AS c3, g AS c4\n        FROM other_dtab\n    UNION\n    SELECT i AS c1, j AS c2, k AS c3, l AS c4\n               FROM third_dtab )\n               INTO TABLE @FINAL(lt_result).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT a AS c1, b AS c2, c AS c3\n      FROM any_dtab\n        UNION DISTINCT SELECT d AS c1, e AS c2, f AS c3\n                         FROM other_dtab\n                           UNION DISTINCT SELECT g AS c1, h AS c2, i AS c3\n                                            FROM third_dtab\n      INTO TABLE @FINAL(lt_distinct_result).\n\n    SELECT a AS c1, b AS c2, c AS c3, d AS c4\n      FROM any_dtab\n        INTERSECT ( SELECT d AS c1, e AS c2, f AS c3, g AS c4\n                      FROM other_dtab\n                        UNION SELECT i AS c1, j AS c2, k AS c3, l AS c4\n                                FROM third_dtab )\n      INTO TABLE @FINAL(lt_result).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testUnionWithMultipleParentheses",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_2",
+    "NextSelectPos": "SelectUnionNextSelectPos.CONTINUE",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "    SELECT a AS c1, b AS c2, c AS c3, d AS c4\n            FROM any_dtab\n    INTERSECT ( ( SELECT d AS c1, e AS c2, f AS c3, g AS c4\n        FROM other_dtab\n    EXCEPT\n    SELECT h AS c1, i AS c2, j AS c3, k AS c4\n        FROM third_dtab )\n    UNION\n    SELECT l AS c1, m AS c2, n AS c3, o AS c4\n               FROM fourth_dtab )\n               INTO TABLE @FINAL(lt_result).",
+   "exp": "    SELECT a AS c1, b AS c2, c AS c3, d AS c4\n      FROM any_dtab\n      INTERSECT ( ( SELECT d AS c1, e AS c2, f AS c3, g AS c4\n                      FROM other_dtab\n                      EXCEPT SELECT h AS c1, i AS c2, j AS c3, k AS c4\n                               FROM third_dtab )\n                    UNION SELECT l AS c1, m AS c2, n AS c3, o AS c4\n                            FROM fourth_dtab )\n    INTO TABLE @FINAL(lt_result).",
+   "flags": {}
+  },
+  {
+   "name": "testWithCommonTableExpressions",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "    WITH\n      +any_cte AS (\n        SELECT any_dtab~any_id, any_name, other_id, value_from, value_to FROM any_dtab\n          INNER JOIN other_dtab ON other_dtab~any_id = any_dtab~any_id\n             WHERE any_dtab~any_id BETWEEN @from_id AND @to_id ),\n\n      +other_cte AS (\n        SELECT any_id, other_id, SUM( any_value ) AS sum_value\n        FROM third_dtab WHERE any_id BETWEEN @from_id AND @to_id\n       GROUP BY any_id, other_id ),\n\n      +result_cte( name, name2, name3, name4, name5 ) AS (\n        SELECT any_name, c~other_id, value_from, value_to, sum_value\n                 FROM +any_cte AS c\n                   INNER JOIN +other_cte AS s ON  c~any_id = s~any_id\n                                              AND c~other_id = s~other_id )\n\n      SELECT *\n         FROM +result_cte\n              ORDER BY name, name2 INTO TABLE @FINAL(result1).",
+   "exp": "    WITH\n      +any_cte AS (\n        SELECT any_dtab~any_id, any_name, other_id, value_from, value_to\n          FROM any_dtab\n          INNER JOIN other_dtab ON other_dtab~any_id = any_dtab~any_id\n          WHERE any_dtab~any_id BETWEEN @from_id AND @to_id ),\n\n      +other_cte AS (\n        SELECT any_id, other_id, SUM( any_value ) AS sum_value\n          FROM third_dtab\n          WHERE any_id BETWEEN @from_id AND @to_id\n          GROUP BY any_id, other_id ),\n\n      +result_cte( name, name2, name3, name4, name5 ) AS (\n        SELECT any_name, c~other_id, value_from, value_to, sum_value\n          FROM +any_cte AS c\n            INNER JOIN +other_cte AS s ON  c~any_id = s~any_id\n                                       AND c~other_id = s~other_id )\n\n      SELECT * FROM +result_cte\n        ORDER BY name, name2\n        INTO TABLE @FINAL(result1).",
+   "flags": {}
+  },
+  {
+   "name": "testIntoCorrespondingBehindSelectListWithTilde",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0",
+    "MaxSelectListLengthBeforeInto": 80
+   },
+   "src": "  METHOD any_method.\n    SELECT t1~any_col t1~other_col\n      INTO    CORRESPONDING FIELDS OF TABLE lt_any_table\n      FROM any_dtab AS t1\n      INNER JOIN other_dtab AS t2 ON t2~fourth_col = t1~fourth_col\n      FOR ALL ENTRIES IN it_any_table\n      WHERE t1~any_col = it_any_table-any_comp\n        AND t1~other_col = it_any_table-other_comp. \"#EC CI_BUFFJOIN\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT t1~any_col t1~other_col INTO CORRESPONDING FIELDS OF TABLE lt_any_table\n      FROM any_dtab AS t1\n      INNER JOIN other_dtab AS t2 ON t2~fourth_col = t1~fourth_col\n      FOR ALL ENTRIES IN it_any_table\n      WHERE t1~any_col = it_any_table-any_comp\n        AND t1~other_col = it_any_table-other_comp. \"#EC CI_BUFFJOIN\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testWhitespaceAfterIntoLineBreakAfterWhere",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE any_col\n      INTO   lv_any_value\n      FROM any_dtab\n      WHERE\n        other_col = gc_any_constant.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE any_col INTO lv_any_value\n      FROM any_dtab\n      WHERE other_col = gc_any_constant.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCommentAfterIntoAndWhereKeywords",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE any_col\n      INTO \" comment1\n        lv_any_value\n      FROM any_dtab\n      WHERE \" comment2\n        other_col = gc_any_constant.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE any_col\n      INTO \" comment1\n        lv_any_value\n      FROM any_dtab\n      WHERE \" comment2\n        other_col = gc_any_constant.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCommentAfterSelect",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n   SELECT *\n   FROM any_table\n   INTO TABLE @lt_any.\n\n   SELECT * \" comment\n   FROM any_table\n   INTO TABLE @lt_any.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n   SELECT * FROM any_table\n     INTO TABLE @lt_any.\n\n   SELECT * \" comment\n     FROM any_table\n     INTO TABLE @lt_any.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testFromCdsWithParameters",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT *\n   FROM any_cds( iv_any_param   = @lv_any_value,\n                 iv_other_param = @lv_other_value,\n                 iv_third_param = @lv_third_value )\n            ORDER BY any_col, other_col\n     INTO TABLE @DATA(lv_fourth_value).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT *\n      FROM any_cds( iv_any_param   = @lv_any_value,\n                    iv_other_param = @lv_other_value,\n                    iv_third_param = @lv_third_value )\n      ORDER BY any_col, other_col\n      INTO TABLE @DATA(lv_fourth_value).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectAggregate",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT SUM( CAST( dec2 AS DEC( 10,2 ) ) ) AS sum1\n    FROM any_dtab INTO @lv_result.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SUM( CAST( dec2 AS DEC( 10,2 ) ) ) AS sum1\n      FROM any_dtab\n      INTO @lv_result.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDBHintsAndExtendedResult",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    FINAL(lo_extended_result) = NEW cl_osql_extended_result( iv_cached_view = abap_true ).\n\n    SELECT any_col, other_col\n           FROM any_dtab\n            GROUP BY any_col\n         %_HINTS HDB 'RESULT_CACHE' \"#EC CI_HINTS\n             INTO TABLE @FINAL(lt_any_table)\n                  EXTENDED RESULT @lo_extended_result.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    FINAL(lo_extended_result) = NEW cl_osql_extended_result( iv_cached_view = abap_true ).\n\n    SELECT any_col, other_col FROM any_dtab\n      GROUP BY any_col\n      %_HINTS HDB 'RESULT_CACHE' \"#EC CI_HINTS\n      INTO TABLE @FINAL(lt_any_table)\n           EXTENDED RESULT @lo_extended_result.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIntoIndicatorsStructure",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE *\n           FROM any_dtab\n           WHERE any_col = @lv_any_value\n           INTO @lv_other_value INDICATORS NULL STRUCTURE null_ind.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE * FROM any_dtab\n      WHERE any_col = @lv_any_value\n      INTO @lv_other_value INDICATORS NULL STRUCTURE null_ind.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDBFeatureModePragma",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col, COUNT(*) AS other_col\n      FROM any_dtab ##DB_FEATURE_MODE[TABLE_LEN_MAX1]\n     WHERE any_col IN @lt_any_table\n      GROUP BY any_col\n      INTO TABLE @lt_other_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col, COUNT(*) AS other_col\n      FROM any_dtab ##DB_FEATURE_MODE[TABLE_LEN_MAX1]\n      WHERE any_col IN @lt_any_table\n      GROUP BY any_col\n      INTO TABLE @lt_other_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepWithPrivilegedAccess",
+   "config": {
+    "MaxLineLength": 120,
+    "MainQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "SubQueryOneLinerAction": "SelectOneLinerAction.KEEP_EXISTING",
+    "MaxSelectListLengthBeforeFrom": 30,
+    "NewLineForFromWithJoins": true,
+    "SelectClauseIndent": "SelectClauseIndent.PLUS_2",
+    "SelectUnionIndent": "SelectUnionIndent.PLUS_0",
+    "NextSelectPos": "SelectUnionNextSelectPos.BELOW_PLUS_0",
+    "SelectUnionIntoIndent": "SelectUnionIntoIndent.PLUS_0"
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE FROM any_dtab WITH PRIVILEGED ACCESS\n      FIELDS any_col\n      WHERE other_col = @lv_any_value\n      INTO @DATA(lv_target).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE FROM any_dtab WITH PRIVILEGED ACCESS\n      FIELDS any_col\n      WHERE other_col = @lv_any_value\n      INTO @DATA(lv_target).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

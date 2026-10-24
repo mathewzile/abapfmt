@@ -1,0 +1,392 @@
+{
+ "ruleId": "ALIGN_METHODS_FOR_TESTING",
+ "testClass": "AlignMethodsForTestingTest",
+ "defaults": {
+  "ContinueAfterKeyword": "ChangeType.ALWAYS",
+  "ContinueAfterMethodName": "ChangeType.ALWAYS",
+  "AlignAcrossEmptyLines": true,
+  "AlignAcrossCommentLines": true
+ },
+ "cases": [
+  {
+   "name": "testSingleDeclarations",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS very_long_method_name\n    FOR TESTING.\n    METHODS any_method_name\n    FOR TESTING ##PRAGMA.\n    METHODS very_very_long_method_name\n    FOR TESTING.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS very_long_method_name      FOR TESTING.\n    METHODS any_method_name            FOR TESTING ##PRAGMA.\n    METHODS very_very_long_method_name FOR TESTING.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testSingleDeclarationsWithRaising",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name\n    FOR TESTING\n    RAISING cx_error_occurred.\n    METHODS any_method_name\n    FOR TESTING.\n    METHODS extremely_long_method_name\n    FOR TESTING\n    RAISING cx_message cx_error_occurred.\n    METHODS yet_another_long_method_name\n    FOR TESTING.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name      FOR TESTING RAISING cx_error_occurred.\n    METHODS any_method_name              FOR TESTING.\n    METHODS extremely_long_method_name   FOR TESTING RAISING cx_message cx_error_occurred.\n    METHODS yet_another_long_method_name FOR TESTING.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testSingleDeclarationsWithOneRaising",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name\n    FOR TESTING\n    RAISING cx_error_occurred.\n    METHODS any_method_name\n    FOR TESTING.\n    METHODS yet_another_long_method_name\n    FOR TESTING.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name      FOR TESTING RAISING cx_error_occurred.\n    METHODS any_method_name              FOR TESTING.\n    METHODS yet_another_long_method_name FOR TESTING.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testInnerCommentLineAtStart",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name\n    FOR TESTING\n* comment line\n    RAISING cx_error_occurred.\n    METHODS any_method_name\n    FOR TESTING.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name\n    FOR TESTING\n* comment line\n    RAISING cx_error_occurred.\n    METHODS any_method_name\n    FOR TESTING.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testInnerCommentLineAfterStart",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_method_name\n    FOR TESTING.\n    METHODS rather_long_method_name\n    FOR TESTING\n    \" comment line\n    RAISING cx_error_occurred.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_method_name\n    FOR TESTING.\n    METHODS rather_long_method_name\n    FOR TESTING\n    \" comment line\n    RAISING cx_error_occurred.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testSingleDeclarationsWithComment",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name\n    FOR TESTING.    \" comment 1\n    METHODS any_method_name\n    FOR TESTING. \" comment 2\n    METHODS extremely_long_method_name\n    FOR TESTING.\n    METHODS yet_another_long_method_name\n    FOR TESTING.             \" comment 3\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name      FOR TESTING. \" comment 1\n    METHODS any_method_name              FOR TESTING. \" comment 2\n    METHODS extremely_long_method_name   FOR TESTING.\n    METHODS yet_another_long_method_name FOR TESTING. \" comment 3\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDeclarationChain",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      rather_long_method_name\n        FOR TESTING,\n      any_method_name\n        FOR TESTING,\n      extremely_long_method_name\n        FOR TESTING.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: rather_long_method_name    FOR TESTING,\n             any_method_name            FOR TESTING,\n             extremely_long_method_name FOR TESTING.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDeclarationChainWithComment",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      rather_long_method_name\n        FOR TESTING,\n      \" comment\n      \" more comment\n      any_method_name\n        FOR TESTING,\n      extremely_long_method_name\n        FOR TESTING.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: rather_long_method_name    FOR TESTING,\n      \" comment\n      \" more comment\n             any_method_name            FOR TESTING,\n             extremely_long_method_name FOR TESTING.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAcrossEmptyLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name\n    FOR TESTING.\n    METHODS extremely_long_method_name\n    FOR TESTING.\n\n\n    METHODS any_method_name\n    FOR TESTING.\n    METHODS other_method_name\n    FOR TESTING.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name    FOR TESTING.\n    METHODS extremely_long_method_name FOR TESTING.\n\n\n    METHODS any_method_name            FOR TESTING.\n    METHODS other_method_name          FOR TESTING.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNotAcrossEmptyLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name\n    FOR TESTING.\n    METHODS extremely_long_method_name\n    FOR TESTING.\n\n    METHODS any_method_name\n    FOR TESTING.\n    METHODS other_method_name\n    FOR TESTING.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name    FOR TESTING.\n    METHODS extremely_long_method_name FOR TESTING.\n\n    METHODS any_method_name   FOR TESTING.\n    METHODS other_method_name FOR TESTING.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAcrossCommentLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name\n    FOR TESTING.\n    METHODS extremely_long_method_name\n    FOR TESTING.\n* comment\n* more comment\n    METHODS any_method_name\n    FOR TESTING.\n    METHODS other_method_name\n    FOR TESTING.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name    FOR TESTING.\n    METHODS extremely_long_method_name FOR TESTING.\n* comment\n* more comment\n    METHODS any_method_name            FOR TESTING.\n    METHODS other_method_name          FOR TESTING.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNotAcrossCommentLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name\n    FOR TESTING.\n    METHODS extremely_long_method_name\n    FOR TESTING.\n* comment\n    METHODS any_method_name\n    FOR TESTING.\n    METHODS other_method_name\n    FOR TESTING.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS rather_long_method_name    FOR TESTING.\n    METHODS extremely_long_method_name FOR TESTING.\n* comment\n    METHODS any_method_name   FOR TESTING.\n    METHODS other_method_name FOR TESTING.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testChainWithSomeForTestingMethods",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      setup,\n      test_method_a\n      FOR TESTING RAISING cx_static_check,\n      helper_method,\n      test_b\n      FOR TESTING RAISING cx_static_check.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: setup,\n             test_method_a FOR TESTING RAISING cx_static_check,\n             helper_method,\n             test_b        FOR TESTING RAISING cx_static_check.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testChainWithImportingAndForTestingMethods",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      any_method IMPORTING !iv_value TYPE i,\n      test_method_a\n      FOR TESTING RAISING cx_static_check,\n      test_b\n      FOR TESTING RAISING cx_static_check.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      any_method IMPORTING !iv_value TYPE i,\n      test_method_a\n      FOR TESTING RAISING cx_static_check,\n      test_b\n      FOR TESTING RAISING cx_static_check.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAlwaysContinue",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name\n  FOR TESTING RAISING cx_message.\n\n  METHODS\n  yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "exp": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name FOR TESTING RAISING cx_message.\n\n  METHODS yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "flags": {}
+  },
+  {
+   "name": "testKeepContinueAfterKeyword",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name\n  FOR TESTING RAISING cx_message.\n\n  METHODS\n  yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "exp": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name FOR TESTING RAISING cx_message.\n\n  METHODS\n    yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "flags": {}
+  },
+  {
+   "name": "testNeverContinueAfterKeyword",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.NEVER",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name\n  FOR TESTING RAISING cx_message.\n\n  METHODS\n  yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "exp": "  METHODS\n    any_method_name FOR TESTING.\n\n  METHODS\n    other_method_name FOR TESTING RAISING cx_message.\n\n  METHODS\n    yet_another_method_name FOR TESTING.\n\n  METHODS:\n    rather_long_method_name    FOR TESTING,\n    any_method_name            FOR TESTING RAISING cx_message,\n    extremely_long_method_name FOR TESTING.",
+   "flags": {}
+  },
+  {
+   "name": "testKeepContinueAfterMethodName",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name\n  FOR TESTING RAISING cx_message.\n\n  METHODS\n  yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "exp": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name\n    FOR TESTING RAISING cx_message.\n\n  METHODS yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "flags": {}
+  },
+  {
+   "name": "testNeverContinueAfterMethodName",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.NEVER",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name\n  FOR TESTING RAISING cx_message.\n\n  METHODS\n  yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "exp": "  METHODS any_method_name\n    FOR TESTING.\n\n  METHODS other_method_name\n    FOR TESTING RAISING cx_message.\n\n  METHODS yet_another_method_name\n    FOR TESTING.\n\n  METHODS: rather_long_method_name\n             FOR TESTING,\n           any_method_name\n             FOR TESTING RAISING cx_message,\n           extremely_long_method_name\n             FOR TESTING.",
+   "flags": {}
+  },
+  {
+   "name": "testKeepContinueAsIs",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name\n  FOR TESTING RAISING cx_message.\n\n  METHODS\n  yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "exp": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name\n    FOR TESTING RAISING cx_message.\n\n  METHODS\n    yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "flags": {}
+  },
+  {
+   "name": "testNeverContinue",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.NEVER",
+    "ContinueAfterMethodName": "ChangeType.NEVER",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS any_method_name FOR TESTING.\n\n  METHODS other_method_name\n  FOR TESTING RAISING cx_message.\n\n  METHODS\n  yet_another_method_name FOR TESTING.\n\n  METHODS: rather_long_method_name    FOR TESTING,\n           any_method_name            FOR TESTING RAISING cx_message,\n           extremely_long_method_name FOR TESTING.",
+   "exp": "  METHODS\n    any_method_name\n      FOR TESTING.\n\n  METHODS\n    other_method_name\n      FOR TESTING RAISING cx_message.\n\n  METHODS\n    yet_another_method_name\n      FOR TESTING.\n\n  METHODS:\n    rather_long_method_name\n      FOR TESTING,\n    any_method_name\n      FOR TESTING RAISING cx_message,\n    extremely_long_method_name\n      FOR TESTING.",
+   "flags": {}
+  },
+  {
+   "name": "testSkipNonTestingMethods",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS setup.\n\n  METHODS: any_method\n    IMPORTING iv_param TYPE i.\n\n  METHODS other_method REDEFINITION.",
+   "exp": "  METHODS setup.\n\n  METHODS: any_method\n    IMPORTING iv_param TYPE i.\n\n  METHODS other_method REDEFINITION.",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceAfterLineBreak",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "METHODS any_method FOR TESTING\nRAISING cx_any.\nMETHODS other_method.",
+   "exp": "METHODS any_method FOR TESTING RAISING cx_any.\nMETHODS other_method.",
+   "flags": {}
+  },
+  {
+   "name": "testAbstractMethods",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n  METHODS test_setup ABSTRACT\n    FOR TESTING.\n  METHODS test_functionality\n   ABSTRACT\n   FOR TESTING.\n  METHODS test_display\n     ABSTRACT FOR TESTING.\n\n  \" comment on second group of test methods\n  METHODS any_test_method_name ABSTRACT\n    FOR TESTING RAISING cx_static_check.\n  METHODS other_test_method_name\n    FOR TESTING RAISING cx_static_check.\n\n  METHODS test_invalid_input\n     ABSTRACT FOR TESTING.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  METHODS test_setup             ABSTRACT FOR TESTING.\n  METHODS test_functionality     ABSTRACT FOR TESTING.\n  METHODS test_display           ABSTRACT FOR TESTING.\n\n  \" comment on second group of test methods\n  METHODS any_test_method_name   ABSTRACT FOR TESTING RAISING cx_static_check.\n  METHODS other_test_method_name          FOR TESTING RAISING cx_static_check.\n\n  METHODS test_invalid_input     ABSTRACT FOR TESTING.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAbstractMethodsChain",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n  METHODS:\n    first_test_method ABSTRACT\n      FOR TESTING,\n    second_test_method\n       ABSTRACT FOR TESTING RAISING cx_message,\n    last_test_method\n ABSTRACT\n FOR TESTING.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  METHODS: first_test_method  ABSTRACT FOR TESTING,\n           second_test_method ABSTRACT FOR TESTING RAISING cx_message,\n           last_test_method   ABSTRACT FOR TESTING.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMultiplePeriods",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_method FOR TESTING..\n* comment line\n    METHODS other_method FOR TESTING....\n    METHODS third_method_with_long_name FOR TESTING..\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_method                  FOR TESTING..\n* comment line\n    METHODS other_method                FOR TESTING....\n    METHODS third_method_with_long_name FOR TESTING..\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  }
+ ]
+}

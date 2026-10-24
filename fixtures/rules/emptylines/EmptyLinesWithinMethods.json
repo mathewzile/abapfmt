@@ -1,0 +1,256 @@
+{
+ "ruleId": "EMPTY_LINES_WITHIN_METHODS",
+ "testClass": "EmptyLinesWithinMethodsTest",
+ "defaults": {
+  "MaxEmptyLinesAtMethodStart": 0,
+  "MaxEmptyLinesWithinMethods": 1,
+  "MaxEmptyLinesAtMethodEnd": 0,
+  "EmptyLineAboveFirstExecutable": true
+ },
+ "cases": [
+  {
+   "name": "testRemoveEmptyLinesAtMethodStart",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines.\n\n    \" nothing happens here\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines.\n    \" nothing happens here\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testKeepEmptyLinesAtMethodStart",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 2,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines.\n\n\n    \" nothing happens here\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines.\n\n\n    \" nothing happens here\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testRemoveEmptyLinesAtMethodEnd",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines.\n    \" nothing happens here\n\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines.\n    \" nothing happens here\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testKeepEmptyLinesAtMethodEnd",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 2,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines.\n    \" nothing happens here\n\n\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines.\n    \" nothing happens here\n\n\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testEmptyLinesBetweenCommands",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines_within_methods.\n    do_nothing( ).\n\n\n\n    hesitate( ).\n\n\n    procrastinate( ).\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines_within_methods.\n    do_nothing( ).\n\n    hesitate( ).\n\n    procrastinate( ).\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testMax2EmptyLinesBetweenCommands",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 2,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines_within_methods.\n    do_nothing( ).\n\n\n\n    hesitate( ).\n\n\n    procrastinate( ).\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines_within_methods.\n    do_nothing( ).\n\n\n    hesitate( ).\n\n\n    procrastinate( ).\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testEmptyLineAboveFirstExecutable",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines_within_methods.\n    DATA lv_any   TYPE i.\n    DATA lv_other TYPE i.\n    do_something( ).\n    do_something_more( ).\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines_within_methods.\n    DATA lv_any   TYPE i.\n    DATA lv_other TYPE i.\n\n    do_something( ).\n    do_something_more( ).\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testEmptyLineAboveFirstExecutableOnly",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines_within_methods.\n    DATA lv_any   TYPE i.\n    do_something( ).\n    DATA lv_other TYPE i.\n    do_something_more( ).\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines_within_methods.\n    DATA lv_any   TYPE i.\n\n    do_something( ).\n    DATA lv_other TYPE i.\n    do_something_more( ).\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testEmptyLineAboveInlineDeclaration",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines_within_methods.\n    DATA lv_any   TYPE i.\n    DATA(lo_util) = cl_factory=>get( )->get_utility( ).\n    DATA lv_other TYPE string.\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines_within_methods.\n    DATA lv_any   TYPE i.\n\n    DATA(lo_util) = cl_factory=>get( )->get_utility( ).\n    DATA lv_other TYPE string.\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testEmptyLineAboveFirstExecutableWithComments",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines_within_methods.\n    TYPES ty_any TYPE int8.\n    \" empty line should be inserted above the comment lines\n    \" that belong to the first executable statement\n    rv_result = 1.\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines_within_methods.\n    TYPES ty_any TYPE int8.\n\n    \" empty line should be inserted above the comment lines\n    \" that belong to the first executable statement\n    rv_result = 1.\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testNoEmptyLineAboveEndMethod",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines_within_methods.\n    DATA lv_any TYPE i.\n    FIELD-SYMBOLS <ls_any> TYPE any_type.\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines_within_methods.\n    DATA lv_any TYPE i.\n    FIELD-SYMBOLS <ls_any> TYPE any_type.\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testNoLineAboveFirstExecutable",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": false
+   },
+   "src": "  METHOD empty_lines_within_methods.\n    DATA lv_any TYPE i.\n    do_nothing( ).\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines_within_methods.\n    DATA lv_any TYPE i.\n    do_nothing( ).\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testNoLineAboveSecondExecutable",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD empty_lines_within_methods.\n    first_executable( ).\n    DATA lv_any TYPE i.\n    second_executable( ).\n  ENDMETHOD.",
+   "exp": "  METHOD empty_lines_within_methods.\n    first_executable( ).\n    DATA lv_any TYPE i.\n    second_executable( ).\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testEmptyLinesInEventBlocks",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "REPORT zreport.\nINITIALIZATION.\n\n\n  \" code\n\n\n  \" code\n\n\nLOAD-OF-PROGRAM.\n\n  \" code\n\n\n  \" code\n\nAT SELECTION-SCREEN.\n  \" code\n\n\n  \" code\nSTART-OF-SELECTION.\n  \" code\n\n\n  \" code\nFORM test_form.\n\n  \" code\n\n\n  \" code\n\nENDFORM.",
+   "exp": "REPORT zreport.\nINITIALIZATION.\n  \" code\n\n  \" code\n\n\nLOAD-OF-PROGRAM.\n  \" code\n\n  \" code\n\nAT SELECTION-SCREEN.\n  \" code\n\n  \" code\nSTART-OF-SELECTION.\n  \" code\n\n  \" code\nFORM test_form.\n  \" code\n\n  \" code\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testIncludeType",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "    TYPES: BEGIN OF ty_s_struc,\n             comp TYPE i.\n             INCLUDE TYPE ty_s_include.\n    TYPES  END OF ty_s_struc.\n    rv_result = 1.",
+   "exp": "    TYPES: BEGIN OF ty_s_struc,\n             comp TYPE i.\n             INCLUDE TYPE ty_s_include.\n    TYPES  END OF ty_s_struc.\n\n    rv_result = 1.",
+   "flags": {}
+  },
+  {
+   "name": "testFunctionModuleWithParametersRemoveLine",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "FUNCTION any_function\n  IMPORTING\n    VALUE(im_p1) TYPE i\n  EXPORTING\n    ex_p1 TYPE i.\n\n\n\n\n  ex_p1 = 1.\nENDFUNCTION.",
+   "exp": "FUNCTION any_function\n  IMPORTING\n    VALUE(im_p1) TYPE i\n  EXPORTING\n    ex_p1 TYPE i.\n\n\n\n  ex_p1 = 1.\nENDFUNCTION.",
+   "flags": {}
+  },
+  {
+   "name": "testFunctionModuleWithParametersKeepLines",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 1,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "FUNCTION any_function\n  IMPORTING\n    VALUE(im_p1) TYPE i\n  EXPORTING\n    ex_p1 TYPE i.\n\n\n\n\n  ex_p1 = 1.\nENDFUNCTION.",
+   "exp": "FUNCTION any_function\n  IMPORTING\n    VALUE(im_p1) TYPE i\n  EXPORTING\n    ex_p1 TYPE i.\n\n\n\n\n  ex_p1 = 1.\nENDFUNCTION.",
+   "flags": {}
+  },
+  {
+   "name": "testFunctionModuleWithoutParametersRemoveLine",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "FUNCTION any_function\n \" You can use the template 'functionModuleParameter' to add here the signature!\n.\n\n\n  \" any comment\nENDFUNCTION.",
+   "exp": "FUNCTION any_function\n \" You can use the template 'functionModuleParameter' to add here the signature!\n.\n\n  \" any comment\nENDFUNCTION.",
+   "flags": {}
+  },
+  {
+   "name": "testFunctionModuleWithoutParametersKeepLines",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 1,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "FUNCTION any_function\n \" You can use the template 'functionModuleParameter' to add here the signature!\n.\n\n\n  \" any comment\nENDFUNCTION.",
+   "exp": "FUNCTION any_function\n \" You can use the template 'functionModuleParameter' to add here the signature!\n.\n\n\n  \" any comment\nENDFUNCTION.",
+   "flags": {}
+  },
+  {
+   "name": "testEmptyLinesAfterClassWithoutMethodsKept",
+   "config": {
+    "MaxEmptyLinesAtMethodStart": 0,
+    "MaxEmptyLinesWithinMethods": 1,
+    "MaxEmptyLinesAtMethodEnd": 0,
+    "EmptyLineAboveFirstExecutable": true
+   },
+   "src": "  METHOD any_method.\nCLASS any_class IMPLEMENTATION.\nENDCLASS.\n\n\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\nCLASS any_class IMPLEMENTATION.\nENDCLASS.\n\n\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

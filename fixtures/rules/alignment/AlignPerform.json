@@ -1,0 +1,232 @@
+{
+ "ruleId": "ALIGN_PERFORM",
+ "testClass": "AlignPerformTest",
+ "defaults": {
+  "MaxLineLength": 120,
+  "ParamCountAfterPerform": 3,
+  "BreakAfterAdditions": false,
+  "AlignWithFormName": false,
+  "ContinueAfterParamGroupKeyword": true,
+  "ParamCountToCondense": 16
+ },
+ "cases": [
+  {
+   "name": "testContinueAfterPerform",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 16
+   },
+   "src": "  PERFORM third_subr IN PROGRAM any_program TABLES lt_any_table lt_other_table\n          USING lv_other_value.\n\n  PERFORM\n    subr_name(prog_name)\n    IF FOUND\n    TABLES lt_any USING\n    lv_any_value CHANGING lv_other_value.",
+   "exp": "  PERFORM third_subr IN PROGRAM any_program TABLES lt_any_table\n                                                   lt_other_table\n                                            USING  lv_other_value.\n\n  PERFORM subr_name(prog_name) IF FOUND TABLES   lt_any\n                                        USING    lv_any_value\n                                        CHANGING lv_other_value.",
+   "flags": {}
+  },
+  {
+   "name": "testBreakAfterPerform",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 2,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 16
+   },
+   "src": "  PERFORM third_subr IN PROGRAM any_program TABLES lt_any_table lt_other_table\n          USING lv_other_value.\n\n  PERFORM\n    subr_name(prog_name)\n    IF FOUND\n    TABLES lt_any USING\n    lv_any_value CHANGING lv_other_value.",
+   "exp": "  PERFORM third_subr IN PROGRAM any_program\n    TABLES lt_any_table\n           lt_other_table\n    USING  lv_other_value.\n\n  PERFORM subr_name(prog_name) IF FOUND\n    TABLES   lt_any\n    USING    lv_any_value\n    CHANGING lv_other_value.",
+   "flags": {}
+  },
+  {
+   "name": "testBreafAfterAdditions",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": true,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 16
+   },
+   "src": "  PERFORM third_subr IN PROGRAM any_program TABLES lt_any_table lt_other_table\n          USING lv_other_value.\n\n  PERFORM third_subr TABLES lt_any_table lt_other_table\n          USING lv_other_value.",
+   "exp": "  PERFORM third_subr IN PROGRAM any_program\n    TABLES lt_any_table\n           lt_other_table\n    USING  lv_other_value.\n\n  PERFORM third_subr TABLES lt_any_table\n                            lt_other_table\n                     USING  lv_other_value.",
+   "flags": {}
+  },
+  {
+   "name": "testMoveIfFoundUp",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 16
+   },
+   "src": "  PERFORM (lv_subr_name) IN PROGRAM other_program\n  TABLES lr_table_ref->*\n    <lt_other_table>\n    USING if_any_interface=>co_any_constant\n      lo_any_instance->mv_any_attribute\n      CHANGING <ls_any_structure>-any_component IF FOUND.",
+   "exp": "  PERFORM (lv_subr_name) IN PROGRAM other_program IF FOUND\n    TABLES   lr_table_ref->*\n             <lt_other_table>\n    USING    if_any_interface=>co_any_constant\n             lo_any_instance->mv_any_attribute\n    CHANGING <ls_any_structure>-any_component.",
+   "flags": {}
+  },
+  {
+   "name": "testAlignWithFormName",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": true,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 16
+   },
+   "src": "  PERFORM any_subroutine_with_a_long_name USING lv_any_value 42 'ABCDEFGHIJKLMN' gc_any_constant '3.14159265'.\n\n  PERFORM (lv_subr_name) IN PROGRAM other_program\n  TABLES lr_table_ref->*\n    <lt_other_table>\n    USING if_any_interface=>co_any_constant\n      lo_any_instance->mv_any_attribute\n      CHANGING <ls_any_structure>-any_component IF FOUND.",
+   "exp": "  PERFORM any_subroutine_with_a_long_name\n          USING lv_any_value\n                42\n                'ABCDEFGHIJKLMN'\n                gc_any_constant\n                '3.14159265'.\n\n  PERFORM (lv_subr_name) IN PROGRAM other_program IF FOUND\n          TABLES   lr_table_ref->*\n                   <lt_other_table>\n          USING    if_any_interface=>co_any_constant\n                   lo_any_instance->mv_any_attribute\n          CHANGING <ls_any_structure>-any_component.",
+   "flags": {}
+  },
+  {
+   "name": "testBreakAfterTablesUsingAndChanging",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": false,
+    "ParamCountToCondense": 16
+   },
+   "src": "  PERFORM third_subr IN PROGRAM any_program TABLES lt_any_table lt_other_table\n          USING lv_other_value.\n\n  PERFORM (lv_subr_name) IN PROGRAM other_program\n  TABLES lr_table_ref->*\n    <lt_other_table>\n    USING if_any_interface=>co_any_constant\n      lo_any_instance->mv_any_attribute\n      CHANGING <ls_any_structure>-any_component IF FOUND.",
+   "exp": "  PERFORM third_subr IN PROGRAM any_program TABLES\n                                              lt_any_table\n                                              lt_other_table\n                                            USING\n                                              lv_other_value.\n\n  PERFORM (lv_subr_name) IN PROGRAM other_program IF FOUND\n    TABLES\n      lr_table_ref->*\n      <lt_other_table>\n    USING\n      if_any_interface=>co_any_constant\n      lo_any_instance->mv_any_attribute\n    CHANGING\n      <ls_any_structure>-any_component.",
+   "flags": {}
+  },
+  {
+   "name": "testTableWithBrackets",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 3
+   },
+   "src": "  PERFORM other_subr\n    TABLES lt_any\n    USING lt_any_table[] lv_other_table[].",
+   "exp": "  PERFORM other_subr TABLES lt_any\n                     USING  lt_any_table[] lv_other_table[].",
+   "flags": {}
+  },
+  {
+   "name": "testPerformOf",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 16
+   },
+   "src": "  PERFORM lv_subr_index OF form_one form_two form_three form_four\n   form_five form_six form_seven.",
+   "exp": "  PERFORM lv_subr_index OF form_one\n                           form_two\n                           form_three\n                           form_four\n                           form_five\n                           form_six\n                           form_seven.",
+   "flags": {}
+  },
+  {
+   "name": "testCondenseParameterLists",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 7
+   },
+   "src": "  PERFORM (lv_subr_name)  IN PROGRAM (lv_program_name) IF  FOUND\n    USING 100  200   300 400   500 600 700 800 \" comment\n       'abcde' 'fghij' 'klmno' 'pqrst'  'uwvxy'\n      gc_any_constant gc_other_constant\n   gc_third_constant gc_fourth_constant\n    CHANGING lv_any_value lv_other_value.\n\n  PERFORM lv_subr_index OF form_one form_two form_three form_four\n   form_five form_six form_seven.",
+   "exp": "  PERFORM (lv_subr_name) IN PROGRAM (lv_program_name) IF FOUND\n    USING    100 200 300 400 500 600 700 800 \" comment\n             'abcde' 'fghij' 'klmno' 'pqrst' 'uwvxy' gc_any_constant gc_other_constant gc_third_constant\n             gc_fourth_constant\n    CHANGING lv_any_value lv_other_value.\n\n  PERFORM lv_subr_index OF form_one form_two form_three form_four form_five form_six form_seven.",
+   "flags": {}
+  },
+  {
+   "name": "testCondenseWithLowMaximumLineLength",
+   "config": {
+    "MaxLineLength": 80,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 7
+   },
+   "src": "  PERFORM (lv_subr_name)  IN PROGRAM (lv_program_name) IF  FOUND\n    USING 100  200   300 400   500 600 700 800 \" comment\n       'abcde' 'fghij' 'klmno' 'pqrst'  'uwvxy'\n      gc_any_constant gc_other_constant\n   gc_third_constant gc_fourth_constant\n    CHANGING lv_any_value lv_other_value.\n\n  PERFORM lv_subr_index OF form_one form_two form_three form_four\n   form_five form_six form_seven.",
+   "exp": "  PERFORM (lv_subr_name) IN PROGRAM (lv_program_name) IF FOUND\n    USING    100 200 300 400 500 600 700 800 \" comment\n             'abcde' 'fghij' 'klmno' 'pqrst' 'uwvxy' gc_any_constant\n             gc_other_constant gc_third_constant gc_fourth_constant\n    CHANGING lv_any_value lv_other_value.\n\n  PERFORM lv_subr_index OF form_one form_two form_three form_four form_five\n                           form_six form_seven.",
+   "flags": {}
+  },
+  {
+   "name": "testCondenseAlreadyDone",
+   "config": {
+    "MaxLineLength": 80,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 7
+   },
+   "src": "  PERFORM (lv_subr_name) IN PROGRAM (lv_program_name) IF FOUND\n    USING    100 200 300 400 500 600 700 800 \" comment\n             'abcde' 'fghij' 'klmno' 'pqrst' 'uwvxy' gc_any_constant\n             gc_other_constant gc_third_constant gc_fourth_constant\n    CHANGING lv_any_value lv_other_value.\n\n  PERFORM lv_subr_index OF form_one form_two form_three form_four form_five\n                           form_six form_seven.",
+   "exp": "  PERFORM (lv_subr_name) IN PROGRAM (lv_program_name) IF FOUND\n    USING    100 200 300 400 500 600 700 800 \" comment\n             'abcde' 'fghij' 'klmno' 'pqrst' 'uwvxy' gc_any_constant\n             gc_other_constant gc_third_constant gc_fourth_constant\n    CHANGING lv_any_value lv_other_value.\n\n  PERFORM lv_subr_index OF form_one form_two form_three form_four form_five\n                           form_six form_seven.",
+   "flags": {}
+  },
+  {
+   "name": "testPerformInSameProgram",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 16
+   },
+   "src": "FORM any_form.\n  PERFORM   (lv_subr_name)  IN  PROGRAM.\nENDFORM.",
+   "exp": "FORM any_form.\n  PERFORM (lv_subr_name) IN PROGRAM.\nENDFORM.",
+   "flags": {
+    "wrappers": [
+     "Form"
+    ]
+   }
+  },
+  {
+   "name": "testPerformOnSkipped",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 16
+   },
+   "src": "  PERFORM lv_subr_name ON COMMIT.\n  PERFORM lv_subr_name ON COMMIT LEVEL idx.\n  PERFORM lv_subr_name ON ROLLBACK.",
+   "exp": "  PERFORM lv_subr_name ON COMMIT.\n  PERFORM lv_subr_name ON COMMIT LEVEL idx.\n  PERFORM lv_subr_name ON ROLLBACK.",
+   "flags": {}
+  },
+  {
+   "name": "testChainSkipped",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 16
+   },
+   "src": "  PERFORM: lv_subr_name USING lv_any_value,\n           lv_other_subr_nume IN PROGRAM any_program\n    USING 1 '3.1415' lv_other_value.",
+   "exp": "  PERFORM: lv_subr_name USING lv_any_value,\n           lv_other_subr_nume IN PROGRAM any_program\n    USING 1 '3.1415' lv_other_value.",
+   "flags": {}
+  },
+  {
+   "name": "testComments",
+   "config": {
+    "MaxLineLength": 120,
+    "ParamCountAfterPerform": 3,
+    "BreakAfterAdditions": false,
+    "AlignWithFormName": false,
+    "ContinueAfterParamGroupKeyword": true,
+    "ParamCountToCondense": 16
+   },
+   "src": "FORM any_form.\n  PERFORM \" comment1\n  third_subr IN \" comment2\n  PROGRAM any_program \" comment3\n    TABLES \" comment4\n    lt_any_table \" comment5\n    lt_other_table \" comment 6\n    USING lv_other_value \" comment7\n    .\nENDFORM.",
+   "exp": "FORM any_form.\n  PERFORM \" comment1\n  third_subr IN \" comment2\n  PROGRAM any_program \" comment3\n                      TABLES \" comment4\n                             lt_any_table \" comment5\n                             lt_other_table \" comment 6\n                      USING  lv_other_value \" comment7\n    .\nENDFORM.",
+   "flags": {
+    "wrappers": [
+     "Form"
+    ]
+   }
+  }
+ ]
+}

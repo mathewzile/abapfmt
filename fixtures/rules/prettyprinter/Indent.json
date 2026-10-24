@@ -1,0 +1,532 @@
+{
+ "ruleId": "INSET",
+ "testClass": "IndentTest",
+ "defaults": {
+  "ExecuteOnClassDefinitionSections": true,
+  "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+  "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+  "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+ },
+ "cases": [
+  {
+   "name": "testClassMethodDoLoopIf",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "CLASS tests IMPLEMENTATION.\nMETHOD pretty_print_indent.\nDO 4 TIMES.\nLOOP AT its_table ASSIGNING FIELD-SYMBOL(<ls_row>).\nIF <ls_row>-ignore = abap_true.\n\" comment\nCONTINUE.\nENDIF.\nENDLOOP.\nENDDO.\nENDMETHOD.\nENDCLASS.",
+   "exp": "CLASS tests IMPLEMENTATION.\n  METHOD pretty_print_indent.\n    DO 4 TIMES.\n      LOOP AT its_table ASSIGNING FIELD-SYMBOL(<ls_row>).\n        IF <ls_row>-ignore = abap_true.\n          \" comment\n          CONTINUE.\n        ENDIF.\n      ENDLOOP.\n    ENDDO.\n  ENDMETHOD.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testSelectIntoTable",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    SELECT * FROM dtab INTO TABLE @DATA(lt_item).\n\n    SELECT * INTO CORRESPONDING FIELDS OF TABLE lt_item\n      FROM dtab WHERE item_id = 'ABC'.\n\n    SELECT FROM dtab FIELDS field_a, field_b INTO TABLE @mt_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT * FROM dtab INTO TABLE @DATA(lt_item).\n\n    SELECT * INTO CORRESPONDING FIELDS OF TABLE lt_item\n      FROM dtab WHERE item_id = 'ABC'.\n\n    SELECT FROM dtab FIELDS field_a, field_b INTO TABLE @mt_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectAppendingTable",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    SELECT * FROM dtab APPENDING TABLE gt_table\n      FOR ALL ENTRIES IN lt_item\n      WHERE field = lt_item-component.\n\n    SELECT FROM dtab\n      FIELDS field_a, field_b\n      APPENDING CORRESPONDING FIELDS OF TABLE @mts_buffer.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT * FROM dtab APPENDING TABLE gt_table\n      FOR ALL ENTRIES IN lt_item\n      WHERE field = lt_item-component.\n\n    SELECT FROM dtab\n      FIELDS field_a, field_b\n      APPENDING CORRESPONDING FIELDS OF TABLE @mts_buffer.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectSingle",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE field_name INTO lv_value\n      FROM dtab\n      WHERE other_field = gc_any_value.\n\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE field_name INTO lv_value\n      FROM dtab\n      WHERE other_field = gc_any_value.\n\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectAggregateFunctionsOnly",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    SELECT MAX( field_a ) MAX( field_b )\n      INTO ( gv_result_a, lv_result_b )\n      FROM dtab\n      WHERE any_field NE space.\n\n    SELECT MIN( aa ) AS a, MAX( bb ) AS b, SUM( cc ) AS c, \" comment\n           STDDEV( ee ) AS e, CORR_SPEARMAN( ff, gg ) AS f\n      FROM any_table\n      INTO CORRESPONDING FIELDS OF wa_test\n      WHERE kdauf NE space.\n\n    SELECT COUNT(*) INTO rv_value\n      FROM dtab2\n      WHERE bukrs EQ mo_instance->mv_bukrs.\n\n    SELECT COUNT( * )\n      FROM dtab\n      INTO rv_result\n      WHERE bukrs EQ mo_instance->mv_bukrs.\n\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT MAX( field_a ) MAX( field_b )\n      INTO ( gv_result_a, lv_result_b )\n      FROM dtab\n      WHERE any_field NE space.\n\n    SELECT MIN( aa ) AS a, MAX( bb ) AS b, SUM( cc ) AS c, \" comment\n           STDDEV( ee ) AS e, CORR_SPEARMAN( ff, gg ) AS f\n      FROM any_table\n      INTO CORRESPONDING FIELDS OF wa_test\n      WHERE kdauf NE space.\n\n    SELECT COUNT(*) INTO rv_value\n      FROM dtab2\n      WHERE bukrs EQ mo_instance->mv_bukrs.\n\n    SELECT COUNT( * )\n      FROM dtab\n      INTO rv_result\n      WHERE bukrs EQ mo_instance->mv_bukrs.\n\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectWithEndselect",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    SELECT DISTINCT a b c FROM ztest_table INTO CORRESPONDING FIELDS OF wa_test.\n    SELECT * INTO wa_test FROM dtab WHERE item_id = 'ITEM_1'.\n\n    SELECT FROM dtab\n      FIELDS field_a, field_b\n      INTO @wa_test3.\n\n    SELECT MIN( aa ), MAX( b ) AS bb, SUM( cc ), \" comment\n           STDDEV( ee ), ff\n      FROM my_table\n      INTO CORRESPONDING FIELDS OF wa_test\n      WHERE kdauf NE space.\n\n    \" inner statement.\n    ENDSELECT.\n    ENDSELECT.\n    ENDSELECT.\n    ENDSELECT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT DISTINCT a b c FROM ztest_table INTO CORRESPONDING FIELDS OF wa_test.\n      SELECT * INTO wa_test FROM dtab WHERE item_id = 'ITEM_1'.\n\n        SELECT FROM dtab\n          FIELDS field_a, field_b\n          INTO @wa_test3.\n\n          SELECT MIN( aa ), MAX( b ) AS bb, SUM( cc ), \" comment\n                 STDDEV( ee ), ff\n            FROM my_table\n            INTO CORRESPONDING FIELDS OF wa_test\n            WHERE kdauf NE space.\n\n            \" inner statement.\n          ENDSELECT.\n        ENDSELECT.\n      ENDSELECT.\n    ENDSELECT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testOnEndOfTask",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    DO.\n    CALL FUNCTION 'FUNCTION_NAME'\n         STARTING NEW TASK name\n         DESTINATION mc_rfc_destination\n         CALLING on_end_of_rfc ON END OF TASK.\n    ENDDO.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DO.\n      CALL FUNCTION 'FUNCTION_NAME'\n           STARTING NEW TASK name\n           DESTINATION mc_rfc_destination\n           CALLING on_end_of_rfc ON END OF TASK.\n    ENDDO.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testClassDefinition",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "CLASS cl_any_class DEFINITION PUBLIC CREATE PROTECTED.\nPUBLIC SECTION.\nINTERFACES if_any_interface.\nPROTECTED SECTION.\nDATA mo_item TYPE REF TO if_item.\nPRIVATE SECTION.\nDATA mo_other_item TYPE REF TO if_other_interface.\nCLASS-METHODS create\n  RETURNING\n    VALUE(ro_instance) TYPE REF TO if_third_interface.\nENDCLASS.",
+   "exp": "CLASS cl_any_class DEFINITION PUBLIC CREATE PROTECTED.\n  PUBLIC SECTION.\n    INTERFACES if_any_interface.\n  PROTECTED SECTION.\n    DATA mo_item TYPE REF TO if_item.\n  PRIVATE SECTION.\n    DATA mo_other_item TYPE REF TO if_other_interface.\n    CLASS-METHODS create\n      RETURNING\n        VALUE(ro_instance) TYPE REF TO if_third_interface.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testSkipClassDefinition",
+   "config": {
+    "ExecuteOnClassDefinitionSections": false,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "CLASS cl_any_class DEFINITION PUBLIC CREATE PROTECTED.\nPUBLIC SECTION.\nINTERFACES if_any_interface.\nPROTECTED SECTION.\nDATA mo_item TYPE REF TO if_item.\nPRIVATE SECTION.\nDATA mo_other_item TYPE REF TO if_other_interface.\nCLASS-METHODS create\n  RETURNING\n    VALUE(ro_instance) TYPE REF TO if_third_interface.\nENDCLASS.",
+   "exp": "CLASS cl_any_class DEFINITION PUBLIC CREATE PROTECTED.\nPUBLIC SECTION.\nINTERFACES if_any_interface.\nPROTECTED SECTION.\nDATA mo_item TYPE REF TO if_item.\nPRIVATE SECTION.\nDATA mo_other_item TYPE REF TO if_other_interface.\nCLASS-METHODS create\n  RETURNING\n    VALUE(ro_instance) TYPE REF TO if_third_interface.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysAlignCommentWithElse",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.ALWAYS",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\nIF iv_value = 1.\niv_value += 1.\n\" comment with no empty line above it\nELSEIF iv_value = 2.\niv_value += 2.\n\n\" two comment lines on the ELSE branch\n\" with an empty line above them\nELSE.\niv_value += 1.\nENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF iv_value = 1.\n      iv_value += 1.\n    \" comment with no empty line above it\n    ELSEIF iv_value = 2.\n      iv_value += 2.\n\n    \" two comment lines on the ELSE branch\n    \" with an empty line above them\n    ELSE.\n      iv_value += 1.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignCommentWithElseIfElse",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\nIF iv_value = 1.\n\" comment on next line\niv_value += 3.\n\" comment with no empty line above it\nELSEIF iv_value = 2.\niv_value += 2.\n\n\" two comment lines on the ELSE branch\n\" with an empty line above them\nELSE.\niv_value += 1.\nENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF iv_value = 1.\n      \" comment on next line\n      iv_value += 3.\n      \" comment with no empty line above it\n    ELSEIF iv_value = 2.\n      iv_value += 2.\n\n    \" two comment lines on the ELSE branch\n    \" with an empty line above them\n    ELSE.\n      iv_value += 1.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testNeverAlignCommentWithElse",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.NEVER",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\nIF iv_value = 1.\niv_value += 1.\n\" comment with no empty line above it\nELSEIF iv_value = 2.\niv_value += 2.\n\n\" two comment lines on the ELSE branch\n\" with an empty line above them\nELSE.\niv_value += 1.\nENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF iv_value = 1.\n      iv_value += 1.\n      \" comment with no empty line above it\n    ELSEIF iv_value = 2.\n      iv_value += 2.\n\n      \" two comment lines on the ELSE branch\n      \" with an empty line above them\n    ELSE.\n      iv_value += 1.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlwaysAlignCommentWithWhen",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.ALWAYS",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\nCASE iv_value.\n\" comment on WHEN\nWHEN 1.\n\" comment on next line\niv_value += 1.\n\n\" two comment lines on WHEN\n\" with an empty line above them\nWHEN 2.\niv_value += 2.\n\" comment with no empty line above it\nWHEN 3.\niv_value += 3.\nENDCASE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CASE iv_value.\n      \" comment on WHEN\n      WHEN 1.\n        \" comment on next line\n        iv_value += 1.\n\n      \" two comment lines on WHEN\n      \" with an empty line above them\n      WHEN 2.\n        iv_value += 2.\n      \" comment with no empty line above it\n      WHEN 3.\n        iv_value += 3.\n    ENDCASE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignCommentWithWhen",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\nCASE iv_value.\n\" comment on WHEN\nWHEN 1.\n\" comment on next line\niv_value += 1.\n\n\" two comment lines on WHEN\n\" with an empty line above them\nWHEN 2.\niv_value += 2.\n\" comment with no empty line above it\nWHEN 3.\niv_value += 3.\nENDCASE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CASE iv_value.\n      \" comment on WHEN\n      WHEN 1.\n        \" comment on next line\n        iv_value += 1.\n\n      \" two comment lines on WHEN\n      \" with an empty line above them\n      WHEN 2.\n        iv_value += 2.\n        \" comment with no empty line above it\n      WHEN 3.\n        iv_value += 3.\n    ENDCASE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testNeverAlignCommentWithWhen",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.NEVER",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\nCASE iv_value.\n\" comment on WHEN\nWHEN 1.\n\" comment on next line\niv_value += 1.\n\n\" two comment lines on WHEN\n\" with an empty line above them\nWHEN 2.\niv_value += 2.\n\" comment with no empty line above it\nWHEN 3.\niv_value += 3.\nENDCASE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CASE iv_value.\n      \" comment on WHEN\n      WHEN 1.\n        \" comment on next line\n        iv_value += 1.\n\n        \" two comment lines on WHEN\n        \" with an empty line above them\n      WHEN 2.\n        iv_value += 2.\n        \" comment with no empty line above it\n      WHEN 3.\n        iv_value += 3.\n    ENDCASE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlwaysAlignCommentWithCatch",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.ALWAYS"
+   },
+   "src": "  METHOD any_method.\nTRY.\n\" comment\nany_method_call( ).\n\" two comment lines on CATCH\n\" with no empty line above them\nCATCH cx_message.\n\" no handler\n\n\" comment on CATCH with an empty line above it\nCATCH cx_fatal_message.\n\" no handler\nENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        \" comment\n        any_method_call( ).\n      \" two comment lines on CATCH\n      \" with no empty line above them\n      CATCH cx_message.\n        \" no handler\n\n      \" comment on CATCH with an empty line above it\n      CATCH cx_fatal_message.\n        \" no handler\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignCommentWithCatch",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\nTRY.\n\" comment\nany_method_call( ).\n\" two comment lines on CATCH\n\" with no empty line above them\nCATCH cx_message.\n\" no handler\n\n\" comment on CATCH with an empty line above it\nCATCH cx_fatal_message.\n\" no handler\nENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        \" comment\n        any_method_call( ).\n        \" two comment lines on CATCH\n        \" with no empty line above them\n      CATCH cx_message.\n        \" no handler\n\n      \" comment on CATCH with an empty line above it\n      CATCH cx_fatal_message.\n        \" no handler\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testNeverAlignCommentWithCatch",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.NEVER"
+   },
+   "src": "  METHOD any_method.\nTRY.\n\" comment\nany_method_call( ).\n\" two comment lines on CATCH\n\" with no empty line above them\nCATCH cx_message.\n\" no handler\n\n\" comment on CATCH with an empty line above it\nCATCH cx_fatal_message.\n\" no handler\nENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        \" comment\n        any_method_call( ).\n        \" two comment lines on CATCH\n        \" with no empty line above them\n      CATCH cx_message.\n        \" no handler\n\n        \" comment on CATCH with an empty line above it\n      CATCH cx_fatal_message.\n        \" no handler\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTestSeam",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\nTEST-SEAM selection.\nSELECT SINGLE * FROM sflight INTO wa\n       WHERE carrid = carrid\n         AND connid = connid\n         AND fldate = fldate.\nEND-TEST-SEAM.\n\nTEST-SEAM modification.\nMODIFY sflight FROM wa.\nEND-TEST-SEAM.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TEST-SEAM selection.\n      SELECT SINGLE * FROM sflight INTO wa\n             WHERE carrid = carrid\n               AND connid = connid\n               AND fldate = fldate.\n    END-TEST-SEAM.\n\n    TEST-SEAM modification.\n      MODIFY sflight FROM wa.\n    END-TEST-SEAM.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTestInjection",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\nTEST-INJECTION selection.\nwa-price = 100.\nEND-TEST-INJECTION.\n\ninvoke_and_assert( 100 ).\n\nTEST-INJECTION modification.\nEND-TEST-INJECTION.\n\ninvoke_and_assert( 90 ).\n\nTEST-INJECTION modification.\nsy-subrc = 4.\nEND-TEST-INJECTION.\n\ninvoke_and_assert( -2 ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TEST-INJECTION selection.\n      wa-price = 100.\n    END-TEST-INJECTION.\n\n    invoke_and_assert( 100 ).\n\n    TEST-INJECTION modification.\n    END-TEST-INJECTION.\n\n    invoke_and_assert( 90 ).\n\n    TEST-INJECTION modification.\n      sy-subrc = 4.\n    END-TEST-INJECTION.\n\n    invoke_and_assert( -2 ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testReportWithNestedSelectionBlock",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "REPORT any_report.\n\nSELECTION-SCREEN BEGIN OF BLOCK any_block.\nPARAMETERS p_any TYPE ty_any.\nPARAMETERS p_other TYPE ty_other.\nSELECTION-SCREEN BEGIN OF BLOCK inner_block.\nPARAMETERS p_abc TYPE ty_any.\nPARAMETERS p_defg TYPE ty_other.\nSELECTION-SCREEN END OF BLOCK inner_block.\nSELECTION-SCREEN END OF BLOCK any_block.",
+   "exp": "REPORT any_report.\n\nSELECTION-SCREEN BEGIN OF BLOCK any_block.\n  PARAMETERS p_any TYPE ty_any.\n  PARAMETERS p_other TYPE ty_other.\n  SELECTION-SCREEN BEGIN OF BLOCK inner_block.\n    PARAMETERS p_abc TYPE ty_any.\n    PARAMETERS p_defg TYPE ty_other.\n  SELECTION-SCREEN END OF BLOCK inner_block.\nSELECTION-SCREEN END OF BLOCK any_block.",
+   "flags": {}
+  },
+  {
+   "name": "testAuthorityCheckDisable",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    AUTHORITY-CHECK DISABLE BEGIN CONTEXT root~name.\n    AUTHORITY-CHECK OBJECT 'ANYOBJ' ID 'ANYID' DUMMY.\n    AUTHORITY-CHECK DISABLE BEGIN CONTEXT inner~name.\n    AUTHORITY-CHECK OBJECT 'OTHEROBJ' ID 'OTHERID' DUMMY.\n    AUTHORITY-CHECK DISABLE END.\n    AUTHORITY-CHECK DISABLE END.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    AUTHORITY-CHECK DISABLE BEGIN CONTEXT root~name.\n      AUTHORITY-CHECK OBJECT 'ANYOBJ' ID 'ANYID' DUMMY.\n      AUTHORITY-CHECK DISABLE BEGIN CONTEXT inner~name.\n        AUTHORITY-CHECK OBJECT 'OTHEROBJ' ID 'OTHERID' DUMMY.\n      AUTHORITY-CHECK DISABLE END.\n    AUTHORITY-CHECK DISABLE END.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTryCleanupNested",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    TRY.\n    TRY.\n    RAISE EXCEPTION exc.\n    CLEANUP.\n    cl_demo_output=>write( 'Cleanup' ).\n    ENDTRY.\n    CATCH cx_demo1.\n    cl_demo_output=>write( 'Catching cx_demo1' ).\n    ENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        TRY.\n            RAISE EXCEPTION exc.\n          CLEANUP.\n            cl_demo_output=>write( 'Cleanup' ).\n        ENDTRY.\n      CATCH cx_demo1.\n        cl_demo_output=>write( 'Catching cx_demo1' ).\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTryCatchCleanupNested",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    TRY.\n    TRY.\n    RAISE EXCEPTION exc.\n    CATCH cx_demo0.\n    cl_demo_output=>write( 'Catching cx_demo0' ).\n    CLEANUP.\n    cl_demo_output=>write( 'Cleanup' ).\n    ENDTRY.\n    CATCH cx_demo1.\n    cl_demo_output=>write( 'Catching cx_demo1' ).\n    ENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        TRY.\n            RAISE EXCEPTION exc.\n          CATCH cx_demo0.\n            cl_demo_output=>write( 'Catching cx_demo0' ).\n          CLEANUP.\n            cl_demo_output=>write( 'Cleanup' ).\n        ENDTRY.\n      CATCH cx_demo1.\n        cl_demo_output=>write( 'Catching cx_demo1' ).\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignCommentWithCleanup",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\nTRY.\n\" comment\nany_method_call( ).\n\" two comment lines on CLEANUP\n\" with no empty line above them\nCLEANUP.\n\" no handler\nENDTRY.\n\nTRY.\n\" comment\nany_method_call( ).\n\n\" comment on CLEANUP with an empty line above it\nCLEANUP.\n\" no handler\nENDTRY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TRY.\n        \" comment\n        any_method_call( ).\n        \" two comment lines on CLEANUP\n        \" with no empty line above them\n      CLEANUP.\n        \" no handler\n    ENDTRY.\n\n    TRY.\n        \" comment\n        any_method_call( ).\n\n      \" comment on CLEANUP with an empty line above it\n      CLEANUP.\n        \" no handler\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testWithNotStartingSelectLoop",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    WITH\n      +cte1 AS ( SELECT fld1, fld2 FROM dtab1\n                   JOIN dtab2 ON dtab1~id = dtab2~id\n                   WHERE dtab1~id = @id ),\n      +cte2 AS ( SELECT COUNT(*) AS cnt FROM +cte1 )\n      SELECT * FROM +cte2\n        CROSS JOIN +cte1\n        ORDER BY fld1, fld2\n        INTO CORRESPONDING FIELDS OF TABLE @itab.\n\n      any_method( itab ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    WITH\n      +cte1 AS ( SELECT fld1, fld2 FROM dtab1\n                   JOIN dtab2 ON dtab1~id = dtab2~id\n                   WHERE dtab1~id = @id ),\n      +cte2 AS ( SELECT COUNT(*) AS cnt FROM +cte1 )\n      SELECT * FROM +cte2\n        CROSS JOIN +cte1\n        ORDER BY fld1, fld2\n        INTO CORRESPONDING FIELDS OF TABLE @itab.\n\n    any_method( itab ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testWithStartingSelectLoop",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    WITH\n      +cte AS ( SELECT FROM dtab1 FIELDS f1, f2 )\n      SELECT FROM dtab2 AS b\n        INNER JOIN +cte AS a ON b~g1 = a~f1\n        FIELDS a~f2, s~g2\n        WHERE s~g1 = 'NN'\n        INTO @FINAL(wa)\n        UP TO 10 ROWS.\n\n    any_method( wa ).\n    ENDWITH.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    WITH\n      +cte AS ( SELECT FROM dtab1 FIELDS f1, f2 )\n      SELECT FROM dtab2 AS b\n        INNER JOIN +cte AS a ON b~g1 = a~f1\n        FIELDS a~f2, s~g2\n        WHERE s~g1 = 'NN'\n        INTO @FINAL(wa)\n        UP TO 10 ROWS.\n\n      any_method( wa ).\n    ENDWITH.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectWithLiteralsHostVarsEndSelect",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n      SELECT +1 AS untyped1,\n             -1 AS untyped2,\n             'any' AS untyped3,\n             `any` AS untyped4,\n             1 + 2 * ( 3 + @lc_any ) AS untyped5,\n\n             int1`1` AS typed1,\n             d16n`1.1` AS typed2,\n             dats`20230419` AS typed3,\n             cuky`EUR` AS typed4,\n             concat( char`abc`, @lc_text ) AS typed5\n\n             \" ( 1 + @lc_any * COUNT( * ) ) AS aggr_func_used\n        FROM dtab INTO @DATA(ls_and).\n      ENDSELECT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT +1 AS untyped1,\n           -1 AS untyped2,\n           'any' AS untyped3,\n           `any` AS untyped4,\n           1 + 2 * ( 3 + @lc_any ) AS untyped5,\n\n           int1`1` AS typed1,\n           d16n`1.1` AS typed2,\n           dats`20230419` AS typed3,\n           cuky`EUR` AS typed4,\n           concat( char`abc`, @lc_text ) AS typed5\n\n           \" ( 1 + @lc_any * COUNT( * ) ) AS aggr_func_used\n      FROM dtab INTO @DATA(ls_and).\n    ENDSELECT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectWithLiteralsHostVarsAndAggrFunc",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n      SELECT +1 AS untyped1,\n             -1 AS untyped2,\n             'any' AS untyped3,\n             `any` AS untyped4,\n             1 + 2 * ( 3 + @lc_any ) AS untyped5,\n\n             int1`1` AS typed1,\n             d16n`1.1` AS typed2,\n             dats`20230419` AS typed3,\n             cuky`EUR` AS typed4,\n             concat( char`abc`, @lc_text ) AS typed5,\n\n             ( 1 + @lc_any * COUNT( * ) ) AS aggr_func_used\n        FROM dtab INTO @DATA(ls_and).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT +1 AS untyped1,\n           -1 AS untyped2,\n           'any' AS untyped3,\n           `any` AS untyped4,\n           1 + 2 * ( 3 + @lc_any ) AS untyped5,\n\n           int1`1` AS typed1,\n           d16n`1.1` AS typed2,\n           dats`20230419` AS typed3,\n           cuky`EUR` AS typed4,\n           concat( char`abc`, @lc_text ) AS typed5,\n\n           ( 1 + @lc_any * COUNT( * ) ) AS aggr_func_used\n      FROM dtab INTO @DATA(ls_and).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testModuleAfterEventBlock",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "REPORT any_report.\n\nINITIALIZATION.\n\n   MODULE any_module INPUT.\n     DATA lv_any TYPE i.\n     lv_any = 1.\n   ENDMODULE.",
+   "exp": "REPORT any_report.\n\nINITIALIZATION.\n\nMODULE any_module INPUT.\n  DATA lv_any TYPE i.\n  lv_any = 1.\nENDMODULE.",
+   "flags": {}
+  },
+  {
+   "name": "testTwoCommandsOnSameLine",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    CASE sy-tabix.\n      WHEN 1. lv_flag = COND #(\n                            WHEN lv_cond = 1\n                            THEN abap_true\n                            ELSE abap_false ).\n    ENDCASE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CASE sy-tabix.\n      WHEN 1. lv_flag = COND #(\n                            WHEN lv_cond = 1\n                            THEN abap_true\n                            ELSE abap_false ).\n    ENDCASE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testClassDefinitionDeferredChainInEvent",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "REPORT any_report.\n\nSTART-OF-SELECTION.\nWRITE 1.\nCLASS: lcl_any DEFINITION DEFERRED,\n       lcl_other DEFINITION DEFERRED.\nWRITE 2.\n\nCLASS lcl_any DEFINITION.\n  PUBLIC SECTION.\nENDCLASS.\n\nCLASS lcl_any IMPLEMENTATION.\nENDCLASS.\n\nCLASS lcl_other DEFINITION.\n  PUBLIC SECTION.\nENDCLASS.\n\nCLASS lcl_other IMPLEMENTATION.\nENDCLASS.",
+   "exp": "REPORT any_report.\n\nSTART-OF-SELECTION.\n  WRITE 1.\n  CLASS: lcl_any DEFINITION DEFERRED,\n         lcl_other DEFINITION DEFERRED.\n  WRITE 2.\n\nCLASS lcl_any DEFINITION.\n  PUBLIC SECTION.\nENDCLASS.\n\nCLASS lcl_any IMPLEMENTATION.\nENDCLASS.\n\nCLASS lcl_other DEFINITION.\n  PUBLIC SECTION.\nENDCLASS.\n\nCLASS lcl_other IMPLEMENTATION.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testPrettyPrintingKeptForIncludeInTypesChain",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    TYPES: BEGIN OF ty_s_any,\n             comp1 TYPE i.\n             INCLUDE TYPE ty_s_other AS other.\n             INCLUDE TYPE ty_s_third.\n    TYPES:   comp2 TYPE string,\n           END OF ty_s_any.\n\n    TYPES: BEGIN OF ty_s_any.\n             INCLUDE TYPE ty_s_other AS other.\n             INCLUDE TYPE ty_s_third.\n    TYPES:   comp TYPE string,\n           END OF ty_s_any.\n\n    TYPES:\n      BEGIN OF ty_s_any.\n        INCLUDE TYPE ty_s_other AS other.\n        INCLUDE TYPE ty_s_third.\n    TYPES:\n        comp TYPE string,\n      END OF ty_s_any.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES: BEGIN OF ty_s_any,\n             comp1 TYPE i.\n             INCLUDE TYPE ty_s_other AS other.\n             INCLUDE TYPE ty_s_third.\n    TYPES:   comp2 TYPE string,\n           END OF ty_s_any.\n\n    TYPES: BEGIN OF ty_s_any.\n             INCLUDE TYPE ty_s_other AS other.\n             INCLUDE TYPE ty_s_third.\n    TYPES:   comp TYPE string,\n           END OF ty_s_any.\n\n    TYPES:\n      BEGIN OF ty_s_any.\n        INCLUDE TYPE ty_s_other AS other.\n        INCLUDE TYPE ty_s_third.\n    TYPES:\n        comp TYPE string,\n      END OF ty_s_any.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testPrettyPrintingKeptForIncludeInTypesNonChain",
+   "config": {
+    "ExecuteOnClassDefinitionSections": true,
+    "AlignWithFollowingElse": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingWhen": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE",
+    "AlignWithFollowingCatch": "AlignWithNextCommandMode.IF_BLANK_LINE_ABOVE"
+   },
+   "src": "  METHOD any_method.\n    TYPES BEGIN OF ty_s_any.\n    TYPES comp1 TYPE i.\n    INCLUDE TYPE ty_s_other AS other.\n    TYPES comp2 TYPE string.\n    TYPES END OF ty_s_any.\n\n    TYPES BEGIN OF ty_s_any.\n    INCLUDE TYPE ty_s_other AS other.\n    TYPES comp TYPE string.\n    TYPES END OF ty_s_any.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES BEGIN OF ty_s_any.\n    TYPES comp1 TYPE i.\n    INCLUDE TYPE ty_s_other AS other.\n    TYPES comp2 TYPE string.\n    TYPES END OF ty_s_any.\n\n    TYPES BEGIN OF ty_s_any.\n    INCLUDE TYPE ty_s_other AS other.\n    TYPES comp TYPE string.\n    TYPES END OF ty_s_any.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

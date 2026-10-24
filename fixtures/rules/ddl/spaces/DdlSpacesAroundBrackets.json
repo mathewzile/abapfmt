@@ -1,0 +1,493 @@
+{
+ "ruleId": "DDL_SPACES_AROUND_BRACKETS",
+ "testClass": "DdlSpacesAroundBracketsTest",
+ "defaults": {
+  "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+  "SpacesInsideCardBrackets": "ChangeType.NEVER",
+  "SpacesBeforePathBrackets": "ChangeType.NEVER",
+  "SpacesInsidePathBrackets": "ChangeType.NEVER",
+  "SpacesBeforeFuncParens": "ChangeType.NEVER",
+  "SpacesInsideFuncParens": "ChangeType.NEVER",
+  "SpacesBeforeTypeParens": "ChangeType.NEVER",
+  "SpacesInsideTypeParens": "ChangeType.NEVER",
+  "SpacesInsideArithParens": "ChangeType.NEVER"
+ },
+ "cases": [
+  {
+   "name": "testSpacesAroundCardBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..* ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [ *]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n  association [1..*] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [*] to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpacesAroundCardBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.KEEP_AS_IS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..* ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [ *]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..*] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [*]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpacesAroundCardBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.NEVER",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..* ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [ *]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..*]to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association[*]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpacesBeforePathBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.ALWAYS",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..* ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [ *]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias [1:AnyValue > 0]._AnyAssoc[ *: OtherValue = 42 ].AnyField as AnyField,\n      _ThirdAlias[ inner where i = '2']._Text [ 1: Language = $session.system_language].AnyName as AnyName\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n  association [1..*] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [*] to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias [1:AnyValue > 0]._AnyAssoc [*: OtherValue = 42].AnyField as AnyField,\n      _ThirdAlias [inner where i = '2']._Text [1: Language = $session.system_language].AnyName as AnyName\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpacesBeforePathBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.KEEP_AS_IS",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..* ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [ *]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias [1:AnyValue > 0]._AnyAssoc[ *: OtherValue = 42 ].AnyField as AnyField,\n      _ThirdAlias[ inner where i = '2']._Text [ 1: Language = $session.system_language].AnyName as AnyName\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n  association [1..*] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [*] to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias [1:AnyValue > 0]._AnyAssoc[*: OtherValue = 42].AnyField as AnyField,\n      _ThirdAlias[inner where i = '2']._Text [1: Language = $session.system_language].AnyName as AnyName\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpacesBeforePathBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..* ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [ *]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias [1:AnyValue > 0]._AnyAssoc[ *: OtherValue = 42 ].AnyField as AnyField,\n      _ThirdAlias[ inner where i = '2']._Text[ 1: Language = $session.system_language].AnyName as AnyName\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n  association [1..*] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [*] to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias[1:AnyValue > 0]._AnyAssoc[*: OtherValue = 42].AnyField as AnyField,\n      _ThirdAlias[inner where i = '2']._Text[1: Language = $session.system_language].AnyName as AnyName\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpacesInsidePathBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.ALWAYS",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..* ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [ *]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias [1:AnyValue > 0]._AnyAssoc[ *: OtherValue = 42 ].AnyField as AnyField,\n      _ThirdAlias[ inner where i = '2']._Text [ 1: Language = $session.system_language].AnyName as AnyName\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n  association [1..*] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [*] to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias[ 1:AnyValue > 0 ]._AnyAssoc[ *: OtherValue = 42 ].AnyField as AnyField,\n      _ThirdAlias[ inner where i = '2' ]._Text[ 1: Language = $session.system_language ].AnyName as AnyName\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpacesInsidePathBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.KEEP_AS_IS",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..* ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [ *]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias [1:AnyValue > 0]._AnyAssoc[ *: OtherValue = 42 ].AnyField as AnyField,\n      _ThirdAlias[ inner where i = '2']._Text [ 1: Language = $session.system_language].AnyName as AnyName\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n  association [1..*] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [*] to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias[1:AnyValue > 0]._AnyAssoc[ *: OtherValue = 42 ].AnyField as AnyField,\n      _ThirdAlias[ inner where i = '2']._Text[ 1: Language = $session.system_language].AnyName as AnyName\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpacesInsidePathBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n  association[1..* ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [ *]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias [1:AnyValue > 0]._AnyAssoc[ *: OtherValue = 42 ].AnyField as AnyField,\n      _ThirdAlias[ inner where i = '2']._Text [ 1: Language = $session.system_language].AnyName as AnyName\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n  association [1..*] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n  association [*] to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField,\n      _OtherAlias[1:AnyValue > 0]._AnyAssoc[*: OtherValue = 42].AnyField as AnyField,\n      _ThirdAlias[inner where i = '2']._Text[1: Language = $session.system_language].AnyName as AnyName\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpacesBeforeFuncParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.ALWAYS",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat ( AnyText, concat( '_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round( AnyValue / 100, 5 ) as RoundedValue,\n\n      cast (  AnyAmount as abap.curr( 23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6 ) ) as AnyQuantity\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat (AnyText, concat ('_', OtherText)) as AnyTextField,\n      division (AnyArg *10, OtherArg, 2) as ThirdValue,\n      round (AnyValue / 100, 5) as RoundedValue,\n\n      cast (AnyAmount as abap.curr(23,2)) as AnyAmount,\n      cast (AnyQuantity as abap.quan(18, 6)) as AnyQuantity\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpacesBeforeFuncParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.KEEP_AS_IS",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat ( AnyText, concat( '_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round( AnyValue / 100, 5 ) as RoundedValue,\n\n      cast (  AnyAmount as abap.curr( 23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6 ) ) as AnyQuantity\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat (AnyText, concat('_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round(AnyValue / 100, 5) as RoundedValue,\n\n      cast (AnyAmount as abap.curr(23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpacesBeforeFuncParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat ( AnyText, concat( '_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round( AnyValue / 100, 5 ) as RoundedValue,\n\n      cast (  AnyAmount as abap.curr( 23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6 ) ) as AnyQuantity\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat(AnyText, concat('_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round(AnyValue / 100, 5) as RoundedValue,\n\n      cast(AnyAmount as abap.curr(23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpacesInsideFuncParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.ALWAYS",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat ( AnyText, concat( '_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round( AnyValue / 100, 5 ) as RoundedValue,\n\n      cast (  AnyAmount as abap.curr( 23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6 ) ) as AnyQuantity\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat( AnyText, concat( '_', OtherText ) ) as AnyTextField,\n      division( AnyArg *10, OtherArg, 2 ) as ThirdValue,\n      round( AnyValue / 100, 5 ) as RoundedValue,\n\n      cast(  AnyAmount as abap.curr(23,2) ) as AnyAmount,\n      cast( AnyQuantity as abap.quan(18, 6) ) as AnyQuantity\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpacesInsideFuncParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.KEEP_AS_IS",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat ( AnyText, concat( '_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round( AnyValue / 100, 5 ) as RoundedValue,\n\n      cast (  AnyAmount as abap.curr( 23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6 ) ) as AnyQuantity\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat( AnyText, concat( '_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round( AnyValue / 100, 5 ) as RoundedValue,\n\n      cast(  AnyAmount as abap.curr(23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan(18, 6) ) as AnyQuantity\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpacesInsideFuncParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat ( AnyText, concat( '_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round( AnyValue / 100, 5 ) as RoundedValue,\n\n      cast (  AnyAmount as abap.curr( 23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6 ) ) as AnyQuantity\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat(AnyText, concat('_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round(AnyValue / 100, 5) as RoundedValue,\n\n      cast(AnyAmount as abap.curr(23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpacesBeforeTypeParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.ALWAYS",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      cast (  AnyAmount as abap.curr( 23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6 ) ) as AnyQuantity\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      cast(AnyAmount as abap.curr (23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6)) as AnyQuantity\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpacesBeforeTypeParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.KEEP_AS_IS",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      cast (  AnyAmount as abap.curr( 23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6 ) ) as AnyQuantity\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      cast(AnyAmount as abap.curr(23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6)) as AnyQuantity\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpacesBeforeTypeParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      cast (  AnyAmount as abap.curr( 23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan (18, 6 ) ) as AnyQuantity\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      cast(AnyAmount as abap.curr(23,2)) as AnyAmount,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpacesInsideArithParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      ( AnyValue + OtherValue) as AnyValueField,\n      3 * (-2 * AnyValue - 4 * (OtherValue - 1) ) as OtherValueField\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      ( AnyValue + OtherValue ) as AnyValueField,\n      3 * ( -2 * AnyValue - 4 * ( OtherValue - 1 ) ) as OtherValueField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpacesInsideArithParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.KEEP_AS_IS"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      ( AnyValue + OtherValue) as AnyValueField,\n      3 * (-2 * AnyValue - 4 * (OtherValue - 1) ) as OtherValueField\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      ( AnyValue + OtherValue) as AnyValueField,\n      3 * (-2 * AnyValue - 4 * (OtherValue - 1) ) as OtherValueField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpacesInsideArithParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      ( AnyValue + OtherValue) as AnyValueField,\n      3 * (-2 * AnyValue - 4 * (OtherValue - 1) ) as OtherValueField\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n      (AnyValue + OtherValue) as AnyValueField,\n      3 * (-2 * AnyValue - 4 * (OtherValue - 1)) as OtherValueField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testLineBreaksAroundCardBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n  association\n    [ // comment\n      1..*\n    ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n\n  association [ *\n    ]to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n  association\n    [ // comment\n      1..*\n    ] to I_OtherView as _OtherAlias on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n\n  association [*\n    ] to I_ThirdView as _ThirdAlias on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\n\n{\n  key AnyKeyField}",
+   "flags": {}
+  },
+  {
+   "name": "testLineBreaksAroundPathBrackets",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      _OtherAlias [ 1:AnyValue > 0\n                  ]._AnyAssoc[ *:\n                    OtherValue = 42 ] -- comment\n                   .AnyField as AnyField}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      _OtherAlias[1:AnyValue > 0\n                 ]._AnyAssoc[*:\n                   OtherValue = 42] -- comment\n                  .AnyField as AnyField}",
+   "flags": {}
+  },
+  {
+   "name": "testLineBreaksAroundFuncParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat\n      (\n        AnyText, concat\n        (   '_',\n            OtherText\n        )\n      ) as AnyTextField,\n\n      cast\n         ( AnyAmount as abap.curr\n           (\n              23,2\n           )\n         ) as AnyAmount\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat\n      (\n        AnyText, concat\n        ('_',\n         OtherText\n        )\n      ) as AnyTextField,\n\n      cast\n         (AnyAmount as abap.curr\n          (\n             23,2\n          )\n         ) as AnyAmount\n}",
+   "flags": {}
+  },
+  {
+   "name": "testLineBreaksAroundFuncParensAddSpace",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.ALWAYS",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat\n      (\n        AnyText, concat\n        ('_',\n         OtherText\n        )\n      ) as AnyTextField,\n\n      // casts and ABAP types\n      cast\n         (AnyAmount as abap.curr\n          (\n             23,2 // comment\n          ) -- comment\n         ) as AnyAmount\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      concat\n      (\n        AnyText, concat\n        ( '_',\n          OtherText\n        )\n      ) as AnyTextField,\n\n      // casts and ABAP types\n      cast\n         ( AnyAmount as abap.curr\n           (\n              23,2 // comment\n           ) -- comment\n         ) as AnyAmount\n}",
+   "flags": {}
+  },
+  {
+   "name": "testLineBreaksAroundArithParens",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      (\n        AnyValue + OtherValue\n      ) as AnyValueField,\n      3 * (    -2 * AnyValue - 4 *\n               (OtherValue\n                - 1)\n          ) as OtherValueField\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      (\n        AnyValue + OtherValue\n      ) as AnyValueField,\n      3 * (-2 * AnyValue - 4 *\n           (OtherValue\n            - 1)\n          ) as OtherValueField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testLineBreaksAroundArithParensAddSpace",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      (\n        AnyValue + OtherValue\n      ) as AnyValueField,\n      3 * (    -2 * AnyValue - 4 *\n               (OtherValue\n                - 1)\n          ) as OtherValueField\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView\n\n{\n  key AnyKeyField,\n\n      (\n        AnyValue + OtherValue\n      ) as AnyValueField,\n      3 * (    -2 * AnyValue - 4 *\n               ( OtherValue\n                 - 1 )\n          ) as OtherValueField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testWhereWithLengthAndCast",
+   "config": {
+    "SpacesAroundCardBrackets": "ChangeType.ALWAYS",
+    "SpacesInsideCardBrackets": "ChangeType.NEVER",
+    "SpacesBeforePathBrackets": "ChangeType.NEVER",
+    "SpacesInsidePathBrackets": "ChangeType.NEVER",
+    "SpacesBeforeFuncParens": "ChangeType.NEVER",
+    "SpacesInsideFuncParens": "ChangeType.NEVER",
+    "SpacesBeforeTypeParens": "ChangeType.NEVER",
+    "SpacesInsideTypeParens": "ChangeType.NEVER",
+    "SpacesInsideArithParens": "ChangeType.NEVER"
+   },
+   "src": "define view entity any_view\n  as select from dtab\n\n  association to other_dtab as _asso\n    on $projection.id = _asso.id\n\n{\n  key id,\n\n      _asso.field1\n}\n\nwhere _asso.field1 like    'S%'\n  and length( _asso.field1   ) = abap.int1'4'\n  and created_on between abap.dats'20200101' and abap.dats'20200401'\n  and cast(   _asso.field2 as any_type preserving type ) = abap.char'literal'",
+   "exp": "define view entity any_view\n  as select from dtab\n\n  association to other_dtab as _asso\n    on $projection.id = _asso.id\n\n{\n  key id,\n\n      _asso.field1\n}\n\nwhere _asso.field1 like    'S%'\n  and length(_asso.field1) = abap.int1'4'\n  and created_on between abap.dats'20200101' and abap.dats'20200401'\n  and cast(_asso.field2 as any_type preserving type) = abap.char'literal'",
+   "flags": {}
+  }
+ ]
+}

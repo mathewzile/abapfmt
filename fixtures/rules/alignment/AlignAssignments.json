@@ -1,0 +1,178 @@
+{
+ "ruleId": "ALIGN_ASSIGNMENTS",
+ "testClass": "AlignAssignmentsTest",
+ "defaults": {
+  "AlignAcrossEmptyLines": true,
+  "AlignAcrossCommentLines": true
+ },
+ "cases": [
+  {
+   "name": "testFieldSymbolComponents",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n    <ls_field_sym>-component = 1.\n    <ls_field_sym>-comp2 = 'a'.\n    <ls_field_sym>-c3 = VALUE #( ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    <ls_field_sym>-component = 1.\n    <ls_field_sym>-comp2     = 'a'.\n    <ls_field_sym>-c3        = VALUE #( ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testStructureComponents",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n    ls_any_struc-any_id = iv_any_id.\n    ls_any_struc-any_temp_id = ls_any_struc-any_id.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ls_any_struc-any_id      = iv_any_id.\n    ls_any_struc-any_temp_id = ls_any_struc-any_id.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testStructureComponentsWithOffset",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n    ls_any_struc-any_id = iv_any_id.\n    ls_any_struc-any_temp_id = ls_any_struc-any_id.\n    ls_any_struc-any_temp_id+0(2) = if_any_interface=>co_any_id_prefix.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ls_any_struc-any_id           = iv_any_id.\n    ls_any_struc-any_temp_id      = ls_any_struc-any_id.\n    ls_any_struc-any_temp_id+0(2) = if_any_interface=>co_any_id_prefix.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAttributeAccess",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n    ro_instance->mv_any = iv_any.\n    ro_instance->mv_other = iv_other.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ro_instance->mv_any   = iv_any.\n    ro_instance->mv_other = iv_other.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCalculationAssignmentOps",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n    ls_struc-component += 1.\n    ls_struc-comp2 = 'a'.\n    ls_struc-start_date+6(2) = 31.\n    ls_struc-c3 = VALUE #( ).\n    ls_struc-comp4 -= 1.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ls_struc-component       += 1.\n    ls_struc-comp2            = 'a'.\n    ls_struc-start_date+6(2)  = 31.\n    ls_struc-c3               = VALUE #( ).\n    ls_struc-comp4           -= 1.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignAcrossCommentsAndEmptyLines",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n    \" test alignment across comments and empty lines (depending on configuration):\n    ls_struc-component += 1.\n    \" comment\n    ls_struc-comp2 = 'a'.\n\n    ls_struc-c3 = VALUE #( ).\n\n    \" comment\n    ls_struc-comp4 -= 1.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" test alignment across comments and empty lines (depending on configuration):\n    ls_struc-component += 1.\n    \" comment\n    ls_struc-comp2      = 'a'.\n\n    ls_struc-c3         = VALUE #( ).\n\n    \" comment\n    ls_struc-comp4     -= 1.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAcrossEmptyLines",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n    <ls_field_sym>-component = 1.\n    <ls_field_sym>-comp2 = 'a'.\n\n    <ls_field_sym>-c3 = VALUE #( ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    <ls_field_sym>-component = 1.\n    <ls_field_sym>-comp2     = 'a'.\n\n    <ls_field_sym>-c3        = VALUE #( ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testNotAcrossEmptyLines",
+   "config": {
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n    <ls_field_sym>-component = 1.\n\n    <ls_field_sym>-comp2 = 'a'.\n    <ls_field_sym>-c3 = VALUE #( ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    <ls_field_sym>-component = 1.\n\n    <ls_field_sym>-comp2 = 'a'.\n    <ls_field_sym>-c3    = VALUE #( ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAcrossCommentLines",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n    ls_any_struc-any_id = iv_any_id.\n    \" comment line\n    ls_any_struc-any_temp_id = ls_any_struc-any_id.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ls_any_struc-any_id      = iv_any_id.\n    \" comment line\n    ls_any_struc-any_temp_id = ls_any_struc-any_id.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testNotAcrossCommentLines",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false
+   },
+   "src": "  METHOD any_method.\n    ls_any_struc-any_id = iv_any_id.\n    ls_any_struc-any_type = iv_any_type.\n    \" comment line\n    ls_any_struc-any_temp_id = ls_any_struc-any_id.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ls_any_struc-any_id   = iv_any_id.\n    ls_any_struc-any_type = iv_any_type.\n    \" comment line\n    ls_any_struc-any_temp_id = ls_any_struc-any_id.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDynamicComponents",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n  ls_struc-comp = 'a'.\n  ls_struc-('COMP') = 'b'.\n  ls_struc-(lv_comp_name) = 'c'.\n\n  <ls_struc>-comp = 'd'.\n  <ls_struc>-('COMP') = 'e'.\n  <ls_struc>-(lv_comp_name) = 'f'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  ls_struc-comp           = 'a'.\n  ls_struc-('COMP')       = 'b'.\n  ls_struc-(lv_comp_name) = 'c'.\n\n  <ls_struc>-comp           = 'd'.\n  <ls_struc>-('COMP')       = 'e'.\n  <ls_struc>-(lv_comp_name) = 'f'.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDynamicComponentsWithComments",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n  ls_struc-comp \" comment1\n  = 'a'.\n  ls_struc-('COMP') = \" comment2\n  'b'.\n  ls_struc-(lv_comp) = 'c'. \" comment3\n\n  <ls_struc>-comp \" comment1\n  = 'a'.\n  <ls_struc>-('COMP') = \" comment2\n  'b'.\n  <ls_struc>-(lv_comp) = 'c'. \" comment3\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  ls_struc-comp \" comment1\n                     = 'a'.\n  ls_struc-('COMP')  = \" comment2\n                       'b'.\n  ls_struc-(lv_comp) = 'c'. \" comment3\n\n  <ls_struc>-comp \" comment1\n                       = 'a'.\n  <ls_struc>-('COMP')  = \" comment2\n                         'b'.\n  <ls_struc>-(lv_comp) = 'c'. \" comment3\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

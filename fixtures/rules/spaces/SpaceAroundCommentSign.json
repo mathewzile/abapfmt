@@ -1,0 +1,80 @@
+{
+ "ruleId": "SPACE_AROUND_COMMENT_SIGN",
+ "testClass": "SpaceAroundCommentSignTest",
+ "defaults": {
+  "SpaceBeforeCommentSign": true,
+  "SpaceAfterCommentSign": true
+ },
+ "cases": [
+  {
+   "name": "testSpaceAfterLineEndComments",
+   "config": {
+    "SpaceBeforeCommentSign": true,
+    "SpaceAfterCommentSign": true
+   },
+   "src": "  METHOD any_method.\n    CLEAR ev_result.  \"comment at line end\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR ev_result.  \" comment at line end\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSpaceAfterFullLineComments",
+   "config": {
+    "SpaceBeforeCommentSign": true,
+    "SpaceAfterCommentSign": true
+   },
+   "src": "  METHOD any_method.\n    \"Comment signs\n    \"are NOT the same as \"quotation marks\",\n    \"so it looks much better\n    \"to put a space between the \" and the text.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" Comment signs\n    \" are NOT the same as \"quotation marks\",\n    \" so it looks much better\n    \" to put a space between the \" and the text.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSpaceBeforeLineEndComments",
+   "config": {
+    "SpaceBeforeCommentSign": true,
+    "SpaceAfterCommentSign": true
+   },
+   "src": "  METHOD any_method.\n    lv_value = 0.\" comment\n\n    ls_pair = VALUE #(\" initial comment\n                       a = '3.1415'\" pi\n                       b = '1.4142'\" sqrt(2)\n                      ).\" final comment\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_value = 0. \" comment\n\n    ls_pair = VALUE #( \" initial comment\n                       a = '3.1415' \" pi\n                       b = '1.4142' \" sqrt(2)\n                      ). \" final comment\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSpaceBeforeAndAfterLineEndComments",
+   "config": {
+    "SpaceBeforeCommentSign": true,
+    "SpaceAfterCommentSign": true
+   },
+   "src": "  METHOD any_method.\n    lv_value = 0.\"comment\n\n    ls_pair = VALUE #(\"initial comment\n                       a = '3.1415'\" pi\n                       b = '1.4142'\" sqrt(2)\n                      ).\"final comment\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_value = 0. \" comment\n\n    ls_pair = VALUE #( \" initial comment\n                       a = '3.1415' \" pi\n                       b = '1.4142' \" sqrt(2)\n                      ). \" final comment\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSpaceBeforeFullLineComments",
+   "config": {
+    "SpaceBeforeCommentSign": true,
+    "SpaceAfterCommentSign": true
+   },
+   "src": "  METHOD any_method.\n    \" comment lines are not changed by this(!) rule,\n\" even if they are not indented at all\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" comment lines are not changed by this(!) rule,\n\" even if they are not indented at all\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

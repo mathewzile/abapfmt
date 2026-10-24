@@ -1,0 +1,416 @@
+{
+ "ruleId": "DDL_SPACES_AROUND_SIGNS",
+ "testClass": "DdlSpacesAroundSignsTest",
+ "defaults": {
+  "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+  "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+  "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+  "SpaceAfterColon": "ChangeType.ALWAYS",
+  "SpaceBeforeComma": "ChangeType.NEVER",
+  "SpaceAfterComma": "ChangeType.ALWAYS",
+  "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+  "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+ },
+ "cases": [
+  {
+   "name": "testAnnotationUnchanged",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.ALWAYS",
+    "SpaceAfterColon": "ChangeType.NEVER",
+    "SpaceBeforeComma": "ChangeType.ALWAYS",
+    "SpaceAfterComma": "ChangeType.NEVER",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "@Annotation: { anySubAnno: 'value', otherSubAnno: 'value' }",
+   "exp": "@Annotation: { anySubAnno: 'value', otherSubAnno: 'value' }",
+   "flags": {}
+  },
+  {
+   "name": "testSpaceAroundComments",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "//comment at line start\ndefine view C_AnyView\n\n  --comment0\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,   //comment1\n  key OtherKeyField,-- comment2\n\n      // comment3\n      --comment4\n}",
+   "exp": "//comment at line start\ndefine view C_AnyView\n\n  -- comment0\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,   // comment1\n  key OtherKeyField, -- comment2\n\n      // comment3\n      -- comment4\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpaceBeforeCommentAsIs",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "//comment at line start\ndefine view C_AnyView\n\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,   //comment1\n  key OtherKeyField,-- comment2\n\n      // comment3\n      --comment4\n}",
+   "exp": "//comment at line start\ndefine view C_AnyView\n\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,   // comment1\n  key OtherKeyField,-- comment2\n\n      // comment3\n      -- comment4\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceBeforeComment",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.NEVER",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "//comment at line start\ndefine view C_AnyView\n\n  --comment0\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,   //comment1\n  key OtherKeyField,-- comment2\n\n      // comment3\n      --comment4\n}",
+   "exp": "//comment at line start\ndefine view C_AnyView\n\n  -- comment0\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,// comment1\n  key OtherKeyField,-- comment2\n\n      // comment3\n      -- comment4\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpaceAfterCommentSign",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.KEEP_AS_IS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "//comment at line start\ndefine view C_AnyView\n\n  --comment0\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,   //comment1\n  key OtherKeyField,-- comment2\n\n      // comment3\n      --comment4\n}",
+   "exp": "//comment at line start\ndefine view C_AnyView\n\n  --comment0\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,   //comment1\n  key OtherKeyField, -- comment2\n\n      // comment3\n      --comment4\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceAfterCommentSign",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.NEVER",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "//comment at line start\ndefine view C_AnyView\n\n  --comment0\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,   //comment1\n  key OtherKeyField,-- comment2\n\n      // comment3\n      --comment4\n}",
+   "exp": "//comment at line start\ndefine view C_AnyView\n\n  --comment0\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,   //comment1\n  key OtherKeyField, --comment2\n\n      //comment3\n      --comment4\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpaceBeforeColon",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.ALWAYS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type    ,\n    P_OtherParam: other_type\n\n  as select from I_AnyView(\n    P_AnyParam  ::P_AnyParam ,\n    P_OtherParam: :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n}",
+   "exp": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type,\n    P_OtherParam : other_type\n\n  as select from I_AnyView(\n    P_AnyParam  : :P_AnyParam,\n    P_OtherParam : :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceBeforeColon",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.NEVER",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type    ,\n    P_OtherParam: other_type\n\n  as select from I_AnyView(\n    P_AnyParam  ::P_AnyParam ,\n    P_OtherParam: :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n}",
+   "exp": "define view C_AnyView\n  with parameters\n    P_AnyParam: any_type,\n    P_OtherParam: other_type\n\n  as select from I_AnyView(\n    P_AnyParam: :P_AnyParam,\n    P_OtherParam: :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpaceAfterColonAsIs",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.KEEP_AS_IS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type    ,\n    P_OtherParam:other_type\n\n  as select from I_AnyView(\n    P_AnyParam  ::P_AnyParam ,\n    P_OtherParam: :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n}",
+   "exp": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type,\n    P_OtherParam:other_type\n\n  as select from I_AnyView(\n    P_AnyParam  ::P_AnyParam,\n    P_OtherParam: :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceAfterColon",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.NEVER",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type    ,\n    P_OtherParam:other_type\n\n  as select from I_AnyView(\n    P_AnyParam  ::P_AnyParam ,\n    P_OtherParam: :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n}",
+   "exp": "define view C_AnyView\n  with parameters\n    P_AnyParam  :any_type,\n    P_OtherParam:other_type\n\n  as select from I_AnyView(\n    P_AnyParam  ::P_AnyParam,\n    P_OtherParam::P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpaceBeforeComma",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.ALWAYS",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type    ,\n    P_OtherParam:other_type\n\n  as select from I_AnyView(\n    P_AnyParam  ::P_AnyParam ,\n    P_OtherParam: :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField   ,\n  key OtherKeyField ,\n\n      AnyValue*2 +OtherValue* 4- ThirdValue as AnyValueField,\n      3*(-2*AnyValue- 4*OtherValue) as OtherValueField,\n\n      concat(AnyText,concat('_' ,OtherText)) as AnyTextField,\n      division(AnyArg *10,OtherArg,2) as ThirdValue,\n      round(AnyValue* 100, 5) as RoundedValue,\n\n      cast(AnyAmount   as abap.curr(23 ,2)) as AnyAmount  ,\n      cast(OtherAmount as abap.curr(23,2)) as OtherAmount ,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity,\n}",
+   "exp": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type    ,\n    P_OtherParam: other_type\n\n  as select from I_AnyView(\n    P_AnyParam  : :P_AnyParam ,\n    P_OtherParam: :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField   ,\n  key OtherKeyField ,\n\n      AnyValue * 2 + OtherValue * 4 - ThirdValue as AnyValueField ,\n      3 * (-2 * AnyValue - 4 * OtherValue) as OtherValueField ,\n\n      concat(AnyText , concat('_' , OtherText)) as AnyTextField ,\n      division(AnyArg * 10 , OtherArg , 2) as ThirdValue ,\n      round(AnyValue * 100 , 5) as RoundedValue ,\n\n      cast(AnyAmount   as abap.curr(23 ,2)) as AnyAmount  ,\n      cast(OtherAmount as abap.curr(23 ,2)) as OtherAmount ,\n      cast(AnyQuantity as abap.quan(18 ,6)) as AnyQuantity ,\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpaceBeforeCommaAsIs",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type    ,\n    P_OtherParam:other_type\n\n  as select from I_AnyView\n\n{\n  key AnyKeyField   ,\n  key OtherKeyField ,\n\n      cast(AnyAmount   as abap.curr(23 ,2)) as AnyAmount  ,\n      cast(OtherAmount as abap.curr(23,2)) as OtherAmount ,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity,\n}",
+   "exp": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type    ,\n    P_OtherParam: other_type\n\n  as select from I_AnyView\n\n{\n  key AnyKeyField   ,\n  key OtherKeyField ,\n\n      cast(AnyAmount   as abap.curr(23 ,2)) as AnyAmount  ,\n      cast(OtherAmount as abap.curr(23,2)) as OtherAmount ,\n      cast(AnyQuantity as abap.quan(18,6)) as AnyQuantity,\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpaceAfterCommaAsIs",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField   ,\n  key OtherKeyField ,\n\n      concat(AnyText,concat('_' ,OtherText)) as AnyTextField,\n      division(AnyArg *10,OtherArg,2) as ThirdValue,\n      round(AnyValue- 100, 5) as RoundedValue,\n\n      cast(AnyAmount   as abap.curr(23 ,2)) as AnyAmount  ,\n      cast(OtherAmount as abap.curr(23,2)) as OtherAmount ,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity,\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,\n  key OtherKeyField,\n\n      concat(AnyText,concat('_',OtherText)) as AnyTextField,\n      division(AnyArg * 10,OtherArg,2) as ThirdValue,\n      round(AnyValue - 100, 5) as RoundedValue,\n\n      cast(AnyAmount   as abap.curr(23,2)) as AnyAmount,\n      cast(OtherAmount as abap.curr(23,2)) as OtherAmount,\n      cast(AnyQuantity as abap.quan(18,6)) as AnyQuantity,\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceAfterComma",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.NEVER",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField   ,\n  key OtherKeyField ,\n\n      concat(AnyText,concat('_' ,OtherText)) as AnyTextField,\n      division(AnyArg *10,OtherArg,2) as ThirdValue,\n      round(AnyValue* 100, 5) as RoundedValue,\n\n      cast(AnyAmount   as abap.curr(23 ,2)) as AnyAmount  ,\n      cast(OtherAmount as abap.curr(23,2)) as OtherAmount ,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity,\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,\n  key OtherKeyField,\n\n      concat(AnyText,concat('_',OtherText)) as AnyTextField,\n      division(AnyArg * 10,OtherArg,2) as ThirdValue,\n      round(AnyValue * 100,5) as RoundedValue,\n\n      cast(AnyAmount   as abap.curr(23,2)) as AnyAmount,\n      cast(OtherAmount as abap.curr(23,2)) as OtherAmount,\n      cast(AnyQuantity as abap.quan(18,6)) as AnyQuantity,\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpaceAfterCommaInAbapTypeOnly",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.NEVER",
+    "SpaceAfterCommaInAbapType": "ChangeType.ALWAYS",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField   ,\n  key OtherKeyField ,\n\n      concat(AnyText,concat('_' ,OtherText)) as AnyTextField,\n      division(AnyArg *10,OtherArg,2) as ThirdValue,\n      round(AnyValue+ 100, 5) as RoundedValue,\n\n      cast(AnyAmount   as abap.curr(23 ,2)) as AnyAmount  ,\n      cast(OtherAmount as abap.curr(23,2)) as OtherAmount ,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity,\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,\n  key OtherKeyField,\n\n      concat(AnyText,concat('_',OtherText)) as AnyTextField,\n      division(AnyArg * 10,OtherArg,2) as ThirdValue,\n      round(AnyValue + 100,5) as RoundedValue,\n\n      cast(AnyAmount   as abap.curr(23, 2)) as AnyAmount,\n      cast(OtherAmount as abap.curr(23, 2)) as OtherAmount,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity,\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpaceAfterCommaInAbapTypeAsIs",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.KEEP_AS_IS",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField   ,\n  key OtherKeyField ,\n\n      concat(AnyText,concat('_' ,OtherText)) as AnyTextField,\n      division(AnyArg *10,OtherArg,2) as ThirdValue,\n      round(AnyValue+ 100, 5) as RoundedValue,\n\n      cast(AnyAmount   as abap.curr(23 ,2)) as AnyAmount  ,\n      cast(OtherAmount as abap.curr(23,2)) as OtherAmount ,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity,\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyKeyField,\n  key OtherKeyField,\n\n      concat(AnyText, concat('_', OtherText)) as AnyTextField,\n      division(AnyArg * 10, OtherArg, 2) as ThirdValue,\n      round(AnyValue + 100, 5) as RoundedValue,\n\n      cast(AnyAmount   as abap.curr(23,2)) as AnyAmount,\n      cast(OtherAmount as abap.curr(23,2)) as OtherAmount,\n      cast(AnyQuantity as abap.quan(18, 6)) as AnyQuantity,\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSpaceAroundArithmeticOpsAsIs",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.KEEP_AS_IS"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyValue*2 +OtherValue* 4- ThirdValue as AnyValueField,\n      3*(-2*AnyValue- 4*OtherValue) as OtherValueField,\n\n      concat(AnyText,concat('_' ,OtherText)) as AnyTextField,\n      division(AnyArg *10,OtherArg,2) as ThirdValue,\n      round(AnyValue/ 100, 5) as RoundedValue\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyValue*2 +OtherValue* 4- ThirdValue as AnyValueField,\n      3*(-2*AnyValue- 4*OtherValue) as OtherValueField,\n\n      concat(AnyText, concat('_', OtherText)) as AnyTextField,\n      division(AnyArg *10, OtherArg, 2) as ThirdValue,\n      round(AnyValue/ 100, 5) as RoundedValue\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceAroundArithmeticOps",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.NEVER"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyValue*2 +OtherValue* 4- ThirdValue as AnyValueField,\n      3*(-2*AnyValue- 4*OtherValue) as OtherValueField,\n\n      concat(AnyText,concat('_' ,OtherText)) as AnyTextField,\n      division(AnyArg *10,OtherArg,2) as ThirdValue,\n      round(AnyValue / 100, 5) as RoundedValue\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n{\n  key AnyValue*2+OtherValue*4-ThirdValue as AnyValueField,\n      3*(-2*AnyValue-4*OtherValue) as OtherValueField,\n\n      concat(AnyText, concat('_', OtherText)) as AnyTextField,\n      division(AnyArg*10, OtherArg, 2) as ThirdValue,\n      round(AnyValue / 100, 5) as RoundedValue\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpecialCasesOfComments",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "--comment\n//comment\ndefine view C_AnyView\n  as select from I_AnyView\n\n{\n  //// comment with double //\n  -----------------------------\n  key AnyKeyField,//\n  key OtherKeyField--\n}",
+   "exp": "-- comment\n//comment\ndefine view C_AnyView\n  as select from I_AnyView\n\n{\n  //// comment with double //\n  -----------------------------\n  key AnyKeyField, //\n  key OtherKeyField --\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpecialCasesOfCommas",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type\n    ,P_OtherParam:other_type\n\n  as select from I_AnyView(\n    P_AnyParam  ::P_AnyParam\n    , P_OtherParam: :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n  ,key OtherKeyField\n  ,\n      concat(AnyText\n             ,concat('_' ,\n                     OtherText)) as AnyTextField\n}",
+   "exp": "define view C_AnyView\n  with parameters\n    P_AnyParam  : any_type\n    , P_OtherParam: other_type\n\n  as select from I_AnyView(\n    P_AnyParam  : :P_AnyParam\n    , P_OtherParam: :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n  , key OtherKeyField\n  ,\n      concat(AnyText\n             , concat('_',\n                      OtherText)) as AnyTextField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpecialCasesOfColons",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  with parameters\n    P_AnyParam\n    : any_type,\n    P_OtherParam:\n    other_type\n\n  as select from I_AnyView(\n    P_AnyParam\n    ::P_AnyParam,\n    P_OtherParam:\n    :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n}",
+   "exp": "define view C_AnyView\n  with parameters\n    P_AnyParam\n    : any_type,\n    P_OtherParam:\n    other_type\n\n  as select from I_AnyView(\n    P_AnyParam\n    : :P_AnyParam,\n    P_OtherParam:\n    :P_OtherParam ) as AnyAlias\n\n{\n  key AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceBeforeColonInPathExpr",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.ALWAYS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n  association [1..*] to I_OtherView as _OtherAlias\n    on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField,\n      _OtherAlias[1: AnyField = 10].OtherField as OtherField,\n      _OtherAlias[*: AnyField > 10].ThirdField as ThirdField\n}",
+   "exp": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n  association [1..*] to I_OtherView as _OtherAlias\n    on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField,\n      _OtherAlias[1: AnyField = 10].OtherField as OtherField,\n      _OtherAlias[*: AnyField > 10].ThirdField as ThirdField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpecialCasesOfAsterisk",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n  association [1..*] to I_OtherView as _OtherAlias\n    on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n\n  composition [0..*] of I_ThirdView as _ThirdAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      count(*) as AnyCount,\n      count( * ) as OtherCount,\n      _OtherAlias[*: AnyField = 1].OtherField as OtherField\n}\ngroup by AnyAlias.AnyKeyField",
+   "exp": "define view C_AnyView\n  as select from I_AnyView as AnyAlias\n\n  association [1..*] to I_OtherView as _OtherAlias\n    on AnyAlias.AnyKeyField = _OtherAlias.AnyKeyField\n\n  composition [0..*] of I_ThirdView as _ThirdAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      count(*) as AnyCount,\n      count( * ) as OtherCount,\n      _OtherAlias[*: AnyField = 1].OtherField as OtherField\n}\ngroup by AnyAlias.AnyKeyField",
+   "flags": {}
+  },
+  {
+   "name": "testIdentifiersWithNamespaces",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view entity /ANY/I_AnyView\n  with parameters\n    P_Any : /ANY/any_type\n\n  as select from /ANY/I_OtherView as /ANY/A/l/i/a/s/\n\n  association to /ANY/I_ThirdView as  _/Other/Alias\n  on _/Other/Alias.AnyID = /ANY/A/l/i/a/s/.AnyID\n\n{\n  key  /ANY/A/l/i/a/s/./ANY/Field/ as /ANY/Field/,\n\n      2/ $parameters.P_Any as /ANY/OtherField,\n      1+10* /ANY/A/l/i/a/s/./ANY/ThirdField / 2 as /ANY/ThirdField,\n      1 + 10 * /ANY/FourthField / 2 as /ANY/FourthField/,\n      1+_/Other/Alias./ANY/FifthField/ as /ANY/FifthField/,\n      _/Other/Alias\n}",
+   "exp": "define view entity /ANY/I_AnyView\n  with parameters\n    P_Any : /ANY/any_type\n\n  as select from /ANY/I_OtherView as /ANY/A/l/i/a/s/\n\n  association to /ANY/I_ThirdView as  _/Other/Alias\n  on _/Other/Alias.AnyID = /ANY/A/l/i/a/s/.AnyID\n\n{\n  key  /ANY/A/l/i/a/s/./ANY/Field/ as /ANY/Field/,\n\n      2 / $parameters.P_Any as /ANY/OtherField,\n      1 + 10 * /ANY/A/l/i/a/s/./ANY/ThirdField / 2 as /ANY/ThirdField,\n      1 + 10 * /ANY/FourthField / 2 as /ANY/FourthField/,\n      1 + _/Other/Alias./ANY/FifthField/ as /ANY/FifthField/,\n      _/Other/Alias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testMinusOrPlusSignVersusArithmeticOps",
+   "config": {
+    "SpaceBeforeCommentSign": "ChangeType.ALWAYS",
+    "SpaceAfterCommentSign": "ChangeType.ALWAYS",
+    "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+    "SpaceAfterColon": "ChangeType.ALWAYS",
+    "SpaceBeforeComma": "ChangeType.NEVER",
+    "SpaceAfterComma": "ChangeType.ALWAYS",
+    "SpaceAfterCommaInAbapType": "ChangeType.NEVER",
+    "SpaceAroundArithmeticOps": "ChangeType.ALWAYS"
+   },
+   "src": "define view entity I_AnyView\n  as select from I_OtherView\n\n{\n      -3.5*(-2.5*-5.0)-+5.1 as AnyValue,\n      +3.1*(+2.5*+5.0)+-5.1 as OtherValue,\n}",
+   "exp": "define view entity I_AnyView\n  as select from I_OtherView\n\n{\n      -3.5 * (-2.5 * -5.0) - +5.1 as AnyValue,\n      +3.1 * (+2.5 * +5.0) + -5.1 as OtherValue,\n}",
+   "flags": {}
+  }
+ ]
+}

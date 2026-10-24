@@ -1,0 +1,122 @@
+{
+ "ruleId": "ALIGN_ABAP_DOC",
+ "testClass": "AlignAbapDocTest",
+ "defaults": {
+  "AlignAcrossEmptyLines": true,
+  "AlignAcrossNonEmptyLines": true
+ },
+ "cases": [
+  {
+   "name": "testAlignParametersAndRaising",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossNonEmptyLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Any method description</p>\n    \"!\n    \"! @parameter iv_any_param | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! @parameter iv_other_param | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"! @parameter ev_param_with_long_name | <p class=\"shorttext synchronized\" lang=\"en\">parameter with a long name</p>\n    \"! @parameter et_any_table | <p class=\"shorttext synchronized\" lang=\"en\">any result table</p>\n    \"! @raising cx_any_exception | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    METHODS any_method\n      IMPORTING !iv_any_param            TYPE i\n                !iv_other_param          TYPE string\n      EXPORTING !ev_param_with_long_name TYPE i\n                !et_any_table            TYPE ty_tt_table\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Any method description</p>\n    \"!\n    \"! @parameter iv_any_param            | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! @parameter iv_other_param          | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"! @parameter ev_param_with_long_name | <p class=\"shorttext synchronized\" lang=\"en\">parameter with a long name</p>\n    \"! @parameter et_any_table            | <p class=\"shorttext synchronized\" lang=\"en\">any result table</p>\n    \"! @raising   cx_any_exception        | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    METHODS any_method\n      IMPORTING !iv_any_param            TYPE i\n                !iv_other_param          TYPE string\n      EXPORTING !ev_param_with_long_name TYPE i\n                !et_any_table            TYPE ty_tt_table\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAlignAcrossEmptyLines",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossNonEmptyLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Other method description</p>\n    \"!\n    \"! @parameter iv_any_param | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! @parameter iv_other_parameter | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"!\n    \"! @raising cx_any_exception | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    METHODS other_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Other method description</p>\n    \"!\n    \"! @parameter iv_any_param       | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! @parameter iv_other_parameter | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"!\n    \"! @raising   cx_any_exception   | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    METHODS other_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAlignAcrossNonEmptyLines",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossNonEmptyLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Third method description</p>\n    \"!\n    \"! @parameter iv_any_param | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! Further description of any parameter. This text is not synchronized, but it is displayed in ADT.\n    \"! @parameter iv_other_parameter | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"! Further description of other parameter.\n    \"! @raising cx_any_exception | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    \"! Detailed description of the exception.\n    METHODS third_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Third method description</p>\n    \"!\n    \"! @parameter iv_any_param       | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! Further description of any parameter. This text is not synchronized, but it is displayed in ADT.\n    \"! @parameter iv_other_parameter | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"! Further description of other parameter.\n    \"! @raising   cx_any_exception   | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    \"! Detailed description of the exception.\n    METHODS third_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotAlignAcrossEmptyLines",
+   "config": {
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossNonEmptyLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Other method description</p>\n    \"!\n    \"! @parameter iv_any_param | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! @parameter iv_other_parameter | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"!\n    \"! @raising cx_any_exception | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    METHODS other_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Other method description</p>\n    \"!\n    \"! @parameter iv_any_param | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! @parameter iv_other_parameter | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"!\n    \"! @raising cx_any_exception | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    METHODS other_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDonNotAlignAcrossNonEmptyLines",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossNonEmptyLines": false
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Third method description</p>\n    \"!\n    \"! @parameter iv_any_param | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! Further description of any parameter. This text is not synchronized, but it is displayed in ADT.\n    \"! @parameter iv_other_parameter | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"! Further description of other parameter.\n    \"! @raising cx_any_exception | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    \"! Detailed description of the exception.\n    METHODS third_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Third method description</p>\n    \"!\n    \"! @parameter iv_any_param | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! Further description of any parameter. This text is not synchronized, but it is displayed in ADT.\n    \"! @parameter iv_other_parameter | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"! Further description of other parameter.\n    \"! @raising cx_any_exception | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    \"! Detailed description of the exception.\n    METHODS third_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotAlignIfDocuInNextLine",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossNonEmptyLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Other method description</p>\n    \"!\n    \"! @parameter iv_any_param |\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! @parameter iv_other_parameter |<p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"! @raising cx_any_exception |\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    METHODS other_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Other method description</p>\n    \"!\n    \"! @parameter iv_any_param |\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! @parameter iv_other_parameter |<p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"! @raising cx_any_exception |\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    METHODS other_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotAlignDetachedAbapDoc",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossNonEmptyLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Other method description</p>\n    \"!\n    \"! @parameter iv_any_param | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! @parameter iv_other_parameter | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"! @raising cx_any_exception | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    \" another comment that is NOT ABAP Doc\n    METHODS other_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! <p class=\"shorttext synchronized\" lang=\"en\">Other method description</p>\n    \"!\n    \"! @parameter iv_any_param | <p class=\"shorttext synchronized\" lang=\"en\">any parameter</p>\n    \"! @parameter iv_other_parameter | <p class=\"shorttext synchronized\" lang=\"en\">other parameter</p>\n    \"! @raising cx_any_exception | <p class=\"shorttext synchronized\" lang=\"en\">any exception</p>\n    \" another comment that is NOT ABAP Doc\n    METHODS other_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testOtherAbapDocWithPipe",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossNonEmptyLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \" |\n    \" any | text\n    \" any text with | pipe character inside\n    \" any text ending with pipe character |\n    \" | any text starting with pipe character\n    \"! |\n    \"! any | text\n    \"! any text with | pipe character inside\n    \"! any text ending with pipe character |\n    \"! | any text starting with pipe character\n    METHODS other_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \" |\n    \" any | text\n    \" any text with | pipe character inside\n    \" any text ending with pipe character |\n    \" | any text starting with pipe character\n    \"! |\n    \"! any | text\n    \"! any text with | pipe character inside\n    \"! any text ending with pipe character |\n    \"! | any text starting with pipe character\n    METHODS other_method\n      IMPORTING !iv_any_param   TYPE i\n                !iv_other_param TYPE string\n      RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  }
+ ]
+}

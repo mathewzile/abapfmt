@@ -1,0 +1,161 @@
+{
+ "ruleId": "ALIGN_WITH_SECOND_WORD",
+ "testClass": "AlignWithSecondWordTest",
+ "defaults": {},
+ "cases": [
+  {
+   "name": "testReadTableWith",
+   "config": {},
+   "src": "  METHOD any_method.\n    READ TABLE lth_any_table ASSIGNING <ls_row>\n      WITH TABLE KEY item_id = <ls_item>-item_id.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    READ TABLE lth_any_table ASSIGNING <ls_row>\n         WITH TABLE KEY item_id = <ls_item>-item_id.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLoopAtAssigning",
+   "config": {},
+   "src": "  METHOD any_method.\n    LOOP AT mo_instance->get_all_items( )\n      ASSIGNING FIELD-SYMBOL(<lo_item>).\n      INSERT VALUE #( item_id       = <lo_item>->ms_data-item_id\n                      item_category = if_any_interface=>cos_any_item_category-value )\n        INTO TABLE lth_item.\n    ENDLOOP.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    LOOP AT mo_instance->get_all_items( )\n         ASSIGNING FIELD-SYMBOL(<lo_item>).\n      INSERT VALUE #( item_id       = <lo_item>->ms_data-item_id\n                      item_category = if_any_interface=>cos_any_item_category-value )\n             INTO TABLE lth_item.\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLoopAtWhere",
+   "config": {},
+   "src": "  METHOD any_method.\n    LOOP AT lts_any_table ASSIGNING FIELD-SYMBOL(<ls_row>)\n    WHERE event_date = '20220330'.\n      \" do something\n    ENDLOOP.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    LOOP AT lts_any_table ASSIGNING FIELD-SYMBOL(<ls_row>)\n         WHERE event_date = '20220330'.\n      \" do something\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testReadTableWithInto",
+   "config": {},
+   "src": "  METHOD any_method.\n    READ TABLE lts_table_name\n    WITH TABLE KEY any_component   = if_any_interface=>co_any_constant\n                   other_component = if_any_interface=>co_other_constant\n    INTO DATA(ls_item).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    READ TABLE lts_table_name\n         WITH TABLE KEY any_component   = if_any_interface=>co_any_constant\n                        other_component = if_any_interface=>co_other_constant\n         INTO DATA(ls_item).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDeleteWhere",
+   "config": {},
+   "src": "  METHOD any_method.\n    DELETE lts_any_table\n    WHERE item_key < '20220030000101'\n      AND item_type = 'ABCD'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DELETE lts_any_table\n           WHERE item_key < '20220030000101'\n             AND item_type = 'ABCD'.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCallAndCreateUnchanged",
+   "config": {},
+   "src": "  METHOD any_method.\n    CALL FUNCTION 'DATE_TO_PERIOD_CONVERT'\n      EXPORTING\n        i_date  = iv_date\n      IMPORTING\n        e_buper = ev_period.\n    CREATE OBJECT lo_any_object\n      EXPORTING\n        i_date  = iv_date.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CALL FUNCTION 'DATE_TO_PERIOD_CONVERT'\n      EXPORTING\n        i_date  = iv_date\n      IMPORTING\n        e_buper = ev_period.\n    CREATE OBJECT lo_any_object\n      EXPORTING\n        i_date  = iv_date.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSecondWordOnNextLineUnchanged",
+   "config": {},
+   "src": "  METHOD any_method.\n    IMPORT\n      field TO lv_value\n      FROM DATABASE dtab(al) ID ls_struc-component ACCEPTING PADDING.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IMPORT\n      field TO lv_value\n      FROM DATABASE dtab(al) ID ls_struc-component ACCEPTING PADDING.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCallTransformation",
+   "config": {},
+   "src": "  METHOD any_method.\n    CALL TRANSFORMATION demo_escaping_xml\n     SOURCE text = text\n       RESULT XML xml.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CALL TRANSFORMATION demo_escaping_xml\n         SOURCE text = text\n         RESULT XML xml.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testRaiseExceptionSkipped",
+   "config": {},
+   "src": "  METHOD any_method.\n    RAISE EXCEPTION TYPE cx_any_exception\n      EXPORTING previous = exception.\n\n    RAISE RESUMABLE EXCEPTION TYPE cx_other_exception\n      EXPORTING previous = exception.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    RAISE EXCEPTION TYPE cx_any_exception\n      EXPORTING previous = exception.\n\n    RAISE RESUMABLE EXCEPTION TYPE cx_other_exception\n      EXPORTING previous = exception.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testRaiseShortdumpSkipped",
+   "config": {},
+   "src": "  METHOD any_method.\n    RAISE SHORTDUMP TYPE cx_any_class\n      EXPORTING textid = lc_any_text_id.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    RAISE SHORTDUMP TYPE cx_any_class\n      EXPORTING textid = lc_any_text_id.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testReceiveResultsSkipped",
+   "config": {},
+   "src": "  METHOD any_method.\n    RECEIVE RESULTS FROM FUNCTION 'ANY_FUNCTION' KEEPING TASK\n      IMPORTING  et_any                = lt_any\n                 et_other              = lt_other\n      EXCEPTIONS communication_failure = 1 MESSAGE lv_message\n                 system_failure        = 2 MESSAGE lv_message\n                 OTHERS                = 3.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    RECEIVE RESULTS FROM FUNCTION 'ANY_FUNCTION' KEEPING TASK\n      IMPORTING  et_any                = lt_any\n                 et_other              = lt_other\n      EXCEPTIONS communication_failure = 1 MESSAGE lv_message\n                 system_failure        = 2 MESSAGE lv_message\n                 OTHERS                = 3.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSubmitWithOnSameLine",
+   "config": {},
+   "src": "  METHOD any_method.\n  SUBMIT any_prog WITH par1 IN it_any\n             WITH par2 EQ iv_other\n                 AND RETURN.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  SUBMIT any_prog WITH par1 IN it_any\n                  WITH par2 EQ iv_other\n         AND RETURN.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSubmitWithSelection",
+   "config": {},
+   "src": "  METHOD any_method.\nSUBMIT other_prog WITH SELECTION-TABLE rspar WITH par1 IN it_any\n   WITH par2 EQ iv_other\nWITH selcrit2 BETWEEN 'H' AND 'K'\n  WITH FREE SELECTIONS texpr\n                   AND RETURN.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\nSUBMIT other_prog WITH SELECTION-TABLE rspar WITH par1 IN it_any\n                  WITH par2 EQ iv_other\n                  WITH selcrit2 BETWEEN 'H' AND 'K'\n                  WITH FREE SELECTIONS texpr\n       AND RETURN.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSubmitWithOnNextLine",
+   "config": {},
+   "src": "  METHOD any_method.\n  SUBMIT any_prog\n   WITH par1 IN it_any\n     WITH par2 EQ iv_other\n     AND RETURN.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  SUBMIT any_prog\n         WITH par1 IN it_any\n         WITH par2 EQ iv_other\n         AND RETURN.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

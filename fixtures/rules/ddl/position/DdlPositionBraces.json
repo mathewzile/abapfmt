@@ -1,0 +1,112 @@
+{
+ "ruleId": "DDL_POSITION_BRACES",
+ "testClass": "DdlPositionBracesTest",
+ "defaults": {
+  "BreakBeforeOpeningBrace": "DdlLineBreak.ALWAYS",
+  "OpeningBraceIndent": 0,
+  "BreakBeforeClosingBrace": "DdlLineBreak.ALWAYS",
+  "ClosingBraceIndent": 0,
+  "BreakBeforeFrom": "DdlLineBreakWithoutNever.ALWAYS",
+  "FromIndent": 2
+ },
+ "cases": [
+  {
+   "name": "testAlwaysBreakBeforeBraces",
+   "config": {
+    "BreakBeforeOpeningBrace": "DdlLineBreak.ALWAYS",
+    "OpeningBraceIndent": 0,
+    "BreakBeforeClosingBrace": "DdlLineBreak.ALWAYS",
+    "ClosingBraceIndent": 0,
+    "BreakBeforeFrom": "DdlLineBreakWithoutNever.ALWAYS",
+    "FromIndent": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  {\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n      }\n\nunion all\n  select from I_OtherEntity As OtherAlias {\n  key OtherAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n  }\n\nexcept\n  select from I_ThirdEntity As ThirdAlias\n  {\n  key ThirdAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField }",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}\n\nunion all\n  select from I_OtherEntity As OtherAlias\n{\n  key OtherAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n}\n\nexcept\n  select from I_ThirdEntity As ThirdAlias\n{\n  key ThirdAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepOpeningBraceAsIs",
+   "config": {
+    "BreakBeforeOpeningBrace": "DdlLineBreak.KEEP_AS_IS",
+    "OpeningBraceIndent": 2,
+    "BreakBeforeClosingBrace": "DdlLineBreak.ALWAYS",
+    "ClosingBraceIndent": 0,
+    "BreakBeforeFrom": "DdlLineBreakWithoutNever.ALWAYS",
+    "FromIndent": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  {\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n      }\n\nunion all\n  select from I_OtherEntity As OtherAlias {\n  key OtherAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n  }\n\nexcept\n  select from I_ThirdEntity As ThirdAlias\n  {\n  key ThirdAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField }",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  {\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}\n\nunion all\n  select from I_OtherEntity As OtherAlias {\n  key OtherAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n}\n\nexcept\n  select from I_ThirdEntity As ThirdAlias\n  {\n  key ThirdAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNeverBreakBeforeOpeningBrace",
+   "config": {
+    "BreakBeforeOpeningBrace": "DdlLineBreak.NEVER",
+    "OpeningBraceIndent": 0,
+    "BreakBeforeClosingBrace": "DdlLineBreak.ALWAYS",
+    "ClosingBraceIndent": 0,
+    "BreakBeforeFrom": "DdlLineBreakWithoutNever.ALWAYS",
+    "FromIndent": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  {\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n      }\n\nunion all\n  select from I_OtherEntity As OtherAlias {\n  key OtherAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n  }\n\nexcept\n  select from I_ThirdEntity As ThirdAlias\n  {\n  key ThirdAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField }",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias {\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}\n\nunion all\n  select from I_OtherEntity As OtherAlias {\n  key OtherAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n}\n\nexcept\n  select from I_ThirdEntity As ThirdAlias {\n  key ThirdAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepClosingBraceAsIs",
+   "config": {
+    "BreakBeforeOpeningBrace": "DdlLineBreak.ALWAYS",
+    "OpeningBraceIndent": 0,
+    "BreakBeforeClosingBrace": "DdlLineBreak.KEEP_AS_IS",
+    "ClosingBraceIndent": 2,
+    "BreakBeforeFrom": "DdlLineBreakWithoutNever.ALWAYS",
+    "FromIndent": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  {\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n      }\n\nunion all\n  select from I_OtherEntity As OtherAlias {\n  key OtherAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n  }\n\nexcept\n  select from I_ThirdEntity As ThirdAlias\n  {\n  key ThirdAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField }",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n  }\n\nunion all\n  select from I_OtherEntity As OtherAlias\n{\n  key OtherAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n  }\n\nexcept\n  select from I_ThirdEntity As ThirdAlias\n{\n  key ThirdAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField }",
+   "flags": {}
+  },
+  {
+   "name": "testNeverBreakBeforeClosingBrace",
+   "config": {
+    "BreakBeforeOpeningBrace": "DdlLineBreak.ALWAYS",
+    "OpeningBraceIndent": 0,
+    "BreakBeforeClosingBrace": "DdlLineBreak.NEVER",
+    "ClosingBraceIndent": 4,
+    "BreakBeforeFrom": "DdlLineBreakWithoutNever.ALWAYS",
+    "FromIndent": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  {\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField // comment\n      }\n\nunion all\n  select from I_OtherEntity As OtherAlias {\n  key OtherAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n  }\n\nexcept\n  select from I_ThirdEntity As ThirdAlias\n  {\n  key ThirdAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField }",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField // comment\n    }\n\nunion all\n  select from I_OtherEntity As OtherAlias\n{\n  key OtherAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField }\n\nexcept\n  select from I_ThirdEntity As ThirdAlias\n{\n  key ThirdAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField }",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysBreakBeforeFrom",
+   "config": {
+    "BreakBeforeOpeningBrace": "DdlLineBreak.ALWAYS",
+    "OpeningBraceIndent": 0,
+    "BreakBeforeClosingBrace": "DdlLineBreak.ALWAYS",
+    "ClosingBraceIndent": 0,
+    "BreakBeforeFrom": "DdlLineBreakWithoutNever.ALWAYS",
+    "FromIndent": 2
+   },
+   "src": "define view I_AnyView\n  as select distinct\n    key AnyField,\n        OtherField,\n        ThirdField from I_OtherView",
+   "exp": "define view I_AnyView\n  as select distinct\n    key AnyField,\n        OtherField,\n        ThirdField\n  from I_OtherView",
+   "flags": {}
+  },
+  {
+   "name": "testKeepFromAsIs",
+   "config": {
+    "BreakBeforeOpeningBrace": "DdlLineBreak.ALWAYS",
+    "OpeningBraceIndent": 0,
+    "BreakBeforeClosingBrace": "DdlLineBreak.ALWAYS",
+    "ClosingBraceIndent": 0,
+    "BreakBeforeFrom": "DdlLineBreakWithoutNever.KEEP_AS_IS",
+    "FromIndent": 2
+   },
+   "src": "define view I_AnyView\n  as select distinct\n    key AnyField,\n        OtherField,\n        ThirdField from I_OtherView",
+   "exp": "define view I_AnyView\n  as select distinct\n    key AnyField,\n        OtherField,\n        ThirdField from I_OtherView",
+   "flags": {}
+  }
+ ]
+}

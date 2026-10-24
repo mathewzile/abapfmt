@@ -1,0 +1,60 @@
+{
+ "ruleId": "DDL_POSITION_CLAUSES",
+ "testClass": "DdlPositionClausesTest",
+ "defaults": {
+  "BreakBeforeWhereEtc": "DdlLineBreakWithoutNever.ALWAYS",
+  "WhereEtcIndent": 2,
+  "BreakBeforeUnionEtc": "DdlLineBreakWithoutNever.ALWAYS",
+  "UnionEtcIndent": 0
+ },
+ "cases": [
+  {
+   "name": "testBreakBeforeClauses",
+   "config": {
+    "BreakBeforeWhereEtc": "DdlLineBreakWithoutNever.ALWAYS",
+    "WhereEtcIndent": 2,
+    "BreakBeforeUnionEtc": "DdlLineBreakWithoutNever.ALWAYS",
+    "UnionEtcIndent": 0
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField          as AnyKey,\n      sum(AnyAlias.AnyNumericField) as AnySum,\n      AnyAlias.UnitField            as Unit\n}\n// comment\nwhere AnyAlias.AnyConditionField = 'X'\n  and AnyAlias.AnyCategory       = 'A' group\nby AnyAlias.AnyKeyField,\n   AnyAlias.AnyNumericField,\n   AnyAlias.UnitField having AnyAlias.AnyNumericField > 100\n\nunion all\n  select from I_OtherEntity as OtherAlias\n\n{\n  key OtherAlias.OtherKeyField          as AnyKey,\n      sum(OtherAlias.OtherNumericField) as AnySum,\n      OtherAlias.OtherUnitField         as Unit\n} where OtherAlias.OtherCategory = 'A'\n     or OtherAlias.OtherCategory = 'B'\n\ngroup by OtherAlias.OtherKeyField,\n         OtherAlias.OtherNumericField,\n         OtherAlias.OtherUnitField",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField          as AnyKey,\n      sum(AnyAlias.AnyNumericField) as AnySum,\n      AnyAlias.UnitField            as Unit\n}\n  // comment\n  where AnyAlias.AnyConditionField = 'X'\n    and AnyAlias.AnyCategory       = 'A'\n  group by AnyAlias.AnyKeyField,\n           AnyAlias.AnyNumericField,\n           AnyAlias.UnitField\n  having AnyAlias.AnyNumericField > 100\n\nunion all\n  select from I_OtherEntity as OtherAlias\n\n{\n  key OtherAlias.OtherKeyField          as AnyKey,\n      sum(OtherAlias.OtherNumericField) as AnySum,\n      OtherAlias.OtherUnitField         as Unit\n}\n  where OtherAlias.OtherCategory = 'A'\n     or OtherAlias.OtherCategory = 'B'\n\n  group by OtherAlias.OtherKeyField,\n           OtherAlias.OtherNumericField,\n           OtherAlias.OtherUnitField",
+   "flags": {}
+  },
+  {
+   "name": "testKeepWhereEtcAsIs",
+   "config": {
+    "BreakBeforeWhereEtc": "DdlLineBreakWithoutNever.KEEP_AS_IS",
+    "WhereEtcIndent": 2,
+    "BreakBeforeUnionEtc": "DdlLineBreakWithoutNever.ALWAYS",
+    "UnionEtcIndent": 0
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField          as AnyKey,\n      sum(AnyAlias.AnyNumericField) as AnySum,\n      AnyAlias.UnitField            as Unit\n} where AnyAlias.AnyConditionField = 'X'\n    and AnyAlias.AnyCategory       = 'A' group\nby AnyAlias.AnyKeyField,\n   AnyAlias.AnyNumericField,\n   AnyAlias.UnitField having AnyAlias.AnyNumericField > 100",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField          as AnyKey,\n      sum(AnyAlias.AnyNumericField) as AnySum,\n      AnyAlias.UnitField            as Unit\n} where AnyAlias.AnyConditionField = 'X'\n    and AnyAlias.AnyCategory       = 'A' group by AnyAlias.AnyKeyField,\n                                                  AnyAlias.AnyNumericField,\n                                                  AnyAlias.UnitField having AnyAlias.AnyNumericField > 100",
+   "flags": {}
+  },
+  {
+   "name": "testKeepUnionEtcAsIs",
+   "config": {
+    "BreakBeforeWhereEtc": "DdlLineBreakWithoutNever.ALWAYS",
+    "WhereEtcIndent": 2,
+    "BreakBeforeUnionEtc": "DdlLineBreakWithoutNever.KEEP_AS_IS",
+    "UnionEtcIndent": 0
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField          as AnyKey,\n      sum(AnyAlias.AnyNumericField) as AnySum,\n      AnyAlias.UnitField            as Unit\n}\n\nwhere AnyAlias.AnyConditionField = 'X'\n  and AnyAlias.AnyCategory       = 'A' group\nby AnyAlias.AnyKeyField,\n   AnyAlias.AnyNumericField,\n   AnyAlias.UnitField having AnyAlias.AnyNumericField > 100 union\n   all select from I_OtherEntity as OtherAlias\n\n{\n  key OtherAlias.OtherKeyField          as AnyKey,\n      sum(OtherAlias.OtherNumericField) as AnySum,\n      OtherAlias.OtherUnitField         as Unit\n} where OtherAlias.OtherCategory = 'A'\n     or OtherAlias.OtherCategory = 'B'\n\ngroup by OtherAlias.OtherKeyField,\n         OtherAlias.OtherNumericField,\n         OtherAlias.OtherUnitField",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField          as AnyKey,\n      sum(AnyAlias.AnyNumericField) as AnySum,\n      AnyAlias.UnitField            as Unit\n}\n\n  where AnyAlias.AnyConditionField = 'X'\n    and AnyAlias.AnyCategory       = 'A'\n  group by AnyAlias.AnyKeyField,\n           AnyAlias.AnyNumericField,\n           AnyAlias.UnitField\n  having AnyAlias.AnyNumericField > 100 union all select from I_OtherEntity as OtherAlias\n\n{\n  key OtherAlias.OtherKeyField          as AnyKey,\n      sum(OtherAlias.OtherNumericField) as AnySum,\n      OtherAlias.OtherUnitField         as Unit\n}\n  where OtherAlias.OtherCategory = 'A'\n     or OtherAlias.OtherCategory = 'B'\n\n  group by OtherAlias.OtherKeyField,\n           OtherAlias.OtherNumericField,\n           OtherAlias.OtherUnitField",
+   "flags": {}
+  },
+  {
+   "name": "testIndent",
+   "config": {
+    "BreakBeforeWhereEtc": "DdlLineBreakWithoutNever.ALWAYS",
+    "WhereEtcIndent": 4,
+    "BreakBeforeUnionEtc": "DdlLineBreakWithoutNever.ALWAYS",
+    "UnionEtcIndent": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField          as AnyKey,\n      sum(AnyAlias.AnyNumericField) as AnySum,\n      AnyAlias.UnitField            as Unit\n}\n\nwhere AnyAlias.AnyConditionField = 'X'\n  and AnyAlias.AnyCategory       = 'A' group\nby AnyAlias.AnyKeyField,\n   AnyAlias.AnyNumericField,\n   AnyAlias.UnitField having AnyAlias.AnyNumericField > 100\n\n/* multi-line\n   comment */\nunion all\n  select from I_OtherEntity as OtherAlias\n\n{\n  key OtherAlias.OtherKeyField          as AnyKey,\n      sum(OtherAlias.OtherNumericField) as AnySum,\n      OtherAlias.OtherUnitField         as Unit\n} where OtherAlias.OtherCategory = 'A'\n     or OtherAlias.OtherCategory = 'B'\n\ngroup by OtherAlias.OtherKeyField,\n         OtherAlias.OtherNumericField,\n         OtherAlias.OtherUnitField",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField          as AnyKey,\n      sum(AnyAlias.AnyNumericField) as AnySum,\n      AnyAlias.UnitField            as Unit\n}\n\n    where AnyAlias.AnyConditionField = 'X'\n      and AnyAlias.AnyCategory       = 'A'\n    group by AnyAlias.AnyKeyField,\n             AnyAlias.AnyNumericField,\n             AnyAlias.UnitField\n    having AnyAlias.AnyNumericField > 100\n\n  /* multi-line\n     comment */\n  union all\n  select from I_OtherEntity as OtherAlias\n\n{\n  key OtherAlias.OtherKeyField          as AnyKey,\n      sum(OtherAlias.OtherNumericField) as AnySum,\n      OtherAlias.OtherUnitField         as Unit\n}\n    where OtherAlias.OtherCategory = 'A'\n       or OtherAlias.OtherCategory = 'B'\n\n    group by OtherAlias.OtherKeyField,\n             OtherAlias.OtherNumericField,\n             OtherAlias.OtherUnitField",
+   "flags": {}
+  }
+ ]
+}

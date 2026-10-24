@@ -1,0 +1,917 @@
+{
+ "ruleId": "ALIGN_METHODS_DECLARATION",
+ "testClass": "AlignMethodsDeclarationTest",
+ "defaults": {
+  "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+  "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+  "ContinueAfterAccess": "ChangeType.ALWAYS",
+  "FillPercentageToJustifyOwnColumn": 40,
+  "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+  "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+  "AlignAcrossEmptyLines": true,
+  "AlignAcrossCommentLines": false,
+  "SeparateWithEmptyLine": true
+ },
+ "cases": [
+  {
+   "name": "testNonChains",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING\n        !iv_any_param TYPE i OPTIONAL\n        !iv_other_param TYPE string DEFAULT 'abc'\n      EXPORTING\n        !ev_any_result TYPE i\n        !ev_other_result TYPE string\n      RAISING\n        !cx_any_exception\n        !cx_other_exception.\n\n    METHODS other_method IMPORTING !iv_any_param TYPE i OPTIONAL\n                                   !iv_other_param TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING !iv_any_param    TYPE i      OPTIONAL\n                !iv_other_param  TYPE string DEFAULT 'abc'\n      EXPORTING !ev_any_result   TYPE i\n                !ev_other_result TYPE string\n      RAISING   !cx_any_exception\n                !cx_other_exception.\n\n    METHODS other_method IMPORTING !iv_any_param    TYPE i      OPTIONAL\n                                   !iv_other_param  TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result   TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING   !cx_any_exception.\n\n    METHODS set_value          IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value  RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value\n      RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testChains",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      any_chained_method\n        IMPORTING\n          !iv_any_param TYPE i OPTIONAL\n          !iv_other_param TYPE string DEFAULT 'abc'\n        RAISING\n          !cx_any_exception,\n\n      other_chained_method\n        IMPORTING\n          !it_source_table TYPE ty_tt_any OPTIONAL\n          !iv_name TYPE string\n        CHANGING\n          !cts_result_table TYPE ty_ts_any.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      any_chained_method\n        IMPORTING !iv_any_param   TYPE i      OPTIONAL\n                  !iv_other_param TYPE string DEFAULT 'abc'\n        RAISING   !cx_any_exception,\n\n      other_chained_method\n        IMPORTING !it_source_table  TYPE ty_tt_any OPTIONAL\n                  !iv_name          TYPE string\n        CHANGING  !cts_result_table TYPE ty_ts_any.\n\n    METHODS: set_value_chained          IMPORTING !iv_new_value    TYPE i,\n             get_current_value_chained  RETURNING VALUE(rv_result) TYPE i,\n             get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n\n      get_max_value_chained\n        RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testChainMixWithAndWithoutParams",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: short_name IMPORTING !iv_new_value TYPE i,\n      very_long_method_name,\n      short_name_2 RETURNING VALUE(rv_value) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: short_name   IMPORTING !iv_new_value   TYPE i,\n             very_long_method_name,\n             short_name_2 RETURNING VALUE(rv_value) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAlwaysContinueAfterKeyword",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      any_chained_method\n        IMPORTING\n          !iv_any_param TYPE i OPTIONAL\n          !iv_other_param TYPE string DEFAULT 'abc'\n        RAISING\n          !cx_any_exception,\n\n      other_chained_method\n        IMPORTING\n          !it_source_table TYPE ty_tt_any OPTIONAL\n          !iv_name TYPE string\n        CHANGING\n          !cts_result_table TYPE ty_ts_any.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: any_chained_method\n      IMPORTING !iv_any_param   TYPE i      OPTIONAL\n                !iv_other_param TYPE string DEFAULT 'abc'\n      RAISING   !cx_any_exception,\n\n      other_chained_method\n        IMPORTING !it_source_table  TYPE ty_tt_any OPTIONAL\n                  !iv_name          TYPE string\n        CHANGING  !cts_result_table TYPE ty_ts_any.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNeverContinueAfterKeyword",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.NEVER",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING\n        !iv_any_param TYPE i OPTIONAL\n        !iv_other_param TYPE string DEFAULT 'abc'\n      EXPORTING\n        !ev_any_result TYPE i\n        !ev_other_result TYPE string\n      RAISING\n        !cx_any_exception.\n\n    METHODS other_method IMPORTING !iv_any_param TYPE i OPTIONAL\n                                   !iv_other_param TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS\n      any_method\n        IMPORTING !iv_any_param    TYPE i      OPTIONAL\n                  !iv_other_param  TYPE string DEFAULT 'abc'\n        EXPORTING !ev_any_result   TYPE i\n                  !ev_other_result TYPE string\n        RAISING   !cx_any_exception.\n\n    METHODS\n      other_method IMPORTING !iv_any_param    TYPE i      OPTIONAL\n                             !iv_other_param  TYPE string DEFAULT 'abc'\n                   EXPORTING !ev_any_result   TYPE i\n                             !ev_other_result TYPE string\n                   RAISING   !cx_any_exception.\n\n    METHODS set_value          IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value  RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS\n      get_max_value\n        RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAlwaysContinueAfterMethodName",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING\n        !iv_any_param TYPE i OPTIONAL\n        !iv_other_param TYPE string DEFAULT 'abc'\n      EXPORTING\n        !ev_any_result TYPE i\n        !ev_other_result TYPE string\n      RAISING\n        !cx_any_exception.\n\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method IMPORTING !iv_any_param    TYPE i      OPTIONAL\n                                       !iv_other_param  TYPE string DEFAULT 'abc'\n                             EXPORTING !ev_any_result   TYPE i\n                                       !ev_other_result TYPE string\n                             RAISING   !cx_any_exception.\n\n    METHODS set_value          IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value  RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value      RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNeverContinueAfterMethodName",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.NEVER",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS other_method IMPORTING !iv_any_param TYPE i OPTIONAL\n                                   !iv_other_param TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS other_method\n      IMPORTING !iv_any_param    TYPE i      OPTIONAL\n                !iv_other_param  TYPE string DEFAULT 'abc'\n      EXPORTING !ev_any_result   TYPE i\n                !ev_other_result TYPE string\n      RAISING   !cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testKeepLineBreaksAfterAccessNonChains",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.KEEP_AS_IS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING\n        !iv_any_param TYPE i OPTIONAL\n        !iv_other_param TYPE string DEFAULT 'abc'\n      EXPORTING\n        !ev_any_result TYPE i\n        !ev_other_result TYPE string\n      RAISING\n        !cx_any_exception.\n\n    METHODS other_method IMPORTING !iv_any_param TYPE i OPTIONAL\n                                   !iv_other_param TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING\n        !iv_any_param    TYPE i      OPTIONAL\n        !iv_other_param  TYPE string DEFAULT 'abc'\n      EXPORTING\n        !ev_any_result   TYPE i\n        !ev_other_result TYPE string\n      RAISING\n        !cx_any_exception.\n\n    METHODS other_method IMPORTING !iv_any_param    TYPE i      OPTIONAL\n                                   !iv_other_param  TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result   TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING   !cx_any_exception.\n\n    METHODS set_value          IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value  RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testKeepLineBreaksAfterAccessChains",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.KEEP_AS_IS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": false
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      any_chained_method\n        IMPORTING\n          !iv_any_param TYPE i OPTIONAL\n          !iv_other_param TYPE string DEFAULT 'abc'\n        RAISING\n          !cx_any_exception,\n\n      other_chained_method\n        IMPORTING\n          !it_source_table TYPE ty_tt_any OPTIONAL\n          !iv_name TYPE string\n        CHANGING\n          !cts_result_table TYPE ty_ts_any.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      any_chained_method\n        IMPORTING\n          !iv_any_param   TYPE i      OPTIONAL\n          !iv_other_param TYPE string DEFAULT 'abc'\n        RAISING\n          !cx_any_exception,\n\n      other_chained_method\n        IMPORTING\n          !it_source_table  TYPE ty_tt_any OPTIONAL\n          !iv_name          TYPE string\n        CHANGING\n          !cts_result_table TYPE ty_ts_any.\n\n    METHODS: set_value_chained          IMPORTING !iv_new_value    TYPE i,\n             get_current_value_chained  RETURNING VALUE(rv_result) TYPE i,\n             get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNeverContinueAfterAccess",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.NEVER",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS other_method IMPORTING !iv_any_param TYPE i OPTIONAL\n                                   !iv_other_param TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS other_method IMPORTING\n                           !iv_any_param    TYPE i      OPTIONAL\n                           !iv_other_param  TYPE string DEFAULT 'abc'\n                         EXPORTING\n                           !ev_any_result   TYPE i\n                           !ev_other_result TYPE string\n                         RAISING\n                           !cx_any_exception.\n\n    METHODS set_value          IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value  RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testHighRequiredFillRatio",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 80,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING\n        !iv_any_param TYPE i OPTIONAL\n        !iv_other_param TYPE string DEFAULT 'abc'\n      EXPORTING\n        !ev_any_result TYPE i\n        !ev_other_result TYPE string\n      RAISING\n        !cx_any_exception.\n\n    METHODS other_method IMPORTING !iv_any_param TYPE i OPTIONAL\n                                   !iv_other_param TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n\n    METHODS:\n      any_chained_method\n        IMPORTING\n          !iv_any_param TYPE i OPTIONAL\n          !iv_other_param TYPE string DEFAULT 'abc'\n        RAISING\n          !cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING !iv_any_param    TYPE i OPTIONAL\n                !iv_other_param  TYPE string DEFAULT 'abc'\n      EXPORTING !ev_any_result   TYPE i\n                !ev_other_result TYPE string\n      RAISING   !cx_any_exception.\n\n    METHODS other_method IMPORTING !iv_any_param    TYPE i OPTIONAL\n                                   !iv_other_param  TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result   TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING   !cx_any_exception.\n\n    METHODS:\n      any_chained_method\n        IMPORTING !iv_any_param   TYPE i      OPTIONAL\n                  !iv_other_param TYPE string DEFAULT 'abc'\n        RAISING   !cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testCreateOneLinersNonChained",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.CREATE",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value          IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value  RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value      RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testCreateOneLinersChained",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.CREATE",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: set_value_chained          IMPORTING !iv_new_value    TYPE i,\n             get_current_value_chained  RETURNING VALUE(rv_result) TYPE i,\n             get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n             get_max_value_chained      RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDissolveOneLiners",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.NEVER",
+    "ContinueAfterAccess": "ChangeType.NEVER",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.SAME_AS_MULTI_LINERS",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": false
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value\n      IMPORTING\n        !iv_new_value TYPE i.\n    METHODS get_current_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n    METHODS get_previous_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained\n      IMPORTING\n        !iv_new_value TYPE i,\n      get_current_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i,\n      get_previous_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDissolveOneLinersEmptyLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.NEVER",
+    "ContinueAfterAccess": "ChangeType.NEVER",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.SAME_AS_MULTI_LINERS",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value\n      IMPORTING\n        !iv_new_value TYPE i.\n\n    METHODS get_current_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS get_previous_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained\n      IMPORTING\n        !iv_new_value TYPE i,\n\n      get_current_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i,\n\n      get_previous_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i,\n\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotAlignConsecutiveOneLiners",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.NEVER",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_previous_value_chained RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_previous_value_chained RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAlignAcrossEmptyLinesAndComments",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.CREATE",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    \" comment\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\n*   comment\n    METHODS: set_price IMPORTING !iv_price TYPE i,\n      get_price RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS  set_value                  IMPORTING !iv_new_value    TYPE i.\n    METHODS  get_current_value          RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS  get_previous_value         RETURNING VALUE(rv_result) TYPE i.\n    \" comment\n    METHODS  get_max_value              RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained          IMPORTING !iv_new_value    TYPE i,\n             get_current_value_chained  RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n             get_max_value_chained      RETURNING VALUE(rv_result) TYPE i.\n*   comment\n    METHODS: set_price                  IMPORTING !iv_price        TYPE i,\n             get_price                  RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotAlignAcrossComments",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.CREATE",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    \" comment\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\n*   comment\n    METHODS: set_price IMPORTING !iv_price TYPE i,\n      get_price RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value          IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value  RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    \" comment\n    METHODS  get_max_value              RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained          IMPORTING !iv_new_value    TYPE i,\n             get_current_value_chained  RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n             get_max_value_chained      RETURNING VALUE(rv_result) TYPE i.\n*   comment\n    METHODS: set_price IMPORTING !iv_price        TYPE i,\n             get_price RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotAlignAcrossEmptyLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.CREATE",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    \" comment\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\n*   comment\n    METHODS: set_price IMPORTING !iv_price TYPE i,\n      get_price RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value         IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    \" comment\n    METHODS get_max_value      RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained         IMPORTING !iv_new_value    TYPE i,\n             get_current_value_chained RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n             get_max_value_chained      RETURNING VALUE(rv_result) TYPE i.\n*   comment\n    METHODS: set_price IMPORTING !iv_price        TYPE i,\n             get_price RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotAlignAcrossEmptyLinesOrComments",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.CREATE",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    \" comment\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\n*   comment\n    METHODS: set_price IMPORTING !iv_price TYPE i,\n      get_price RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value         IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    \" comment\n    METHODS get_max_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: set_value_chained         IMPORTING !iv_new_value    TYPE i,\n             get_current_value_chained RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS: get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n             get_max_value_chained      RETURNING VALUE(rv_result) TYPE i.\n*   comment\n    METHODS: set_price IMPORTING !iv_price        TYPE i,\n             get_price RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testCommentAlignment",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.KEEP_AS_IS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS\n\" comment A\n      get_max_value\n\" comment B\n        RETURNING\n\" comment C\n          VALUE(rv_result) TYPE i\n\" comment D\n        RAISING\n\" comment E\n          cx_any_exception.\n\n    CLASS-METHODS:\n\" comment A\n      get_min_value\n\" comment B\n        RETURNING\n\" comment C\n          VALUE(rv_result) TYPE i\n\" comment D\n        RAISING\n\" comment E\n          cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS\n      \" comment A\n      get_max_value\n        \" comment B\n        RETURNING\n          \" comment C\n          VALUE(rv_result) TYPE i\n        \" comment D\n        RAISING\n          \" comment E\n          cx_any_exception.\n\n    CLASS-METHODS:\n      \" comment A\n      get_min_value\n        \" comment B\n        RETURNING\n          \" comment C\n          VALUE(rv_result) TYPE i\n        \" comment D\n        RAISING\n          \" comment E\n          cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testContinueLineWithComments",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method \" comment A\n      IMPORTING \" comment B\n        !iv_any_param TYPE i OPTIONAL \" comment C\n        !iv_other_param TYPE string DEFAULT 'abc'\n  \" comment D\n      EXPORTING\n  \" comment E\n        !ev_any_result TYPE i\n        !ev_other_result TYPE string\n      RAISING\n        !cx_any_exception.\n\n    METHODS \" comment A\n      get_max_value \" comment B\n        RETURNING \" comment C\n          VALUE(rv_result) TYPE i.\n\n    METHODS: \" comment A\n      any_chained_method \" comment B\n        IMPORTING \" comment C\n          !iv_any_param TYPE i OPTIONAL \" comment D\n          !iv_other_param TYPE string DEFAULT 'abc'\n* comment E\n        RAISING\n* comment F\n          !cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method \" comment A\n                             IMPORTING \" comment B\n                                       !iv_any_param    TYPE i      OPTIONAL \" comment C\n                                       !iv_other_param  TYPE string DEFAULT 'abc'\n                             \" comment D\n                             EXPORTING\n                                       \" comment E\n                                       !ev_any_result   TYPE i\n                                       !ev_other_result TYPE string\n                             RAISING   !cx_any_exception.\n\n    METHODS \" comment A\n            get_max_value \" comment B\n                          RETURNING \" comment C\n                                    VALUE(rv_result) TYPE i.\n\n    METHODS: \" comment A\n             any_chained_method \" comment B\n                                IMPORTING \" comment C\n                                          !iv_any_param   TYPE i      OPTIONAL \" comment D\n                                          !iv_other_param TYPE string DEFAULT 'abc'\n* comment E\n                                RAISING\n* comment F\n                                          !cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testOneLinersAfterChainWithComment",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: \" comment\n      any_method RETURNING VALUE(rv_any) TYPE abap_bool,\n      other_method RETURNING VALUE(rv_other) TYPE i,\n      method_with_long_name RETURNING VALUE(rv_third) TYPE string.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: \" comment\n      any_method            RETURNING VALUE(rv_any)   TYPE abap_bool,\n      other_method          RETURNING VALUE(rv_other) TYPE i,\n      method_with_long_name RETURNING VALUE(rv_third) TYPE string.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testMultipleExceptionsInSameLine",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n    IMPORTING\n    !iv_any_param TYPE i\n    RAISING\n    cx_any_exception RESUMABLE(cx_other_exception) cx_third_exception.\n\n    CLASS-METHODS other_method\n    IMPORTING\n    !iv_any_param TYPE i\n    RAISING\n    RESUMABLE(cx_any_exception) cx_other_exception\n    cx_third_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING !iv_any_param TYPE i\n      RAISING   cx_any_exception RESUMABLE(cx_other_exception) cx_third_exception.\n\n    CLASS-METHODS other_method\n      IMPORTING !iv_any_param TYPE i\n      RAISING   RESUMABLE(cx_any_exception) cx_other_exception\n                cx_third_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testMethodsForTesting",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ALL_TABULAR",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "    METHODS any_method\n      FOR TESTING\n      RAISING\n        cx_any_exception.\n\n    METHODS: other_method FOR TESTING\n        RAISING cx_any_exception,\n      third_method FOR TESTING\n        RAISING cx_any_exception.",
+   "exp": "    METHODS any_method\n      FOR TESTING RAISING cx_any_exception.\n\n    METHODS: other_method FOR TESTING RAISING cx_any_exception,\n             third_method FOR TESTING RAISING cx_any_exception.",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignClassMethodsWithMethods",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS set_value_static IMPORTING !iv_new_value TYPE i.\n    CLASS-METHODS get_current_value_static RETURNING VALUE(rv_result) TYPE i.\n    CLASS-METHODS get_previous_value_static RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS set_value_static          IMPORTING !iv_new_value    TYPE i.\n    CLASS-METHODS get_current_value_static  RETURNING VALUE(rv_result) TYPE i.\n    CLASS-METHODS get_previous_value_static RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS set_value          IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value  RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAlignConsecutiveTabular",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ALL_TABULAR",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS other_method IMPORTING !iv_any_param TYPE i OPTIONAL\n                                   !iv_other_param TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name TYPE i\n                         EXPORTING ev_any_result TYPE i\n                         CHANGING ets_any_table_with_long_name TYPE ty_ts_table\n                         RAISING cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS other_method                IMPORTING !iv_any_param                TYPE i OPTIONAL\n                                                  !iv_other_param              TYPE string DEFAULT 'abc'\n                                        EXPORTING !ev_any_result               TYPE i\n                                                  !ev_other_result             TYPE string\n                                        RAISING   !cx_any_exception.\n\n    METHODS set_value                   IMPORTING !iv_new_value                TYPE i.\n    METHODS get_current_value           RETURNING VALUE(rv_result)             TYPE i.\n    METHODS get_previous_value          RETURNING VALUE(rv_result)             TYPE i.\n\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name  TYPE i\n                                        EXPORTING ev_any_result                TYPE i\n                                        CHANGING  ets_any_table_with_long_name TYPE ty_ts_table\n                                        RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAlignConsecutiveTabularAcrossComment",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ALL_TABULAR",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS cl_any_class DEFINITION FINAL.\n  PUBLIC SECTION.\n    \" comment on other method\n    METHODS other_method IMPORTING !iv_any_param TYPE i OPTIONAL\n                                   !iv_other_param TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n\n    \" comment on one-liners\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    \"! comment on third method\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name TYPE i\n                         EXPORTING ev_any_result TYPE i\n                         CHANGING ets_any_table_with_long_name TYPE ty_ts_table\n                         RAISING cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS cl_any_class DEFINITION FINAL.\n  PUBLIC SECTION.\n    \" comment on other method\n    METHODS other_method                IMPORTING !iv_any_param                TYPE i OPTIONAL\n                                                  !iv_other_param              TYPE string DEFAULT 'abc'\n                                        EXPORTING !ev_any_result               TYPE i\n                                                  !ev_other_result             TYPE string\n                                        RAISING   !cx_any_exception.\n\n    \" comment on one-liners\n    METHODS set_value                   IMPORTING !iv_new_value                TYPE i.\n    METHODS get_current_value           RETURNING VALUE(rv_result)             TYPE i.\n    METHODS get_previous_value          RETURNING VALUE(rv_result)             TYPE i.\n\n    \"! comment on third method\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name  TYPE i\n                                        EXPORTING ev_any_result                TYPE i\n                                        CHANGING  ets_any_table_with_long_name TYPE ty_ts_table\n                                        RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testCreateTabularAndAlignAll",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ALL_TABULAR",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS:\n      any_chained_method\n        IMPORTING\n          !iv_any_param TYPE i OPTIONAL\n          !iv_other_param TYPE string DEFAULT 'abc'\n        RAISING\n          !cx_any_exception,\n      other_chained_method\n        IMPORTING\n          !it_source_table TYPE ty_tt_any OPTIONAL\n          !iv_name TYPE string\n        CHANGING\n          !cts_result_table TYPE ty_ts_any.\n\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS  get_max_value              RETURNING VALUE(rv_result)  TYPE i.\n\n    METHODS: any_chained_method         IMPORTING !iv_any_param     TYPE i OPTIONAL\n                                                  !iv_other_param   TYPE string DEFAULT 'abc'\n                                        RAISING   !cx_any_exception,\n\n             other_chained_method       IMPORTING !it_source_table  TYPE ty_tt_any OPTIONAL\n                                                  !iv_name          TYPE string\n                                        CHANGING  !cts_result_table TYPE ty_ts_any.\n\n    METHODS: set_value_chained          IMPORTING !iv_new_value     TYPE i,\n             get_current_value_chained  RETURNING VALUE(rv_result)  TYPE i,\n             get_previous_value_chained RETURNING VALUE(rv_result)  TYPE i,\n             get_max_value_chained      RETURNING VALUE(rv_result)  TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testSeparateWithEmptyLine",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.KEEP_AS_IS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING\n        !iv_any_param TYPE i OPTIONAL\n      EXPORTING\n        !ev_any_result TYPE i\n      RAISING\n        !cx_any_exception.\n    METHODS other_method EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name TYPE i\n                         CHANGING ets_any_table_with_long_name TYPE ty_ts_table\n                         RAISING cx_any_exception.\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n    METHODS:\n      any_chained_method\n        IMPORTING\n          !iv_any_param TYPE i OPTIONAL\n        RAISING\n          !cx_any_exception,\n      other_chained_method\n        IMPORTING\n          !it_source_table TYPE ty_tt_any OPTIONAL\n          !iv_name TYPE string\n        CHANGING\n          !cts_result_table TYPE ty_ts_any.\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CLASS-METHODS any_method\n      IMPORTING\n        !iv_any_param  TYPE i OPTIONAL\n      EXPORTING\n        !ev_any_result TYPE i\n      RAISING\n        !cx_any_exception.\n\n    METHODS other_method EXPORTING !ev_any_result   TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING   !cx_any_exception.\n\n    METHODS set_value         IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name  TYPE i\n                                        CHANGING  ets_any_table_with_long_name TYPE ty_ts_table\n                                        RAISING   cx_any_exception.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS:\n      any_chained_method\n        IMPORTING\n          !iv_any_param TYPE i OPTIONAL\n        RAISING\n          !cx_any_exception,\n\n      other_chained_method\n        IMPORTING\n          !it_source_table  TYPE ty_tt_any OPTIONAL\n          !iv_name          TYPE string\n        CHANGING\n          !cts_result_table TYPE ty_ts_any.\n\n    METHODS: set_value_chained          IMPORTING !iv_new_value    TYPE i,\n             get_current_value_chained  RETURNING VALUE(rv_result) TYPE i,\n             get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotSeparateForTestingWithEmptyLine",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.KEEP_AS_IS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS other_method EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n    METHODS any_test_method\n      FOR TESTING.\n    METHODS other_test_method\n      FOR TESTING RAISING cx_any_exception.\n    METHODS third_test_method\n      FOR TESTING.\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS other_method EXPORTING !ev_any_result   TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING   !cx_any_exception.\n\n    METHODS any_test_method\n      FOR TESTING.\n    METHODS other_test_method\n      FOR TESTING RAISING cx_any_exception.\n    METHODS third_test_method\n      FOR TESTING.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotSeparateRedefinitionWithEmptyLine",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.KEEP_AS_IS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS other_method EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n    METHODS any_redefined_method\n      REDEFINITION.\n    METHODS other_redefined_method\n      FINAL REDEFINITION.\n    METHODS third_redefined_method\n      REDEFINITION.\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS other_method EXPORTING !ev_any_result   TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING   !cx_any_exception.\n\n    METHODS any_redefined_method\n      REDEFINITION.\n    METHODS other_redefined_method\n      FINAL REDEFINITION.\n    METHODS third_redefined_method\n      REDEFINITION.\n\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testSeparateWithEmptyLineBeforeComment",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.KEEP_AS_IS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! ABAP Doc comment\n    CLASS-METHODS any_method\n      IMPORTING\n        !iv_any_param TYPE i OPTIONAL\n      EXPORTING\n        !ev_any_result TYPE i\n      RAISING\n        !cx_any_exception.\n*   asterisk comment\n*   more asterisk comment\n    METHODS other_method EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n    \"! ABAP Doc comment\n    \"! more ABAP Doc comment\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    \"! ABAP Doc comment\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    \" normal comment which is NOT attached to the next method\n\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name TYPE i\n                         \" comment on parameter\n                         CHANGING ets_any_table_with_long_name TYPE ty_ts_table\n                         RAISING cx_any_exception.\n    \" normal comment\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n    METHODS:\n      \" normal comment\n      any_chained_method\n        IMPORTING\n          !iv_any_param TYPE i OPTIONAL\n        RAISING\n          !cx_any_exception,\n      \"! ABAP Doc comment\n      other_chained_method\n        IMPORTING\n          !it_source_table TYPE ty_tt_any OPTIONAL\n          !iv_name TYPE string\n        CHANGING\n          !cts_result_table TYPE ty_ts_any.\n    METHODS: set_value_chained IMPORTING !iv_new_value TYPE i,\n      get_current_value_chained RETURNING VALUE(rv_result) TYPE i,\n      get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n*     asterisk comment\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    \"! ABAP Doc comment\n    CLASS-METHODS any_method\n      IMPORTING\n        !iv_any_param  TYPE i OPTIONAL\n      EXPORTING\n        !ev_any_result TYPE i\n      RAISING\n        !cx_any_exception.\n\n*   asterisk comment\n*   more asterisk comment\n    METHODS other_method EXPORTING !ev_any_result   TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING   !cx_any_exception.\n\n    \"! ABAP Doc comment\n    \"! more ABAP Doc comment\n    METHODS set_value         IMPORTING !iv_new_value    TYPE i.\n    \"! ABAP Doc comment\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    \" normal comment which is NOT attached to the next method\n\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name  TYPE i\n                                        \" comment on parameter\n                                        CHANGING  ets_any_table_with_long_name TYPE ty_ts_table\n                                        RAISING   cx_any_exception.\n\n    \" normal comment\n    METHODS get_max_value\n      RETURNING\n        VALUE(rv_result) TYPE i.\n\n    METHODS:\n      \" normal comment\n      any_chained_method\n        IMPORTING\n          !iv_any_param TYPE i OPTIONAL\n        RAISING\n          !cx_any_exception,\n\n      \"! ABAP Doc comment\n      other_chained_method\n        IMPORTING\n          !it_source_table  TYPE ty_tt_any OPTIONAL\n          !iv_name          TYPE string\n        CHANGING\n          !cts_result_table TYPE ty_ts_any.\n\n    METHODS: set_value_chained          IMPORTING !iv_new_value    TYPE i,\n             get_current_value_chained  RETURNING VALUE(rv_result) TYPE i,\n             get_previous_value_chained RETURNING VALUE(rv_result) TYPE i,\n\n*     asterisk comment\n      get_max_value_chained\n        RETURNING\n          VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testForTestingAndRedefinitionAlignOneLiners",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_test_method\n      FOR TESTING RAISING cx_any_exception.\n    METHODS other_test_method\n      FOR TESTING.\n\n    METHODS other_method IMPORTING !iv_any_param TYPE i OPTIONAL\n                                   !iv_other_param TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n\n    METHODS third_test_method FOR TESTING.\n    METHODS fourth_test_method\n      FOR TESTING RAISING cx_other_exception.\n    METHODS inherited_method REDEFINITION.\n    METHODS other_inherited_method\n      FINAL REDEFINITION.\n\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name TYPE i\n                         EXPORTING ev_any_result TYPE i\n                         CHANGING ets_any_table_with_long_name TYPE ty_ts_table\n                         RAISING cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_test_method   FOR TESTING RAISING cx_any_exception.\n    METHODS other_test_method FOR TESTING.\n\n    METHODS other_method IMPORTING !iv_any_param    TYPE i      OPTIONAL\n                                   !iv_other_param  TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result   TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING   !cx_any_exception.\n\n    METHODS third_test_method      FOR TESTING.\n    METHODS fourth_test_method     FOR TESTING RAISING cx_other_exception.\n    METHODS inherited_method       REDEFINITION.\n    METHODS other_inherited_method FINAL REDEFINITION.\n\n    METHODS set_value              IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value      RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value     RETURNING VALUE(rv_result) TYPE i.\n\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name  TYPE i\n                                        EXPORTING ev_any_result                TYPE i\n                                        CHANGING  ets_any_table_with_long_name TYPE ty_ts_table\n                                        RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testForTestingAndRedefinitionAlignTabular",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ALL_TABULAR",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_test_method\n      FOR TESTING RAISING cx_any_exception.\n    METHODS other_test_method\n      FOR TESTING.\n\n    METHODS other_method IMPORTING !iv_any_param TYPE i OPTIONAL\n                                   !iv_other_param TYPE string DEFAULT 'abc'\n                         EXPORTING !ev_any_result TYPE i\n                                   !ev_other_result TYPE string\n                         RAISING !cx_any_exception.\n\n    METHODS third_test_method FOR TESTING.\n    METHODS fourth_test_method\n      FOR TESTING RAISING cx_other_exception.\n    METHODS inherited_method REDEFINITION.\n    METHODS other_inherited_method\n      FINAL REDEFINITION.\n\n    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name TYPE i\n                         EXPORTING ev_any_result TYPE i\n                         CHANGING ets_any_table_with_long_name TYPE ty_ts_table\n                         RAISING cx_any_exception.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_test_method             FOR TESTING RAISING cx_any_exception.\n    METHODS other_test_method           FOR TESTING.\n\n    METHODS other_method                IMPORTING !iv_any_param                TYPE i OPTIONAL\n                                                  !iv_other_param              TYPE string DEFAULT 'abc'\n                                        EXPORTING !ev_any_result               TYPE i\n                                                  !ev_other_result             TYPE string\n                                        RAISING   !cx_any_exception.\n\n    METHODS third_test_method           FOR TESTING.\n    METHODS fourth_test_method          FOR TESTING RAISING cx_other_exception.\n    METHODS inherited_method            REDEFINITION.\n    METHODS other_inherited_method      FINAL REDEFINITION.\n\n    METHODS set_value                   IMPORTING !iv_new_value                TYPE i.\n    METHODS get_current_value           RETURNING VALUE(rv_result)             TYPE i.\n    METHODS get_previous_value          RETURNING VALUE(rv_result)             TYPE i.\n\n    METHODS third_method_with_long_name IMPORTING iv_any_param_with_long_name  TYPE i\n                                        EXPORTING ev_any_result                TYPE i\n                                        CHANGING  ets_any_table_with_long_name TYPE ty_ts_table\n                                        RAISING   cx_any_exception.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testMethodsForEvent",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n  METHODS handle_any_event\n  FOR EVENT any_event OF cl_any_sender\n  IMPORTING\n  !any_param\n    !other_param\n        !sender.\n\n  METHODS handle_other_event\n  FOR EVENT any_event OF cl_any_sender\n  IMPORTING   !any_param !other_param !sender.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS handle_any_event\n      FOR EVENT any_event OF cl_any_sender\n      IMPORTING !any_param\n                !other_param\n                !sender.\n\n    METHODS handle_other_event\n      FOR EVENT any_event OF cl_any_sender\n      IMPORTING !any_param !other_param !sender.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testMethodsForEventBreakAfterImporting",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.NEVER",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n  METHODS handle_any_event\n  FOR EVENT any_event OF cl_any_sender\n  IMPORTING !any_param\n    !other_param\n        !sender.\n\n  METHODS handle_other_event\n  FOR EVENT other_event OF cl_any_sender\n  IMPORTING !any_param !other_param !sender.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS handle_any_event\n      FOR EVENT any_event OF cl_any_sender\n      IMPORTING\n        !any_param\n        !other_param\n        !sender.\n\n    METHODS handle_other_event\n      FOR EVENT other_event OF cl_any_sender\n      IMPORTING\n        !any_param !other_param !sender.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testMethodsAbstract",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "  METHODS any_method\n          ABSTRACT\n    IMPORTING\n      !iv_any TYPE i\n    EXPORTING\n      !ev_other TYPE i\n    RAISING\n      cx_any_exception.",
+   "exp": "  METHODS any_method\n    ABSTRACT\n    IMPORTING !iv_any   TYPE i\n    EXPORTING !ev_other TYPE i\n    RAISING   cx_any_exception.",
+   "flags": {}
+  },
+  {
+   "name": "testBreakAfterKeywordAlignOneLiners",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "  METHODS:\n    any_method IMPORTING iv_any TYPE i,\n    other_method IMPORTING iv_other TYPE i,\n    third_method_with_long_name IMPORTING iv_third_param TYPE i.\n\n  DATA lv_any TYPE i.",
+   "exp": "  METHODS:\n    any_method                  IMPORTING iv_any         TYPE i,\n    other_method                IMPORTING iv_other       TYPE i,\n    third_method_with_long_name IMPORTING iv_third_param TYPE i.\n\n  DATA lv_any TYPE i.",
+   "flags": {}
+  },
+  {
+   "name": "testBreakAfterKeywordAlignAllTabular",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ALL_TABULAR",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "  METHODS:\n    any_method IMPORTING iv_any TYPE i,\n    other_method IMPORTING iv_other TYPE i,\n    third_method_with_long_name IMPORTING iv_third_param TYPE i.\n\n  DATA lv_any TYPE i.",
+   "exp": "  METHODS:\n    any_method                  IMPORTING iv_any         TYPE i,\n    other_method                IMPORTING iv_other       TYPE i,\n    third_method_with_long_name IMPORTING iv_third_param TYPE i.\n\n  DATA lv_any TYPE i.",
+   "flags": {}
+  },
+  {
+   "name": "testBreakAfterKeywordButKeepOneLiners",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.NEVER",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "    METHODS set_value IMPORTING !iv_new_value TYPE i.\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.",
+   "exp": "    METHODS set_value          IMPORTING !iv_new_value    TYPE i.\n    METHODS get_current_value  RETURNING VALUE(rv_result) TYPE i.\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.",
+   "flags": {}
+  },
+  {
+   "name": "testFinalForEvent",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_method FINAL\n        FOR EVENT any_event OF cl_any_class\n       IMPORTING iv_any\n               iv_other\n      iv_third.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_method FINAL\n      FOR EVENT any_event OF cl_any_class\n      IMPORTING iv_any\n                iv_other\n                iv_third.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testFinalForEventInOwnLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_method\n   FINAL\n        FOR EVENT any_event OF cl_any_class\n       IMPORTING iv_any\n               iv_other\n      iv_third.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS any_method\n      FINAL\n      FOR EVENT any_event OF cl_any_class\n      IMPORTING iv_any\n                iv_other\n                iv_third.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testMultiplePeriods",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterAccess": "ChangeType.ALWAYS",
+    "FillPercentageToJustifyOwnColumn": 40,
+    "HandleOneLiners": "MethodsOneLinerAction.KEEP_EXISTING",
+    "AlignConsecutive": "MethodsSequenceAlignment.ONE_LINERS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false,
+    "SeparateWithEmptyLine": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value IMPORTING !iv_new_value TYPE i...\n    METHODS get_current_value RETURNING VALUE(rv_result) TYPE i..\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS set_value          IMPORTING !iv_new_value    TYPE i...\n    METHODS get_current_value  RETURNING VALUE(rv_result) TYPE i..\n    METHODS get_previous_value RETURNING VALUE(rv_result) TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  }
+ ]
+}

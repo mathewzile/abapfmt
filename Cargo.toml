@@ -1,0 +1,20 @@
+[workspace]
+resolver = "2"
+members = [
+  "crates/abapfmt_lexer",
+  "crates/abapfmt_grammar",
+  "crates/abapfmt_syntax",
+  "crates/abapfmt_formatter",
+  "crates/abapfmt_config",
+  "crates/abapfmt_cli",
+  "crates/abapfmt_lsp",
+]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+license = "Apache-2.0"
+publish = false
+
+[workspace.lints.rust]
+unsafe_code = "forbid"

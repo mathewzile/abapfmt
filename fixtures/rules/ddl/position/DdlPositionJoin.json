@@ -1,0 +1,168 @@
+{
+ "ruleId": "DDL_POSITION_JOIN",
+ "testClass": "DdlPositionJoinTest",
+ "defaults": {
+  "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+  "KeywordsIndent": 4,
+  "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+  "DataSourceIndent": 4,
+  "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+  "ConditionIndent": 6
+ },
+ "cases": [
+  {
+   "name": "testBreakBeforeJoin",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 4,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 6
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  // comment\n  left outer to one\n  join I_ThirdEntity as ThirdAlias\n  on  AnyAlias.IdField      = ThirdAlias.IdField\n  and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n    // comment\n    left outer to one join I_ThirdEntity as ThirdAlias\n      on  AnyAlias.IdField      = ThirdAlias.IdField\n      and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepJoinAsIs",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.KEEP_AS_IS",
+    "KeywordsIndent": 4,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 6
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  left outer to one\n  join I_ThirdEntity as ThirdAlias\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n    left outer to one join I_ThirdEntity as ThirdAlias\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testBreakBeforeJoinDataSource",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 4,
+    "BreakBeforeDataSource": "DdlLineBreak.ALWAYS",
+    "DataSourceIndent": 6,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 6
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  left outer to one\n  join I_ThirdEntity as ThirdAlias\n  on  AnyAlias.IdField      = ThirdAlias.IdField\n  and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join\n      I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n    left outer to one join\n      I_ThirdEntity as ThirdAlias\n      on  AnyAlias.IdField      = ThirdAlias.IdField\n      and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepJoinDataSourceAsIs",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 4,
+    "BreakBeforeDataSource": "DdlLineBreak.KEEP_AS_IS",
+    "DataSourceIndent": 4,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 6
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join\n         I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  left outer to one\n  join I_ThirdEntity as ThirdAlias\n  on  AnyAlias.IdField      = ThirdAlias.IdField\n  and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join\n    I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n    left outer to one join I_ThirdEntity as ThirdAlias\n      on  AnyAlias.IdField      = ThirdAlias.IdField\n      and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysBreakBeforeJoinCondition",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 4,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4,
+    "BreakBeforeCondition": "DdlConditionLineBreak.ALWAYS",
+    "ConditionIndent": 6
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  left outer to one\n  join I_ThirdEntity as ThirdAlias\n  // comment 1\n  /* comment 2 */\n  /* multi-line\n     comment 3 */\n  on AnyAlias.IdField = ThirdAlias.IdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n    left outer to one join I_ThirdEntity as ThirdAlias\n      // comment 1\n      /* comment 2 */\n      /* multi-line\n         comment 3 */\n      on AnyAlias.IdField = ThirdAlias.IdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testContinueWithOneLinerJoinConditions",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 4,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 6
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  left outer to one\n  join I_ThirdEntity as ThirdAlias\n  on AnyAlias.IdField = ThirdAlias.IdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n    left outer to one join I_ThirdEntity as ThirdAlias on AnyAlias.IdField = ThirdAlias.IdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testBreakJoinConditionsDueToMultiLiner",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 4,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 6
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  left outer to one\n  join I_ThirdEntity as ThirdAlias on  AnyAlias.IdField      = ThirdAlias.IdField\n  and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n    left outer to one join I_ThirdEntity as ThirdAlias\n      on  AnyAlias.IdField      = ThirdAlias.IdField\nand OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepJoinConditionAsIs",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 4,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4,
+    "BreakBeforeCondition": "DdlConditionLineBreak.KEEP_AS_IS",
+    "ConditionIndent": 6
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  left outer to one\n  join I_ThirdEntity as ThirdAlias\n  on  AnyAlias.IdField      = ThirdAlias.IdField\n  and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n    left outer to one join I_ThirdEntity as ThirdAlias\n      on  AnyAlias.IdField      = ThirdAlias.IdField\n      and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNeverBreakBeforeJoinCondition",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 4,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4,
+    "BreakBeforeCondition": "DdlConditionLineBreak.NEVER",
+    "ConditionIndent": 6
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  left outer to one\n  join I_ThirdEntity as ThirdAlias\n  on  AnyAlias.IdField      = ThirdAlias.IdField\n  and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n    left outer to one join I_ThirdEntity as ThirdAlias on  AnyAlias.IdField      = ThirdAlias.IdField\n                                                       and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testIndents",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 3,
+    "BreakBeforeDataSource": "DdlLineBreak.ALWAYS",
+    "DataSourceIndent": 6,
+    "BreakBeforeCondition": "DdlConditionLineBreak.ALWAYS",
+    "ConditionIndent": 9
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias left outer to one join I_OtherEntity as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  left outer to one\n  join I_ThirdEntity as ThirdAlias\n  on  AnyAlias.IdField      = ThirdAlias.IdField\n  and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField,\n\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n   left outer to one join\n      I_OtherEntity as OtherAlias\n         on AnyAlias.IdField = OtherAlias.IdField\n\n   left outer to one join\n      I_ThirdEntity as ThirdAlias\n         on  AnyAlias.IdField      = ThirdAlias.IdField\n         and OtherAlias.SubIdField = ThirdAlias.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField,\n\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testJoinWithParameters",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 4,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 6
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity( P_AnyParameter = 'any value' ) as OtherAlias\n        on AnyAlias.IdField = OtherAlias.IdField\n\n{\n  key AnyAlias.IdField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity( P_AnyParameter = 'any value' ) as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n{\n  key AnyAlias.IdField\n}",
+   "flags": {}
+  }
+ ]
+}

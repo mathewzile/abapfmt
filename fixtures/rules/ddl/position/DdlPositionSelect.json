@@ -1,0 +1,224 @@
+{
+ "ruleId": "DDL_POSITION_SELECT",
+ "testClass": "DdlPositionSelectTest",
+ "defaults": {
+  "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+  "AsSelectFromIndent": 2,
+  "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+  "SelectFromIndent": 2,
+  "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+  "AsProjectionOnIndent": 2,
+  "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+  "DataSourceIndent": 4
+ },
+ "cases": [
+  {
+   "name": "testAlwaysBreakBeforeSelectFromAfterUnion",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "define view entity C_AnyEntity as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion\n  all\n    select\n      from\n        I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept select\nfrom I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion all\n  select from I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept\n  select from I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNeverBreakBeforeSelectFromAfterUnion",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.NEVER",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "define view entity C_AnyEntity as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion\n  all\n    select\n      from\n        I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept select\nfrom I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion all select from I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept select from I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepSelectFromAfterUnion",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.KEEP_AS_IS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "define view entity C_AnyEntity as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion\n  all\n    select\n      from\n        I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept select\nfrom I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion\n  all\n    select\n      from\n        I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept select\nfrom I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysBreakBeforeDataSource",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.ALWAYS",
+    "DataSourceIndent": 4
+   },
+   "src": "define view entity C_AnyEntity as select from\nI_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion\n  all\n    select\n      from\n        I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept select\nfrom I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from\n    I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion all\n  select from\n    I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept\n  select from\n    I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNeverBreakBeforeDataSource",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "define view entity C_AnyEntity as select from\nI_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion\n  all\n    select\n      from\n        I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept select\nfrom I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion all\n  select from I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept\n  select from I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepDataSource",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.KEEP_AS_IS",
+    "DataSourceIndent": 4
+   },
+   "src": "define view entity C_AnyEntity as select from\nI_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion\n  all\n    select\n      from\n        I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept select\nfrom I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from\nI_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion all\n  select from\n        I_ThirdEntity As ThirdAlias\n\n{\n  key ThirdAlias.AnyKeyField\n}\n\nexcept\n  select from I_FourthEntity As FourthAlias\n\n{\n  key FourthAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysBreakBeforeAsProjectionOn",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "@AccessControl.authorizationCheck: #NOT_ALLOWED\ndefine transient view entity AnyView\n  provider contract analytical_query\n  with parameters\n    p_Any : abap.cuky as projection on OtherView\n{\n    @AnalyticsDetails.query.axis: #FREE\n    AnyField\n}",
+   "exp": "@AccessControl.authorizationCheck: #NOT_ALLOWED\ndefine transient view entity AnyView\n  provider contract analytical_query\n  with parameters\n    p_Any : abap.cuky\n\n  as projection on OtherView\n{\n    @AnalyticsDetails.query.axis: #FREE\n    AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNeverBreakBeforeAsProjectionOn",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.NEVER",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "@AccessControl.authorizationCheck: #NOT_ALLOWED\ndefine transient view entity AnyView\n  provider contract analytical_query\n  as projection on OtherView\n{\n    @AnalyticsDetails.query.axis: #FREE\n    AnyField\n}",
+   "exp": "@AccessControl.authorizationCheck: #NOT_ALLOWED\ndefine transient view entity AnyView\n  provider contract analytical_query as projection on OtherView\n{\n    @AnalyticsDetails.query.axis: #FREE\n    AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepAsProjectionOn",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.KEEP_AS_IS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "@AccessControl.authorizationCheck: #NOT_ALLOWED\ndefine transient view entity AnyView\n  provider contract analytical_query\n      as projection on OtherView\n{\n    @AnalyticsDetails.query.axis: #FREE\n    AnyField\n}",
+   "exp": "@AccessControl.authorizationCheck: #NOT_ALLOWED\ndefine transient view entity AnyView\n  provider contract analytical_query\n      as projection on OtherView\n{\n    @AnalyticsDetails.query.axis: #FREE\n    AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testMoveAttachedComments",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n      /* multi-\n         line\n         comment */\n      // single-line comment\n      as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  /* multi-\n     line\n     comment */\n  // single-line comment\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotMoveDetachedComments",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n      /* detached multi-line\n         comment */\n\n      // single-line comment\n      as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n      /* detached multi-line\n         comment */\n\n  // single-line comment\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotMoveCommentedOutAnnotations",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n// @Anno.subAnno\n      // single-line comment\n      as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n// @Anno.subAnno\n  // single-line comment\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotMoveComments",
+   "config": {
+    "BreakBeforeAsSelectFrom": "DdlLineBreak.ALWAYS",
+    "AsSelectFromIndent": 2,
+    "BreakBeforeSelectFrom": "DdlLineBreak.ALWAYS",
+    "SelectFromIndent": 2,
+    "BreakBeforeAsProjectionOn": "DdlLineBreak.ALWAYS",
+    "AsProjectionOnIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n      // single-line comment\n// @Anno.subAnno\n      as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n      // single-line comment\n// @Anno.subAnno\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "flags": {}
+  }
+ ]
+}

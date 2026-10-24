@@ -1,0 +1,131 @@
+{
+ "ruleId": "DDL_ALIGN_FUNCTION_PARAMETERS",
+ "testClass": "DdlAlignFunctionParametersTest",
+ "defaults": {
+  "ParameterPos": "DdlFunctionParamPos.CONTINUE",
+  "AlignAssignmentOps": true,
+  "AlignActualParams": true
+ },
+ "cases": [
+  {
+   "name": "testParamsContinueAfterOpeningParens",
+   "config": {
+    "ParameterPos": "DdlFunctionParamPos.CONTINUE",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n  association to I_ThirdSource  as _PreviousPeriod\n    on _PreviousPeriod.FiscalYearPeriod = fiscal_calendar_shift(\n                                                               fiscal_variant => $projection.FiscalYearVariant,\n                                                               base => $projection.FiscalYearPeriod,\n                                                               base_level => CALENDAR_FISCAL_LEVEL.#period, shift => abap.int2'-1'\n                                                                )\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(\n       amount => AnyAlias.Amount,\n        source_currency =>AnyAlias.Currency,\n     target_currency =>$parameters.P_DisplayCurrency,\n      exchange_rate_type=> $parameters.P_ExchangeRateType,\n        exchange_rate_date=>\n          $parameters.P_ExchangeRateDate\n//    round   =>'X',\n// error_handling => 'SET_TO_NULL'\n    ) as AmountInDisplayCurrency,\n\n      unit_conversion\n       (quantity => AnyAlias.Quantity, source_unit =>\n        AnyAlias.QuantityUnit, target_unit=> $parameters.P_DisplayUnit)\n\n      power(base=> OtherAlias.AnyNumericValue, exponent => 2) as ValueSquare,\n\n      ratio_of( portion  =>\n(  OtherAlias.TotalAmount\n - OtherAlias.TotalAmount * OtherAlias.Discount) * OtherAlias.Tax,\ntotal =>OtherAlias.TotalAmount) as AmountRatio\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n  association to I_ThirdSource  as _PreviousPeriod\n    on _PreviousPeriod.FiscalYearPeriod = fiscal_calendar_shift(fiscal_variant => $projection.FiscalYearVariant,\n                                                                base           => $projection.FiscalYearPeriod,\n                                                                base_level     => CALENDAR_FISCAL_LEVEL.#period,\n                                                                shift          => abap.int2'-1')\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(amount             => AnyAlias.Amount,\n                          source_currency    => AnyAlias.Currency,\n                          target_currency    => $parameters.P_DisplayCurrency,\n                          exchange_rate_type => $parameters.P_ExchangeRateType,\n                          exchange_rate_date => $parameters.P_ExchangeRateDate\n//                          round              => 'X',\n//                          error_handling     => 'SET_TO_NULL'\n                         ) as AmountInDisplayCurrency,\n\n      unit_conversion(quantity    => AnyAlias.Quantity,\n                      source_unit => AnyAlias.QuantityUnit,\n                      target_unit => $parameters.P_DisplayUnit)\n\n      power(base     => OtherAlias.AnyNumericValue,\n            exponent => 2) as ValueSquare,\n\n      ratio_of(portion => (  OtherAlias.TotalAmount\n                           - OtherAlias.TotalAmount * OtherAlias.Discount) * OtherAlias.Tax,\n               total   => OtherAlias.TotalAmount) as AmountRatio\n}",
+   "flags": {}
+  },
+  {
+   "name": "testParamsBelowFunctionNamePlus2",
+   "config": {
+    "ParameterPos": "DdlFunctionParamPos.FUNCTION_NAME_PLUS_2",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n  association to I_ThirdSource  as _PreviousPeriod\n    on _PreviousPeriod.FiscalYearPeriod = fiscal_calendar_shift(\n                                                               fiscal_variant => $projection.FiscalYearVariant,\n                                                               base => $projection.FiscalYearPeriod,\n                                                               base_level => CALENDAR_FISCAL_LEVEL.#period, shift => abap.int2'-1'\n                                                                )\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(\n       amount => AnyAlias.Amount,\n        source_currency =>AnyAlias.Currency,\n     target_currency =>$parameters.P_DisplayCurrency,\n      exchange_rate_type=> $parameters.P_ExchangeRateType,\n        exchange_rate_date=>\n          $parameters.P_ExchangeRateDate\n//    round   =>'X',\n// error_handling => 'SET_TO_NULL'\n    ) as AmountInDisplayCurrency,\n\n      unit_conversion\n       (quantity => AnyAlias.Quantity, source_unit =>\n        AnyAlias.QuantityUnit, target_unit=> $parameters.P_DisplayUnit)\n\n      power(base=> OtherAlias.AnyNumericValue, exponent => 2) as ValueSquare,\n\n      ratio_of( portion  =>\n(  OtherAlias.TotalAmount\n - OtherAlias.TotalAmount * OtherAlias.Discount) * OtherAlias.Tax,\ntotal =>OtherAlias.TotalAmount) as AmountRatio\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n  association to I_ThirdSource  as _PreviousPeriod\n    on _PreviousPeriod.FiscalYearPeriod = fiscal_calendar_shift(\n                                            fiscal_variant => $projection.FiscalYearVariant,\n                                            base           => $projection.FiscalYearPeriod,\n                                            base_level     => CALENDAR_FISCAL_LEVEL.#period,\n                                            shift          => abap.int2'-1')\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(\n        amount             => AnyAlias.Amount,\n        source_currency    => AnyAlias.Currency,\n        target_currency    => $parameters.P_DisplayCurrency,\n        exchange_rate_type => $parameters.P_ExchangeRateType,\n        exchange_rate_date => $parameters.P_ExchangeRateDate\n//        round              => 'X',\n//        error_handling     => 'SET_TO_NULL'\n        ) as AmountInDisplayCurrency,\n\n      unit_conversion(\n        quantity    => AnyAlias.Quantity,\n        source_unit => AnyAlias.QuantityUnit,\n        target_unit => $parameters.P_DisplayUnit)\n\n      power(\n        base     => OtherAlias.AnyNumericValue,\n        exponent => 2) as ValueSquare,\n\n      ratio_of(\n        portion => (  OtherAlias.TotalAmount\n                    - OtherAlias.TotalAmount * OtherAlias.Discount) * OtherAlias.Tax,\n        total   => OtherAlias.TotalAmount) as AmountRatio\n}",
+   "flags": {}
+  },
+  {
+   "name": "testParamsBelowFunctionNamePlus4",
+   "config": {
+    "ParameterPos": "DdlFunctionParamPos.FUNCTION_NAME_PLUS_4",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(\n       amount => AnyAlias.Amount,\n        source_currency =>AnyAlias.Currency,\n     target_currency =>$parameters.P_DisplayCurrency,\n      exchange_rate_type=> $parameters.P_ExchangeRateType,\n        exchange_rate_date=>\n          $parameters.P_ExchangeRateDate\n//    round   =>'X',\n// error_handling => 'SET_TO_NULL'\n    ) as AmountInDisplayCurrency\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(\n          amount             => AnyAlias.Amount,\n          source_currency    => AnyAlias.Currency,\n          target_currency    => $parameters.P_DisplayCurrency,\n          exchange_rate_type => $parameters.P_ExchangeRateType,\n          exchange_rate_date => $parameters.P_ExchangeRateDate\n//          round              => 'X',\n//          error_handling     => 'SET_TO_NULL'\n          ) as AmountInDisplayCurrency\n}",
+   "flags": {}
+  },
+  {
+   "name": "testParamsBelowFirstParamAsIs",
+   "config": {
+    "ParameterPos": "DdlFunctionParamPos.KEEP_AS_IS",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(\n       amount => AnyAlias.Amount,\n        source_currency =>AnyAlias.Currency, // comment\n     target_currency =>$parameters.P_DisplayCurrency,\n      exchange_rate_type=> $parameters.P_ExchangeRateType, -- comment\n        exchange_rate_date=>\n          $parameters.P_ExchangeRateDate\n//    round   =>'X',\n// error_handling => 'SET_TO_NULL'\n    ) as AmountInDisplayCurrency\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(\n       amount             => AnyAlias.Amount,\n       source_currency    => AnyAlias.Currency, // comment\n       target_currency    => $parameters.P_DisplayCurrency,\n       exchange_rate_type => $parameters.P_ExchangeRateType, -- comment\n       exchange_rate_date => $parameters.P_ExchangeRateDate\n//       round              => 'X',\n//       error_handling     => 'SET_TO_NULL'\n       ) as AmountInDisplayCurrency\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignAssignmentOps",
+   "config": {
+    "ParameterPos": "DdlFunctionParamPos.CONTINUE",
+    "AlignAssignmentOps": false,
+    "AlignActualParams": true
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(\n       amount => AnyAlias.Amount,\n        source_currency =>AnyAlias.Currency,\n     target_currency =>$parameters.P_DisplayCurrency,\n      exchange_rate_type=> $parameters.P_ExchangeRateType,\n        exchange_rate_date=>\n          $parameters.P_ExchangeRateDate\n//    round   =>'X',\n// error_handling => 'SET_TO_NULL'\n    ) as AmountInDisplayCurrency\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(amount =>             AnyAlias.Amount,\n                          source_currency =>    AnyAlias.Currency,\n                          target_currency =>    $parameters.P_DisplayCurrency,\n                          exchange_rate_type => $parameters.P_ExchangeRateType,\n                          exchange_rate_date => $parameters.P_ExchangeRateDate\n//                          round =>              'X',\n//                          error_handling =>     'SET_TO_NULL'\n                         ) as AmountInDisplayCurrency\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlign",
+   "config": {
+    "ParameterPos": "DdlFunctionParamPos.CONTINUE",
+    "AlignAssignmentOps": false,
+    "AlignActualParams": false
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(\n       amount => AnyAlias.Amount,\n        source_currency =>AnyAlias.Currency,\n     target_currency =>$parameters.P_DisplayCurrency,\n      exchange_rate_type=> $parameters.P_ExchangeRateType,\n        exchange_rate_date=>\n          $parameters.P_ExchangeRateDate\n// other comment at line start\n// other comment containing => but more than one word before it\n// +not%allowed!as?param;name => pseudo_value\n// incomplete =>\n//    round   =>'X',\n// error_handling => 'SET_TO_NULL'\n    ) as AmountInDisplayCurrency\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      currency_conversion(amount => AnyAlias.Amount,\n                          source_currency => AnyAlias.Currency,\n                          target_currency => $parameters.P_DisplayCurrency,\n                          exchange_rate_type => $parameters.P_ExchangeRateType,\n                          exchange_rate_date => $parameters.P_ExchangeRateDate\n// other comment at line start\n// other comment containing => but more than one word before it\n// +not%allowed!as?param;name => pseudo_value\n//                          incomplete =>\n//                          round => 'X',\n//                          error_handling => 'SET_TO_NULL'\n                         ) as AmountInDisplayCurrency\n}",
+   "flags": {}
+  }
+ ]
+}

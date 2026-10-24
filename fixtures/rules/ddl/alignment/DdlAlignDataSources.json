@@ -1,0 +1,238 @@
+{
+ "ruleId": "DDL_ALIGN_DATA_SOURCES",
+ "testClass": "DdlAlignDataSourcesTest",
+ "defaults": {
+  "AlignDataSources": true,
+  "AlignAliases": true,
+  "AlignOnConditions": true,
+  "AlignAssociationsWithJoins": false,
+  "AlignAssociationTo": true,
+  "ConsiderAllParamAssignLines": false
+ },
+ "cases": [
+  {
+   "name": "testAlignAll",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n    left outer join I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}\n\nunion all\n  select from I_AnySource2 as AnyAlias\n\n    left outer join I_OtherSource2 as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                    and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from           I_AnySource                         as AnyAlias\n\n    left outer join        I_OtherSource                       as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join             I_ThirdSourceWithLongName           as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource             as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}\n\nunion all\n  select from              I_AnySource2                         as AnyAlias\n\n    left outer join        I_OtherSource2                       as OtherAlias             on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join             I_ThirdSourceWithLongName2           as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                                          and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias            on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2             as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignDataSources",
+   "config": {
+    "AlignDataSources": false,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n    left outer join I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}\n\nunion all\n  select from I_AnySource2 as AnyAlias\n\n    left outer join I_OtherSource2 as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                    and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource                                   as AnyAlias\n\n    left outer join I_OtherSource                              as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName                       as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource             as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}\n\nunion all\n  select from I_AnySource2                                      as AnyAlias\n\n    left outer join I_OtherSource2                              as OtherAlias             on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2                       as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                                          and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias            on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2             as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignAliases",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": false,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n    left outer join I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}\n\nunion all\n  select from I_AnySource2 as AnyAlias\n\n    left outer join I_OtherSource2 as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                    and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from           I_AnySource as AnyAlias\n\n    left outer join        I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join             I_ThirdSourceWithLongName as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}\n\nunion all\n  select from              I_AnySource2 as AnyAlias\n\n    left outer join        I_OtherSource2 as OtherAlias                         on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join             I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                                and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias  on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias             on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignOnConditions",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": false,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n    left outer join I_OtherSource2 as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                    and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from           I_AnySource2                         as AnyAlias\n\n    left outer join        I_OtherSource2                       as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join             I_ThirdSourceWithLongName2           as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                                          and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2             as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignDataSourcesOnly",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": false,
+    "AlignOnConditions": false,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n    left outer join I_OtherSource2 as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                    and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from           I_AnySource2 as AnyAlias\n\n    left outer join        I_OtherSource2 as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join             I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                                and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignAliasesOnly",
+   "config": {
+    "AlignDataSources": false,
+    "AlignAliases": true,
+    "AlignOnConditions": false,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n    left outer join I_OtherSource2 as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                    and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource2                                   as AnyAlias\n\n    left outer join I_OtherSource2                              as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2                       as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                                          and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2             as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignOnConditionsOnly",
+   "config": {
+    "AlignDataSources": false,
+    "AlignAliases": false,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n    left outer join I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}\n\nunion all\n  select from I_AnySource2 as AnyAlias\n\n    left outer join I_OtherSource2 as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                    and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n    left outer join I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}\n\nunion all\n  select from I_AnySource2 as AnyAlias\n\n    left outer join I_OtherSource2 as OtherAlias                               on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2 as ThirdAliasWithLongName            on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                               and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias             on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignAssociationsWithJoins",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": true,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n    left outer join I_OtherSource2 as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                    and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from           I_AnySource2                         as AnyAlias\n\n    left outer join        I_OtherSource2                       as OtherAlias             on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join             I_ThirdSourceWithLongName2           as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                                          and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias            on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to    I_FifthSource2                       as _FifthAlias            on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to    I_SixthSourceWithLongName2           as _SixthAlias            on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                                          and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testConsiderAllParamAssignLines",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n    left outer join I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}\n\nunion all\n  select from I_AnySource2 as AnyAlias\n\n    left outer join I_OtherSource2 as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName2 as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                    and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 ) as FourthAlias on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2 as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from           I_AnySource                                  as AnyAlias\n\n    left outer join        I_OtherSource                                as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join             I_ThirdSourceWithLongName                    as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 )          as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource             as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}\n\nunion all\n  select from              I_AnySource2                                  as AnyAlias\n\n    left outer join        I_OtherSource2                                as OtherAlias             on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join             I_ThirdSourceWithLongName2                    as ThirdAliasWithLongName on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n                                                                                                   and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    left outer to one join I_FourthSource2( P_AnyParam   : 'any literal'\n                                            P_OtherParam : 42 )          as FourthAlias            on AnyAlias.AnyField = FourthAlias.OtherField\n\n  association [0..*] to I_FifthSource2             as _FifthAlias on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName2 as _SixthAlias on  _SixthAlias.AnyField   = AnyAlias.AnyField\n                                                                  and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDDicBasedViewWithDetachedFromClause",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView( AnyField,\n                       OtherField )\nas select distinct\n\n  key AnyField,\n      OtherField\n\nfrom I_AnySource\n\n  left outer join I_OtherSource on I_AnySource.AnyField = I_OtherSource.AnyField\n\n  left outer join I_ThirdSourceWithLongName on  I_ThirdSourceWithLongName.AnyField = I_AnySource.AnyField\n                                            and I_ThirdSourceWithLongName.OtherField = I_OtherSource.OtherField",
+   "exp": "define view I_AnyView( AnyField,\n                       OtherField )\nas select distinct\n\n  key AnyField,\n      OtherField\n\nfrom              I_AnySource\n\n  left outer join I_OtherSource             on I_AnySource.AnyField = I_OtherSource.AnyField\n\n  left outer join I_ThirdSourceWithLongName on  I_ThirdSourceWithLongName.AnyField = I_AnySource.AnyField\n                                            and I_ThirdSourceWithLongName.OtherField = I_OtherSource.OtherField",
+   "flags": {}
+  },
+  {
+   "name": "testCommentsBetweenJoinsAndAssociations",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  // comment\n  as select from I_AnySource as AnyAlias\n\n    // comment before joins\n    left outer join I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join I_ThirdSourceWithLongName as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    // comment within joins\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  // comment before associations\n  association [0..*] to I_FifthSource as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  // comment within associations\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  // comment\n  as select from           I_AnySource                         as AnyAlias\n\n    // comment before joins\n    left outer join        I_OtherSource                       as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n    inner join             I_ThirdSourceWithLongName           as ThirdAliasWithLongName\n      on  AnyAlias.AnyField   = ThirdAliasWithLongName.AnyField\n      and AnyAlias.OtherField = ThirdAliasWithLongName.OtherField\n\n    // comment within joins\n    left outer to one join I_FourthSource( P_AnyParam   : 'any literal'\n                                           P_OtherParam : 42 ) as FourthAlias\n      on AnyAlias.AnyField = FourthAlias.OtherField\n\n  // comment before associations\n  association [0..*] to I_FifthSource             as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  // comment within associations\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignAssociationToParent",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n  association to parent I_FifthSource as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n  association to parent I_FifthSource             as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association to        I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField   = AnyAlias.AnyField\n     and _SixthAlias.OtherField = AnyAlias.OtherField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignAssociationTo",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view entity I_AnyView\n  as select from I_AnySource\n\n    left outer join I_OtherSource as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n  association of one to exact one I_OtherView as _Other on $projection.OtherField = _Other.OtherField\n  association to parent I_ParentView as _Parent on $projection.AnyField = _Parent.AnyField\n  association of exact one to exact one I_ThirdView as _Third on $projection.OtherField = _Third.ThirdField\n  association of one to many I_FourthView as _Fourth on $projection.FourthField = _Fourth.FourthField\n{\n  key AnyField as AnyField\n}",
+   "exp": "define view entity I_AnyView\n  as select from    I_AnySource\n\n    left outer join I_OtherSource as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n  association of one       to exact one I_OtherView  as _Other  on $projection.OtherField = _Other.OtherField\n  association              to parent    I_ParentView as _Parent on $projection.AnyField = _Parent.AnyField\n  association of exact one to exact one I_ThirdView  as _Third  on $projection.OtherField = _Third.ThirdField\n  association of one       to many      I_FourthView as _Fourth on $projection.FourthField = _Fourth.FourthField\n{\n  key AnyField as AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignAssociationToAndJoins",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": true,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view entity I_AnyView\n  as select from I_AnySource\n\n    left outer join I_OtherSource as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n  association of one to exact one I_OtherView as _Other on $projection.OtherField = _Other.OtherField\n  association to parent I_ParentView as _Parent on $projection.AnyField = _Parent.AnyField\n  association of exact one to exact one I_ThirdView as _Third on $projection.OtherField = _Third.ThirdField\n  association of one to many I_FourthView as _Fourth on $projection.FourthField = _Fourth.FourthField\n{\n  key AnyField as AnyField\n}",
+   "exp": "define view entity I_AnyView\n  as select from                        I_AnySource\n\n    left outer join                     I_OtherSource as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n  association of one       to exact one I_OtherView   as _Other     on $projection.OtherField = _Other.OtherField\n  association              to parent    I_ParentView  as _Parent    on $projection.AnyField = _Parent.AnyField\n  association of exact one to exact one I_ThirdView   as _Third     on $projection.OtherField = _Third.ThirdField\n  association of one       to many      I_FourthView  as _Fourth    on $projection.FourthField = _Fourth.FourthField\n{\n  key AnyField as AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testJoinPlainToColumn",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": true,
+    "AlignAssociationTo": true,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n    left outer to one join I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n  association [0..*] to I_FifthSource as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField = AnyAlias.AnyField\n\n{\n  key AnyAlias.AnyField\n}",
+   "exp": "define view I_AnyView\n  as select from           I_AnySource               as AnyAlias\n\n    left outer to one join I_OtherSource             as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n  association [0..*] to    I_FifthSource             as _FifthAlias\n     on _FifthAlias.AnyField = AnyAlias.AnyField\n\n  association [0..1] to    I_SixthSourceWithLongName as _SixthAlias\n     on  _SixthAlias.AnyField = AnyAlias.AnyField\n\n{\n  key AnyAlias.AnyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignAssociationTo",
+   "config": {
+    "AlignDataSources": true,
+    "AlignAliases": true,
+    "AlignOnConditions": true,
+    "AlignAssociationsWithJoins": false,
+    "AlignAssociationTo": false,
+    "ConsiderAllParamAssignLines": false
+   },
+   "src": "define view entity I_AnyView\n  as select from I_AnySource\n\n    left outer join I_OtherSource as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n  association of one to exact one I_OtherView as _Other on $projection.OtherField = _Other.OtherField\n  association to parent I_ParentView as _Parent on $projection.AnyField = _Parent.AnyField\n  association of exact one to exact one I_ThirdView as _Third on $projection.OtherField = _Third.ThirdField\n  association of one to many I_FourthView as _Fourth on $projection.FourthField = _Fourth.FourthField\n{\n  key AnyField as AnyField\n}",
+   "exp": "define view entity I_AnyView\n  as select from    I_AnySource\n\n    left outer join I_OtherSource as OtherAlias on AnyAlias.AnyField = OtherAlias.AnyField\n\n  association of one to exact one       I_OtherView  as _Other  on $projection.OtherField = _Other.OtherField\n  association to parent                 I_ParentView as _Parent on $projection.AnyField = _Parent.AnyField\n  association of exact one to exact one I_ThirdView  as _Third  on $projection.OtherField = _Third.ThirdField\n  association of one to many            I_FourthView as _Fourth on $projection.FourthField = _Fourth.FourthField\n{\n  key AnyField as AnyField\n}",
+   "flags": {}
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+[package]
+name = "abapfmt_lsp"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+abapfmt_formatter = { path = "../abapfmt_formatter" }

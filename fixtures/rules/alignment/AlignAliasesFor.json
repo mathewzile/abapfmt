@@ -1,0 +1,104 @@
+{
+ "ruleId": "ALIGN_ALIASES_FOR",
+ "testClass": "AlignAliasesForTest",
+ "defaults": {
+  "AlignAcrossEmptyLines": true,
+  "AlignAcrossCommentLines": true
+ },
+ "cases": [
+  {
+   "name": "testWithoutComments",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  ALIASES long_method_name\n    FOR if_any_interface~long_method_name .\n  ALIASES short_name\n    FOR if_any_interface~short_name .\n  ALIASES extra_long_method_name\n    FOR if_any_interface~extra_long_method_name .",
+   "exp": "  ALIASES long_method_name       FOR if_any_interface~long_method_name .\n  ALIASES short_name             FOR if_any_interface~short_name .\n  ALIASES extra_long_method_name FOR if_any_interface~extra_long_method_name .",
+   "flags": {}
+  },
+  {
+   "name": "testWithCommentAlign",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  ALIASES long_method_name\n    FOR if_any_interface~long_method_name .\n  ALIASES short_name\n    FOR if_any_interface~short_name . \" comment\n  ALIASES extra_long_method_name\n    FOR if_any_interface~extra_long_method_name . \" comment",
+   "exp": "  ALIASES long_method_name       FOR if_any_interface~long_method_name .\n  ALIASES short_name             FOR if_any_interface~short_name .             \" comment\n  ALIASES extra_long_method_name FOR if_any_interface~extra_long_method_name . \" comment",
+   "flags": {}
+  },
+  {
+   "name": "testChain",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  ALIASES:\n    short_name\n      FOR if_any_interface~short_name,\n    long_method_name\n      FOR if_any_interface~long_method_name, \" comment\n    any_method\n      FOR if_any_interface~any_method. \" comment",
+   "exp": "  ALIASES: short_name       FOR if_any_interface~short_name,\n           long_method_name FOR if_any_interface~long_method_name, \" comment\n           any_method       FOR if_any_interface~any_method.       \" comment",
+   "flags": {}
+  },
+  {
+   "name": "testCommentPreventingChange",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  ALIASES: \" comment\n    short_name\n      FOR if_any_interface~short_name,\n    long_method_name\n      FOR if_any_interface~long_method_name,\n    any_method\n      FOR if_any_interface~any_method.",
+   "exp": "  ALIASES: \" comment\n    short_name\n      FOR if_any_interface~short_name,\n    long_method_name\n      FOR if_any_interface~long_method_name,\n    any_method\n      FOR if_any_interface~any_method.",
+   "flags": {}
+  },
+  {
+   "name": "testAcrossEmptyLine",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  ALIASES short_name\n    FOR if_any_interface~short_name.\n  ALIASES long_method_name\n    FOR if_any_interface~long_method_name.\n\n\n  ALIASES any_method\n    FOR if_any_interface~any_method.\n  ALIASES other_method\n    FOR if_any_interface~other_method.",
+   "exp": "  ALIASES short_name       FOR if_any_interface~short_name.\n  ALIASES long_method_name FOR if_any_interface~long_method_name.\n\n\n  ALIASES any_method       FOR if_any_interface~any_method.\n  ALIASES other_method     FOR if_any_interface~other_method.",
+   "flags": {}
+  },
+  {
+   "name": "testNotAcrossEmptyLine",
+   "config": {
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  ALIASES short_name\n    FOR if_any_interface~short_name.\n  ALIASES long_method_name\n    FOR if_any_interface~long_method_name.\n\n  ALIASES any_method\n    FOR if_any_interface~any_method.\n  ALIASES other_method\n    FOR if_any_interface~other_method.",
+   "exp": "  ALIASES short_name       FOR if_any_interface~short_name.\n  ALIASES long_method_name FOR if_any_interface~long_method_name.\n\n  ALIASES any_method   FOR if_any_interface~any_method.\n  ALIASES other_method FOR if_any_interface~other_method.",
+   "flags": {}
+  },
+  {
+   "name": "testAcrossCommentLine",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  ALIASES short_name\n    FOR if_any_interface~short_name.\n  ALIASES long_method_name\n    FOR if_any_interface~long_method_name.\n  \" comment\n  \" more comment\n  ALIASES any_method\n    FOR if_any_interface~any_method.\n  ALIASES other_method\n    FOR if_any_interface~other_method.",
+   "exp": "  ALIASES short_name       FOR if_any_interface~short_name.\n  ALIASES long_method_name FOR if_any_interface~long_method_name.\n  \" comment\n  \" more comment\n  ALIASES any_method       FOR if_any_interface~any_method.\n  ALIASES other_method     FOR if_any_interface~other_method.",
+   "flags": {}
+  },
+  {
+   "name": "testNotAcrossCommentLine",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false
+   },
+   "src": "  ALIASES short_name\n    FOR if_any_interface~short_name.\n  ALIASES long_method_name\n    FOR if_any_interface~long_method_name.\n  \" comment\n  ALIASES any_method\n    FOR if_any_interface~any_method.\n  ALIASES other_method\n    FOR if_any_interface~other_method.",
+   "exp": "  ALIASES short_name       FOR if_any_interface~short_name.\n  ALIASES long_method_name FOR if_any_interface~long_method_name.\n  \" comment\n  ALIASES any_method   FOR if_any_interface~any_method.\n  ALIASES other_method FOR if_any_interface~other_method.",
+   "flags": {}
+  },
+  {
+   "name": "testMultiplePeriods",
+   "config": {
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n  ALIASES medium_method_name\n    FOR if_any_interface~medium_method_name..\n  ALIASES short_name\n    FOR if_any_interface~short_name...\n  ALIASES extra_long_method_name\n    FOR if_any_interface~extra_long_method_name.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  ALIASES medium_method_name     FOR if_any_interface~medium_method_name..\n  ALIASES short_name             FOR if_any_interface~short_name...\n  ALIASES extra_long_method_name FOR if_any_interface~extra_long_method_name.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

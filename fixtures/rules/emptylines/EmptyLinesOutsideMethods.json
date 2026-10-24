@@ -1,0 +1,176 @@
+{
+ "ruleId": "EMPTY_LINES_OUTSIDE_METHODS",
+ "testClass": "EmptyLinesOutsideMethodsTest",
+ "defaults": {
+  "EmptyLinesBetweenMethods": 2,
+  "EmptyLinesBetweenClasses": 3,
+  "EmptyLinesBetweenClassAndMethod": 0
+ },
+ "cases": [
+  {
+   "name": "testAdd3LinesBetweenClasses",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty DEFINITION.\n  \" definition code\nENDCLASS.\nCLASS cl_empty IMPLEMENTATION.\n  \" implementation code\nENDCLASS.",
+   "exp": "CLASS cl_empty DEFINITION.\n  \" definition code\nENDCLASS.\n\n\n\nCLASS cl_empty IMPLEMENTATION.\n  \" implementation code\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testAdd3LinesBetweenInterfaces",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "INTERFACE lif_any PUBLIC.\n  \" definition\nENDINTERFACE.\nINTERFACE lif_other PUBLIC.\n  \" definition\nENDINTERFACE.",
+   "exp": "INTERFACE lif_any PUBLIC.\n  \" definition\nENDINTERFACE.\n\n\n\nINTERFACE lif_other PUBLIC.\n  \" definition\nENDINTERFACE.",
+   "flags": {}
+  },
+  {
+   "name": "testAdd3LinesBetweenClassesAndInterfaces",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty DEFINITION.\n  \" definition code\nENDCLASS.\nINTERFACE lif_empty PUBLIC.\n  \" definition\nENDINTERFACE.\nCLASS cl_empty IMPLEMENTATION.\n  \" implementation\nENDCLASS.",
+   "exp": "CLASS cl_empty DEFINITION.\n  \" definition code\nENDCLASS.\n\n\n\nINTERFACE lif_empty PUBLIC.\n  \" definition\nENDINTERFACE.\n\n\n\nCLASS cl_empty IMPLEMENTATION.\n  \" implementation\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testAdd1LineBetweenClasses",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 1,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty DEFINITION.\n  \" definition code\nENDCLASS.\nCLASS cl_empty IMPLEMENTATION.\n  \" implementation code\nENDCLASS.",
+   "exp": "CLASS cl_empty DEFINITION.\n  \" definition code\nENDCLASS.\n\nCLASS cl_empty IMPLEMENTATION.\n  \" implementation code\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testRemoveLinesBetweenClasses",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty IMPLEMENTATION.\nENDCLASS.\n\n\n\n\n\nCLASS cl_empty_lines DEFINITION.\nENDCLASS.",
+   "exp": "CLASS cl_empty IMPLEMENTATION.\nENDCLASS.\n\n\n\nCLASS cl_empty_lines DEFINITION.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testRemoveAllLinesBetweenClasses",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 1,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty IMPLEMENTATION.\nENDCLASS.\n\n\n\nCLASS cl_empty_lines DEFINITION.\nENDCLASS.",
+   "exp": "CLASS cl_empty IMPLEMENTATION.\nENDCLASS.\n\nCLASS cl_empty_lines DEFINITION.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testRemoveLinesBetweenClassesWithComment",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty_lines DEFINITION.\nENDCLASS.\n\n\n\n\n\" several comment lines\n\" that belong to the class\nCLASS tests DEFINITION PUBLIC.\nENDCLASS.",
+   "exp": "CLASS cl_empty_lines DEFINITION.\nENDCLASS.\n\n\n\n\" several comment lines\n\" that belong to the class\nCLASS tests DEFINITION PUBLIC.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testAdd2LinesBetweenMethods",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines_between_methods_1.\n    \" code\n  ENDMETHOD.\n  METHOD empty_lines_between_methods_2.\n    \" more code\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines_between_methods_1.\n    \" code\n  ENDMETHOD.\n\n\n  METHOD empty_lines_between_methods_2.\n    \" more code\n  ENDMETHOD.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testAdd1LineBetweenMethods",
+   "config": {
+    "EmptyLinesBetweenMethods": 1,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines_between_methods_1.\n    \" code\n  ENDMETHOD.\n  METHOD empty_lines_between_methods_2.\n    \" more code\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines_between_methods_1.\n    \" code\n  ENDMETHOD.\n\n  METHOD empty_lines_between_methods_2.\n    \" more code\n  ENDMETHOD.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testRemoveLinesBetweenMethods",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines_between_methods_2.\n  ENDMETHOD.\n\n\n\n  METHOD empty_lines_between_methods_3.\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines_between_methods_2.\n  ENDMETHOD.\n\n\n  METHOD empty_lines_between_methods_3.\n  ENDMETHOD.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testRemoveAllLinesBetweenMethods",
+   "config": {
+    "EmptyLinesBetweenMethods": 1,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines_between_methods_2.\n  ENDMETHOD.\n\n\n  \" comment\n  METHOD empty_lines_between_methods_3.\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines_between_methods_2.\n  ENDMETHOD.\n\n  \" comment\n  METHOD empty_lines_between_methods_3.\n  ENDMETHOD.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testRemoveLinesBetweenClassAndMethod",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 0
+   },
+   "src": "CLASS cl_empty_lines IMPLEMENTATION.\n\n\n  METHOD empty_lines.\n  ENDMETHOD.\n\nENDCLASS.",
+   "exp": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines.\n  ENDMETHOD.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testAdd1LineBetweenClassAndMethod",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 1
+   },
+   "src": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines.\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "CLASS cl_empty_lines IMPLEMENTATION.\n\n  METHOD empty_lines.\n  ENDMETHOD.\n\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testAdd2LinesBetweenClassAndMethod",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 2
+   },
+   "src": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines.\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "CLASS cl_empty_lines IMPLEMENTATION.\n\n\n  METHOD empty_lines.\n  ENDMETHOD.\n\n\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testAddAndRemoveLineBetweenClassAndMethod",
+   "config": {
+    "EmptyLinesBetweenMethods": 2,
+    "EmptyLinesBetweenClasses": 3,
+    "EmptyLinesBetweenClassAndMethod": 1
+   },
+   "src": "CLASS cl_empty_lines IMPLEMENTATION.\n  METHOD empty_lines.\n  ENDMETHOD.\n\n\nENDCLASS.",
+   "exp": "CLASS cl_empty_lines IMPLEMENTATION.\n\n  METHOD empty_lines.\n  ENDMETHOD.\n\nENDCLASS.",
+   "flags": {}
+  }
+ ]
+}

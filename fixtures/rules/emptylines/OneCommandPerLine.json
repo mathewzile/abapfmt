@@ -1,0 +1,136 @@
+{
+ "ruleId": "ONE_COMMAND_PER_LINE",
+ "testClass": "OneCommandPerLineTest",
+ "defaults": {
+  "KeepOneLinersAfterWhen": true,
+  "KeepMultiLinersAfterWhen": false
+ },
+ "cases": [
+  {
+   "name": "testMoveDeclarationsAndAssignments",
+   "config": {
+    "KeepOneLinersAfterWhen": true,
+    "KeepMultiLinersAfterWhen": false
+   },
+   "src": "  METHOD any_method.\n    DATA lv_x TYPE i VALUE 1. DATA lv_y TYPE i VALUE 2. DATA lv_z TYPE i VALUE 3.\n\n    \" comment\n    lv_x += 2.lv_y -= 4.lv_z *= 6.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lv_x TYPE i VALUE 1.\n    DATA lv_y TYPE i VALUE 2.\n    DATA lv_z TYPE i VALUE 3.\n\n    \" comment\n    lv_x += 2.\n    lv_y -= 4.\n    lv_z *= 6.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepEmptyCommandAndPragmaLine",
+   "config": {
+    "KeepOneLinersAfterWhen": true,
+    "KeepMultiLinersAfterWhen": false
+   },
+   "src": "  METHOD any_method.\n    DATA lv_x TYPE i VALUE 1.. DATA lv_y TYPE i VALUE 2... DATA lv_z TYPE i VALUE 3. ##NEEDED\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lv_x TYPE i VALUE 1..\n    DATA lv_y TYPE i VALUE 2...\n    DATA lv_z TYPE i VALUE 3. ##NEEDED\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSkipTypesAfterInclude",
+   "config": {
+    "KeepOneLinersAfterWhen": true,
+    "KeepMultiLinersAfterWhen": false
+   },
+   "src": "  METHOD any_method.\n  TYPES:\n    BEGIN OF ty_s_any,\n      any_comp   TYPE i,\n      other_comp TYPE string.\n      INCLUDE TYPE ty_s_other. TYPES:\n    END OF ty_s_any.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  TYPES:\n    BEGIN OF ty_s_any,\n      any_comp   TYPE i,\n      other_comp TYPE string.\n      INCLUDE TYPE ty_s_other. TYPES:\n    END OF ty_s_any.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMoveNestedIfBlocks",
+   "config": {
+    "KeepOneLinersAfterWhen": true,
+    "KeepMultiLinersAfterWhen": false
+   },
+   "src": "  METHOD any_method.\n    IF lv_x > lv_y. IF lv_y < lv_z.\n      lv_x = lv_z - lv_y.ELSE.lv_y = lv_z - lv_x.ENDIF.\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF lv_x > lv_y.\n      IF lv_y < lv_z.\n        lv_x = lv_z - lv_y.\n      ELSE.\n        lv_y = lv_z - lv_x.\n      ENDIF.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMoveNestedDoAndIfBlocks",
+   "config": {
+    "KeepOneLinersAfterWhen": true,
+    "KeepMultiLinersAfterWhen": false
+   },
+   "src": "  METHOD any_method.\n    DO 3 TIMES.lv_y *= 3.DO 5 TIMES.IF lv_x < lv_y + lv_z.lv_x += 2.lv_y -= 1.ELSE.lv_z *= 1.ENDIF.ENDDO.ENDDO.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DO 3 TIMES.\n      lv_y *= 3.\n      DO 5 TIMES.\n        IF lv_x < lv_y + lv_z.\n          lv_x += 2.\n          lv_y -= 1.\n        ELSE.\n          lv_z *= 1.\n        ENDIF.\n      ENDDO.\n    ENDDO.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepOneLinersAfterWhen",
+   "config": {
+    "KeepOneLinersAfterWhen": true,
+    "KeepMultiLinersAfterWhen": false
+   },
+   "src": "  METHOD any_method.\n    CASE lv_x.\n      WHEN 1. lv_x += 1. lv_y += 1.\n      WHEN 2. lv_y -= 1. lv_z -= 2.\n      WHEN 3. lv_z *= 2. lv_x *= 3.\n    ENDCASE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CASE lv_x.\n      WHEN 1. lv_x += 1. lv_y += 1.\n      WHEN 2. lv_y -= 1. lv_z -= 2.\n      WHEN 3. lv_z *= 2. lv_x *= 3.\n    ENDCASE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMoveOneLinersAfterWhen",
+   "config": {
+    "KeepOneLinersAfterWhen": false,
+    "KeepMultiLinersAfterWhen": false
+   },
+   "src": "  METHOD any_method.\n    CASE lv_x.\n      WHEN 1. lv_x += 1. lv_y += 1.\n      WHEN 2. lv_y -= 1. lv_z -= 2.\n      WHEN 3. lv_z *= 2. lv_x *= 3.\n    ENDCASE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CASE lv_x.\n      WHEN 1.\n        lv_x += 1.\n        lv_y += 1.\n      WHEN 2.\n        lv_y -= 1.\n        lv_z -= 2.\n      WHEN 3.\n        lv_z *= 2.\n        lv_x *= 3.\n    ENDCASE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepMultiLinersAfterWhen",
+   "config": {
+    "KeepOneLinersAfterWhen": true,
+    "KeepMultiLinersAfterWhen": true
+   },
+   "src": "  METHOD any_method.\n    CASE lv_x.\n      WHEN 1. lv_x += 1. do_something( iv_value = lv_x\n                                       iv_name  = 'X' ).\n      WHEN 2. lv_y -= 1. do_something( iv_value = lv_y\n                                       iv_name  = 'Y' ).\n      WHEN 3. lv_z *= 2. do_something( iv_value = lv_z ).\n        do_something_else( iv_value = lv_z ).\n    ENDCASE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CASE lv_x.\n      WHEN 1. lv_x += 1. do_something( iv_value = lv_x\n                                       iv_name  = 'X' ).\n      WHEN 2. lv_y -= 1. do_something( iv_value = lv_y\n                                       iv_name  = 'Y' ).\n      WHEN 3. lv_z *= 2. do_something( iv_value = lv_z ).\n        do_something_else( iv_value = lv_z ).\n    ENDCASE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMoveMultiLinersAfterWhen",
+   "config": {
+    "KeepOneLinersAfterWhen": true,
+    "KeepMultiLinersAfterWhen": false
+   },
+   "src": "  METHOD any_method.\n    CASE lv_x.\n      WHEN 1. lv_x += 1. do_something( iv_value = lv_x\n                                       iv_name  = 'X' ).\n      WHEN 2. lv_y -= 1. do_something( iv_value = lv_y\n                                       iv_name  = 'Y' ).\n      WHEN 3. lv_z *= 2. do_something( iv_value = lv_z ).\n        do_something_else( iv_value = lv_z ).\n    ENDCASE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CASE lv_x.\n      WHEN 1.\n        lv_x += 1.\n        do_something( iv_value = lv_x\n                      iv_name  = 'X' ).\n      WHEN 2.\n        lv_y -= 1.\n        do_something( iv_value = lv_y\n                      iv_name  = 'Y' ).\n      WHEN 3.\n        lv_z *= 2.\n        do_something( iv_value = lv_z ).\n        do_something_else( iv_value = lv_z ).\n    ENDCASE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,256 @@
+{
+ "ruleId": "DDL_POSITION_ASSOCIATION",
+ "testClass": "DdlPositionAssociationTest",
+ "defaults": {
+  "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+  "KeywordsIndent": 2,
+  "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+  "DataSourceIndent": 2,
+  "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+  "ConditionIndent": 4,
+  "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+  "FilterIndent": 4
+ },
+ "cases": [
+  {
+   "name": "testAlwaysBreakBeforeAssociationKeywords",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n  association [0..1] to I_FourthEntity as _Fourth on  $projection.IdField = _Fourth.IdField\n                                                  and _Fourth.CondField   = 'X'\n\n// comment\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                  and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      OtherAlias.AnyNonKeyField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n  association [0..1] to I_FourthEntity as _Fourth\n    on  $projection.IdField = _Fourth.IdField\n    and _Fourth.CondField   = 'X'\n\n  // comment\n  association of many to many I_FifthEntity as _Fifth\n    on  $projection.IdField    = _Fifth.IdField\n    and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      OtherAlias.AnyNonKeyField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepAssociationKeywordsAsIs",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.KEEP_AS_IS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to I_FourthEntity as _Fourth\n  on  $projection.IdField = _Fourth.IdField\n  and _Fourth.CondField   = 'X'\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                  and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to I_FourthEntity as _Fourth\n    on  $projection.IdField = _Fourth.IdField\n    and _Fourth.CondField   = 'X'\n\n  association of many to many I_FifthEntity as _Fifth\n    on  $projection.IdField    = _Fifth.IdField\n    and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysBeforeAssociationDataSource",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.ALWAYS",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to I_FourthEntity as _Fourth\n  on  $projection.IdField = _Fourth.IdField\n  and _Fourth.CondField   = 'X'\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                  and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to\n  I_FourthEntity as _Fourth\n    on  $projection.IdField = _Fourth.IdField\n    and _Fourth.CondField   = 'X'\n\n  association of many to many\n  I_FifthEntity as _Fifth\n    on  $projection.IdField    = _Fifth.IdField\n    and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepAssociationDataSourceAsIs",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.KEEP_AS_IS",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to\n  I_FourthEntity as _Fourth\n  on  $projection.IdField = _Fourth.IdField\n  and _Fourth.CondField   = 'X'\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                  and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to\n  I_FourthEntity as _Fourth\n    on  $projection.IdField = _Fourth.IdField\n    and _Fourth.CondField   = 'X'\n\n  association of many to many I_FifthEntity as _Fifth\n    on  $projection.IdField    = _Fifth.IdField\n    and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysBreakBeforeAssociationCondition",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.ALWAYS",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to I_FourthEntity as _Fourth\n  on  $projection.IdField = _Fourth.IdField\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to I_FourthEntity as _Fourth\n    on  $projection.IdField = _Fourth.IdField\n\n  association of many to many I_FifthEntity as _Fifth\n    on  $projection.IdField    = _Fifth.IdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testContinueWithOneLinerAssociationConditions",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to I_FourthEntity as _Fourth\n  on  $projection.IdField = _Fourth.IdField\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to I_FourthEntity as _Fourth on  $projection.IdField = _Fourth.IdField\n\n  association of many to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testBreakBeforeAssociationConditionsDueToMultiLiners",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to I_FourthEntity as _Fourth\n  on  $projection.IdField = _Fourth.IdField\n  and _Fourth.CondField   = 'X'\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                  and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to I_FourthEntity as _Fourth\n    on  $projection.IdField = _Fourth.IdField\n    and _Fourth.CondField   = 'X'\n\n  association of many to many I_FifthEntity as _Fifth\n    on  $projection.IdField    = _Fifth.IdField\n    and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepAssociationConditionsAsIs",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.KEEP_AS_IS",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to I_FourthEntity as _Fourth\n  on  $projection.IdField = _Fourth.IdField\n  and _Fourth.CondField   = 'X'\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                  and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to I_FourthEntity as _Fourth\n    on  $projection.IdField = _Fourth.IdField\n    and _Fourth.CondField   = 'X'\n\n  association of many to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                                      and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNeverBreakBeforeAssociationCondition",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.NEVER",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to I_FourthEntity as _Fourth\n  on  $projection.IdField = _Fourth.IdField\n  and _Fourth.CondField   = 'X'\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                  and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to I_FourthEntity as _Fourth on  $projection.IdField = _Fourth.IdField\n                                                  and _Fourth.CondField   = 'X'\n\n  association of many to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                                      and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testIndents",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 3,
+    "BreakBeforeDataSource": "DdlLineBreak.ALWAYS",
+    "DataSourceIndent": 6,
+    "BreakBeforeCondition": "DdlConditionLineBreak.ALWAYS",
+    "ConditionIndent": 9,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 12
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to I_FourthEntity as _Fourth on  $projection.IdField = _Fourth.IdField\n                                                  and _Fourth.CondField   = 'X'\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                  and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField,\n\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n   association [0..1] to\n      I_FourthEntity as _Fourth\n         on  $projection.IdField = _Fourth.IdField\n         and _Fourth.CondField   = 'X'\n\n   association of many to many\n      I_FifthEntity as _Fifth\n         on  $projection.IdField    = _Fifth.IdField\n         and $projection.SubIdField = _Fifth.SubIdField\n\n{\n  key AnyAlias.IdField,\n  key ThirdAlias.SubIdField,\n\n      OtherAlias.AnyNonKeyField,\n      ThirdAlias.OtherNonKeyField,\n\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysBreakBeforeAssociationFilter",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to I_FourthEntity as _Fourth\n  on  $projection.IdField = _Fourth.IdField with default\n  filter _Fourth.CondField   = 'X'\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                  and $projection.SubIdField = _Fifth.SubIdField\n   with default filter _Fifth.CondField > 10\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to I_FourthEntity as _Fourth\n    on  $projection.IdField = _Fourth.IdField\n    with default filter _Fourth.CondField   = 'X'\n\n  association of many to many I_FifthEntity as _Fifth\n    on  $projection.IdField    = _Fifth.IdField\n    and $projection.SubIdField = _Fifth.SubIdField\n    with default filter _Fifth.CondField > 10\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepAssociationFilterAsIs",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.KEEP_AS_IS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias association [0..1] to I_FourthEntity as _Fourth\n  on  $projection.IdField = _Fourth.IdField with default\n  filter _Fourth.CondField   = 'X'\n\n  association of many\n  to many I_FifthEntity as _Fifth on  $projection.IdField    = _Fifth.IdField\n                                  and $projection.SubIdField = _Fifth.SubIdField\n   with default filter _Fifth.CondField > 10\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to I_FourthEntity as _Fourth\n    on  $projection.IdField = _Fourth.IdField with default filter _Fourth.CondField   = 'X'\n\n  association of many to many I_FifthEntity as _Fifth\n    on  $projection.IdField    = _Fifth.IdField\n    and $projection.SubIdField = _Fifth.SubIdField\n    with default filter _Fifth.CondField > 10\n{\n  key AnyAlias.IdField,\n      _Fourth,\n      _Fifth\n}",
+   "flags": {}
+  },
+  {
+   "name": "testRedefineAssociation",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity projection_view\n  as projection on I_Any as Alias redefine association Alias._AnyAssociation as _RedefinedName\n    redirected to composition child I_Other",
+   "exp": "define view entity projection_view\n  as projection on I_Any as Alias\n\n  redefine association Alias._AnyAssociation as _RedefinedName\n    redirected to composition child I_Other",
+   "flags": {}
+  },
+  {
+   "name": "testComposition",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.ALWAYS",
+    "DataSourceIndent": 4,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define root view entity I_AnyView\n  as select from any_dtab composition [0..*] of I_TextView as _Text\n\n{\n  key AnyField,\n      OtherField\n}",
+   "exp": "define root view entity I_AnyView\n  as select from any_dtab\n\n  composition [0..*] of\n    I_TextView as _Text\n\n{\n  key AnyField,\n      OtherField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAssociationWithParameters",
+   "config": {
+    "BreakBeforeKeywords": "DdlLineBreakWithoutNever.ALWAYS",
+    "KeywordsIndent": 2,
+    "BreakBeforeDataSource": "DdlLineBreak.NEVER",
+    "DataSourceIndent": 2,
+    "BreakBeforeCondition": "DdlConditionLineBreak.IF_MULTI_LINE_FOUND",
+    "ConditionIndent": 4,
+    "BreakBeforeFilter": "DdlLineBreakWithoutNever.ALWAYS",
+    "FilterIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to I_FourthEntity(\n                          P_AnyParameter   = 'any value'\n                          P_OtherParameter = 'other value' ) as _Fourth on  $projection.IdField = _Fourth.IdField\n\n{\n  key AnyAlias.IdField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..1] to I_FourthEntity(\n                          P_AnyParameter   = 'any value'\n                          P_OtherParameter = 'other value' ) as _Fourth\n    on  $projection.IdField = _Fourth.IdField\n\n{\n  key AnyAlias.IdField\n}",
+   "flags": {}
+  }
+ ]
+}

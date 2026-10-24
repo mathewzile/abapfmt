@@ -1,0 +1,989 @@
+{
+ "ruleId": "UPPER_AND_LOWER_CASE",
+ "testClass": "UpperAndLowerCaseTest",
+ "defaults": {
+  "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+  "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+  "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+  "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+  "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+  "PragmaStyle": "CaseStyle.UPPER_CASE",
+  "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+  "KeepMixedCaseInIdentifiers": true
+ },
+ "cases": [
+  {
+   "name": "testInterfaceDefinition",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "*\"* components of interface IF_ANY_INTERFACE\n\"! <p class=\"shorttext synchronized\" lang=\"en\">Any Description</p>\ninterface if_pretty_print_case_and_indent \"#EC NUMBER_METHODS\n  public.\n\n  interfaces IF_ANY_INTERFACE.\n  interfaces IF_OTHER_INTERFACE.\n\n  \"! <p class=\"shorttext synchronized\" lang=\"en\">Data Description</p>\n  data MS_DATA type TY_S_DATA read-only.\n  \"! <p class=\"shorttext synchronized\" lang=\"en\">Constant Description</p>\n  constants CO_INDICATOR type CHAR1 value 'C' ##NO_TEXT.\n\n  methods ANY_METHOD\n    importing\n      !ITS_TABLE type IF_ANY_INTERFACE=>TY_TS_TABLE_TYPE.\n\n  methods OTHER_METHOD\n    returning\n      value(RV_FLAG) type ABAP_BOOL.\nendinterface.",
+   "exp": "*\"* components of interface IF_ANY_INTERFACE\n\"! <p class=\"shorttext synchronized\" lang=\"en\">Any Description</p>\nINTERFACE if_pretty_print_case_and_indent \"#EC NUMBER_METHODS\n  PUBLIC.\n\n  INTERFACES if_any_interface.\n  INTERFACES if_other_interface.\n\n  \"! <p class=\"shorttext synchronized\" lang=\"en\">Data Description</p>\n  DATA ms_data TYPE ty_s_data READ-ONLY.\n  \"! <p class=\"shorttext synchronized\" lang=\"en\">Constant Description</p>\n  CONSTANTS co_indicator TYPE char1 VALUE 'C' ##NO_TEXT.\n\n  METHODS any_method\n    IMPORTING\n      !its_table TYPE if_any_interface=>ty_ts_table_type.\n\n  METHODS other_method\n    RETURNING\n      VALUE(rv_flag) TYPE abap_bool.\nENDINTERFACE.",
+   "flags": {}
+  },
+  {
+   "name": "testMethodWithDeclAndCommands",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  method pretty_print_case_1.\n    constants lc_text value 'abcde' ##no_text.\n\n    data lv_counter type i.\n    data(lo_inline) = get_object( ) ##needed.\n\n    if iv_count = abap_true and io_inline is not bound.\n      loop at mts_data assigning field-symbol(<ls_data>).\n        lv_counter += 1.\n      endloop.\n    endif.\n  endmethod.",
+   "exp": "  METHOD pretty_print_case_1.\n    CONSTANTS lc_text VALUE 'abcde' ##NO_TEXT.\n\n    DATA lv_counter TYPE i.\n    DATA(lo_inline) = get_object( ) ##NEEDED.\n\n    IF iv_count = abap_true AND io_inline IS NOT BOUND.\n      LOOP AT mts_data ASSIGNING FIELD-SYMBOL(<ls_data>).\n        lv_counter += 1.\n      ENDLOOP.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testClearStatement",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    clear: ev_value with '0' in character mode, key with null, result.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR: ev_value WITH '0' IN CHARACTER MODE, key WITH NULL, result.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortStatement",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    sort mt_table by date ascending.\n    sort lt_data by fiscal_year ascending\n                    period      descending\n                    item_count  descending.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SORT mt_table BY date ASCENDING.\n    SORT lt_data BY fiscal_year ASCENDING\n                    period      DESCENDING\n                    item_count  DESCENDING.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSortStatementFromUpper",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    SORT MT_TABLE BY DATE ASCENDING.\n    SORT LT_DATA BY FISCAL_YEAR ASCENDING\n                    PERIOD      DESCENDING\n                    ITEM_COUNT  DESCENDING.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SORT mt_table BY date ASCENDING.\n    SORT lt_data BY fiscal_year ASCENDING\n                    period      DESCENDING\n                    item_count  DESCENDING.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDataDeclarationFromUpper",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    DATA:\n      LOOP TYPE TYPE LENGTH 10,\n      FOR TYPE LINE OF TYPE,\n      DO TYPE REF TO TYPE,\n      ENDFOR TYPE TABLE OF TYPE WITH DEFAULT KEY,\n      ENDDO TYPE SORTED TABLE OF REF TO TYPE WITH UNIQUE DEFAULT KEY,\n      WHILE TYPE RANGE OF TYPE INITIAL SIZE 4,\n      ENDWHILE LIKE TYPE,\n      ENDLOOP LIKE LINE OF TYPE,\n      IF LIKE REF TO TYPE,\n      ENDIF LIKE HASHED TABLE OF REF TO TYPE WITH UNIQUE DEFAULT KEY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA:\n      loop TYPE type LENGTH 10,\n      for TYPE LINE OF type,\n      do TYPE REF TO type,\n      endfor TYPE TABLE OF type WITH DEFAULT KEY,\n      enddo TYPE SORTED TABLE OF REF TO type WITH UNIQUE DEFAULT KEY,\n      while TYPE RANGE OF type INITIAL SIZE 4,\n      endwhile LIKE type,\n      endloop LIKE LINE OF type,\n      if LIKE REF TO type,\n      endif LIKE HASHED TABLE OF REF TO type WITH UNIQUE DEFAULT KEY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIdentifierNamedResult",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    \" 'result' must be lower case except in very specific statements:\n    TYPES ty_action_export_parameter TYPE TABLE FOR ACTION RESULT CDS_entity_name~action_name.\n    CALL TRANSFORMATION trans OPTIONS clear = 'all' SOURCE XML src_xml RESULT XML rslt_xml.\n    FETCH NEXT CURSOR dbcur INTO wa EXTENDED RESULT @oref.\n    DATA(result) = abap_true.\n    result = xsdbool( result = abap_false OR result = abap_true ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" 'result' must be lower case except in very specific statements:\n    TYPES ty_action_export_parameter TYPE TABLE FOR ACTION RESULT CDS_entity_name~action_name.\n    CALL TRANSFORMATION trans OPTIONS clear = 'all' SOURCE XML src_xml RESULT XML rslt_xml.\n    FETCH NEXT CURSOR dbcur INTO wa EXTENDED RESULT @oref.\n    DATA(result) = abap_true.\n    result = xsdbool( result = abap_false OR result = abap_true ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIdentifierNamedBetween",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    \" 'between' must remain in lower case here:\n    constants:\n      begin of cos_sel_opt_option,\n        equal       type apj_option value 'EQ',\n        between     type apj_option value 'BT',\n        not_between type apj_option value 'NB',\n      end of cos_sel_opt_option.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" 'between' must remain in lower case here:\n    CONSTANTS:\n      BEGIN OF cos_sel_opt_option,\n        equal       TYPE apj_option VALUE 'EQ',\n        between     TYPE apj_option VALUE 'BT',\n        not_between TYPE apj_option VALUE 'NB',\n      END OF cos_sel_opt_option.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testExceptionsOthers",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    \" OTHERS must be upper case:\n    call function 'OBJECT_KEY_GET'\n      EXPORTING\n        i_objnr           = <ls_item>-objnr\n*     IMPORTING\n*       E_OBJECTKEY       =\n      tables\n        onr_tab           = lt_table\n      exceptions\n        wrong_call        = 1\n        objectkey_invalid = 2\n        others            = 3.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" OTHERS must be upper case:\n    CALL FUNCTION 'OBJECT_KEY_GET'\n      EXPORTING\n        i_objnr           = <ls_item>-objnr\n*     IMPORTING\n*       E_OBJECTKEY       =\n      TABLES\n        onr_tab           = lt_table\n      EXCEPTIONS\n        wrong_call        = 1\n        objectkey_invalid = 2\n        OTHERS            = 3.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeywordHighAndLow",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    \" HIGH and LOW must be upper case here:\n    set run time clock resolution high.\n    set run time clock resolution low.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" HIGH and LOW must be upper case here:\n    SET RUN TIME CLOCK RESOLUTION HIGH.\n    SET RUN TIME CLOCK RESOLUTION LOW.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCamelCase",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    data lvMixedCaseIdentifier type i.\n\n    lv_counter = lvMixedCaseIdentifier.\n\n    call badi lo_badi_instance->any_method exporting AnyParameter              = ls_data\n                                           changing  OtherParameterInCamelCase = lv_value.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lvMixedCaseIdentifier TYPE i.\n\n    lv_counter = lvMixedCaseIdentifier.\n\n    CALL BADI lo_badi_instance->any_method EXPORTING AnyParameter              = ls_data\n                                           CHANGING  OtherParameterInCamelCase = lv_value.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCamelCaseFromUpper",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    CALL BADI LO_BADI_INSTANCE->ANY_METHOD\n      EXPORTING\n        AnyParameter              = LS_DATA\n      CHANGING\n        OtherParameterInCamelCase = LV_VALUE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CALL BADI lo_badi_instance->any_method\n      EXPORTING\n        AnyParameter              = ls_data\n      CHANGING\n        OtherParameterInCamelCase = lv_value.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIdentifiersNamedLikeKeywords",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    data lr_range type ref to data.\n    types ty_ts_table type sorted table of ty_s_struc with unique key item_id period\n                                                      with non-unique sorted key key components a b c.\n    loop at mts_table into <ls_any> using key key where a = 1.\n    endloop.\n\n    delete adjacent duplicates from mt_item_range comparing low.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lr_range TYPE REF TO data.\n    TYPES ty_ts_table TYPE SORTED TABLE OF ty_s_struc WITH UNIQUE KEY item_id period\n                                                      WITH NON-UNIQUE SORTED KEY key COMPONENTS a b c.\n    LOOP AT mts_table INTO <ls_any> USING KEY key WHERE a = 1.\n    ENDLOOP.\n\n    DELETE ADJACENT DUPLICATES FROM mt_item_range COMPARING low.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIdentifiersNamedLikeKeywordsFromUpper",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    DATA LR_RANGE TYPE REF TO DATA.\n    TYPES TY_TS_TABLE TYPE SORTED TABLE OF TY_S_STRUC WITH UNIQUE KEY ITEM_ID PERIOD\n                                                      WITH NON-UNIQUE SORTED KEY KEY COMPONENTS A B C.\n    LOOP AT MTS_TABLE INTO <LS_ANY> USING KEY KEY WHERE A = 1.\n    ENDLOOP.\n\n    DELETE ADJACENT DUPLICATES FROM MT_ITEM_RANGE COMPARING LOW.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lr_range TYPE REF TO data.\n    TYPES ty_ts_table TYPE SORTED TABLE OF ty_s_struc WITH UNIQUE KEY item_id period\n                                                      WITH NON-UNIQUE SORTED KEY key COMPONENTS a b c.\n    LOOP AT mts_table INTO <ls_any> USING KEY key WHERE a = 1.\n    ENDLOOP.\n\n    DELETE ADJACENT DUPLICATES FROM mt_item_range COMPARING low.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIdentifiersNamedXYZ",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    TYPES:\n      BEGIN OF XYZ,\n        A TYPE X,\n        B TYPE Y,\n        C TYPE Z,\n      END OF XYZ.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES:\n      BEGIN OF xyz,\n        a TYPE x,\n        b TYPE y,\n        c TYPE z,\n      END OF xyz.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMethodAllUpper",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    CONSTANTS LC_TEXT VALUE 'TEXT' ##NO_TEXT.\n\n    DATA LV_COUNTER            TYPE I.\n    DATA lvMixedCaseIdentifier TYPE i.\n    DATA(LO_INLINE) = GET_OBJECT( ) ##NEEDED.\n\n    CLEAR: EV_VALUE WITH '0' IN CHARACTER MODE, KEY WITH NULL, RESULT.\n\n    LV_COUNTER = lvMixedCaseIdentifier.\n    IF IV_COUNT = ABAP_TRUE AND IO_INLINE IS NOT BOUND.\n      LOOP AT MTS_DATA ASSIGNING FIELD-SYMBOL(<LS_DATA>).\n        LV_COUNTER += 1.\n      ENDLOOP.\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CONSTANTS lc_text VALUE 'TEXT' ##NO_TEXT.\n\n    DATA lv_counter            TYPE i.\n    DATA lvMixedCaseIdentifier TYPE i.\n    DATA(lo_inline) = get_object( ) ##NEEDED.\n\n    CLEAR: ev_value WITH '0' IN CHARACTER MODE, key WITH NULL, result.\n\n    lv_counter = lvMixedCaseIdentifier.\n    IF iv_count = abap_true AND io_inline IS NOT BOUND.\n      LOOP AT mts_data ASSIGNING FIELD-SYMBOL(<ls_data>).\n        lv_counter += 1.\n      ENDLOOP.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testClassDefinitionAdtStyle",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "CLASS cl_any_class DEFINITION PUBLIC CREATE PROTECTED.\n  PUBLIC SECTION.\n    INTERFACES IF_ANY_INTERFACE.\n  protected section.\n    data MO_ITEM type ref to IF_ITEM.\n  private section.\n    types ty_ts_xyz type sorted table of xyz with unique key primary_key components a b with further secondary keys.\n    data mo_message_handler type ref to if_message_handler.\n    class-methods create\n      returning\n        value(ro_instance) type ref to if_any_interface.\nENDCLASS.",
+   "exp": "CLASS cl_any_class DEFINITION PUBLIC CREATE PROTECTED.\n  PUBLIC SECTION.\n    INTERFACES if_any_interface.\n  PROTECTED SECTION.\n    DATA mo_item TYPE REF TO if_item.\n  PRIVATE SECTION.\n    TYPES ty_ts_xyz TYPE SORTED TABLE OF xyz WITH UNIQUE KEY primary_key COMPONENTS a b WITH FURTHER SECONDARY KEYS.\n    DATA mo_message_handler TYPE REF TO if_message_handler.\n    CLASS-METHODS create\n      RETURNING\n        VALUE(ro_instance) TYPE REF TO if_any_interface.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testClassDefinitionSapGuiStyle",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.LOWER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "CLASS cl_any_class DEFINITION PUBLIC CREATE PROTECTED.\n  PUBLIC SECTION.\n    INTERFACES IF_ANY_INTERFACE.\n  protected section.\n    data MO_ITEM type ref to IF_ITEM.\n  private section.\n    types ty_ts_xyz type sorted table of xyz with unique key primary_key components a b with further secondary keys.\n    data mo_message_handler type ref to if_message_handler.\n    class-methods create\n      returning\n        value(ro_instance) type ref to if_any_interface.\nENDCLASS.",
+   "exp": "class CL_ANY_CLASS definition public create protected.\n  public section.\n    interfaces IF_ANY_INTERFACE.\n  protected section.\n    data MO_ITEM type ref to IF_ITEM.\n  private section.\n    types TY_TS_XYZ type sorted table of XYZ with unique key PRIMARY_KEY components A B with further secondary keys.\n    data MO_MESSAGE_HANDLER type ref to IF_MESSAGE_HANDLER.\n    class-methods CREATE\n      returning\n        value(RO_INSTANCE) type ref to IF_ANY_INTERFACE.\nendclass.",
+   "flags": {}
+  },
+  {
+   "name": "testClassDefinitionUnchanged",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UNCHANGED",
+    "DefinitionIdentifierStyle": "CaseStyle.UNCHANGED",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "CLASS cl_any_class DEFINITION PUBLIC CREATE PROTECTED.\n  PUBLIC SECTION.\n    INTERFACES IF_ANY_INTERFACE.\n  protected section.\n    data MO_ITEM type ref to IF_ITEM.\n  private section.\n    types ty_ts_xyz type sorted table of xyz with unique key primary_key components a b with further secondary keys.\n    data mo_message_handler type ref to if_message_handler.\n    class-methods create\n      returning\n        value(ro_instance) type ref to if_any_interface.\nENDCLASS.",
+   "exp": "CLASS cl_any_class DEFINITION PUBLIC CREATE PROTECTED.\n  PUBLIC SECTION.\n    INTERFACES IF_ANY_INTERFACE.\n  protected section.\n    data MO_ITEM type ref to IF_ITEM.\n  private section.\n    types ty_ts_xyz type sorted table of xyz with unique key primary_key components a b with further secondary keys.\n    data mo_message_handler type ref to if_message_handler.\n    class-methods create\n      returning\n        value(ro_instance) type ref to if_any_interface.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testClassDefinitionKeepMixed",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "CLASS cl_Any_Class DEFINITION PUBLIC CREATE PROTECTED.\n  protected section.\n    data mo_Item type ref to if_Item.\nENDCLASS.",
+   "exp": "CLASS cl_Any_Class DEFINITION PUBLIC CREATE PROTECTED.\n  PROTECTED SECTION.\n    DATA mo_Item TYPE REF TO if_Item.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testClassDefinitionChangeMixed",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": false
+   },
+   "src": "CLASS cl_Any_Class DEFINITION PUBLIC CREATE PROTECTED.\n  protected section.\n    data mo_Item type ref to if_Item.\nENDCLASS.",
+   "exp": "CLASS cl_any_class DEFINITION PUBLIC CREATE PROTECTED.\n  PROTECTED SECTION.\n    DATA mo_item TYPE REF TO if_item.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testImplementationKeywordUpperIdentifierLowerPragmaUpper",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  method pretty_print_case_1.\n    constants lc_text value 'TEXT' ##no_text.\n\n    data lv_counter type i.\n    data(lo_inline) = get_object( ) ##NEEDED.\n\n    if iv_count = abap_true and io_inline is not bound.\n      loop at mts_data assigning field-symbol(<ls_data>).\n        lv_counter += 1.\n      endloop.\n    endif.\n  endmethod.",
+   "exp": "  METHOD pretty_print_case_1.\n    CONSTANTS lc_text VALUE 'TEXT' ##NO_TEXT.\n\n    DATA lv_counter TYPE i.\n    DATA(lo_inline) = get_object( ) ##NEEDED.\n\n    IF iv_count = abap_true AND io_inline IS NOT BOUND.\n      LOOP AT mts_data ASSIGNING FIELD-SYMBOL(<ls_data>).\n        lv_counter += 1.\n      ENDLOOP.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testImplementationKeywordLowerIdentifierUpperPragmaLower",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.UPPER_CASE",
+    "PragmaStyle": "CaseStyle.LOWER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  method pretty_print_case_1.\n    constants lc_text value 'text' ##no_text.\n\n    data lv_counter type i.\n    data(lo_inline) = get_object( ) ##needed.\n\n    if iv_count = abap_true and io_inline is not bound.\n      loop at mts_data assigning field-symbol(<ls_data>).\n        lv_counter += 1.\n      endloop.\n    endif.\n  endmethod.",
+   "exp": "  method PRETTY_PRINT_CASE_1.\n    constants LC_TEXT value 'text' ##no_text.\n\n    data LV_COUNTER type I.\n    data(LO_INLINE) = GET_OBJECT( ) ##needed.\n\n    if IV_COUNT = ABAP_TRUE and IO_INLINE is not bound.\n      loop at MTS_DATA assigning field-symbol(<LS_DATA>).\n        LV_COUNTER += 1.\n      endloop.\n    endif.\n  endmethod.",
+   "flags": {}
+  },
+  {
+   "name": "testImplementationUnchanged",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UNCHANGED",
+    "ImplementationIdentifierStyle": "CaseStyle.UNCHANGED",
+    "PragmaStyle": "CaseStyle.UNCHANGED",
+    "PragmaParameterStyle": "CaseStyle.UNCHANGED",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  method pretty_print_case_1.\n    constants lc_text value 'text' ##no_text.\n\n    data lv_counter type i.\n    data(lo_inline) = get_object( ) ##NEEDED.\n\n    if iv_count = abap_true and io_inline is not bound.\n      loop at mts_data assigning field-symbol(<ls_data>).\n        lv_counter += 1.\n      endloop.\n    endif.\n  endmethod.",
+   "exp": "  method pretty_print_case_1.\n    constants lc_text value 'text' ##no_text.\n\n    data lv_counter type i.\n    data(lo_inline) = get_object( ) ##NEEDED.\n\n    if iv_count = abap_true and io_inline is not bound.\n      loop at mts_data assigning field-symbol(<ls_data>).\n        lv_counter += 1.\n      endloop.\n    endif.\n  endmethod.",
+   "flags": {}
+  },
+  {
+   "name": "testImplementationKeepMixed",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.UPPER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  method pretty_print_case_1.\n    data(lo_InLine) = getObject( )->getSubObject( ) ##needed.\n  endmethod.",
+   "exp": "  method PRETTY_PRINT_CASE_1.\n    data(lo_InLine) = getObject( )->getSubObject( ) ##NEEDED.\n  endmethod.",
+   "flags": {}
+  },
+  {
+   "name": "testImplementationChangeMixed",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.UPPER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": false
+   },
+   "src": "  method pretty_print_case_1.\n    data(lo_InLine) = getObject( )->getSubObject( ) ##needed.\n  endmethod.",
+   "exp": "  method PRETTY_PRINT_CASE_1.\n    data(LO_INLINE) = GETOBJECT( )->GETSUBOBJECT( ) ##NEEDED.\n  endmethod.",
+   "flags": {}
+  },
+  {
+   "name": "testRaiseExceptionNew",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  raise exception new cx_message( mv_msgid = '001' ).\n  raise exception new cx_message( textid = VALUE #( ) ).",
+   "exp": "  RAISE EXCEPTION NEW cx_message( mv_msgid = '001' ).\n  RAISE EXCEPTION NEW cx_message( textid = VALUE #( ) ).",
+   "flags": {}
+  },
+  {
+   "name": "testAbapSqlSelectCount",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n  select count(*) into lv_count\n    from dtab\n    where bukrs = lv_company_code.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  SELECT COUNT(*) INTO lv_count\n    FROM dtab\n    WHERE bukrs = lv_company_code.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComposedIdentifiers",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  method IF_ANY_INTERFACE~any_method.\n    MS_STRUCTURE-component1 = mo_any_instance->GET_ANY_VALUE( ).\n    ms_structure-COMPONENT2 = if_any_interface=>CS_ANY_STRUCTURE-any_component.\n    loop at itab assigning field-symbol(<ls_any>).\n      MO_ANY_INSTANCE->any_method( param = <LS_ANY>-component ).\n    endloop.\n  endmethod.",
+   "exp": "  METHOD if_any_interface~any_method.\n    ms_structure-component1 = mo_any_instance->get_any_value( ).\n    ms_structure-component2 = if_any_interface=>cs_any_structure-any_component.\n    LOOP AT itab ASSIGNING FIELD-SYMBOL(<ls_any>).\n      mo_any_instance->any_method( param = <ls_any>-component ).\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testComposedIdentifiersWithCamelCase",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  method IF_ANY_INTERFACE~AnyMethod.\n    MS_STRUCTURE-Component1 = moAnyInstance->GET_ANY_VALUE( ).\n    msStructure-COMPONENT2 = if_any_interface=>CS_ANY_STRUCTURE-AnyComponent.\n    loop at itab assigning field-symbol(<lsAny>).\n      MO_ANY_INSTANCE->any_method( param = <lsAny>-COMPONENT ).\n    endloop.\n  endmethod.",
+   "exp": "  METHOD if_any_interface~AnyMethod.\n    ms_structure-Component1 = moAnyInstance->get_any_value( ).\n    msStructure-component2 = if_any_interface=>cs_any_structure-AnyComponent.\n    LOOP AT itab ASSIGNING FIELD-SYMBOL(<lsAny>).\n      mo_any_instance->any_method( param = <lsAny>-component ).\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testRaiseShortdumpNew",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    raise shortdump new cx_any( ).\n    raise shortdump type cx_demo_t100.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    RAISE SHORTDUMP NEW cx_any( ).\n    RAISE SHORTDUMP TYPE cx_demo_t100.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testEntityManipulationLanguage",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\nmodify entities of bdef\n      entity bdef1\n      create from fields_tab\n\n      entity bdef2\n      create by \\_assoc\n      set fields with fields_tab\n\n      failed   data(ls_failed)\n      reported data(ls_reported)\n      mapped   data(ls_mapped).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\nMODIFY ENTITIES OF bdef\n      ENTITY bdef1\n      CREATE FROM fields_tab\n\n      ENTITY bdef2\n      CREATE BY \\_assoc\n      SET FIELDS WITH fields_tab\n\n      FAILED   DATA(ls_failed)\n      REPORTED DATA(ls_reported)\n      MAPPED   DATA(ls_mapped).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDeriveFromFirstLowerUpperUpperLower",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_FIRST_TOKEN",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "class CL_UPPER_AND_LOWER_CASE definition public.\n  public SECTION ##pragma[PARAM].\n    methods PRETTY_PRINT_CASE\n      exporting !ev_result type int4 ##PRAGMA[param].\nendclass.\n\nCLASS CL_UPPER_AND_LOWER_CASE IMPLEMENTATION.\n  METHOD pretty_print_case.\n    constants lcMixedCaseIdentifier TYPE i value 5 ##PRAGMA[param].\n\n    EV_RESULT = lcMixedCaseIdentifier ##OTHER_PRAGMA.\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "class CL_UPPER_AND_LOWER_CASE definition public.\n  public section ##pragma[PARAM].\n    methods PRETTY_PRINT_CASE\n      exporting !EV_RESULT type INT4 ##pragma[PARAM].\nendclass.\n\nCLASS cl_upper_and_lower_case IMPLEMENTATION.\n  METHOD pretty_print_case.\n    CONSTANTS lcMixedCaseIdentifier TYPE i VALUE 5 ##pragma[PARAM].\n\n    ev_result = lcMixedCaseIdentifier ##other_pragma.\n  ENDMETHOD.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testDeriveFromFirstUpperUpperLowerLower",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_FIRST_TOKEN",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "CLASS CL_UPPER_AND_LOWER_CASE definition public.\n  public SECTION ##PRAGMA[param].\n    methods PRETTY_PRINT_CASE\n      exporting !ev_result type int4 ##pragma[PARAM].\nendclass.\n\nclass cl_upper_and_lower_case IMPLEMENTATION.\n  method pretty_print_case.\n    constants lcMixedCaseIdentifier TYPE i value 5 ##pragma[PARAM].\n\n    EV_RESULT = lcMixedCaseIdentifier ##other_pragma.\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "CLASS CL_UPPER_AND_LOWER_CASE DEFINITION PUBLIC.\n  PUBLIC SECTION ##PRAGMA[param].\n    METHODS PRETTY_PRINT_CASE\n      EXPORTING !EV_RESULT TYPE INT4 ##PRAGMA[param].\nENDCLASS.\n\nclass cl_upper_and_lower_case implementation.\n  method pretty_print_case.\n    constants lcMixedCaseIdentifier type i value 5 ##PRAGMA[param].\n\n    ev_result = lcMixedCaseIdentifier ##OTHER_PRAGMA.\n  endmethod.\nendclass.",
+   "flags": {}
+  },
+  {
+   "name": "testDeriveFromFirstUpperLowerLowerUpper",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_FIRST_TOKEN",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "CLASS cl_upper_and_lower_case definition public.\n  public SECTION.\n    methods PRETTY_PRINT_CASE\n      exporting !ev_result type int4.\nendclass.\n\nclass cl_upper_and_lower_case IMPLEMENTATION.\n  method PRETTY_PRINT_CASE.\n    constants lcMixedCaseIdentifier TYPE i value 5.\n\n    EV_RESULT = lcMixedCaseIdentifier.\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "CLASS cl_upper_and_lower_case DEFINITION PUBLIC.\n  PUBLIC SECTION.\n    METHODS pretty_print_case\n      EXPORTING !ev_result TYPE int4.\nENDCLASS.\n\nclass CL_UPPER_AND_LOWER_CASE implementation.\n  method PRETTY_PRINT_CASE.\n    constants lcMixedCaseIdentifier type I value 5.\n\n    EV_RESULT = lcMixedCaseIdentifier.\n  endmethod.\nendclass.",
+   "flags": {}
+  },
+  {
+   "name": "testDeriveFromFirstLowerLowerUpperUpper",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_FIRST_TOKEN",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "class cl_upper_and_lower_case definition public.\n  public SECTION.\n    methods PRETTY_PRINT_CASE\n      exporting !ev_result type int4.\nendclass.\n\nCLASS CL_UPPER_AND_LOWER_CASE IMPLEMENTATION.\n  METHOD PRETTY_PRINT_CASE.\n    constants lcMixedCaseIdentifier TYPE i value 5.\n\n    EV_RESULT = lcMixedCaseIdentifier.\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "class cl_upper_and_lower_case definition public.\n  public section.\n    methods pretty_print_case\n      exporting !ev_result type int4.\nendclass.\n\nCLASS CL_UPPER_AND_LOWER_CASE IMPLEMENTATION.\n  METHOD PRETTY_PRINT_CASE.\n    CONSTANTS lcMixedCaseIdentifier TYPE I VALUE 5.\n\n    EV_RESULT = lcMixedCaseIdentifier.\n  ENDMETHOD.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testDeriveFromFirstDontKeepMixed",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_FIRST_TOKEN",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": false
+   },
+   "src": "class cl_upper_and_lower_case definition public.\n  public SECTION.\n    methods PRETTY_PRINT_CASE\n      exporting !evResult type int4.\nendclass.\n\nCLASS CL_UPPER_AND_LOWER_CASE IMPLEMENTATION.\n  METHOD PRETTY_PRINT_CASE.\n    constants lcMixedCaseIdentifier TYPE i value 5.\n\n    evResult = lcMixedCaseIdentifier.\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "class cl_upper_and_lower_case definition public.\n  public section.\n    methods pretty_print_case\n      exporting !evresult type int4.\nendclass.\n\nCLASS CL_UPPER_AND_LOWER_CASE IMPLEMENTATION.\n  METHOD PRETTY_PRINT_CASE.\n    CONSTANTS LCMIXEDCASEIDENTIFIER TYPE I VALUE 5.\n\n    EVRESULT = LCMIXEDCASEIDENTIFIER.\n  ENDMETHOD.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testDeriveFromFirstImplementationEmpty",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_FIRST_TOKEN",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "class cl_upper_and_lower_case definition public.\n  public SECTION.\nendclass.\n\nCLASS cl_upper_and_lower_case implementation.\nENDCLASS.",
+   "exp": "class cl_upper_and_lower_case definition public.\n  public section.\nendclass.\n\nCLASS cl_upper_and_lower_case IMPLEMENTATION.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testDeriveFromMajorityLowerLowerUpperLower",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_MAJORITY",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "class cl_upper_and_lower_case definition public.\n  public SECTION ##pragma[PARAM].\n    methods PRETTY_PRINT_CASE\n      exporting !evResult type int4 ##PRAGMA[param].\nendclass.\n\nCLASS CL_UPPER_AND_LOWER_CASE IMPLEMENTATION.\n  METHOD pretty_print_case.\n    constants lcMixedCaseIdentifier TYPE i value 5 ##PRAGMA[param].\n\n    evResult = lcMixedCaseIdentifier ##OTHER_PRAGMA.\n  ENDMETHOD.\nENDCLASS.",
+   "exp": "class cl_upper_and_lower_case definition public.\n  public section ##PRAGMA[param].\n    methods pretty_print_case\n      exporting !evResult type int4 ##PRAGMA[param].\nendclass.\n\nCLASS cl_upper_and_lower_case IMPLEMENTATION.\n  METHOD pretty_print_case.\n    CONSTANTS lcMixedCaseIdentifier TYPE i VALUE 5 ##PRAGMA[param].\n\n    evResult = lcMixedCaseIdentifier ##OTHER_PRAGMA.\n  ENDMETHOD.\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testDeriveFromMajorityLowerUpperLowerLower",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_MAJORITY",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "class cl_upper_and_lower_case definition public.\n  public SECTION ##PRAGMA[param].\n    methods PRETTY_PRINT_CASE\n      exporting !evResult type INT4 ##pragma[PARAM].\nendclass.\n\nCLASS CL_UPPER_AND_LOWER_CASE implementation.\n  method pretty_print_case.\n    constants lcMixedCaseIdentifier TYPE i value 5 ##pragma[PARAM].\n\n    evResult = lcMixedCaseIdentifier ##other_pragma.\n  ENDMETHOD.\nendclass.",
+   "exp": "class CL_UPPER_AND_LOWER_CASE definition public.\n  public section ##pragma[PARAM].\n    methods PRETTY_PRINT_CASE\n      exporting !evResult type INT4 ##pragma[PARAM].\nendclass.\n\nclass cl_upper_and_lower_case implementation.\n  method pretty_print_case.\n    constants lcMixedCaseIdentifier type i value 5 ##pragma[PARAM].\n\n    evResult = lcMixedCaseIdentifier ##other_pragma.\n  endmethod.\nendclass.",
+   "flags": {}
+  },
+  {
+   "name": "testDeriveFromMajorityExecSql",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_MAJORITY",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  method PRETTY_PRINT_CASE.\n    field-symbols <> TYPE TY_S_ANY_TYPE.\n    EXEC SQL.\n      SELECT from_year\n        FROM dtab\n        INTO :lv_from_year\n        WHERE bukrs = :lv_company_code;\n    endexec.\n  endmethod.",
+   "exp": "  method PRETTY_PRINT_CASE.\n    field-symbols <> type TY_S_ANY_TYPE.\n    exec sql.\n      SELECT from_year\n        FROM dtab\n        INTO :lv_from_year\n        WHERE bukrs = :lv_company_code;\n    endexec.\n  endmethod.",
+   "flags": {}
+  },
+  {
+   "name": "testIsConfigValueEnabledDeriveNone",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "",
+   "exp": "",
+   "flags": {},
+   "skipped": "assertion (assertTrue)"
+  },
+  {
+   "name": "testIsConfigValueEnabledDeriveFromFirst",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_FIRST_TOKEN",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "",
+   "exp": "",
+   "flags": {},
+   "skipped": "assertion (assertTrue)"
+  },
+  {
+   "name": "testIsConfigValueEnabledDeriveFromMajority",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.FROM_MAJORITY",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "",
+   "exp": "",
+   "flags": {},
+   "skipped": "assertion (assertTrue)"
+  },
+  {
+   "name": "testLiteralWithAlphanumericTextSymbol",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "REPORT any_report.\n\nDATA text TYPE string.\ntext = 'Hello SAP'(a01).",
+   "exp": "REPORT any_report.\n\nDATA text TYPE string.\ntext = 'Hello SAP'(a01).",
+   "flags": {}
+  },
+  {
+   "name": "testTextualComparisonOps",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    if a eq b or c NE d and e Gt f.\n    endif.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF a EQ b OR c NE d AND e GT f.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testTextualComparisonOpsToLower",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.UPPER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    if a eq b or c NE d and e Gt f.\n    endif.\n  ENDMETHOD.",
+   "exp": "  method ANY_METHOD.\n    if A eq B or C ne D and E gt F.\n    endif.\n  endmethod.",
+   "flags": {}
+  },
+  {
+   "name": "testPragmaUpperParamsLowerKeepMixedCase",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.LOWER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS insert ##shadow[INSERT].\n    METHODS any_method ##any_pragma[PARAM1][][Param3].\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS insert ##SHADOW[insert].\n    METHODS any_method ##ANY_PRAGMA[param1][][Param3].\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testPragmaLowerParamsUpperKeepMixedCase",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.LOWER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS insert ##SHADOW[insert].\n    METHODS any_method ##ANY_PRAGMA[PARAM1][][Param3].\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS insert ##shadow[INSERT].\n    METHODS any_method ##any_pragma[PARAM1][][Param3].\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testPragmaUpperParamsLowervNoMixedCase",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.LOWER_CASE",
+    "KeepMixedCaseInIdentifiers": false
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS insert ##shadow[Insert].\n    METHODS any_method ##any_pragma[Param1][][PARam3].\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS insert ##SHADOW[insert].\n    METHODS any_method ##ANY_PRAGMA[param1][][param3].\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testUnknownAbapRelease",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    \" HIGH and LOW must be upper case here:\n    set run time clock resolution high.\n    set run time clock resolution low.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" HIGH and LOW must be upper case here:\n    SET RUN TIME CLOCK RESOLUTION HIGH.\n    SET RUN TIME CLOCK RESOLUTION LOW.\n  ENDMETHOD.",
+   "flags": {
+    "abapRelease": "fallback",
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTextSymbolsWithLettersToLower",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  MESSAGE text-001 type 'E'.\n  MESSAGE text-A01 type 'E'.\n  MESSAGE text-A_2 type 'E'.\n\n  write TEXT-001.\n  write TEXT-a01.\n  write TEXT-a_2.",
+   "exp": "  MESSAGE TEXT-001 TYPE 'E'.\n  MESSAGE TEXT-a01 TYPE 'E'.\n  MESSAGE TEXT-a_2 TYPE 'E'.\n\n  WRITE TEXT-001.\n  WRITE TEXT-a01.\n  WRITE TEXT-a_2.",
+   "flags": {}
+  },
+  {
+   "name": "testTextSymbolsWithLettersToUpper",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.UPPER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  MESSAGE text-001 type 'E'.\n  MESSAGE text-A01 type 'E'.\n  MESSAGE text-A_2 type 'E'.\n\n  write TEXT-001.\n  write TEXT-a01.\n  write TEXT-a_2.",
+   "exp": "  message text-001 type 'E'.\n  message text-A01 type 'E'.\n  message text-A_2 type 'E'.\n\n  write text-001.\n  write text-A01.\n  write text-A_2.",
+   "flags": {}
+  },
+  {
+   "name": "testCorrespondingMappingDefault",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "  METHOD any_method.\n    FINAL(ls_a) = VALUE any_type( a = '0' ).\n    FINAL(ls_b) = CORRESPONDING any_type( ls_a MAPPING b = default '1' ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    FINAL(ls_a) = VALUE any_type( a = '0' ).\n    FINAL(ls_b) = CORRESPONDING any_type( ls_a MAPPING b = DEFAULT '1' ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testReprocessingSingleLine",
+   "config": {
+    "DeriveCaseMethod": "DeriveCaseMethod.NONE",
+    "DefinitionKeywordStyle": "CaseStyle.UPPER_CASE",
+    "DefinitionIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "ImplementationKeywordStyle": "CaseStyle.UPPER_CASE",
+    "ImplementationIdentifierStyle": "CaseStyle.LOWER_CASE",
+    "PragmaStyle": "CaseStyle.UPPER_CASE",
+    "PragmaParameterStyle": "CaseStyle.UPPER_CASE",
+    "KeepMixedCaseInIdentifiers": true
+   },
+   "src": "CLASS cl_any_class implementation.\n  METHOD any_method.\n    return.\n  ENDMETHOD.\nendclass.",
+   "exp": "CLASS cl_any_class implementation.\n  METHOD any_method.\n    RETURN.\n  ENDMETHOD.\nendclass.",
+   "flags": {},
+   "skipped": "call setCleanupRange(...)"
+  }
+ ]
+}

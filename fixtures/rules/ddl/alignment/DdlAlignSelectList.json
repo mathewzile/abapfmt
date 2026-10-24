@@ -1,0 +1,384 @@
+{
+ "ruleId": "DDL_ALIGN_SELECT_LIST",
+ "testClass": "DdlAlignSelectListTest",
+ "defaults": {
+  "AlignKeyKeyword": true,
+  "AlignAliases": true,
+  "ConsiderSimpleElementsWithoutAlias": true,
+  "ConsiderComplexElementsWithoutAlias": false,
+  "ConsiderAllElementLines": false,
+  "MaxAliasStart": 120,
+  "AlignTextualComments": true,
+  "AlignCommentedOutCode": true
+ },
+ "cases": [
+  {
+   "name": "testAlignKeywordColumn",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n  // complex element\n         _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//   // Commented-out select list elements\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n      @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField                                                                                    as AnyFieldAlias,\n\n      OtherAlias.ThirdField                                                                                as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName                                                                   as FourthFieldAlias,\n      OtherAlias.FifthField                                                                                as FifthFieldAlias,\n      // complex element\n      _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//      // Commented-out select list elements\n//  key OtherAlias.CommentedOutField                                                                         as CommentedOutFieldAlias,\n//      OtherAlias.OtherCommentedOutField                                                                    as OtherCommentedOutFieldAlias,\n\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignKeywordColumn",
+   "config": {
+    "AlignKeyKeyword": false,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n  // complex element\n         _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//   // Commented-out select list elements\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n  @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField                                                                                as AnyFieldAlias,\n\n  OtherAlias.ThirdField                                                                                as ThirdFieldAlias,\n  OtherAlias.FourthFieldWithLongName                                                                   as FourthFieldAlias,\n  OtherAlias.FifthField                                                                                as FifthFieldAlias,\n  // complex element\n  _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n  cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//  // Commented-out select list elements\n//  key OtherAlias.CommentedOutField                                                                     as CommentedOutFieldAlias,\n//  OtherAlias.OtherCommentedOutField                                                                    as OtherCommentedOutFieldAlias,\n\n  _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignAliases",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": false,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n  // complex element\n         _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//   // Commented-out select list elements\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n      @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n      OtherAlias.ThirdField as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n      OtherAlias.FifthField as FifthFieldAlias,\n      // complex element\n      _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//      // Commented-out select list elements\n//  key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//      OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testConsiderSimpleElementsWithoutAlias",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n{\n  key AnyAlias.AnyField     as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField        as FifthFieldAlias,\n         _ThirdAliasWithVeryLongName.FieldNameThatGetsNoAlias,\n         _ThirdAliasWithVeryLongName._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthFieldWithLongName\n      + OtherAlias.SixthField as any_type) as CalculatedField,\n\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n//  OtherAlias.CommentedOutFieldWithoutAlias,\n\n    // associations\n _ThirdAliasWithVeryLongName\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n{\n  key AnyAlias.AnyField                                     as AnyFieldAlias,\n\n      OtherAlias.ThirdField                                 as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName                    as FourthFieldAlias,\n      OtherAlias.FifthField                                 as FifthFieldAlias,\n      _ThirdAliasWithVeryLongName.FieldNameThatGetsNoAlias,\n      _ThirdAliasWithVeryLongName._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthFieldWithLongName\n           + OtherAlias.SixthField as any_type)             as CalculatedField,\n\n//      // Commented-out\n//  key OtherAlias.CommentedOutField                          as CommentedOutFieldAlias,\n//      OtherAlias.OtherCommentedOutField                     as OtherCommentedOutFieldAlias,\n//      OtherAlias.CommentedOutFieldWithoutAlias,\n\n      // associations\n      _ThirdAliasWithVeryLongName\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotConsiderSimpleElementsWithoutAlias",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": false,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n{\n  key AnyAlias.AnyField     as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField        as FifthFieldAlias,\n         _ThirdAliasWithVeryLongName.FieldNameThatGetsNoAlias,\n         _ThirdAliasWithVeryLongName._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthFieldWithLongName\n      + OtherAlias.SixthField as any_type) as CalculatedField,\n\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n//  OtherAlias.CommentedOutFieldWithoutAlias,\n\n    // associations\n _ThirdAliasWithVeryLongName\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n{\n  key AnyAlias.AnyField                         as AnyFieldAlias,\n\n      OtherAlias.ThirdField                     as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName        as FourthFieldAlias,\n      OtherAlias.FifthField                     as FifthFieldAlias,\n      _ThirdAliasWithVeryLongName.FieldNameThatGetsNoAlias,\n      _ThirdAliasWithVeryLongName._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthFieldWithLongName\n           + OtherAlias.SixthField as any_type) as CalculatedField,\n\n//      // Commented-out\n//  key OtherAlias.CommentedOutField              as CommentedOutFieldAlias,\n//      OtherAlias.OtherCommentedOutField         as OtherCommentedOutFieldAlias,\n//      OtherAlias.CommentedOutFieldWithoutAlias,\n\n      // associations\n      _ThirdAliasWithVeryLongName\n}",
+   "flags": {}
+  },
+  {
+   "name": "testConsiderComplexElementsWithoutAlias",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": true,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n{\n  key AnyAlias.AnyField     as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField        as FifthFieldAlias,\n         _ThirdAliasWithVeryLongName.FieldNameThatGetsNoAlias,\n         _ThirdAliasWithVeryLongName._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthFieldWithLongName\n      + OtherAlias.SixthField as any_type) as CalculatedField,\n\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n//  OtherAlias.CommentedOutFieldWithoutAlias,\n\n    // associations\n _ThirdAliasWithVeryLongName\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n{\n  key AnyAlias.AnyField                                                                       as AnyFieldAlias,\n\n      OtherAlias.ThirdField                                                                   as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName                                                      as FourthFieldAlias,\n      OtherAlias.FifthField                                                                   as FifthFieldAlias,\n      _ThirdAliasWithVeryLongName.FieldNameThatGetsNoAlias,\n      _ThirdAliasWithVeryLongName._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthFieldWithLongName\n           + OtherAlias.SixthField as any_type)                                               as CalculatedField,\n\n//      // Commented-out\n//  key OtherAlias.CommentedOutField                                                            as CommentedOutFieldAlias,\n//      OtherAlias.OtherCommentedOutField                                                       as OtherCommentedOutFieldAlias,\n//      OtherAlias.CommentedOutFieldWithoutAlias,\n\n      // associations\n      _ThirdAliasWithVeryLongName\n}",
+   "flags": {}
+  },
+  {
+   "name": "testConsiderAllElementLines",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": true,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n{\n  key AnyAlias.AnyField     as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField        as FifthFieldAlias,\n         _ThirdAliasWithVeryLongName.FieldNameThatGetsNoAlias,\n         _ThirdAliasWithVeryLongName._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthFieldWithLongName\n      + OtherAlias.SixthField as any_type) as CalculatedField,\n\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n//  OtherAlias.CommentedOutFieldWithoutAlias,\n\n    // associations\n _ThirdAliasWithVeryLongName\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource2 as AnyAlias\n\n{\n  key AnyAlias.AnyField                                                                                   as AnyFieldAlias,\n\n      OtherAlias.ThirdField                                                                               as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName                                                                  as FourthFieldAlias,\n      OtherAlias.FifthField                                                                               as FifthFieldAlias,\n      _ThirdAliasWithVeryLongName.FieldNameThatGetsNoAlias,\n      _ThirdAliasWithVeryLongName._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthFieldWithLongName\n           + OtherAlias.SixthField as any_type)                                                           as CalculatedField,\n\n//      // Commented-out\n//  key OtherAlias.CommentedOutField                                                                        as CommentedOutFieldAlias,\n//      OtherAlias.OtherCommentedOutField                                                                   as OtherCommentedOutFieldAlias,\n//      OtherAlias.CommentedOutFieldWithoutAlias,\n\n      // associations\n      _ThirdAliasWithVeryLongName\n}",
+   "flags": {}
+  },
+  {
+   "name": "testMaxAliasStartLow",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 60,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n  // complex element\n         _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n      @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField                                     as AnyFieldAlias,\n\n      OtherAlias.ThirdField                                 as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName                    as FourthFieldAlias,\n      OtherAlias.FifthField                                 as FifthFieldAlias,\n      // complex element\n      _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type)\n                                                            as CalculatedField,\n\n//      // Commented-out\n//  key OtherAlias.CommentedOutField                          as CommentedOutFieldAlias,\n//      OtherAlias.OtherCommentedOutField                     as OtherCommentedOutFieldAlias,\n\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignTextualComments",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n  // complex element\n         _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n// calculated fields\n// A textual comment like this one should not be at line start, but should be aligned with the elements.\n// Only commented-out code should have comment signs at line start, so Ctrl+> can easily uncomment it.\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n      @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField                                                                                    as AnyFieldAlias,\n\n      OtherAlias.ThirdField                                                                                as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName                                                                   as FourthFieldAlias,\n      OtherAlias.FifthField                                                                                as FifthFieldAlias,\n      // complex element\n      _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n      // calculated fields\n      // A textual comment like this one should not be at line start, but should be aligned with the elements.\n      // Only commented-out code should have comment signs at line start, so Ctrl+> can easily uncomment it.\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//      // Commented-out\n//  key OtherAlias.CommentedOutField                                                                         as CommentedOutFieldAlias,\n//      OtherAlias.OtherCommentedOutField                                                                    as OtherCommentedOutFieldAlias,\n\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignTextualComments",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": false,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n  // complex element\n         _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n// calculated fields\n// A textual comment like this one should not be at line start, but should be aligned with the elements.\n// Only commented-out code should have comment signs at line start, so Ctrl+> can easily uncomment it.\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n      @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField                                                                                    as AnyFieldAlias,\n\n      OtherAlias.ThirdField                                                                                as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName                                                                   as FourthFieldAlias,\n      OtherAlias.FifthField                                                                                as FifthFieldAlias,\n      // complex element\n      _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n// calculated fields\n// A textual comment like this one should not be at line start, but should be aligned with the elements.\n// Only commented-out code should have comment signs at line start, so Ctrl+> can easily uncomment it.\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//      // Commented-out\n//  key OtherAlias.CommentedOutField                                                                         as CommentedOutFieldAlias,\n//      OtherAlias.OtherCommentedOutField                                                                    as OtherCommentedOutFieldAlias,\n\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignCommentedOutCode",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": false
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n  // complex element\n         _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n      @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField                                                                                    as AnyFieldAlias,\n\n      OtherAlias.ThirdField                                                                                as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName                                                                   as FourthFieldAlias,\n      OtherAlias.FifthField                                                                                as FifthFieldAlias,\n      // complex element\n      _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoKeywords",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n\n//   // Commented-out\n// OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n  @ObjectModel.text.element: ['ThirdFieldAlias']\n  AnyAlias.AnyField                  as AnyFieldAlias,\n\n  OtherAlias.ThirdField              as ThirdFieldAlias,\n  OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n  OtherAlias.FifthField              as FifthFieldAlias,\n\n//  // Commented-out\n//  OtherAlias.CommentedOutField       as CommentedOutFieldAlias,\n//  OtherAlias.OtherCommentedOutField  as OtherCommentedOutFieldAlias,\n\n  _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoKeywordsDoNotAlignKeywords",
+   "config": {
+    "AlignKeyKeyword": false,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n\n//   // Commented-out\n// OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n  @ObjectModel.text.element: ['ThirdFieldAlias']\n  AnyAlias.AnyField                  as AnyFieldAlias,\n\n  OtherAlias.ThirdField              as ThirdFieldAlias,\n  OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n  OtherAlias.FifthField              as FifthFieldAlias,\n\n//  // Commented-out\n//  OtherAlias.CommentedOutField       as CommentedOutFieldAlias,\n//  OtherAlias.OtherCommentedOutField  as OtherCommentedOutFieldAlias,\n\n  _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testEmptyLineStartComments",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 90,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n\n//   // Commented-out\n//\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n///\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n      @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField                  as AnyFieldAlias,\n\n      OtherAlias.ThirdField              as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n\n//      // Commented-out\n//\n//  key OtherAlias.CommentedOutField       as CommentedOutFieldAlias,\n///\n//      OtherAlias.OtherCommentedOutField  as OtherCommentedOutFieldAlias,\n\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testCommentedOutMultiLineNotMoved",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//        cast(OtherAlias.AnyNumericField\n//             + OtherAlias.OtherNumericField) as AnyNumericAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n      @ObjectModel.text.element: ['ThirdFieldAlias']\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n//      // Commented-out\n//  key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//        cast(OtherAlias.AnyNumericField\n//             + OtherAlias.OtherNumericField) as AnyNumericAlias,\n//      OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeywordVirtual",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 60,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n   @ObjectModel.text.element: ['ThirdFieldAlias']\n  virtual AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n\n//   // Commented-out\n// virtual OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n          @ObjectModel.text.element: ['ThirdFieldAlias']\n  virtual AnyAlias.AnyField                                 as AnyFieldAlias,\n\n          OtherAlias.ThirdField                             as ThirdFieldAlias,\n          OtherAlias.FourthFieldWithLongName                as FourthFieldAlias,\n          OtherAlias.FifthField                             as FifthFieldAlias,\n\n          cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type)\n                                                            as CalculatedField,\n\n//          // Commented-out\n//  virtual OtherAlias.CommentedOutField                      as CommentedOutFieldAlias,\n//          OtherAlias.OtherCommentedOutField                 as OtherCommentedOutFieldAlias,\n\n          _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testCommentedOutCodeAtStart",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n//   // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n  // complex element\n         _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n//      // Commented-out\n// key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n//      OtherAlias.OtherCommentedOutField  as OtherCommentedOutFieldAlias,\n\n  key AnyAlias.AnyField                  as AnyFieldAlias,\n\n      OtherAlias.ThirdField              as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n      OtherAlias.FifthField              as FifthFieldAlias,\n      // complex element\n      _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDDicBasedFromAfterSelectList",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyDDicBasedView\n(\n  AnyFieldAlias,\n  OtherFieldAlias,\n  ThirdFieldAlias,\n  FourthFieldAliasWithLongName,\n  FifthFieldAlias\n)\n\n  as select\n\n key AnyAlias.AnyField,\n@ObjectModel.text.element: ['ThirdFieldAlias']\n         OtherAlias.OtherField,\n// OtherAlias.CommentedOutField,\n    OtherAlias.ThirdField,\n        _ThirdAlias.FourthFieldWithLongName,\n          _ThirdAlias._FourthAlias.FifthField\n\n  from  I_AnySource as AnyAlias\n\n    left outer join I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n  association [0..*] to I_ThirdSource as _ThirdAlias\n     on _ThirdAlias.OtherField = AnyAlias.OtherField\n\ngroup by AnyAlias.AnyField,\n         OtherAlias.OtherField,\n//         OtherAlias.CommentedOutField,\n         OtherAlias.ThirdField,\n         _ThirdAlias.FourthFieldWithLongName,\n         _ThirdAlias._FourthAlias.FifthField",
+   "exp": "define view I_AnyDDicBasedView\n(\n  AnyFieldAlias,\n  OtherFieldAlias,\n  ThirdFieldAlias,\n  FourthFieldAliasWithLongName,\n  FifthFieldAlias\n)\n\n  as select\n\n    key AnyAlias.AnyField,\n        @ObjectModel.text.element: ['ThirdFieldAlias']\n        OtherAlias.OtherField,\n//        OtherAlias.CommentedOutField,\n        OtherAlias.ThirdField,\n        _ThirdAlias.FourthFieldWithLongName,\n        _ThirdAlias._FourthAlias.FifthField\n\n  from  I_AnySource as AnyAlias\n\n    left outer join I_OtherSource as OtherAlias\n      on AnyAlias.AnyField = OtherAlias.AnyField\n\n  association [0..*] to I_ThirdSource as _ThirdAlias\n     on _ThirdAlias.OtherField = AnyAlias.OtherField\n\ngroup by AnyAlias.AnyField,\n         OtherAlias.OtherField,\n//         OtherAlias.CommentedOutField,\n         OtherAlias.ThirdField,\n         _ThirdAlias.FourthFieldWithLongName,\n         _ThirdAlias._FourthAlias.FifthField",
+   "flags": {}
+  },
+  {
+   "name": "testMultiLineCommentSkipped",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 90,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField as AnyFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n    OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n       OtherAlias.FifthField\n         as FifthFieldAlias,\n  // complex element\n         _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n/*\n // Commented-out\n  key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n   OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n*/\n\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField                  as AnyFieldAlias,\n\n      OtherAlias.ThirdField              as ThirdFieldAlias,\n      OtherAlias.FourthFieldWithLongName as FourthFieldAlias,\n      OtherAlias.FifthField              as FifthFieldAlias,\n      // complex element\n      _ThirdAlias._AnyAssociation._OtherAssociation.FieldNameThatGetsNoAlias,\n\n/*\n // Commented-out\n  key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n   OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n*/\n\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testMultiLineAnnotation",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view C_AnyView\n as select from I_AnyView\n\n{\n      @AnalyticsDetails.exceptionAggregationSteps.exceptionAggregationElements:\n      ['AnyField','OtherField']\n      1 as AnyField,\n      AnyAlias.OtherField,\n      AnyAlias._AnyAssociation.ThirdField,\n }",
+   "exp": "define view C_AnyView\n as select from I_AnyView\n\n{\n  @AnalyticsDetails.exceptionAggregationSteps.exceptionAggregationElements:\n  ['AnyField','OtherField']\n  1                    as AnyField,\n  AnyAlias.OtherField,\n  AnyAlias._AnyAssociation.ThirdField,\n }",
+   "flags": {}
+  },
+  {
+   "name": "testOnlyTextualMultiLineCommentMoved",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField as AnyFieldAlias,\n key   AnyAlias.OtherField as OtherFieldAlias,\n\n   OtherAlias.ThirdField as ThirdFieldAlias,\n\n/* A textual comment like this one should not be at line start, but should be aligned with the elements.\n   Only commented-out code should have comment signs at line start, so Ctrl+> can easily uncomment it. */\n cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n/*\n  key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n      OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n      OtherAlias.CommentedOutFieldWithoutAlias, */\n\n    // associations\n _ThirdAlias\n}",
+   "exp": "define view I_AnyView\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyField                                                                                    as AnyFieldAlias,\n  key AnyAlias.OtherField                                                                                  as OtherFieldAlias,\n\n      OtherAlias.ThirdField                                                                                as ThirdFieldAlias,\n\n      /* A textual comment like this one should not be at line start, but should be aligned with the elements.\n         Only commented-out code should have comment signs at line start, so Ctrl+> can easily uncomment it. */\n      cast(OtherAlias.ThirdField + OtherAlias.FourthFieldWithLongName + OtherAlias.FifthField as any_type) as CalculatedField,\n/*\n  key OtherAlias.CommentedOutField as CommentedOutFieldAlias,\n      OtherAlias.OtherCommentedOutField as OtherCommentedOutFieldAlias,\n      OtherAlias.CommentedOutFieldWithoutAlias, */\n\n      // associations\n      _ThirdAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testIdentifiersWithNamespaces",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view entity /ANY/I_AnyView\n  with parameters\n    P_Any : /ANY/any_type\n\n  as select from /ANY/I_OtherView as /ANY/A/l/i/a/s/\n\n  association to /ANY/I_ThirdView as  _/Other/Alias\n  on _/Other/Alias.AnyID = /ANY/A/l/i/a/s/.AnyID\n\n{\n  key  /ANY/A/l/i/a/s/./ANY/Field/ as /ANY/Field/,\n\n      2 / $parameters.P_Any as /ANY/OtherField,\n      1 + 10 * /ANY/A/l/i/a/s/./ANY/ThirdField / 2 as /ANY/ThirdField,\n      1 + 10 * /ANY/FourthField / 2 as /ANY/FourthField/,\n      1 + _/Other/Alias./ANY/FifthField/ as /ANY/FifthField/,\n      _/Other/Alias\n}",
+   "exp": "define view entity /ANY/I_AnyView\n  with parameters\n    P_Any : /ANY/any_type\n\n  as select from /ANY/I_OtherView as /ANY/A/l/i/a/s/\n\n  association to /ANY/I_ThirdView as  _/Other/Alias\n  on _/Other/Alias.AnyID = /ANY/A/l/i/a/s/.AnyID\n\n{\n  key /ANY/A/l/i/a/s/./ANY/Field/                  as /ANY/Field/,\n\n      2 / $parameters.P_Any                        as /ANY/OtherField,\n      1 + 10 * /ANY/A/l/i/a/s/./ANY/ThirdField / 2 as /ANY/ThirdField,\n      1 + 10 * /ANY/FourthField / 2                as /ANY/FourthField/,\n      1 + _/Other/Alias./ANY/FifthField/           as /ANY/FifthField/,\n      _/Other/Alias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDdicBasedSelectListStartingWithComment",
+   "config": {
+    "AlignKeyKeyword": true,
+    "AlignAliases": true,
+    "ConsiderSimpleElementsWithoutAlias": true,
+    "ConsiderComplexElementsWithoutAlias": false,
+    "ConsiderAllElementLines": false,
+    "MaxAliasStart": 120,
+    "AlignTextualComments": true,
+    "AlignCommentedOutCode": true
+   },
+   "src": "define view AnyView as\n  select\n // a.AnyField,\na.OtherField\n\n  from AnySource as a",
+   "exp": "define view AnyView as\n  select\n    // a.AnyField,\n    a.OtherField\n\n  from AnySource as a",
+   "flags": {}
+  }
+ ]
+}

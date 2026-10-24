@@ -1,0 +1,124 @@
+{
+ "ruleId": "DDL_ALIGN_ENTITY_PARAMETERS",
+ "testClass": "DdlAlignEntityParametersTest",
+ "defaults": {
+  "AlignColons": true,
+  "AlignTypes": true
+ },
+ "cases": [
+  {
+   "name": "testNoParameters",
+   "config": {
+    "AlignColons": true,
+    "AlignTypes": true
+   },
+   "otherRules": {
+    "DDL_POSITION_DEFINE": {
+     "ParamsIndent": 4
+    },
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    }
+   },
+   "src": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignAll",
+   "config": {
+    "AlignColons": true,
+    "AlignTypes": true
+   },
+   "otherRules": {
+    "DDL_POSITION_DEFINE": {
+     "ParamsIndent": 4
+    },
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    }
+   },
+   "src": "define view entity C_AnyEntity\n  with parameters\n    @AnalyticsDetails.query.variableSequence: 30\n    P_AnyParam: any_parameter_type,\n\n    // comment on OtherParam\n    P_OtherParam :           other_type,\n\n    P_ThirdParameter   : third_type,\n    P_FourthParam:fourth_type\n\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    @AnalyticsDetails.query.variableSequence: 30\n    P_AnyParam       : any_parameter_type,\n\n    // comment on OtherParam\n    P_OtherParam     : other_type,\n\n    P_ThirdParameter : third_type,\n    P_FourthParam    : fourth_type\n\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignColons",
+   "config": {
+    "AlignColons": false,
+    "AlignTypes": true
+   },
+   "otherRules": {
+    "DDL_POSITION_DEFINE": {
+     "ParamsIndent": 4
+    },
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    }
+   },
+   "src": "define view entity C_AnyEntity\n  with parameters\n    @AnalyticsDetails.query.variableSequence: 30\n    P_AnyParam: any_parameter_type,\n\n    // comment on OtherParam\n    P_OtherParam :           other_type,\n\n    P_ThirdParameter   : third_type,\n    P_FourthParam:fourth_type\n\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    @AnalyticsDetails.query.variableSequence: 30\n    P_AnyParam:       any_parameter_type,\n\n    // comment on OtherParam\n    P_OtherParam:     other_type,\n\n    P_ThirdParameter: third_type,\n    P_FourthParam:    fourth_type\n\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testJoinAll",
+   "config": {
+    "AlignColons": false,
+    "AlignTypes": false
+   },
+   "otherRules": {
+    "DDL_POSITION_DEFINE": {
+     "ParamsIndent": 4
+    },
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    }
+   },
+   "src": "define view entity C_AnyEntity\n  with parameters\n    @AnalyticsDetails.query.variableSequence: 30\n    P_AnyParam: any_parameter_type,\n\n    // comment on OtherParam\n    P_OtherParam :           other_type,\n\n    P_ThirdParameter   : third_type,\n    P_FourthParam:fourth_type\n\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    @AnalyticsDetails.query.variableSequence: 30\n    P_AnyParam: any_parameter_type,\n\n    // comment on OtherParam\n    P_OtherParam: other_type,\n\n    P_ThirdParameter: third_type,\n    P_FourthParam: fourth_type\n\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpaceBeforeButNotAfterColon",
+   "config": {
+    "AlignColons": false,
+    "AlignTypes": false
+   },
+   "otherRules": {
+    "DDL_POSITION_DEFINE": {
+     "ParamsIndent": 4
+    },
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.ALWAYS",
+     "SpaceAfterColon": "ChangeType.NEVER"
+    }
+   },
+   "src": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  with parameters\n    @AnalyticsDetails.query.variableSequence: 30\n    P_AnyParam: any_parameter_type,\n\n    // comment on OtherParam\n    @AnalyticsDetails.query.variableSequence: 50\n    P_OtherParam :           other_type,\n\n    @AnalyticsDetails.query.variableSequence: 60\n    @Consumption.defaultValue: 'NN'\n    P_ThirdParameter   : third_type,\n\n    @Consumption.hidden: true\n    P_FourthParam:fourth_type\n\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  with parameters\n    @AnalyticsDetails.query.variableSequence: 30\n    P_AnyParam :any_parameter_type,\n\n    // comment on OtherParam\n    @AnalyticsDetails.query.variableSequence: 50\n    P_OtherParam :other_type,\n\n    @AnalyticsDetails.query.variableSequence: 60\n    @Consumption.defaultValue: 'NN'\n    P_ThirdParameter :third_type,\n\n    @Consumption.hidden: true\n    P_FourthParam :fourth_type\n\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testIndentByEightSpaces",
+   "config": {
+    "AlignColons": true,
+    "AlignTypes": true
+   },
+   "otherRules": {
+    "DDL_POSITION_DEFINE": {
+     "ParamsIndent": 8
+    },
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    }
+   },
+   "src": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  with parameters\n    P_AnyParam: any_parameter_type,\n    P_OtherParam :           other_type,\n    P_ThirdParameter   : third_type,\n    P_FourthParam:fourth_type\n\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  with parameters\n        P_AnyParam       : any_parameter_type,\n        P_OtherParam     : other_type,\n        P_ThirdParameter : third_type,\n        P_FourthParam    : fourth_type\n\n  as select from I_AnyEntity as AnyAlias\n\n    left outer to one join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n      OtherAlias.AnyNonKeyField\n}",
+   "flags": {}
+  }
+ ]
+}

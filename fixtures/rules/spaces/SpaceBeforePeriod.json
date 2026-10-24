@@ -1,0 +1,220 @@
+{
+ "ruleId": "SPACE_BEFORE_PERIOD",
+ "testClass": "SpaceBeforePeriodTest",
+ "defaults": {
+  "ExecuteOnComma": true,
+  "ExecuteOnPeriod": true,
+  "MoveAcrossCommentLines": true,
+  "ExecuteOnClassDefinitionSections": true
+ },
+ "cases": [
+  {
+   "name": "testSimpleDeclarationsAndCommands",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "  METHOD any_method.\n    DATA lv_value TYPE i .\n\n    TRY .\n        any_operation( ) .\n      CATCH cx_any .\n    ENDTRY .\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lv_value TYPE i.\n\n    TRY.\n        any_operation( ).\n      CATCH cx_any.\n    ENDTRY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testChain",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "  METHOD any_method.\n    CLEAR:\n      ev_value ,\n      ev_other_value\n    .\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR:\n      ev_value,\n      ev_other_value.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testChainForPeriodOnly",
+   "config": {
+    "ExecuteOnComma": false,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "  METHOD any_method.\n    CLEAR:\n      ev_value ,\n      ev_other_value\n    .\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR:\n      ev_value ,\n      ev_other_value.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testChainForCommaOnly",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": false,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "  METHOD any_method.\n    CLEAR:\n      ev_value ,\n      ev_other_value\n    .\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR:\n      ev_value,\n      ev_other_value\n    .\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testPragma",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "  METHOD any_method.\n    DATA lo_object TYPE cl_any_type ##NEEDED .\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lo_object TYPE cl_any_type ##NEEDED.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLineBreaksWithComments",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "  METHOD any_method.\n    lv_value = 3\n    .\n\n    lv_value = 42 \" comment\n    .\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_value = 3.\n\n    lv_value = 42. \" comment\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testChangeClassDefinition",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "CLASS tests DEFINITION PUBLIC .\n  METHODS any_method\n    FOR TESTING .\n  METHODS other_methoy\n    REDEFINITION .\n  ALIASES:\n    third_method\n      FOR if_any_interface~third_method \" comment\n    , fourth_method\n      FOR if_any_interface~fourth_method \" comment\n    .\nENDCLASS .",
+   "exp": "CLASS tests DEFINITION PUBLIC.\n  METHODS any_method\n    FOR TESTING.\n  METHODS other_methoy\n    REDEFINITION.\n  ALIASES:\n    third_method\n      FOR if_any_interface~third_method, \" comment\n    fourth_method\n      FOR if_any_interface~fourth_method. \" comment\nENDCLASS.",
+   "flags": {}
+  },
+  {
+   "name": "testKeepClassDefinition",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": false
+   },
+   "src": "CLASS tests DEFINITION PUBLIC .\n  METHODS any_method\n    FOR TESTING .\n  METHODS other_method\n    REDEFINITION .\n  ALIASES:\n    third_method\n      FOR if_any_interface~third_method . \" comment\nENDCLASS .",
+   "exp": "CLASS tests DEFINITION PUBLIC .\n  METHODS any_method\n    FOR TESTING .\n  METHODS other_method\n    REDEFINITION .\n  ALIASES:\n    third_method\n      FOR if_any_interface~third_method . \" comment\nENDCLASS .",
+   "flags": {}
+  },
+  {
+   "name": "testCommaAndPeriodAfterCommentLinesUnchanged",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": false,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "  METHOD any_method.\n    DATA: lv_value TYPE i\n    \" comment line\n    , lv_other_value TYPE string\n    \" comment line\n    .\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA: lv_value TYPE i\n    \" comment line\n    , lv_other_value TYPE string\n    \" comment line\n    .\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSplitOutTrailingCommentLine",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "  METHOD any_method.\n    CLEAR\n      ev_any_value\n*      comment line\n    .\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR\n      ev_any_value.\n*      comment line\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMoveAcrossCommentLines",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "  METHOD any_method.\n    CLEAR:\n      ev_any_value  ,\n      ev_other_value \" line-end comment\n*      comment line A\n      , ev_third_value\n*      comment line B1\n      \" comment line B2\n      , ev_fourth_value \" line-end comment\n*      comment line C1\n       \" comment line C2\n    .\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR:\n      ev_any_value,\n      ev_other_value, \" line-end comment\n*      comment line A\n      ev_third_value,\n*      comment line B1\n      \" comment line B2\n      ev_fourth_value. \" line-end comment\n*      comment line C1\n    \" comment line C2\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotMoveAcrossCommentLines",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": false,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "  METHOD any_method.\n    CLEAR:\n      ev_any_value  ,\n      ev_other_value \" line-end comment\n*      comment line A\n      , ev_third_value\n*      comment line B1\n      \" comment line B2\n      , ev_fourth_value \" line-end comment\n*      comment line C1\n       \" comment line C2\n    .\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR:\n      ev_any_value,\n      ev_other_value \" line-end comment\n*      comment line A\n      , ev_third_value\n*      comment line B1\n      \" comment line B2\n      , ev_fourth_value \" line-end comment\n*      comment line C1\n       \" comment line C2\n    .\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepPeriodAfterAutoGeneratedComment",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "FUNCTION any_function\n \" You can use the template 'functionModuleParameter' to add here the signature!\n.\n\n  WRITE 'hello world'.\nENDFUNCTION.\n\nFUNCTION other_function\n \" You can use the template 'functionModuleParameter' to add the signature here!\n.\n\n  WRITE 'hello world'.\nENDFUNCTION.",
+   "exp": "FUNCTION any_function\n \" You can use the template 'functionModuleParameter' to add here the signature!\n.\n\n  WRITE 'hello world'.\nENDFUNCTION.\n\nFUNCTION other_function.\n  \" You can use the template 'functionModuleParameter' to add the signature here!\n\n  WRITE 'hello world'.\nENDFUNCTION.",
+   "flags": {}
+  },
+  {
+   "name": "testReportWithAsteriskComment",
+   "config": {
+    "ExecuteOnComma": true,
+    "ExecuteOnPeriod": true,
+    "MoveAcrossCommentLines": true,
+    "ExecuteOnClassDefinitionSections": true
+   },
+   "src": "REPORT any_report\n* test\n.",
+   "exp": "REPORT any_report.\n* test",
+   "flags": {}
+  }
+ ]
+}

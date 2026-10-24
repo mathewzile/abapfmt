@@ -1,0 +1,1134 @@
+{
+ "ruleId": "ALIGN_LOGICAL_EXPRESSIONS",
+ "testClass": "AlignLogicalExpressionsTest",
+ "defaults": {
+  "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+  "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+  "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+  "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+  "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+  "RightAlignComparisonOps": true,
+  "OnlyAlignSameObjects": false,
+  "MaxInnerSpaces": 20
+ },
+ "cases": [
+  {
+   "name": "testCheckWithIsAndEquals",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    CHECK is_item_buffer-contract_id IS NOT INITIAL\n       AND is_item_buffer-any_flag = abap_false\n           AND is_item_buffer-other_flag = abap_false\n                 AND is_item_buffer-third_flag = abap_true.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CHECK     is_item_buffer-contract_id IS NOT INITIAL\n          AND is_item_buffer-any_flag     = abap_false\n          AND is_item_buffer-other_flag   = abap_false\n          AND is_item_buffer-third_flag   = abap_true.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLeftAlignCheckWithOperators",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    CHECK is_item_buffer-contract_id IS NOT INITIAL\n       AND is_item_buffer-any_flag = abap_false\n           AND is_item_buffer-other_flag = abap_false\n                 AND is_item_buffer-third_flag = abap_true.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CHECK is_item_buffer-contract_id IS NOT INITIAL\n    AND   is_item_buffer-any_flag     = abap_false\n    AND   is_item_buffer-other_flag   = abap_false\n    AND   is_item_buffer-third_flag   = abap_true.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testRightAlignCheckWithOperators",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    CHECK is_item_buffer-contract_id IS NOT INITIAL\n       OR is_item_buffer-any_flag = abap_false\n           OR is_item_buffer-other_flag = abap_false\n                 OR is_item_buffer-third_flag = abap_true.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CHECK is_item_buffer-contract_id IS NOT INITIAL\n       OR is_item_buffer-any_flag     = abap_false\n       OR is_item_buffer-other_flag   = abap_false\n       OR is_item_buffer-third_flag   = abap_true.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCheckWithInlineLogicalExprs",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    CHECK line_exists( its_table[ 0 ] )    AND  its_table[ 0 ]-processed  =     abap_true\n                OR line_exists( its_other_table[ 1 ] ) AND lines( its_other_table )   >     2.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CHECK    line_exists( its_table[ 0 ] )       AND its_table[ 0 ]-processed = abap_true\n          OR line_exists( its_other_table[ 1 ] ) AND lines( its_other_table ) > 2.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIfWithInlineLogicalExprs",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF a = abap_false AND b > 3\n         OR a = abap_true AND b <= 10.\n      \" do something\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF    a = abap_false AND b  > 3\n       OR a = abap_true  AND b <= 10.\n      \" do something\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignIfAndOperators",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF a = abap_false AND b > 3\n         OR a = abap_true AND b <= 10.\n      \" do something\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF a = abap_false AND b  > 3\n    OR a = abap_true  AND b <= 10.\n      \" do something\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testRightAlignElseIfAndOperators",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF a = abap_false AND b > 3\n         OR a = abap_true AND b <= 10.\n      \" do something\n    ELSEIF a = abap_true AND b > 3\n         AND a = abap_false AND b <= 10.\n      \" do something else\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF    a = abap_false AND b  > 3\n       OR a = abap_true  AND b <= 10.\n      \" do something\n    ELSEIF a = abap_true  AND b  > 3\n       AND a = abap_false AND b <= 10.\n      \" do something else\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLeftAlignElseIfAndOperators",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF a = abap_false AND b > 3\n         OR a = abap_true AND b <= 10.\n      \" do something\n    ELSEIF a = abap_true AND b > 3\n         AND a = abap_false AND b <= 10.\n      \" do something else\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF a = abap_false AND b  > 3\n    OR a = abap_true  AND b <= 10.\n      \" do something\n    ELSEIF a = abap_true  AND b  > 3\n    AND    a = abap_false AND b <= 10.\n      \" do something else\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testXsdBoolWithBetweenAnd",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    DATA(is_work_day) = xsdbool( sy-fdayw BETWEEN 1 AND 5 ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA(is_work_day) = xsdbool( sy-fdayw BETWEEN 1 AND 5 ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testWhileComplexWithInlineLogicalExprs",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    WHILE ( a = abap_true      OR b > 3 AND ( c IS BOUND OR d IS INSTANCE OF cl_x ) )\n       AND ( a = abap_false OR b <= 10 AND ( c_alt IS NOT BOUND OR e_alt IS INSTANCE OF cl_xyz ) )\n          OR ( c IS NOT SUPPLIED AND b IS INITIAL AND e BETWEEN f AND g )\n       AND ( d IS SUPPLIED OR b IS NOT INITIAL )\n       AND line_exists( its_table[ 0 ] )\n            EQUIV     lines( its_table ) > 2\n       AND line_exists( its_table[ 1 ] ).\n      \" do something\n    ENDWHILE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    WHILE               ( a  = abap_true    OR  b  > 3  AND ( c     IS BOUND     OR d     IS INSTANCE OF cl_x ) )\n                    AND ( a  = abap_false   OR  b <= 10 AND ( c_alt IS NOT BOUND OR e_alt IS INSTANCE OF cl_xyz ) )\n                OR      ( c IS NOT SUPPLIED AND b IS INITIAL AND e BETWEEN f AND g )\n                    AND ( d IS SUPPLIED     OR  b IS NOT INITIAL )\n                    AND line_exists( its_table[ 0 ] )\n          EQUIV     lines( its_table ) > 2\n                AND line_exists( its_table[ 1 ] ).\n      \" do something\n    ENDWHILE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testRightAlignWhileAndOperators",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    WHILE a = abap_true\n           AND b = abap_false.\n      \" do something\n    ENDWHILE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    WHILE a = abap_true\n      AND b = abap_false.\n      \" do something\n    ENDWHILE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLeftAlignWhileAndOperators",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    WHILE a = abap_true\n           OR b = abap_false.\n      \" do something\n    ENDWHILE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    WHILE a = abap_true\n    OR    b = abap_false.\n      \" do something\n    ENDWHILE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIfComplexWithParens",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF mo_abc->ms_data-component = if_any_interfc_name=>co_any_constant\n    AND mo_abc->ms_data-comp2 = if_any_interfc_name=>co_other_constant\n    AND ( ( lv_quantity >= 0 AND iv_total_quantity_xy >= lv_quantity )\n    OR ( lv_quantity < 0 AND iv_total_quantity_xy <= lv_quantity ) ).\n      \" do something\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF     mo_abc->ms_data-component = if_any_interfc_name=>co_any_constant\n       AND mo_abc->ms_data-comp2     = if_any_interfc_name=>co_other_constant\n       AND (    ( lv_quantity >= 0 AND iv_total_quantity_xy >= lv_quantity )\n             OR ( lv_quantity  < 0 AND iv_total_quantity_xy <= lv_quantity ) ).\n      \" do something\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIfWithLogicalOpsAtLineEnd",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF ls_other_comp-gjahr = ls_any_comp-gjahr AND\n       ls_other_comp-poper >  ls_any_comp-poper.\n    ENDIF.\n\n    IF lv_type_old <> <ls_data>-typ OR\n       lv_category_old  <> <ls_data>-category.\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF ls_other_comp-gjahr = ls_any_comp-gjahr AND\n       ls_other_comp-poper > ls_any_comp-poper.\n    ENDIF.\n\n    IF lv_type_old     <> <ls_data>-typ OR\n       lv_category_old <> <ls_data>-category.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIfWithLogicalOpsAtLineEndAndParens",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF <ls_struc>-comp        >= ms_struc-component AND\n      ( <ls_struc>-long_component = abap_true OR\n        <ls_struc>-component  <> if_any_interface=>co_any_constant ).\n    ENDIF.\n\n    IF mo_item->ms_data-any_component = if_any_interface=>co_any_constant\n      AND mo_item->ms_data-other_component = if_any_interface=>co_other_constant\n      AND ( ( lv_quantity >= 0 AND lv_other_quantity >= lv_quantity ) OR\n            ( lv_quantity < 0  AND lv_other_quantity <= lv_quantity ) ). \" comment\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF <ls_struc>-comp >= ms_struc-component AND\n       ( <ls_struc>-long_component  = abap_true OR\n         <ls_struc>-component      <> if_any_interface=>co_any_constant ).\n    ENDIF.\n\n    IF     mo_item->ms_data-any_component   = if_any_interface=>co_any_constant\n       AND mo_item->ms_data-other_component = if_any_interface=>co_other_constant\n       AND ( ( lv_quantity >= 0 AND lv_other_quantity >= lv_quantity ) OR\n             ( lv_quantity  < 0 AND lv_other_quantity <= lv_quantity ) ). \" comment\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIfWithLogicalOpsAtLineMidAndEnd",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF <ls_any> IS ASSIGNED AND <ls_other> IS ASSIGNED\n      AND <ls_any>-statistic <> <ls_other>-statistic.\n      CONTINUE.\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF     <ls_any>           IS ASSIGNED AND <ls_other> IS ASSIGNED\n       AND <ls_any>-statistic <> <ls_other>-statistic.\n      CONTINUE.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIfWithLogicalOpsAndCommentsAtLineEnd",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF sy-subrc <> 0                           OR \" comment\n       <ls_item>-comp1 <> is_item_key-comp1 OR \" more comment\n       <ls_item>-component2 <> is_item_key-component2. \" another comment\n    ENDIF.\n\n    IF <lo_item_ref>->ms_data-any_flag = abap_true  OR\n      ( <lo_item_ref>->ms_data-other_flag = abap_true AND \" comment\n        <lo_item_ref>->ms_data-yet_another_flag = abap_false ).\n      lv_any_flag = abap_true.\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF sy-subrc             <> 0 OR \" comment\n       <ls_item>-comp1      <> is_item_key-comp1 OR \" more comment\n       <ls_item>-component2 <> is_item_key-component2. \" another comment\n    ENDIF.\n\n    IF <lo_item_ref>->ms_data-any_flag = abap_true OR\n       ( <lo_item_ref>->ms_data-other_flag       = abap_true AND \" comment\n         <lo_item_ref>->ms_data-yet_another_flag = abap_false ).\n      lv_any_flag = abap_true.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIfElseIfComplex",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF  ( c IS NOT SUPPLIED\n       OR b IS INITIAL )\n       AND e BETWEEN f AND g\n       AND ( d IS SUPPLIED\n       OR b IS NOT INITIAL ).\n      \" do something\n\n    ELSEIF line_exists( its_table[ 0 ] )\n       OR ( lines( its_table ) > 2\n    AND line_exists( its_table[ 1 ] ) ).\n      \" do something\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF     (    c IS NOT SUPPLIED\n             OR b IS INITIAL )\n       AND e BETWEEN f AND g\n       AND (    d IS SUPPLIED\n             OR b IS NOT INITIAL ).\n      \" do something\n\n    ELSEIF    line_exists( its_table[ 0 ] )\n           OR (     lines( its_table ) > 2\n                AND line_exists( its_table[ 1 ] ) ).\n      \" do something\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIfWithComparisonOpsInAndNotIn",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF attr_a = iv_param_a\n       AND attr_b = iv_param_b\n       AND attribute_c IN lrt_table_c\n       AND doc_date NOT IN lrt_doc_date.\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF     attr_a        = iv_param_a\n       AND attr_b        = iv_param_b\n       AND attribute_c  IN lrt_table_c\n       AND doc_date NOT IN lrt_doc_date.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIfWithMixOfSameAndDifferentObjects",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    CHECK  is_item_buffer-item_id IS NOT INITIAL\n       AND is_item_buffer-any_flag = abap_false\n       AND is_other_object-other_flag = abap_false\n       AND is_other_object-other_flag = abap_false\n       AND is_yet_another_object-only_flag = abap_false\n       AND is_item_buffer-third_flag = abap_true\n       AND is_item_buffer-has_no_change = abap_false.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CHECK     is_item_buffer-item_id          IS NOT INITIAL\n          AND is_item_buffer-any_flag          = abap_false\n          AND is_other_object-other_flag       = abap_false\n          AND is_other_object-other_flag       = abap_false\n          AND is_yet_another_object-only_flag  = abap_false\n          AND is_item_buffer-third_flag        = abap_true\n          AND is_item_buffer-has_no_change     = abap_false.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLoopAtWhereWithEqualsAndInOps",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    LOOP AT mts_table ASSIGNING FIELD-SYMBOL(<ls_entry>)\n         WHERE field_a = iv_field_a\n           AND long_field_b = iv_long_field_b\n           AND amount IN lrt_amount\n           AND start_date IN lrt_date.\n    ENDLOOP.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    LOOP AT mts_table ASSIGNING FIELD-SYMBOL(<ls_entry>)\n         WHERE     field_a       = iv_field_a\n               AND long_field_b  = iv_long_field_b\n               AND amount       IN lrt_amount\n               AND start_date   IN lrt_date.\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLoopAtWhereWithMixedComparisonOps",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE item_id =  <ls_item>-item_id\n         AND entry_type <> if_any_interface=>co_any_entry_type\n         AND role <> if_any_interface=>co_any_role.\n    ENDLOOP.\n\n    LOOP AT mts_data ASSIGNING FIELD-SYMBOL(<ls_data>) USING KEY any_key\n         WHERE is_valid = abap_true\n             AND category = if_any_interface=>co_any_category\n              AND indicator <> if_any_interface=>co_any_indicator\n               AND amount = if_any_interface=>co_any_amount\n                AND statistic = abap_false.\n      \" do something\n    ENDLOOP.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE     item_id     = <ls_item>-item_id\n               AND entry_type <> if_any_interface=>co_any_entry_type\n               AND role       <> if_any_interface=>co_any_role.\n    ENDLOOP.\n\n    LOOP AT mts_data ASSIGNING FIELD-SYMBOL(<ls_data>) USING KEY any_key\n         WHERE     is_valid   = abap_true\n               AND category   = if_any_interface=>co_any_category\n               AND indicator <> if_any_interface=>co_any_indicator\n               AND amount     = if_any_interface=>co_any_amount\n               AND statistic  = abap_false.\n      \" do something\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLoopAtWhereWithParentheses",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE is_valid = abap_true\n         AND any_flag = abap_true\n         AND ( any_other_flag = abap_true\n         OR change_flag = abap_true ).\n    ENDLOOP.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE     is_valid = abap_true\n               AND any_flag = abap_true\n               AND (    any_other_flag = abap_true\n                     OR change_flag    = abap_true ).\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testRightAlignWhereWithOperators",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE is_valid = abap_true\n         AND any_flag = abap_true\n         AND ( other_flag = abap_true\n         OR change_flag = abap_true ).\n    ENDLOOP.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE is_valid = abap_true\n           AND any_flag = abap_true\n           AND (    other_flag  = abap_true\n                 OR change_flag = abap_true ).\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "tesLeftAlignWhereWithOperators",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE is_valid = abap_true\n         AND any_flag = abap_true\n         AND ( other_flag = abap_true\n         OR change_flag = abap_true ).\n    ENDLOOP.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE is_valid = abap_true\n         AND   any_flag = abap_true\n         AND   (    other_flag  = abap_true\n                 OR change_flag = abap_true ).\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLoopAtWhereComplex",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n      WHERE item_id = <lv_item_id>\n        AND timestamp+0(7) >= lv_last_period\n        AND (  category IS INITIAL\n            OR category = if_any_interface=>co_any_category\n            OR category = if_any_interface=>co_other_category )\n        AND status <> if_any_interface=>co_any_status\n        AND event_type = if_any_interface=>co_any_event_type.\n    ENDLOOP.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n      WHERE     item_id         = <lv_item_id>\n            AND timestamp+0(7) >= lv_last_period\n            AND (    category IS INITIAL\n                  OR category  = if_any_interface=>co_any_category\n                  OR category  = if_any_interface=>co_other_category )\n            AND status     <> if_any_interface=>co_any_status\n            AND event_type  = if_any_interface=>co_any_event_type.\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testXsdBool",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    DATA(lv_result) = xsdbool( ( ( mv_flag = abap_true\n    AND mv_other_flag = abap_true\n    AND ( ir_item->condition_type = ms_struc-any_cond_type\n    OR ir_item->category = if_any_interface=>co_any_category ) )\n    OR ( mv_flag = abap_true\n    AND mv_other_flag = abap_false ) )\n    AND ( lv_third_flag = abap_true\n    OR lv_fourth_flag = abap_true\n    OR lv_fifth_flag_with_long_name = abap_true ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA(lv_result) = xsdbool(     (    (     mv_flag       = abap_true\n                                          AND mv_other_flag = abap_true\n                                          AND (    ir_item->condition_type = ms_struc-any_cond_type\n                                                OR ir_item->category       = if_any_interface=>co_any_category ) )\n                                     OR (     mv_flag       = abap_true\n                                          AND mv_other_flag = abap_false ) )\n                               AND (    lv_third_flag                = abap_true\n                                     OR lv_fourth_flag               = abap_true\n                                     OR lv_fifth_flag_with_long_name = abap_true ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDeleteWhere",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    DELETE lt_table\n     WHERE field IS NOT INITIAL\n       AND field <> if_any_interface=>co_any_constant.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DELETE lt_table\n     WHERE     field IS NOT INITIAL\n           AND field <> if_any_interface=>co_any_constant.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCondConstructor",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    cv_value = COND #( WHEN is_struc-comp   = if_any_interface=>co_any_constant\n                            AND mv_attribute = abap_true\n                            AND ( ir_item->item_type = ms_struc-item_type\n                             OR ir_item->category = if_any_interface=>co_any_category )\n                       THEN ls_structure-component_a\n                       ELSE ls_structure-component_b ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    cv_value = COND #( WHEN     is_struc-comp = if_any_interface=>co_any_constant\n                            AND mv_attribute  = abap_true\n                            AND (    ir_item->item_type = ms_struc-item_type\n                                  OR ir_item->category  = if_any_interface=>co_any_category )\n                       THEN ls_structure-component_a\n                       ELSE ls_structure-component_b ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCondConstructorInParamAssignment",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    lv_amount = calc_amount( iv_first_param  = <ls_item>-amount_a\n                             iv_second_param = <ls_item>-amount_total + <ls_item>-amount_delta + lv_add\n                             iv_third_param  = <ls_item>-any_flag\n                             iv_fourth_param = <ls_ref_item>-amount\n                                             + <ls_ref_item>-amount_delta\n                                             + COND ty_amount( WHEN <ls_ref_item>-any_flag = abap_false\n                                                               AND <ls_item>-other_flag = abap_true\n                                                               THEN is_intermediate_item-amount_sum + is_intermediate_item-amount_delta )\n                             iv_fifth_param  = <ls_item>-amount + <ls_item>-amount_delta ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_amount = calc_amount( iv_first_param  = <ls_item>-amount_a\n                             iv_second_param = <ls_item>-amount_total + <ls_item>-amount_delta + lv_add\n                             iv_third_param  = <ls_item>-any_flag\n                             iv_fourth_param = <ls_ref_item>-amount\n                                             + <ls_ref_item>-amount_delta\n                                             + COND ty_amount( WHEN     <ls_ref_item>-any_flag = abap_false\n                                                                    AND <ls_item>-other_flag   = abap_true\n                                                               THEN is_intermediate_item-amount_sum + is_intermediate_item-amount_delta )\n                             iv_fifth_param  = <ls_item>-amount + <ls_item>-amount_delta ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAvoidLargeGaps",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    DATA(lv_value) = xsdbool( is_valid( ) = abap_false\n                              AND mo_struc->if_any_interface~get_method( )->ms_data-any_component <> if_any_interface=>co_any_constant ).\n\n    DATA(lv_value_2) = xsdbool( ms_parameters-any_type = if_any_interface=>co_any_type\n    AND ( <ls_ref_item>-comp IS INITIAL\n    OR ( <ls_ref_item>-component2 IS NOT INITIAL\n    AND is_some_condition_fulfilled( iv_param_a = <ls_update_item>-item_key\n                                     iv_param_b = <ls_ref_item>-item_key ) = abap_true ) )\n    AND is_another_condition_fulfilled( iv_param_a = ms_parameters-any_component_with_a_long_name\n                                        iv_param_b = <ls_item>-item_key ) = abap_false\n    AND mo_abc->if_any_interface~get_item( )->ms_data-component <> if_any_interface=>co_any_constant ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA(lv_value) = xsdbool(     is_valid( ) = abap_false\n                              AND mo_struc->if_any_interface~get_method( )->ms_data-any_component <> if_any_interface=>co_any_constant ).\n\n    DATA(lv_value_2) = xsdbool(     ms_parameters-any_type = if_any_interface=>co_any_type\n                                AND (    <ls_ref_item>-comp IS INITIAL\n                                      OR (     <ls_ref_item>-component2 IS NOT INITIAL\n                                           AND is_some_condition_fulfilled( iv_param_a = <ls_update_item>-item_key\n                                                                            iv_param_b = <ls_ref_item>-item_key )   = abap_true ) )\n                                AND is_another_condition_fulfilled( iv_param_a = ms_parameters-any_component_with_a_long_name\n                                                                    iv_param_b = <ls_item>-item_key ) = abap_false\n                                AND mo_abc->if_any_interface~get_item( )->ms_data-component <> if_any_interface=>co_any_constant ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLeftAlignComparisonOps",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": false,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    CHECK is_buffer-main_item_id IS NOT INITIAL\n       OR is_buffer-any_flag = abap_false\n           OR is_buffer-count <= 10\n                 OR is_buffer-third_flag = abap_true.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CHECK is_buffer-main_item_id IS NOT INITIAL\n       OR is_buffer-any_flag     =  abap_false\n       OR is_buffer-count        <= 10\n       OR is_buffer-third_flag   =  abap_true.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignDifferentObjects",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    CHECK is_item_buffer-main_item_id IS NOT INITIAL\n           AND is_other_buffer-other_flag = abap_false\n                 AND is_yet_other_buffer-num_entries <= 10.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CHECK     is_item_buffer-main_item_id     IS NOT INITIAL\n          AND is_other_buffer-other_flag       = abap_false\n          AND is_yet_other_buffer-num_entries <= 10.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testOnlyAlignSameObjects",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": true,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    CHECK is_item_buffer-main_item_id IS NOT INITIAL\n           AND is_other_buffer-other_flag = abap_false\n                 AND is_yet_other_buffer-num_entries <= 10.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CHECK     is_item_buffer-main_item_id IS NOT INITIAL\n          AND is_other_buffer-other_flag = abap_false\n          AND is_yet_other_buffer-num_entries <= 10.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMaxInnerSpacesSufficient",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 25
+   },
+   "src": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE very_very_long_variable_name = abap_true\n         AND short_var = abap_true.\n    ENDLOOP.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE very_very_long_variable_name = abap_true\n           AND short_var                    = abap_true.\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMaxInnerSpacesExceeded",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 15
+   },
+   "src": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE very_very_long_variable_name = abap_true\n         AND short_var = abap_true.\n    ENDLOOP.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    LOOP AT mt_buffer ASSIGNING <ls_buffer>\n         WHERE very_very_long_variable_name = abap_true\n           AND short_var = abap_true.\n    ENDLOOP.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLeftAlignIfWithParentheses",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF ( a = 1 OR a = 2 ).\n    ENDIF.\n    IF ( a = 1\n    OR a = 2 ).\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF ( a = 1 OR a = 2 ).\n    ENDIF.\n    IF (    a = 1\n         OR a = 2 ).\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testOrInOwnLine",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF a = 1\n    AND b = 2\n    OR\n    a = 2\n    AND b = 1.\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF        a = 1\n          AND b = 2\n       OR\n              a = 2\n          AND b = 1.\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testOrInOwnLineWithComment",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n  IF \" comment 1\n  a = 1\n  AND b = 2\n  OR\n  a = 2\n  AND b = 1.\n  ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  IF \" comment 1\n            a = 1\n        AND b = 2\n     OR\n            a = 2\n        AND b = 1.\n  ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAndInOwnLineWithComment",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n  IF \" comment 1\n  a = 1\n  AND\n  b = 2.\n  ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  IF \" comment 1\n         a = 1\n     AND\n         b = 2.\n  ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testOrInOwnLineWithCommentsInOwnLine",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n  IF\n  \" comment 1\n  a = 1\n  AND b = 2\n  OR\n  \" comment 2\n  a = 2\n  AND b = 1.\n  ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  IF\n  \" comment 1\n            a = 1\n        AND b = 2\n     OR\n  \" comment 2\n            a = 2\n        AND b = 1.\n  ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTestAndOrOpeningBracketInOwnLine",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    IF\n    a = 1\n    AND\n    (\n    b = 2\n    OR\n    b = 3\n    )\n    OR\n    a = 2\n    AND\n    b = 1\n    AND\n    (\n    c = 1\n    OR\n    c = 2\n    ).\n    ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF\n           a = 1\n       AND\n           (\n                b = 2\n             OR\n                b = 3\n           )\n    OR\n           a = 2\n       AND\n           b = 1\n       AND\n           (\n                c = 1\n             OR\n                c = 2\n           ).\n    ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignWhereInConstructorExpressions",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    rt_result = VALUE #( FOR ls_struc IN lt_table\n                         WHERE ( status = 'a'\n                         OR status = 'b' )\n                         ( ls_struc ) ).\n\n    lt_other_result = FILTER #( lt_any_table USING KEY any_key\n                                WHERE active = abap_true   AND   used = abap_true ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    rt_result = VALUE #( FOR ls_struc IN lt_table\n                         WHERE (    status = 'a'\n                                 OR status = 'b' )\n                         ( ls_struc ) ).\n\n    lt_other_result = FILTER #( lt_any_table USING KEY any_key\n                                WHERE active = abap_true AND used = abap_true ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testUntilAndWhileInReduceConstructor",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    lv_sum = REDUCE i( INIT s = 0\n                       FOR i = 1\n                       UNTIL i = 10\n                       OR i >= iv_max\n                       NEXT s += i ).\n\n    lv_sum = REDUCE i( INIT s = 0\n                       FOR i = 1\n                       WHILE i < 10\n                       AND i < iv_max\n                       NEXT s += i ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_sum = REDUCE i( INIT s = 0\n                       FOR i = 1\n                       UNTIL    i  = 10\n                             OR i >= iv_max\n                       NEXT s += i ).\n\n    lv_sum = REDUCE i( INIT s = 0\n                       FOR i = 1\n                       WHILE     i < 10\n                             AND i < iv_max\n                       NEXT s += i ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testWaitUntil",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    WAIT FOR ASYNCHRONOUS TASKS MESSAGING CHANNELS\n         UNTIL lo_instance=>is_task_done( lv_task_id ) = abap_true\n         OR lo_instance=>is_task_cancelled( lv_task_id ) = abap_true\n         UP TO 10 SECONDS.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    WAIT FOR ASYNCHRONOUS TASKS MESSAGING CHANNELS\n         UNTIL    lo_instance=>is_task_done( lv_task_id )      = abap_true\n               OR lo_instance=>is_task_cancelled( lv_task_id ) = abap_true\n         UP TO 10 SECONDS.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testWhereParenthesisInNextLine",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    lt_result = VALUE #( FOR ls_struc IN lt_table WHERE\n                         ( comp = '1'\nAND comp2 = 'A' )\n                         ( ls_struc ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lt_result = VALUE #( FOR ls_struc IN lt_table WHERE\n                         (     comp  = '1'\n                           AND comp2 = 'A' )\n                         ( ls_struc ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testWhereParenthesisInNextLineLeftOfEquals",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    lt_result = VALUE #(\n        FOR ls_struc IN lt_table WHERE\n    ( comp = '1'\n    AND comp2 = 'A' )\n        ( ls_struc ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lt_result = VALUE #(\n        FOR ls_struc IN lt_table WHERE\n        (     comp  = '1'\n          AND comp2 = 'A' )\n        ( ls_struc ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIfWithoutSpacesLeft",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "IF a = 1\nAND b = 2.\nENDIF.",
+   "exp": "IF  a = 1\nAND b = 2.\nENDIF.",
+   "flags": {}
+  },
+  {
+   "name": "testSelectWhereWithInnerWhere",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20,
+    "AlignSqlWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignSqlHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN"
+   },
+   "src": "  METHOD any_method.\n  SELECT * FROM any_dtab CLIENT SPECIFIED\n    INTO TABLE et_any_table\n    WHERE NOT any_col IN ( SELECT any_col FROM other_dtab CLIENT SPECIFIED\n                             WHERE lv_any_value = iv_any_param\n                           AND ( other_col <> space OR third_col <> space ) )\n    AND ( fourth_col <> space OR fifth_col <> space )\n         AND col_6 = iv_any_param.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  SELECT * FROM any_dtab CLIENT SPECIFIED\n    INTO TABLE et_any_table\n    WHERE NOT any_col IN ( SELECT any_col FROM other_dtab CLIENT SPECIFIED\n                             WHERE lv_any_value = iv_any_param\n                               AND ( other_col <> space OR third_col <> space ) )\n      AND ( fourth_col <> space OR fifth_col <> space )\n      AND col_6 = iv_any_param.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectWhereNotInList",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col\n      FROM any_dtab\n      INTO TABLE lt_any_table\n      FOR ALL ENTRIES IN cts_any_table\n      WHERE any_col EQ cts_any_table-any_comp\n        AND other_col NOT IN (if_any_interface=>co_any_constant,\n                              if_any_interface=>co_other_constant ).\n\n      SELECT * FROM any_dtab USING CLIENT @iv_any_param\n        INTO TABLE @lv_any_value\n        WHERE any_col IN ( @gc_any_constant, @gc_other_constant ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col\n      FROM any_dtab\n      INTO TABLE lt_any_table\n      FOR ALL ENTRIES IN cts_any_table\n      WHERE any_col       EQ cts_any_table-any_comp\n        AND other_col NOT IN (if_any_interface=>co_any_constant,\n                              if_any_interface=>co_other_constant ).\n\n      SELECT * FROM any_dtab USING CLIENT @iv_any_param\n        INTO TABLE @lv_any_value\n        WHERE any_col IN ( @gc_any_constant, @gc_other_constant ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignOpeningParentheses",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n  IF  (   a   =   b )\n  AND   a = c.\n  ENDIF.\n\n  IF a = b\n  AND ( a = c ).\n  ENDIF.\n\n  IF ( a = b OR a = 1 )\n  AND a = c\n  OR ( b = c OR c = 1 ).\n  ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  IF     ( a = b )\n     AND a = c.\n  ENDIF.\n\n  IF     a = b\n     AND ( a = c ).\n  ENDIF.\n\n  IF        ( a = b OR a = 1 )\n        AND a = c\n     OR ( b = c OR c = 1 ).\n  ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignOpeningParenthesesDeep",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n  IF  (  (  a  =  b  OR  a  =  1  )\n  AND  a  =  c\n  OR ( b = c\n  AND ( c = 1 ) ) )\n  AND b = c.\n  ENDIF.\n\n  IF ( ( a = b OR a = 1 )\n  AND ( a = c )\n  OR ( ( b = c )\n  AND  (  c  =  1  )  )  )\n  AND ( b = c ).\n  ENDIF.\n\n  IF ( a = b\n  OR c = d )\n  AND a = c\n  OR a = d\n  AND  (  a  =  c  OR  b  =  d  ).\n  ENDIF.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  IF     (        ( a = b OR a = 1 )\n              AND a = c\n           OR (     b = c\n                AND ( c = 1 ) ) )\n     AND b = c.\n  ENDIF.\n\n  IF     (        ( a = b OR a = 1 )\n              AND ( a = c )\n           OR (     ( b = c )\n                AND ( c = 1 ) ) )\n     AND ( b = c ).\n  ENDIF.\n\n  IF        (    a = b\n              OR c = d )\n        AND a = c\n     OR     a = d\n        AND ( a = c OR b = d ).\n  ENDIF.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLikeInParentheses",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n      SELECT comp1 comp2\n        INTO ( struc-comp1, struc-comp2 )\n        FROM dtab\n        WHERE any_comp = @lv_any\n        AND other_comp = 42\n            AND NOT ( third_comp LIKE 'ABC%'\n              OR third_comp LIKE 'D%'\n              OR ( fourth_comp = 'A'\n              OR fourth_comp LIKE 'BCD%' ) ).\n      ENDSELECT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n      SELECT comp1 comp2\n        INTO ( struc-comp1, struc-comp2 )\n        FROM dtab\n        WHERE     any_comp   = @lv_any\n          AND     other_comp = 42\n          AND NOT (    third_comp LIKE 'ABC%'\n                    OR third_comp LIKE 'D%'\n                    OR (    fourth_comp    = 'A'\n                         OR fourth_comp LIKE 'BCD%' ) ).\n      ENDSELECT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTableOfB",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n  lt_table_of_b = VALUE #( ( true )\n                           ( ( a < 2 ) )\n                           ( ( b = 2\n        OR b = 3 ) )\n                           ( a < 2\n           AND b = 3\n                                    OR a > 2\n                    AND b <> 3 )\n                           ( a < 2  AND b = 3\n                                    OR a > 22 AND bb <> 3 )\n                           ( ( c = 2 ) = ( d = 4 ) ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  lt_table_of_b = VALUE #( ( true )\n                           ( ( a < 2 ) )\n                           ( (    b = 2\n                               OR b = 3 ) )\n                           (        a  < 2\n                                AND b  = 3\n                             OR     a  > 2\n                                AND b <> 3 )\n                           (    a < 2  AND b   = 3\n                             OR a > 22 AND bb <> 3 )\n                           ( ( c = 2 ) = ( d = 4 ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testBoolX",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n  a = boolx( bool = b AND c < 1\n  OR b AND cc > 10\n             bit  = lv_bit ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  a = boolx( bool =    b AND c  < 1\n                    OR b AND cc > 10\n             bit  = lv_bit ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "test",
+   "config": {
+    "AlignIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignElseIfWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignCheckWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhileWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "OnlyAlignSameObjects": false,
+    "MaxInnerSpaces": 20
+   },
+   "src": "  METHOD any_method.\n    UPDATE target\n      SET comp1      = @lv_comp1,\n          component2 = @lv_comp2\n      WHERE comp3 =     @<ls_struc>-comp3\n      AND component4 =   @<ls_struc>-component4\n   AND c5  =  @lv_value5.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    UPDATE target\n      SET comp1      = @lv_comp1,\n          component2 = @lv_comp2\n      WHERE comp3      = @<ls_struc>-comp3\n        AND component4 = @<ls_struc>-component4\n        AND c5         = @lv_value5.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

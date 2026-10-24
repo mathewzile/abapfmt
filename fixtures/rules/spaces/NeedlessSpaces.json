@@ -1,0 +1,560 @@
+{
+ "ruleId": "NEEDLESS_SPACES",
+ "testClass": "NeedlessSpacesTest",
+ "defaults": {
+  "SearchAcrossEmptyLines": true,
+  "SearchAcrossCommentLines": true,
+  "ProcessLineEndComments": false,
+  "ProcessEmptyBrackets": true
+ },
+ "cases": [
+  {
+   "name": "testSimpleCases",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    CLEAR:    ev_value,\n              ev_other_value.\n    CLEAR     ev_third_value.\n\n    SORT lt_table   BY  first_comp    ASCENDING\n                        second_comp   DESCENDING\n                        third_comp.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR: ev_value,\n           ev_other_value.\n    CLEAR  ev_third_value.\n\n    SORT lt_table BY first_comp  ASCENDING\n                     second_comp DESCENDING\n                     third_comp.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCondensedSimpleCasesUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    CLEAR: ev_value,\n           ev_other_value.\n    CLEAR  ev_third_value.\n\n    SORT lt_table BY first_comp  ASCENDING\n                     second_comp DESCENDING\n                     third_comp.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CLEAR: ev_value,\n           ev_other_value.\n    CLEAR  ev_third_value.\n\n    SORT lt_table BY first_comp  ASCENDING\n                     second_comp DESCENDING\n                     third_comp.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSearchAcrossEmptyLinesAndComments",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    a       =  1.\n    bb      =  2.\n\n    ccc     =  3.\n    dddd    =  4.\n    \" comment\n    eeeee   =  5.\n    ffffff  =  6.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    a      = 1.\n    bb     = 2.\n\n    ccc    = 3.\n    dddd   = 4.\n    \" comment\n    eeeee  = 5.\n    ffffff = 6.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSearchAcrossEmptyLinesOnly",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": false,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    a       =  1.\n    bb      =  2.\n\n    ccc     =  3.\n    dddd    =  4.\n    \" comment\n    eeeee   =  5.\n    ffffff  =  6.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    a    = 1.\n    bb   = 2.\n\n    ccc  = 3.\n    dddd = 4.\n    \" comment\n    eeeee  = 5.\n    ffffff = 6.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSearchAcrossCommentsOnly",
+   "config": {
+    "SearchAcrossEmptyLines": false,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    a       =  1.\n    bb      =  2.\n\n    ccc     =  3.\n    dddd    =  4.\n    \" comment\n    eeeee   =  5.\n    ffffff  =  6.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    a  = 1.\n    bb = 2.\n\n    ccc    = 3.\n    dddd   = 4.\n    \" comment\n    eeeee  = 5.\n    ffffff = 6.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotSearchAcrossEmptyLinesOrComments",
+   "config": {
+    "SearchAcrossEmptyLines": false,
+    "SearchAcrossCommentLines": false,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    a       =  1.\n    bb      =  2.\n\n    ccc     =  3.\n    dddd    =  4.\n    \" comment\n    eeeee   =  5.\n    ffffff  =  6.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    a  = 1.\n    bb = 2.\n\n    ccc  = 3.\n    dddd = 4.\n    \" comment\n    eeeee  = 5.\n    ffffff = 6.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testBreakSectionsWhenIndentChanges",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    DO 5 TIMES.\n      a           =   1.\n      bbb         =   3.\n    ENDDO.\n    DO 10 TIMES.\n      ccccc       =   5.\n      ddddddd     =   7.\n    ENDDO.\n    eeeeeeeee     =   9.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DO 5 TIMES.\n      a   = 1.\n      bbb = 3.\n    ENDDO.\n    DO 10 TIMES.\n      ccccc   = 5.\n      ddddddd = 7.\n    ENDDO.\n    eeeeeeeee = 9.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepLineEndComments",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lv_some_value     =   3.      \" comment\n    lv_any_value      =   44.     \" second comment, aligned with first one\n    lv_other_value    =   'abc'.    \" third comment\n    lv_fourth_value   =   'a'.      \" fourth comment, aligned with third one\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_some_value   = 3.      \" comment\n    lv_any_value    = 44.     \" second comment, aligned with first one\n    lv_other_value  = 'abc'.    \" third comment\n    lv_fourth_value = 'a'.      \" fourth comment, aligned with third one\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMoveLineEndComments",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": true,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lv_some_value     =   3.    \" comment\n    lv_any_value      =   44.   \" second comment, aligned with first one\n    lv_other_value    =   'abc'.  \" third comment\n    lv_fourth_value   =   'a'.    \" fourth comment, aligned with third one\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_some_value   = 3.  \" comment\n    lv_any_value    = 44. \" second comment, aligned with first one\n    lv_other_value  = 'abc'. \" third comment\n    lv_fourth_value = 'a'.   \" fourth comment, aligned with third one\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testPreserveRightAlignedAssignmentOps",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lo_any_instance     =   get_instance( ).\n    lo_other_instance  ?=   get_instance( ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lo_any_instance    = get_instance( ).\n    lo_other_instance ?= get_instance( ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testPreserveCalculationAssignmentOpsAlignment",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lv_value   +=   1.\n    lv_value   *=   2.\n    lv_value    =   3.\n    lv_value   -=   4.\n    lv_value   /=   5.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_value += 1.\n    lv_value *= 2.\n    lv_value  = 3.\n    lv_value -= 4.\n    lv_value /= 5.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testPreserveNumericAlignment",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lts_table[ 1 ]-value   =      1.\n    lts_table[ 2 ]-value   =     42.\n    lts_table[ 3 ]-value   =   -100.\n    lts_table[ 4 ]-value   =     '3.14'.\n    lts_table[ 5 ]-value   =    '43.21-'.\n    lts_table[ 6 ]-value   =   '-12.34'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lts_table[ 1 ]-value =    1.\n    lts_table[ 2 ]-value =   42.\n    lts_table[ 3 ]-value = -100.\n    lts_table[ 4 ]-value =   '3.14'.\n    lts_table[ 5 ]-value =  '43.21-'.\n    lts_table[ 6 ]-value = '-12.34'.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCondensedAssignmentOpsUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lo_any_instance    = get_instance( ).\n    lo_other_instance ?= get_instance( ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lo_any_instance    = get_instance( ).\n    lo_other_instance ?= get_instance( ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCondensedCalculationAssignmentOpsUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lv_value += 1.\n    lv_value *= 2.\n    lv_value  = 3.\n    lv_value -= 4.\n    lv_value /= 5.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_value += 1.\n    lv_value *= 2.\n    lv_value  = 3.\n    lv_value -= 4.\n    lv_value /= 5.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCondensedNumericValuesUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lts_table[ 1 ]-value =    1.\n    lts_table[ 2 ]-value =   42.\n    lts_table[ 3 ]-value = -100.\n    lts_table[ 4 ]-value =   '3.14'.\n    lts_table[ 5 ]-value =  '43.21-'.\n    lts_table[ 6 ]-value = '-12.34'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lts_table[ 1 ]-value =    1.\n    lts_table[ 2 ]-value =   42.\n    lts_table[ 3 ]-value = -100.\n    lts_table[ 4 ]-value =   '3.14'.\n    lts_table[ 5 ]-value =  '43.21-'.\n    lts_table[ 6 ]-value = '-12.34'.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testParametersInCallChainUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lv_result    =   any_method(  a   =  1\n                                  b   =  2  )   +    other_method(   c  =   3\n                                                                     d  =   4 ).\n\n    lv_result   =  cl_singleton=>get( )->any_method(\n        iv_param    =    '9' ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_result = any_method(  a   =  1\n                             b   =  2  ) + other_method(   c  =   3\n                                                           d  =   4 ).\n\n    lv_result = cl_singleton=>get( )->any_method(\n        iv_param    =    '9' ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    SELECT * FROM any_table\n      WHERE   a   =  1\n        AND   b   =  2\n      INTO TABLE @DATA(lt_result).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT * FROM any_table\n      WHERE   a   =  1\n        AND   b   =  2\n      INTO TABLE @DATA(lt_result).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDeclarationsUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    DATA   lv_any   TYPE    i.\n    DATA   lv_other TYPE    string.\n\n    TYPES: BEGIN OF ty_s_any_struc,\n             component_a    TYPE   i,\n             comp_b         TYPE   string.\n             INCLUDE TYPE ty_s_include.\n    TYPES: END OF ty_s_any_struc.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA   lv_any   TYPE    i.\n    DATA   lv_other TYPE    string.\n\n    TYPES: BEGIN OF ty_s_any_struc,\n             component_a    TYPE   i,\n             comp_b         TYPE   string.\n             INCLUDE TYPE ty_s_include.\n    TYPES: END OF ty_s_any_struc.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMethodsDeclarationsUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    METHODS  any_method.\n    METHODS  other_method.\n\n    CLASS-METHODS  any_class_method.\n    CLASS-METHODS  other_class_method.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    METHODS  any_method.\n    METHODS  other_method.\n\n    CLASS-METHODS  any_class_method.\n    CLASS-METHODS  other_class_method.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testParameterListsUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    CALL METHOD procedural_call_example\n      EXPORTING\n        iv_any    =    lv_any\n        iv_other  =    lv_other.\n\n    RAISE EXCEPTION   TYPE   cx_any EXPORTING iv_msgid    =   '123'\n                                              iv_param2   =   2.\n\n    RAISE SHORTDUMP TYPE cx_any_type\n      EXPORTING\n        any_param     =   1\n        other_param   =   'text'.\n\n    CREATE OBJECT lo_any_object\n      EXPORTING\n        iv_param = iv_any_value\n        iv_second_param = lv_other_value.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CALL METHOD procedural_call_example\n      EXPORTING\n        iv_any    =    lv_any\n        iv_other  =    lv_other.\n\n    RAISE EXCEPTION   TYPE   cx_any EXPORTING iv_msgid    =   '123'\n                                              iv_param2   =   2.\n\n    RAISE SHORTDUMP TYPE cx_any_type\n      EXPORTING\n        any_param     =   1\n        other_param   =   'text'.\n\n    CREATE OBJECT lo_any_object\n      EXPORTING\n        iv_param = iv_any_value\n        iv_second_param = lv_other_value.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComponentListsUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    READ TABLE ith_table ASSIGNING <ls_entry>\n         WITH KEY   main_item_id     =    <lo_item>->ms_data-item_id\n                    name             =    <lo_item>->ms_data-name.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    READ TABLE ith_table ASSIGNING <ls_entry>\n         WITH KEY   main_item_id     =    <lo_item>->ms_data-item_id\n                    name             =    <lo_item>->ms_data-name.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testNonAbapUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    EXEC SQL.\n      DISCONNECT    :lv_connection_name\n      DISCONNECT    :lv_other_connection_name\n    ENDEXEC.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    EXEC SQL.\n      DISCONNECT    :lv_connection_name\n      DISCONNECT    :lv_other_connection_name\n    ENDEXEC.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLogicalExpressionUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    IF   a   =   abap_false  AND  b   >    3\n    OR   a   =   abap_true   AND  b  <=   10.\n      \" do something\n    ELSEIF  a  =  abap_true    AND  b   >   3\n       AND  a  =  abap_false   AND  b  <=  10.\n      \" do something else\n    ENDIF.\n\n    WHILE   a  =  abap_true\n       OR   b  =  abap_false.\n      \" do something\n    ENDWHILE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    IF   a   =   abap_false  AND  b   >    3\n    OR   a   =   abap_true   AND  b  <=   10.\n      \" do something\n    ELSEIF  a  =  abap_true    AND  b   >   3\n       AND  a  =  abap_false   AND  b  <=  10.\n      \" do something else\n    ENDIF.\n\n    WHILE   a  =  abap_true\n       OR   b  =  abap_false.\n      \" do something\n    ENDWHILE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCondExpressionUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    ev_value   =   COND #( WHEN   iv_value IS SUPPLIED\n                           THEN   iv_value\n                           ELSE   gc_default_value ).\n\n    lv_text    =   SWITCH string( sy-index\n                                  WHEN   1   THEN   'one'\n                                  WHEN   2   THEN   'two'\n                                  WHEN   3   THEN   'three'\n                                  ELSE THROW cx_overflow( ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_value = COND #( WHEN   iv_value IS SUPPLIED\n                       THEN   iv_value\n                       ELSE   gc_default_value ).\n\n    lv_text  = SWITCH string( sy-index\n                              WHEN   1   THEN   'one'\n                              WHEN   2   THEN   'two'\n                              WHEN   3   THEN   'three'\n                              ELSE THROW cx_overflow( ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testProcessAcrossWhenSections",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": true,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    CASE lv_value.\n      WHEN 1.         \" case 1\n        ls_struc-comp1            =   lv_any_value.\n      WHEN 2.         \" case 2\n        ls_struc-component2       =   lv_other_value.\n      WHEN 3.         \" case 3\n        ls_struc-long_component   =   lv_third_value.\n      WHEN OTHERS.    \" default\n        ls_struc-comp4            =   lv_default_value.\n    ENDCASE.\n\n    CASE lv_second_value.\n      WHEN 1.         \" case 1\n        ls_struc-comp1            =   lv_any_value.\n      WHEN OTHERS.    \" default\n        ls_struc-component2       =   lv_default_value.\n    ENDCASE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CASE lv_value.\n      WHEN 1.      \" case 1\n        ls_struc-comp1          = lv_any_value.\n      WHEN 2.      \" case 2\n        ls_struc-component2     = lv_other_value.\n      WHEN 3.      \" case 3\n        ls_struc-long_component = lv_third_value.\n      WHEN OTHERS. \" default\n        ls_struc-comp4          = lv_default_value.\n    ENDCASE.\n\n    CASE lv_second_value.\n      WHEN 1.      \" case 1\n        ls_struc-comp1      = lv_any_value.\n      WHEN OTHERS. \" default\n        ls_struc-component2 = lv_default_value.\n    ENDCASE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testProcessAcrossElseIfAndElse",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": true,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "    IF a = 1.\n      ls_struc-comp1            =   lv_any_value.\n    ELSEIF a = 2.\n      ls_struc-component2       =   lv_other_value.\n    ELSE.\n      ls_struc-long_component   =   lv_third_value.\n    ENDIF.\n\n    IF b = 1.\n      ls_struc-comp1            =   lv_any_value.\n    ELSEIF b = 2.\n      ls_struc-component2       =   lv_default_value.\n    ENDIF.",
+   "exp": "    IF a = 1.\n      ls_struc-comp1          = lv_any_value.\n    ELSEIF a = 2.\n      ls_struc-component2     = lv_other_value.\n    ELSE.\n      ls_struc-long_component = lv_third_value.\n    ENDIF.\n\n    IF b = 1.\n      ls_struc-comp1      = lv_any_value.\n    ELSEIF b = 2.\n      ls_struc-component2 = lv_default_value.\n    ENDIF.",
+   "flags": {}
+  },
+  {
+   "name": "testAvoidOverlappingOfLeftAndRightAlign",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lv_long_var_name    =   'abc'.\n    lv_short_name     &&=   'def'.\n    lv_long_var_name    =   'abc'.\n    lv_short_name     &&=   'def'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_long_var_name   = 'abc'.\n    lv_short_name    &&= 'def'.\n    lv_long_var_name   = 'abc'.\n    lv_short_name    &&= 'def'.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAvoidOverlappingWithNumbers",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lv_long_var_name =       12.\n    lv_short_name =        1234.\n    lv_value =           123456.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_long_var_name =     12.\n    lv_short_name =      1234.\n    lv_value =         123456.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAvoidOverlappingUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    lv_long_var_name =     12.\n    lv_short_name =      1234.\n    lv_value =         123456.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_long_var_name =     12.\n    lv_short_name =      1234.\n    lv_value =         123456.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMethodChain",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    ev_result = class_name=>get_tool(  )->get_value(    ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_result = class_name=>get_tool( )->get_value( ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMethodChainUnchanged",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": false
+   },
+   "src": "  METHOD any_method.\n    ev_result = class_name=>get_tool(  )->get_value(    ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_result = class_name=>get_tool(  )->get_value(    ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCommentLineInsideCommand",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    class_name=>get_tool(\n        \" comment\n        )->get_value(    ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    class_name=>get_tool(\n        \" comment\n        )->get_value( ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLineBreaksNotRemoved",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "  METHOD any_method.\n    ev_result = get_value(\n                ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_result = get_value(\n                ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIndentAdjustedForEmptyParens",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "    cl_any_factory=>get(    )->get_utility(      )->any_method( iv_any_param    = 1\n                                                                iv_other_param  = 2\n                                                                iv_third_param  = 3 ).",
+   "exp": "    cl_any_factory=>get( )->get_utility( )->any_method( iv_any_param    = 1\n                                                        iv_other_param  = 2\n                                                        iv_third_param  = 3 ).",
+   "flags": {}
+  },
+  {
+   "name": "testIndentAdjustedForAttachedLiterals",
+   "config": {
+    "SearchAcrossEmptyLines": true,
+    "SearchAcrossCommentLines": true,
+    "ProcessLineEndComments": false,
+    "ProcessEmptyBrackets": true
+   },
+   "src": "    cl_any_factory=>get(    )->get_utility(      )->any_method( iv_any_param    = 1\n                                                                iv_other_param  = 2\n                                                                iv_third_param  = 3 ).\n\n    cl_any_factory=>get(    )->get_utility(      )->any_method(\n        iv_any_param    = 1\n        iv_other_param  = 2\n        iv_third_param  = 3 ).",
+   "exp": "    cl_any_factory=>get( )->get_utility( )->any_method( iv_any_param    = 1\n                                                        iv_other_param  = 2\n                                                        iv_third_param  = 3 ).\n\n    cl_any_factory=>get( )->get_utility( )->any_method(\n        iv_any_param    = 1\n        iv_other_param  = 2\n        iv_third_param  = 3 ).",
+   "flags": {}
+  }
+ ]
+}

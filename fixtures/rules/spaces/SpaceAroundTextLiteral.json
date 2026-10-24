@@ -1,0 +1,273 @@
+{
+ "ruleId": "SPACES_IN_EMPTY_BRACKETS",
+ "testClass": "SpaceAroundTextLiteralTest",
+ "defaults": {
+  "SeparateFromKeywords": true,
+  "SeparateFromOperators": true,
+  "SeparateFromComments": true,
+  "SeparateFromBrackets": true,
+  "SeparateFromBracketPairs": true
+ },
+ "cases": [
+  {
+   "name": "testDetachFromKeywords",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    DATA lv_any TYPE string VALUE`abc`.\n    DATA lv_other TYPE string VALUE'abc'.\n\n    ASSERT lv_any EQ`abc`.\n    ASSERT lv_any EQ'abc'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lv_any TYPE string VALUE `abc`.\n    DATA lv_other TYPE string VALUE 'abc'.\n\n    ASSERT lv_any EQ `abc`.\n    ASSERT lv_any EQ 'abc'.\n  ENDMETHOD.",
+   "flags": {
+    "syntaxCheckAfterParse": false,
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotDetachFromKeywords",
+   "config": {
+    "SeparateFromKeywords": false,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    DATA lv_any TYPE string VALUE`abc`.\n    DATA lv_other TYPE string VALUE'abc'.\n\n    ASSERT lv_any EQ`abc`.\n    ASSERT lv_any EQ'abc'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lv_any TYPE string VALUE`abc`.\n    DATA lv_other TYPE string VALUE'abc'.\n\n    ASSERT lv_any EQ`abc`.\n    ASSERT lv_any EQ'abc'.\n  ENDMETHOD.",
+   "flags": {
+    "syntaxCheckAfterParse": false,
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDetachFromOperators",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    lv_any =`abc` &&`def`.\n    lv_any ='abc' &&'def'.\n    lv_any =:`abc`,`def`.\n    lv_any =:'abc','def'.\n\n    lv_any =`abc`\"comment\n          &&`def`.\n    lv_any ='abc'\"comment\n          &&'def'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_any = `abc` && `def`.\n    lv_any = 'abc' && 'def'.\n    lv_any =: `abc`, `def`.\n    lv_any =: 'abc', 'def'.\n\n    lv_any = `abc` \"comment\n          && `def`.\n    lv_any = 'abc' \"comment\n          && 'def'.\n  ENDMETHOD.",
+   "flags": {
+    "syntaxCheckAfterParse": false,
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotDetachFromOperators",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": false,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    lv_any =`abc` &&`def`.\n    lv_any ='abc' &&'def'.\n    lv_any =:`abc`,`def`.\n    lv_any =:'abc','def'.\n\n    lv_any =`abc`\"comment\n          &&`def`.\n    lv_any ='abc'\"comment\n          &&'def'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_any =`abc` &&`def`.\n    lv_any ='abc' &&'def'.\n    lv_any =:`abc`,`def`.\n    lv_any =:'abc','def'.\n\n    lv_any =`abc` \"comment\n          &&`def`.\n    lv_any ='abc' \"comment\n          &&'def'.\n  ENDMETHOD.",
+   "flags": {
+    "syntaxCheckAfterParse": false,
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDetachFromComments",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    lv_any =`abc`\"comment\n          &&`def`.\n    lv_any ='abc'\"comment\n          &&'def'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_any = `abc` \"comment\n          && `def`.\n    lv_any = 'abc' \"comment\n          && 'def'.\n  ENDMETHOD.",
+   "flags": {
+    "syntaxCheckAfterParse": false,
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDoNotDetachFromComments",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": false,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    lv_any =`abc`\"comment\n          &&`def`.\n    lv_any ='abc'\"comment\n          &&'def'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    lv_any = `abc`\"comment\n          && `def`.\n    lv_any = 'abc'\"comment\n          && 'def'.\n  ENDMETHOD.",
+   "flags": {
+    "syntaxCheckAfterParse": false,
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTextFieldLiterals",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    any_method( 'text field literal' ).\n    any_method('other literal' ).\n    any_method( 'third literal').\n\n    lt_any_table = VALUE #( ( CONV #( '11.11') )\n                            ( CONV #('22.22' ) )\n                            ( CONV #( '33.33') ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    any_method( 'text field literal' ).\n    any_method( 'other literal' ).\n    any_method( 'third literal' ).\n\n    lt_any_table = VALUE #( ( CONV #( '11.11' ) )\n                            ( CONV #( '22.22' ) )\n                            ( CONV #( '33.33' ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTextFieldLiteralsUnchanged",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": false,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    any_method( 'text field literal' ).\n    any_method('other literal' ).\n    any_method( 'third literal').\n\n    lt_any_table = VALUE #( ( CONV #( '11.11') )\n                            ( CONV #('22.22' ) )\n                            ( CONV #('33.33') ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    any_method( 'text field literal' ).\n    any_method('other literal' ).\n    any_method( 'third literal').\n\n    lt_any_table = VALUE #( ( CONV #( '11.11') )\n                            ( CONV #('22.22' ) )\n                            ( CONV #('33.33') ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDynamicMethodCallUnchanged",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    CALL METHOD ('METHOD_NAME').\n    CALL METHOD lo_instance->('METHOD_NAME').\n    CALL METHOD ('CLASS_NAME')=>('METHOD_NAME').\n\n    CALL METHOD (`METHOD_NAME`).\n    CALL METHOD lo_instance->(`METHOD_NAME`).\n    CALL METHOD (`CLASS_NAME`)=>(`METHOD_NAME`).\n\n    ASSIGN ('(FUNC_GRP_NAME)TABLE[]') TO <lt_table>.\n\n    ls_struc-('COMPONENT_NAME') = 1.\n    <ls_struc>-('COMPONENT_NAME') = 1.\n    lt_table[ 1 ]-('COMPONENT_NAME') = 1.\n    lr_data_ref->('COMPONENT_NAME') = 1.\n\n    ls_struc-(`COMPONENT_NAME`) = 1.\n    <ls_struc>-(`COMPONENT_NAME`) = 1.\n    lt_table[ 1 ]-(`COMPONENT_NAME`) = 1.\n    lr_data_ref->(`COMPONENT_NAME`) = 1.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CALL METHOD ('METHOD_NAME').\n    CALL METHOD lo_instance->('METHOD_NAME').\n    CALL METHOD ('CLASS_NAME')=>('METHOD_NAME').\n\n    CALL METHOD (`METHOD_NAME`).\n    CALL METHOD lo_instance->(`METHOD_NAME`).\n    CALL METHOD (`CLASS_NAME`)=>(`METHOD_NAME`).\n\n    ASSIGN ('(FUNC_GRP_NAME)TABLE[]') TO <lt_table>.\n\n    ls_struc-('COMPONENT_NAME') = 1.\n    <ls_struc>-('COMPONENT_NAME') = 1.\n    lt_table[ 1 ]-('COMPONENT_NAME') = 1.\n    lr_data_ref->('COMPONENT_NAME') = 1.\n\n    ls_struc-(`COMPONENT_NAME`) = 1.\n    <ls_struc>-(`COMPONENT_NAME`) = 1.\n    lt_table[ 1 ]-(`COMPONENT_NAME`) = 1.\n    lr_data_ref->(`COMPONENT_NAME`) = 1.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTextStringLiterals",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    other_method( `text string literal` ).\n    other_method(`other literal` ).\n    other_method( `third literal`).\n\n    lt_other_table = VALUE #( ( `abc` )\n                              ( `def`)\n                              ( `ghi`) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    other_method( `text string literal` ).\n    other_method( `other literal` ).\n    other_method( `third literal` ).\n\n    lt_other_table = VALUE #( ( `abc` )\n                              ( `def` )\n                              ( `ghi` ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTextStringLiteralsUnchanged",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": false,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    other_method( `text string literal` ).\n    other_method(`other literal` ).\n    other_method( `third literal`).\n\n    lt_other_table = VALUE #( ( `abc` )\n                              ( `def`)\n                              ( `ghi`) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    other_method( `text string literal` ).\n    other_method(`other literal` ).\n    other_method( `third literal`).\n\n    lt_other_table = VALUE #( ( `abc` )\n                              ( `def`)\n                              ( `ghi`) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepCondensedCases",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": false
+   },
+   "src": "  METHOD any_method.\n    any_method('text field literal').\n    other_method(`text string literal`).\n\n    lt_amount = VALUE #( ( CONV #('11.11') )\n                         ( CONV #('22.22') )\n                         ( CONV #('33.33') ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    any_method('text field literal').\n    other_method(`text string literal`).\n\n    lt_amount = VALUE #( ( CONV #('11.11') )\n                         ( CONV #('22.22') )\n                         ( CONV #('33.33') ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testChangeCondensedCases",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  METHOD any_method.\n    any_method('text field literal').\n    other_method(`text string literal`).\n\n    lt_amount = VALUE #( ( CONV #('11.11') )\n                         ( CONV #('22.22') )\n                         ( CONV #('33.33') ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    any_method( 'text field literal' ).\n    other_method( `text string literal` ).\n\n    lt_amount = VALUE #( ( CONV #( '11.11' ) )\n                         ( CONV #( '22.22' ) )\n                         ( CONV #( '33.33' ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testNotDetachedFromSqlLiteralType",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    UPDATE demo_ddic_types\n      SET int1 = int1`255`,\n          int2 = int2`32767`,\n          int4 = int4`2147483647`,\n      WHERE id = char`Y`.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    UPDATE demo_ddic_types\n      SET int1 = int1`255`,\n          int2 = int2`32767`,\n          int4 = int4`2147483647`,\n      WHERE id = char`Y`.\nENDCLASS.",
+   "flags": {
+    "syntaxCheckAfterParse": false,
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDetachedFromComparisonOperator",
+   "config": {
+    "SeparateFromKeywords": true,
+    "SeparateFromOperators": true,
+    "SeparateFromComments": true,
+    "SeparateFromBrackets": true,
+    "SeparateFromBracketPairs": true
+   },
+   "src": "  IF iv_any =`abc` OR iv_any EQ`def` OR iv_any <=`abc` OR`abc` >=`def`.\n  ENDIF.",
+   "exp": "  IF iv_any = `abc` OR iv_any EQ `def` OR iv_any <= `abc` OR `abc` >= `def`.\n  ENDIF.",
+   "flags": {
+    "syntaxCheckAfterParse": false
+   }
+  }
+ ]
+}

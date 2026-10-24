@@ -1,0 +1,396 @@
+{
+ "ruleId": "DDL_EMPTY_LINES_BETWEEN",
+ "testClass": "DdlEmptyLinesBetweenSectionsTest",
+ "defaults": {
+  "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+  "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+  "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+  "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+  "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+  "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+  "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+  "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+  "RemoveAtDocumentEnd": true,
+  "MaxConsecutiveEmptyLines": 2
+ },
+ "cases": [
+  {
+   "name": "testNoAnnosBeforeEntity",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAtLeastOneLineBetweenEntityAnnosAndDefine",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "@EndUserText.label: 'Any Description'\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testExactlyOneLineBetweenEntityAnnosAndDefine",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "@EndUserText.label: 'Any Description'\n\n\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepLinesBetweenEntityAnnosAndDefine",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.KEEP_AS_IS",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "@EndUserText.label: 'Any Description'\n\n\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\n\n\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoLinesBetweenEntityAnnosAndDefine",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.NEVER",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "@EndUserText.label: 'Any Description'\n\n\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAtLeastOneLineBetweenParametersAndAsSelect",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n    P_OtherParam: other_type\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n    P_OtherParam: other_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoLineBetweenParametersAndAsSelect",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.NEVER",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n    P_OtherParam: other_type\n\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n    P_OtherParam: other_type\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoParameters",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testExactlyOneLineBetweenSelectFromAndJoins",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    inner join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoJoin",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    association [0..*] to I_FourthEntity as _FourthAlias\n      on AnyAlias.IdField = _FourthAlias.IdField\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    association [0..*] to I_FourthEntity as _FourthAlias\n      on AnyAlias.IdField = _FourthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoEmptyLineBetweenSelectFromAndAssociations",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.NEVER",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    association [0..*] to I_FourthEntity as _FourthAlias\n      on AnyAlias.IdField = _FourthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    association [0..*] to I_FourthEntity as _FourthAlias\n      on AnyAlias.IdField = _FourthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testExactlyOneLineBetweenJoinsAndAssociations",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "@EndUserText.label: 'Any Description'\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n\n\n    // comment on association\n    association [0..*] to I_FourthEntity as _FourthAlias\n      on AnyAlias.IdField = _FourthAlias.IdField\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    inner join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n    // comment on association\n    association [0..*] to I_FourthEntity as _FourthAlias\n      on AnyAlias.IdField = _FourthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAtLeastOneLineBeforeSelectListStart",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "@EndUserText.label: 'Any Description'\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n/* comment */\n-- comment\n// comment\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    inner join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n/* comment */\n-- comment\n// comment\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAtLeastOneLineBeforeSelectListStartKeeping2",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n\n/* comment */\n-- comment\n// comment\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n    inner join I_OtherEntity as OtherAlias\n      on AnyAlias.IdField = OtherAlias.IdField\n\n\n/* comment */\n-- comment\n// comment\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testExactlyOneLineAfterSelectListStart",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n{\n  -- comment\n  @Annotation.anno: 'value'\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n\n  -- comment\n  @Annotation.anno: 'value'\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAtLeastOneLineBeforeSelectListEnd",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      OtherAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      OtherAlias.AnyNonKeyField\n\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNoLineBeforeSelectListEnd",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      OtherAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      OtherAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAtLeastOneLineAfterSelectListEnd",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      OtherAlias.AnyNonKeyField\n}\n\n\nwhere AnyNonKeyField > 10\n\nunion all\n  select from I_AnyEntity2 as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      OtherAlias.AnyNonKeyField\n} where AnyNonKeyField > 10",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      OtherAlias.AnyNonKeyField\n}\n\n\nwhere AnyNonKeyField > 10\n\nunion all\n  select from I_AnyEntity2 as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      OtherAlias.AnyNonKeyField\n} where AnyNonKeyField > 10",
+   "flags": {}
+  },
+  {
+   "name": "testMax1ConsecutiveEmptyLines",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 1
+   },
+   "src": "@EndUserText.label: 'Any Description'\n\n\ndefine view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n    P_OtherParam: other_type\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity as OtherAlias\n\n\n      on AnyAlias.IdField = OtherAlias.IdField\n    left outer to one join I_ThirdEntity as ThirdAlias\n      on  AnyAlias.IdField    = ThirdAlias.IdField\n      and AnyAlias.SubIdField = ThirdAlias.SubIdField\n\n\n\n    // comment on association\n    association [0..*] to I_FourthEntity as _FourthAlias\n      on AnyAlias.IdField = _FourthAlias.IdField\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      @Annotation.subAnno:\n\n\n      'value'\n      OtherAlias.AnyNonKeyField\n}\nwhere AnyNonKeyField > 10",
+   "exp": "@EndUserText.label: 'Any Description'\n\ndefine view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n    P_OtherParam: other_type\n\n  as select from I_AnyEntity as AnyAlias\n\n    inner join I_OtherEntity as OtherAlias\n\n      on AnyAlias.IdField = OtherAlias.IdField\n    left outer to one join I_ThirdEntity as ThirdAlias\n      on  AnyAlias.IdField    = ThirdAlias.IdField\n      and AnyAlias.SubIdField = ThirdAlias.SubIdField\n\n    // comment on association\n    association [0..*] to I_FourthEntity as _FourthAlias\n      on AnyAlias.IdField = _FourthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      @Annotation.subAnno:\n\n      'value'\n      OtherAlias.AnyNonKeyField\n}\n\nwhere AnyNonKeyField > 10",
+   "flags": {}
+  },
+  {
+   "name": "testDDicBasedSelectListBeforeFrom",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.NEVER",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "@EndUserText.label: 'any text'\ndefine view I_AnyDdicView(\n  AnyFieldAlias,\n  OtherFieldAlias,\n  ThirdFieldSum\n)\nas select distinct\n  key AnyAlias.AnyKeyField,\n      @EndUserText.label: 'any label'\n      OtherAlias.OtherField,\n      sum(_ThirdAlias.ThirdField)\nfrom I_AnySource as AnyAlias\n  // comment\n  left outer join I_OtherSource as OtherAlias\n    on AnyAlias.AnyKeyField = OtherAlias.AnyKeyField\n  // comment\n  association [0..*] to I_ThirdSource as _ThirdAlias\n    on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\ngroup by AnyAlias.AnyKeyField,\n         OtherAilas.OtherField",
+   "exp": "@EndUserText.label: 'any text'\n\ndefine view I_AnyDdicView(\n  AnyFieldAlias,\n  OtherFieldAlias,\n  ThirdFieldSum\n)\nas select distinct\n  key AnyAlias.AnyKeyField,\n      @EndUserText.label: 'any label'\n      OtherAlias.OtherField,\n      sum(_ThirdAlias.ThirdField)\n\nfrom I_AnySource as AnyAlias\n\n  // comment\n  left outer join I_OtherSource as OtherAlias\n    on AnyAlias.AnyKeyField = OtherAlias.AnyKeyField\n\n  // comment\n  association [0..*] to I_ThirdSource as _ThirdAlias\n    on AnyAlias.AnyKeyField = _ThirdAlias.AnyKeyField\ngroup by AnyAlias.AnyKeyField,\n         OtherAilas.OtherField",
+   "flags": {}
+  },
+  {
+   "name": "testNonAttachedCommentAfterSelectListStartAndEnd",
+   "config": {
+    "BetweenEntityAnnosAndDefine": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenParametersAndAsSelect": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BetweenSelectFromAndJoins": "DdlEmptyLineType.ALWAYS_EXACTLY_ONE",
+    "BetweenJoinsAndAssociations": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "AfterSelectListStart": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "BeforeSelectListEnd": "DdlEmptyLineType.NEVER",
+    "AfterSelectListEnd": "DdlEmptyLineType.ALWAYS_AT_LEAST_ONE",
+    "RemoveAtDocumentEnd": true,
+    "MaxConsecutiveEmptyLines": 2
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n{\n  // comment\n\n  // attached comment\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      @Annotation.subAnno: 'value'\n      OtherAlias.AnyNonKeyField\n}\n-- comment\n\n-- attached comment\ngroup by AnyAlias.AnyKeyField",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n\n  // comment\n\n  // attached comment\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      @Annotation.subAnno: 'value'\n      OtherAlias.AnyNonKeyField\n}\n\n-- comment\n\n-- attached comment\ngroup by AnyAlias.AnyKeyField",
+   "flags": {}
+  }
+ ]
+}

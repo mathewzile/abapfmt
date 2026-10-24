@@ -1,0 +1,558 @@
+{
+ "ruleId": "DDL_ALIGN_SOURCE_PARAMETERS",
+ "testClass": "DdlAlignSourceParametersTest",
+ "defaults": {
+  "ParameterPos": "DdlSourceParamPos.CONTINUE",
+  "AlignAssignmentOps": true,
+  "AlignActualParams": true,
+  "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+ },
+ "cases": [
+  {
+   "name": "testParamsContinueAfterOpeningParens",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  with parameters\n    P_AnyParam       : any_parameter_type,\n    P_OtherParam     : other_type,\n    P_ThirdParameter : third_type,\n    P_FourthParam    : fourth_type\n\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as OtherAlias\n\n    inner join I_ThirdEntity\n          (P_AnyParam  :  $parameters.P_AnyParam,\n          P_OtherParam : $parameters.P_OtherParam,\n          P_ThirdParameter:$parameters.P_ThirdParameter)\n          as ThirdAlias\n      on OtherAlias.AnyKeyField = ThirdAlias.AnyKeyField\n{\n  key OtherAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}\nunion all\n  select from I_FourthEntity( P_AnyParam   :\n         $parameters.P_AnyParam, P_OtherParam        :\n         $parameters.P_OtherParam, P_ThirdParameter :\n         $parameters.P_ThirdParameter, P_FourthParam:\n         $parameters.P_FourthParam  ) as FourthAlias\n\n{\n  key FourthAlias.AnyKeyField,\n      FourthAlias.AnyNonKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  with parameters\n    P_AnyParam       : any_parameter_type,\n    P_OtherParam     : other_type,\n    P_ThirdParameter : third_type,\n    P_FourthParam    : fourth_type\n\n  as select from I_OtherEntity(P_AnyParam       : $parameters.P_AnyParam,\n                               P_OtherParam     : $parameters.P_OtherParam,\n                               // comment\n                               P_ThirdParameter : $parameters.P_ThirdParameter,\n                               P_FourthParam    : $parameters.P_FourthParam) as OtherAlias\n\n    inner join I_ThirdEntity(P_AnyParam       : $parameters.P_AnyParam,\n                             P_OtherParam     : $parameters.P_OtherParam,\n                             P_ThirdParameter : $parameters.P_ThirdParameter) as ThirdAlias\n      on OtherAlias.AnyKeyField = ThirdAlias.AnyKeyField\n{\n  key OtherAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}\nunion all\n  select from I_FourthEntity(P_AnyParam       : $parameters.P_AnyParam,\n                             P_OtherParam     : $parameters.P_OtherParam,\n                             P_ThirdParameter : $parameters.P_ThirdParameter,\n                             P_FourthParam    : $parameters.P_FourthParam) as FourthAlias\n\n{\n  key FourthAlias.AnyKeyField,\n      FourthAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testParamsBelowLineStartPlus2",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.LINE_START_PLUS_2",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n    P_AnyParam       : $parameters.P_AnyParam,\n    P_OtherParam     : $parameters.P_OtherParam,\n    // comment\n    P_ThirdParameter : $parameters.P_ThirdParameter,\n    P_FourthParam    : $parameters.P_FourthParam) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testParamsBelowLineStartPlus4",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.LINE_START_PLUS_4",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n      P_AnyParam       : $parameters.P_AnyParam,\n      P_OtherParam     : $parameters.P_OtherParam,\n      // comment\n      P_ThirdParameter : $parameters.P_ThirdParameter,\n      P_FourthParam    : $parameters.P_FourthParam) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testParamsBelowSourceNamePlus2",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.SOURCE_NAME_PLUS_2",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n                   P_AnyParam       : $parameters.P_AnyParam,\n                   P_OtherParam     : $parameters.P_OtherParam,\n                   // comment\n                   P_ThirdParameter : $parameters.P_ThirdParameter,\n                   P_FourthParam    : $parameters.P_FourthParam) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testParamsBelowSourceNamePlus4",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.SOURCE_NAME_PLUS_4",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n                     P_AnyParam       : $parameters.P_AnyParam,\n                     P_OtherParam     : $parameters.P_OtherParam,\n                     // comment\n                     P_ThirdParameter : $parameters.P_ThirdParameter,\n                     P_FourthParam    : $parameters.P_FourthParam) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testParamsBelowFirstParamAsIs",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.KEEP_AS_IS",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n   P_AnyParam       : $parameters.P_AnyParam,\n   P_OtherParam     : $parameters.P_OtherParam,\n   // comment\n   P_ThirdParameter : $parameters.P_ThirdParameter,\n   P_FourthParam    : $parameters.P_FourthParam) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignColons",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": false,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(P_AnyParam:       $parameters.P_AnyParam,\n                               P_OtherParam:     $parameters.P_OtherParam,\n                               // comment\n                               P_ThirdParameter: $parameters.P_ThirdParameter,\n                               P_FourthParam:    $parameters.P_FourthParam) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignActualParameters",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": false,
+    "AlignActualParams": false,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(P_AnyParam: $parameters.P_AnyParam,\n                               P_OtherParam: $parameters.P_OtherParam,\n                               // comment\n                               P_ThirdParameter: $parameters.P_ThirdParameter,\n                               P_FourthParam: $parameters.P_FourthParam) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignPutSpaceBeforeColon",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": false,
+    "AlignActualParams": false,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.ALWAYS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(P_AnyParam : $parameters.P_AnyParam,\n                               P_OtherParam : $parameters.P_OtherParam,\n                               // comment\n                               P_ThirdParameter : $parameters.P_ThirdParameter,\n                               P_FourthParam : $parameters.P_FourthParam) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignNoSpaceAroundColon",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": false,
+    "AlignActualParams": false,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.NEVER",
+     "SpaceAfterColon": "ChangeType.NEVER"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(P_AnyParam:$parameters.P_AnyParam,\n                               P_OtherParam:$parameters.P_OtherParam,\n                               // comment\n                               P_ThirdParameter:$parameters.P_ThirdParameter,\n                               P_FourthParam:$parameters.P_FourthParam) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpacesInsideParentheses",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": false,
+    "AlignActualParams": false,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.ALWAYS"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity( P_AnyParam: $parameters.P_AnyParam,\n                                P_OtherParam: $parameters.P_OtherParam,\n                                // comment\n                                P_ThirdParameter: $parameters.P_ThirdParameter,\n                                P_FourthParam: $parameters.P_FourthParam ) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAsAliasBelowLineStart",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.LINE_START_PLUS_2",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.LINE_START"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n    P_AnyParam       : $parameters.P_AnyParam,\n    P_OtherParam     : $parameters.P_OtherParam,\n    // comment\n    P_ThirdParameter : $parameters.P_ThirdParameter,\n    P_FourthParam    : $parameters.P_FourthParam)\n  as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAsAliasBelowLineStartPlus2",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.LINE_START_PLUS_4",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.LINE_START_PLUS_2"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n      P_AnyParam       : $parameters.P_AnyParam,\n      P_OtherParam     : $parameters.P_OtherParam,\n      // comment\n      P_ThirdParameter : $parameters.P_ThirdParameter,\n      P_FourthParam    : $parameters.P_FourthParam)\n    as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAsAliasBelowViewName",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.SOURCE_NAME"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(P_AnyParam       : $parameters.P_AnyParam,\n                               P_OtherParam     : $parameters.P_OtherParam,\n                               // comment\n                               P_ThirdParameter : $parameters.P_ThirdParameter,\n                               P_FourthParam    : $parameters.P_FourthParam)\n                 as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAsAliasBelowViewNamePlus2",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.LINE_START_PLUS_2",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.SOURCE_NAME_PLUS_2"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n    P_AnyParam       : $parameters.P_AnyParam,\n    P_OtherParam     : $parameters.P_OtherParam,\n    // comment\n    P_ThirdParameter : $parameters.P_ThirdParameter,\n    P_FourthParam    : $parameters.P_FourthParam)\n                   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepAsAliasAsIs",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.LINE_START_PLUS_2",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.KEEP_AS_IS"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n    P_AnyParam       : $parameters.P_AnyParam,\n    P_OtherParam     : $parameters.P_OtherParam,\n    // comment\n    P_ThirdParameter : $parameters.P_ThirdParameter,\n    P_FourthParam    : $parameters.P_FourthParam)\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testCommentsBeforeParentheses",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity // comment\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam -- comment\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity( // comment\n                               P_AnyParam       : $parameters.P_AnyParam,\n                               P_OtherParam     : $parameters.P_OtherParam,\n                               // comment\n                               P_ThirdParameter : $parameters.P_ThirdParameter,\n                               P_FourthParam    : $parameters.P_FourthParam -- comment\n                              ) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testCommentsAboveParentheses",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.ALWAYS"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  -- comment 2\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n  -- comment\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n                                -- comment 2\n                                P_AnyParam       : $parameters.P_AnyParam,\n                                P_OtherParam     : $parameters.P_OtherParam,\n                                // comment\n                                P_ThirdParameter : $parameters.P_ThirdParameter,\n                                P_FourthParam    : $parameters.P_FourthParam\n                                -- comment\n                              ) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testCommentsAboveParenthesesParamsBelowSourcePlus2",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.SOURCE_NAME_PLUS_2",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n  -- comment 2\n  (\n   P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam\n  -- comment\n )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n                   -- comment 2\n                   P_AnyParam       : $parameters.P_AnyParam,\n                   P_OtherParam     : $parameters.P_OtherParam,\n                   // comment\n                   P_ThirdParameter : $parameters.P_ThirdParameter,\n                   P_FourthParam    : $parameters.P_FourthParam\n                   -- comment\n                   ) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepUnevenSpacesInsideFuncParens",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.KEEP_AS_IS"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity(P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam )\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(P_AnyParam       : $parameters.P_AnyParam,\n                               P_OtherParam     : $parameters.P_OtherParam,\n                               // comment\n                               P_ThirdParameter : $parameters.P_ThirdParameter,\n                               P_FourthParam    : $parameters.P_FourthParam ) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepUnevenSpacesInsideFuncParens2",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.KEEP_AS_IS"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity( P_AnyParam : $parameters.P_AnyParam,\n     P_OtherParam    :   $parameters.P_OtherParam,\n    // comment\n P_ThirdParameter        :\n    $parameters.P_ThirdParameter,\n  P_FourthParam\n  : $parameters.P_FourthParam)\n   as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity( P_AnyParam       : $parameters.P_AnyParam,\n                                P_OtherParam     : $parameters.P_OtherParam,\n                                // comment\n                                P_ThirdParameter : $parameters.P_ThirdParameter,\n                                P_FourthParam    : $parameters.P_FourthParam) as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testEmptyParentheses",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity( ) as OtherAlias\n\n    inner join I_ThirdEntity( ) as ThirdAlias\n      on OtherAlias.AnyKeyField = ThirdAlias.AnyKeyField\n{\n  key OtherAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}\nunion all\n  select from I_FourthEntity( ) as FourthAlias\n\n{\n  key FourthAlias.AnyKeyField,\n      FourthAlias.AnyNonKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity( ) as OtherAlias\n\n    inner join I_ThirdEntity( ) as ThirdAlias\n      on OtherAlias.AnyKeyField = ThirdAlias.AnyKeyField\n{\n  key OtherAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}\nunion all\n  select from I_FourthEntity( ) as FourthAlias\n\n{\n  key FourthAlias.AnyKeyField,\n      FourthAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testOnlyCommentInParentheses",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.SOURCE_NAME"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity\n                   ( /* comment */ )\n   as OtherAlias\n\n    inner join I_ThirdEntity(   // comment\n                              ) as ThirdAlias\n      on OtherAlias.AnyKeyField = ThirdAlias.AnyKeyField\n{\n  key OtherAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity(\n                   /* comment */ )\n                 as OtherAlias\n\n    inner join I_ThirdEntity(   // comment\n                              )\n               as ThirdAlias\n      on OtherAlias.AnyKeyField = ThirdAlias.AnyKeyField\n{\n  key OtherAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSpaceAfterColonDoNotAlign",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": false,
+    "AlignActualParams": false,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.ALWAYS",
+     "SpaceAfterColon": "ChangeType.NEVER"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_OtherEntity as OtherAlias\n\n    inner join I_ThirdEntity\n          (P_AnyParam  :  $parameters.P_AnyParam,\n//        P_OtherParam : $parameters.P_OtherParam,\n//        P_ThirdParam:$parameters.P_ThirdParameter,\n          P_FourthParameter: $parameters.P_FourthParam)\n          as ThirdAlias\n      on OtherAlias.AnyKeyField = ThirdAlias.AnyKeyField\n{\n  key OtherAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_OtherEntity as OtherAlias\n\n    inner join I_ThirdEntity(P_AnyParam :$parameters.P_AnyParam,\n//                             P_OtherParam :$parameters.P_OtherParam,\n//                             P_ThirdParam :$parameters.P_ThirdParameter,\n                             P_FourthParameter :$parameters.P_FourthParam) as ThirdAlias\n      on OtherAlias.AnyKeyField = ThirdAlias.AnyKeyField\n{\n  key OtherAlias.AnyKeyField,\n      ThirdAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAsAliasMissingAssociationNextLine",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.CONTINUE",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view P_AnyView\n  with parameters\n    P_Any : any_type,\n\n  as select from P_OtherView(\n                   P_Any : :P_Any )\n                   as AnyAlias\n\n  association [0..1] to I_ThirdView as _Third on AnyAlias.AnyKeyField = _Third.AnyKeyField\n\n{\n  key AnyKeyField\n}\n\nunion all\n  select from P_FourthView(\n                P_Any : :P_Any )\n\n  association [0..1] to I_FifthView as _Fifth on AnyAlias.AnyKeyField = _Fourth.AnyKeyField\n{\n  key AnyKeyField\n}",
+   "exp": "define view P_AnyView\n  with parameters\n    P_Any : any_type,\n\n  as select from P_OtherView(P_Any : :P_Any) as AnyAlias\n\n  association [0..1] to I_ThirdView as _Third on AnyAlias.AnyKeyField = _Third.AnyKeyField\n\n{\n  key AnyKeyField\n}\n\nunion all\n  select from P_FourthView(P_Any : :P_Any)\n\n  association [0..1] to I_FifthView as _Fifth on AnyAlias.AnyKeyField = _Fourth.AnyKeyField\n{\n  key AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAnalyticalQuery",
+   "config": {
+    "ParameterPos": "DdlSourceParamPos.SOURCE_NAME_PLUS_2",
+    "AlignAssignmentOps": true,
+    "AlignActualParams": true,
+    "AsAliasPos": "DdlNextAfterParensPos.CONTINUE"
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_SIGNS": {
+     "SpaceBeforeColon": "ChangeType.KEEP_AS_IS",
+     "SpaceAfterColon": "ChangeType.ALWAYS"
+    },
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideFuncParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define transient view entity C_AnyQuery\n  provider contract analytical_query\n  with parameters\n    P_AnyParameter   : any_type,\n    P_OtherParameter : other_type\n\n  as projection on I_AnyCube(\n           P_AnyParameter   : $parameters.P_AnyParameter,\n         P_OtherParameter:  $parameters.P_OtherParameter) as AnyAlias\n\n{\n  AnyAlias.AnyField\n}",
+   "exp": "define transient view entity C_AnyQuery\n  provider contract analytical_query\n  with parameters\n    P_AnyParameter   : any_type,\n    P_OtherParameter : other_type\n\n  as projection on I_AnyCube(\n                     P_AnyParameter   : $parameters.P_AnyParameter,\n                     P_OtherParameter : $parameters.P_OtherParameter) as AnyAlias\n\n{\n  AnyAlias.AnyField\n}",
+   "flags": {}
+  }
+ ]
+}

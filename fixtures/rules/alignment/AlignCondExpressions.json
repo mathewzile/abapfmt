@@ -1,0 +1,516 @@
+{
+ "ruleId": "ALIGN_COND_EXPRESSIONS",
+ "testClass": "AlignCondExpressionsTest",
+ "defaults": {
+  "MaxLineLength": 120,
+  "OneLinerStyle": "CondOneLinerStyle.KEEP",
+  "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+  "TabularStyle": "CondTabularStyle.CREATE",
+  "GapAfterElse": true,
+  "ThenOnWhenLine": true,
+  "ContinueAfterElse": false,
+  "ValueIndent": "CondValueIndent.ADD_2"
+ },
+ "cases": [
+  {
+   "name": "testKeepOneLinersAsIs",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_value = COND #( WHEN iv_value IS SUPPLIED   THEN   iv_value   ELSE   gc_default_value ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                        THEN -1\n                          ELSE 1 ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_value = COND #( WHEN iv_value IS SUPPLIED THEN iv_value ELSE gc_default_value ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                      THEN -1\n                      ELSE 1 ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCreateOneLiners",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_value = COND #( WHEN iv_value IS SUPPLIED   THEN   iv_value   ELSE   gc_default_value ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                        THEN -1\n                          ELSE 1 ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_value = COND #( WHEN iv_value IS SUPPLIED THEN iv_value ELSE gc_default_value ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                      THEN -1\n                      ELSE 1 ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSplitOneLiners",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.SPLIT",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_value = COND #( WHEN iv_value IS SUPPLIED   THEN   iv_value   ELSE   gc_default_value ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                        THEN -1\n                          ELSE 1 ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_value = COND #( WHEN iv_value IS SUPPLIED\n                       THEN iv_value\n                       ELSE gc_default_value ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                      THEN -1\n                      ELSE 1 ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignSimpleCases",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                        THEN -1\n                          ELSE 1 ).\n\n    ev_number = COND #( WHEN io_object->get_sub_object( )->get_number( ) <= if_object_boundaries=>co_maximum_number THEN\n                          io_object->get_sub_object( )->get_number( )\n                        ELSE\n                           if_object_boundaries=>co_maximum_number ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                      THEN -1\n                      ELSE 1 ).\n\n    ev_number = COND #( WHEN io_object->get_sub_object( )->get_number( ) <= if_object_boundaries=>co_maximum_number\n                        THEN io_object->get_sub_object( )->get_number( )\n                        ELSE if_object_boundaries=>co_maximum_number ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignSimpleCasesLikeComplex",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.LIKE_COMPLEX",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                        THEN -1\n                          ELSE 1 ).\n\n    ev_number = COND #( WHEN io_object->get_sub_object( )->get_number( ) <= if_object_boundaries=>co_maximum_number THEN\n                          io_object->get_sub_object( )->get_number( )\n                        ELSE\n                           if_object_boundaries=>co_maximum_number ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_sign = COND #( WHEN iv_negative = abap_true THEN\n                        -1\n                      ELSE\n                        1 ).\n\n    ev_number = COND #( WHEN io_object->get_sub_object( )->get_number( ) <= if_object_boundaries=>co_maximum_number THEN\n                          io_object->get_sub_object( )->get_number( )\n                        ELSE\n                          if_object_boundaries=>co_maximum_number ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCreateTabularCases",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_any_non_zero_amount = COND #( WHEN ls_amounts-betrw IS NOT INITIAL THEN ls_amounts-betrw\n                                      WHEN ls_amounts-betrh IS NOT INITIAL THEN ls_amounts-betrh\n                                   WHEN ls_amounts-betr2 IS NOT INITIAL THEN ls_amounts-betr2\n                                         WHEN ls_amounts-betr3 IS NOT INITIAL THEN ls_amounts-betr3 ).\n\n    ev_used_currency_code = COND #( WHEN ls_amounts-betrw <> 0\n                                      THEN   ls_amounts-waers\n                                    WHEN ls_amounts-betrh <> 0\n                                       THEN  ls_amounts-hwaer\n                                    WHEN ls_amounts-betr2 <> 0\n                                      THEN   ls_amounts-hwae2\n                                     WHEN ls_amounts-betr3 <> 0\n                                        THEN ls_amounts-hwae3\n                                    ELSE    gc_default_currency_code ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_any_non_zero_amount = COND #( WHEN ls_amounts-betrw IS NOT INITIAL THEN ls_amounts-betrw\n                                     WHEN ls_amounts-betrh IS NOT INITIAL THEN ls_amounts-betrh\n                                     WHEN ls_amounts-betr2 IS NOT INITIAL THEN ls_amounts-betr2\n                                     WHEN ls_amounts-betr3 IS NOT INITIAL THEN ls_amounts-betr3 ).\n\n    ev_used_currency_code = COND #( WHEN ls_amounts-betrw <> 0 THEN ls_amounts-waers\n                                    WHEN ls_amounts-betrh <> 0 THEN ls_amounts-hwaer\n                                    WHEN ls_amounts-betr2 <> 0 THEN ls_amounts-hwae2\n                                    WHEN ls_amounts-betr3 <> 0 THEN ls_amounts-hwae3\n                                    ELSE                            gc_default_currency_code ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepTabularCasesAsIs",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.KEEP",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_any_non_zero_amount = COND #( WHEN ls_amounts-betrw IS NOT INITIAL THEN ls_amounts-betrw\n                                      WHEN ls_amounts-betrh IS NOT INITIAL THEN ls_amounts-betrh\n                                   WHEN ls_amounts-betr2 IS NOT INITIAL THEN ls_amounts-betr2\n                                         WHEN ls_amounts-betr3 IS NOT INITIAL THEN ls_amounts-betr3 ).\n\n    ev_used_currency_code = COND #( WHEN ls_amounts-betrw <> 0\n                                      THEN   ls_amounts-waers\n                                    WHEN ls_amounts-betrh <> 0\n                                       THEN  ls_amounts-hwaer\n                                    WHEN ls_amounts-betr2 <> 0\n                                      THEN   ls_amounts-hwae2\n                                     WHEN ls_amounts-betr3 <> 0\n                                        THEN ls_amounts-hwae3\n                                    ELSE    gc_default_currency_code ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_any_non_zero_amount = COND #( WHEN ls_amounts-betrw IS NOT INITIAL THEN ls_amounts-betrw\n                                     WHEN ls_amounts-betrh IS NOT INITIAL THEN ls_amounts-betrh\n                                     WHEN ls_amounts-betr2 IS NOT INITIAL THEN ls_amounts-betr2\n                                     WHEN ls_amounts-betr3 IS NOT INITIAL THEN ls_amounts-betr3 ).\n\n    ev_used_currency_code = COND #( WHEN ls_amounts-betrw <> 0 THEN\n                                      ls_amounts-waers\n                                    WHEN ls_amounts-betrh <> 0 THEN\n                                      ls_amounts-hwaer\n                                    WHEN ls_amounts-betr2 <> 0 THEN\n                                      ls_amounts-hwae2\n                                    WHEN ls_amounts-betr3 <> 0 THEN\n                                      ls_amounts-hwae3\n                                    ELSE\n                                      gc_default_currency_code ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSplitTabularCases",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.SPLIT",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_any_non_zero_amount = COND #( WHEN ls_amounts-betrw IS NOT INITIAL THEN ls_amounts-betrw\n                                      WHEN ls_amounts-betrh IS NOT INITIAL THEN ls_amounts-betrh\n                                   WHEN ls_amounts-betr2 IS NOT INITIAL THEN ls_amounts-betr2\n                                         WHEN ls_amounts-betr3 IS NOT INITIAL THEN ls_amounts-betr3 ).\n\n    out->write( SWITCH string( sy-index\n                               WHEN 1 THEN 'one'\n                               WHEN 2 THEN 'two'\n                               WHEN 3 THEN 'three' ELSE THROW cx_overflow( ) ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_any_non_zero_amount = COND #( WHEN ls_amounts-betrw IS NOT INITIAL THEN\n                                       ls_amounts-betrw\n                                     WHEN ls_amounts-betrh IS NOT INITIAL THEN\n                                       ls_amounts-betrh\n                                     WHEN ls_amounts-betr2 IS NOT INITIAL THEN\n                                       ls_amounts-betr2\n                                     WHEN ls_amounts-betr3 IS NOT INITIAL THEN\n                                       ls_amounts-betr3 ).\n\n    out->write( SWITCH string( sy-index\n                               WHEN 1 THEN\n                                 'one'\n                               WHEN 2 THEN\n                                 'two'\n                               WHEN 3 THEN\n                                 'three'\n                               ELSE\n                                 THROW cx_overflow( ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTabularCasesContinueAfterElse",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": false,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_used_currency_code = COND #( WHEN ls_amounts-betrw <> 0\n                                      THEN   ls_amounts-waers\n                                    WHEN ls_amounts-betrh <> 0\n                                       THEN  ls_amounts-hwaer\n                                    WHEN ls_amounts-betr2 <> 0\n                                      THEN   ls_amounts-hwae2\n                                     WHEN ls_amounts-betr3 <> 0\n                                        THEN ls_amounts-hwae3\n                                    ELSE    gc_default_currency_code ).\n\n    out->write( SWITCH string( sy-index\n                               WHEN 1 THEN 'one'\n                               WHEN 2 THEN 'two'\n                               WHEN 3 THEN 'three' ELSE THROW cx_overflow( ) ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_used_currency_code = COND #( WHEN ls_amounts-betrw <> 0 THEN ls_amounts-waers\n                                    WHEN ls_amounts-betrh <> 0 THEN ls_amounts-hwaer\n                                    WHEN ls_amounts-betr2 <> 0 THEN ls_amounts-hwae2\n                                    WHEN ls_amounts-betr3 <> 0 THEN ls_amounts-hwae3\n                                    ELSE gc_default_currency_code ).\n\n    out->write( SWITCH string( sy-index\n                               WHEN 1 THEN 'one'\n                               WHEN 2 THEN 'two'\n                               WHEN 3 THEN 'three'\n                               ELSE THROW cx_overflow( ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComplexCaseThenOnWhenLine",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                             WHEN sy-timlo < t\n                               THEN |{ sy-timlo TIME = ISO } AM|\n                              WHEN sy-timlo > t AND sy-timlo < '240000'\n                                THEN |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t\n                                 THEN |High Noon|\n                                ELSE THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                               WHEN sy-timlo < t THEN\n                                 |{ sy-timlo TIME = ISO } AM|\n                               WHEN sy-timlo > t AND sy-timlo < '240000' THEN\n                                 |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t THEN\n                                 |High Noon|\n                               ELSE\n                                 THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComplexCaseThenOnNewLine",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": false,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                             WHEN sy-timlo < t\n                               THEN |{ sy-timlo TIME = ISO } AM|\n                              WHEN sy-timlo > t AND sy-timlo < '240000'\n                                THEN |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t\n                                 THEN |High Noon|\n                                ELSE THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                               WHEN sy-timlo < t\n                                 THEN |{ sy-timlo TIME = ISO } AM|\n                               WHEN sy-timlo > t AND sy-timlo < '240000'\n                                 THEN |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t\n                                 THEN |High Noon|\n                               ELSE\n                                 THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComplexCasesContinueAfterElse",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.LIKE_COMPLEX",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": true,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                        THEN -1\n                          ELSE 1 ).\n\n    ev_number = COND #( WHEN io_object->get_sub_object( )->get_number( ) <= if_object_boundaries=>co_maximum_number THEN\n                          io_object->get_sub_object( )->get_number( )\n                        ELSE\n                           if_object_boundaries=>co_maximum_number ).\n\n    display_time_info( COND #( LET t = '120000' IN\n                             WHEN sy-timlo < t\n                               THEN |{ sy-timlo TIME = ISO } AM|\n                              WHEN sy-timlo > t AND sy-timlo < '240000'\n                                THEN |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t\n                                 THEN |High Noon|\n                                ELSE THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_sign = COND #( WHEN iv_negative = abap_true THEN\n                        -1\n                      ELSE 1 ).\n\n    ev_number = COND #( WHEN io_object->get_sub_object( )->get_number( ) <= if_object_boundaries=>co_maximum_number THEN\n                          io_object->get_sub_object( )->get_number( )\n                        ELSE if_object_boundaries=>co_maximum_number ).\n\n    display_time_info( COND #( LET t = '120000' IN\n                               WHEN sy-timlo < t THEN\n                                 |{ sy-timlo TIME = ISO } AM|\n                               WHEN sy-timlo > t AND sy-timlo < '240000' THEN\n                                 |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t THEN\n                                 |High Noon|\n                               ELSE THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComplexCaseIndentBelowWhen",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_0"
+   },
+   "src": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                             WHEN sy-timlo < t\n                               THEN |{ sy-timlo TIME = ISO } AM|\n                              WHEN sy-timlo > t AND sy-timlo < '240000'\n                                THEN |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t\n                                 THEN |High Noon|\n                                ELSE THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                               WHEN sy-timlo < t THEN\n                               |{ sy-timlo TIME = ISO } AM|\n                               WHEN sy-timlo > t AND sy-timlo < '240000' THEN\n                               |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t THEN\n                               |High Noon|\n                               ELSE\n                               THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComplexCaseIndentBelowWhenPlus5",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_5"
+   },
+   "src": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                             WHEN sy-timlo < t\n                               THEN |{ sy-timlo TIME = ISO } AM|\n                              WHEN sy-timlo > t AND sy-timlo < '240000'\n                                THEN |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t\n                                 THEN |High Noon|\n                                ELSE THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                               WHEN sy-timlo < t THEN\n                                    |{ sy-timlo TIME = ISO } AM|\n                               WHEN sy-timlo > t AND sy-timlo < '240000' THEN\n                                    |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t THEN\n                                    |High Noon|\n                               ELSE\n                                    THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComplexCaseIndentBelowWhenPlus7",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_7"
+   },
+   "src": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                             WHEN sy-timlo < t\n                               THEN |{ sy-timlo TIME = ISO } AM|\n                              WHEN sy-timlo > t AND sy-timlo < '240000'\n                                THEN |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t\n                                 THEN |High Noon|\n                                ELSE THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                               WHEN sy-timlo < t THEN\n                                      |{ sy-timlo TIME = ISO } AM|\n                               WHEN sy-timlo > t AND sy-timlo < '240000' THEN\n                                      |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t THEN\n                                      |High Noon|\n                               ELSE\n                                      THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLineLengthExceededForOneLiner",
+   "config": {
+    "MaxLineLength": 80,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_value = COND #( WHEN iv_value IS SUPPLIED   THEN   iv_value   ELSE   gc_default_value ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_value = COND #( WHEN iv_value IS SUPPLIED\n                       THEN iv_value\n                       ELSE gc_default_value ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLineLengthExceededForTabular",
+   "config": {
+    "MaxLineLength": 80,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_any_non_zero_amount = COND #( WHEN ls_amounts-betrw IS NOT INITIAL THEN ls_amounts-betrw\n                                      WHEN ls_amounts-betrh IS NOT INITIAL THEN ls_amounts-betrh\n                                   WHEN ls_amounts-betr2 IS NOT INITIAL THEN ls_amounts-betr2\n                                         WHEN ls_amounts-betr3 IS NOT INITIAL THEN ls_amounts-betr3 ).\n\n    ev_used_currency_code = COND #( WHEN ls_amounts-betrw <> 0\n                                      THEN   ls_amounts-waers\n                                    WHEN ls_amounts-betrh <> 0\n                                       THEN  ls_amounts-hwaer\n                                    WHEN ls_amounts-betr2 <> 0\n                                      THEN   ls_amounts-hwae2\n                                     WHEN ls_amounts-betr3 <> 0\n                                        THEN ls_amounts-hwae3\n                                    ELSE    gc_default_currency_code ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_any_non_zero_amount = COND #( WHEN ls_amounts-betrw IS NOT INITIAL THEN\n                                       ls_amounts-betrw\n                                     WHEN ls_amounts-betrh IS NOT INITIAL THEN\n                                       ls_amounts-betrh\n                                     WHEN ls_amounts-betr2 IS NOT INITIAL THEN\n                                       ls_amounts-betr2\n                                     WHEN ls_amounts-betr3 IS NOT INITIAL THEN\n                                       ls_amounts-betr3 ).\n\n    ev_used_currency_code = COND #( WHEN ls_amounts-betrw <> 0 THEN\n                                      ls_amounts-waers\n                                    WHEN ls_amounts-betrh <> 0 THEN\n                                      ls_amounts-hwaer\n                                    WHEN ls_amounts-betr2 <> 0 THEN\n                                      ls_amounts-hwae2\n                                    WHEN ls_amounts-betr3 <> 0 THEN\n                                      ls_amounts-hwae3\n                                    ELSE\n                                      gc_default_currency_code ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testNestedCase",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.CREATE",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "    ev_curr = COND #( WHEN ls_amt-betrw <> 0\n       THEN COND #( WHEN lv_fld = abap_true\n       THEN 'WAERS' ELSE ls_amt-waers )\n       WHEN ls_amt-betrh <> 0\n       THEN  COND #( WHEN lv_fld = abap_true THEN 'HWAER'\n       ELSE ls_amt-hwaer )\n       WHEN ls_amt-betr2 <> 0\n       THEN   COND #( WHEN lv_fld = abap_true    THEN 'HWAE2'    ELSE ls_amt-hwae2 )\n       WHEN ls_amt-betr3 <> 0\n       THEN COND #( WHEN lv_fld = abap_true THEN 'HWAE3' ELSE ls_amt-hwae3 )\n       ELSE COND #( WHEN lv_fld = abap_true THEN '-----' ELSE  gc_default ) ).",
+   "exp": "    ev_curr = COND #( WHEN ls_amt-betrw <> 0 THEN COND #( WHEN lv_fld = abap_true THEN 'WAERS' ELSE ls_amt-waers )\n                      WHEN ls_amt-betrh <> 0 THEN COND #( WHEN lv_fld = abap_true THEN 'HWAER' ELSE ls_amt-hwaer )\n                      WHEN ls_amt-betr2 <> 0 THEN COND #( WHEN lv_fld = abap_true THEN 'HWAE2' ELSE ls_amt-hwae2 )\n                      WHEN ls_amt-betr3 <> 0 THEN COND #( WHEN lv_fld = abap_true THEN 'HWAE3' ELSE ls_amt-hwae3 )\n                      ELSE                        COND #( WHEN lv_fld = abap_true THEN '-----' ELSE gc_default ) ).",
+   "flags": {}
+  },
+  {
+   "name": "testNestedCaseNoOuterTabular",
+   "config": {
+    "MaxLineLength": 110,
+    "OneLinerStyle": "CondOneLinerStyle.CREATE",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "    ev_curr = COND #( WHEN ls_amt-betrw <> 0\n       THEN COND #( WHEN lv_fld = abap_true\n       THEN 'WAERS' ELSE ls_amt-waers )\n       WHEN ls_amt-betrh <> 0\n       THEN  COND #( WHEN lv_fld = abap_true THEN 'HWAER'\n       ELSE ls_amt-hwaer )\n       WHEN ls_amt-betr2 <> 0\n       THEN   COND #( WHEN lv_fld = abap_true    THEN 'HWAE2'    ELSE ls_amt-hwae2 )\n       WHEN ls_amt-betr3 <> 0\n       THEN COND #( WHEN lv_fld = abap_true THEN 'HWAE3' ELSE ls_amt-hwae3 )\n       ELSE COND #( WHEN lv_fld = abap_true THEN '-----' ELSE  gc_default ) ).",
+   "exp": "    ev_curr = COND #( WHEN ls_amt-betrw <> 0 THEN\n                        COND #( WHEN lv_fld = abap_true THEN 'WAERS' ELSE ls_amt-waers )\n                      WHEN ls_amt-betrh <> 0 THEN\n                        COND #( WHEN lv_fld = abap_true THEN 'HWAER' ELSE ls_amt-hwaer )\n                      WHEN ls_amt-betr2 <> 0 THEN\n                        COND #( WHEN lv_fld = abap_true THEN 'HWAE2' ELSE ls_amt-hwae2 )\n                      WHEN ls_amt-betr3 <> 0 THEN\n                        COND #( WHEN lv_fld = abap_true THEN 'HWAE3' ELSE ls_amt-hwae3 )\n                      ELSE\n                        COND #( WHEN lv_fld = abap_true THEN '-----' ELSE gc_default ) ).",
+   "flags": {}
+  },
+  {
+   "name": "testNestedCaseNoInnerOrOuterTabular",
+   "config": {
+    "MaxLineLength": 80,
+    "OneLinerStyle": "CondOneLinerStyle.CREATE",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "    ev_curr = COND #( WHEN ls_amt-betrw <> 0\n       THEN COND #( WHEN lv_fld = abap_true\n       THEN 'WAERS' ELSE ls_amt-waers )\n       WHEN ls_amt-betrh <> 0\n       THEN  COND #( WHEN lv_fld = abap_true THEN 'HWAER'\n       ELSE ls_amt-hwaer )\n       WHEN ls_amt-betr2 <> 0\n       THEN   COND #( WHEN lv_fld = abap_true    THEN 'HWAE2'    ELSE ls_amt-hwae2 )\n       WHEN ls_amt-betr3 <> 0\n       THEN COND #( WHEN lv_fld = abap_true THEN 'HWAE3' ELSE ls_amt-hwae3 )\n       ELSE COND #( WHEN lv_fld = abap_true THEN '-----' ELSE  gc_default ) ).",
+   "exp": "    ev_curr = COND #( WHEN ls_amt-betrw <> 0 THEN\n                        COND #( WHEN lv_fld = abap_true\n                                THEN 'WAERS'\n                                ELSE ls_amt-waers )\n                      WHEN ls_amt-betrh <> 0 THEN\n                        COND #( WHEN lv_fld = abap_true\n                                THEN 'HWAER'\n                                ELSE ls_amt-hwaer )\n                      WHEN ls_amt-betr2 <> 0 THEN\n                        COND #( WHEN lv_fld = abap_true\n                                THEN 'HWAE2'\n                                ELSE ls_amt-hwae2 )\n                      WHEN ls_amt-betr3 <> 0 THEN\n                        COND #( WHEN lv_fld = abap_true\n                                THEN 'HWAE3'\n                                ELSE ls_amt-hwae3 )\n                      ELSE\n                        COND #( WHEN lv_fld = abap_true\n                                THEN '-----'\n                                ELSE gc_default ) ).",
+   "flags": {}
+  },
+  {
+   "name": "testTabularCaseWithComments",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "    ev_used_currency_code = COND #( WHEN ls_amounts-betrw <> 0 \" comment A\n                                      THEN   ls_amounts-waers\n                                    \" comment B\n                                    WHEN ls_amounts-betrh <> 0\n                                       THEN  ls_amounts-hwaer\n*                                   comment C\n                                    WHEN ls_amounts-betr2 <> 0\n                                      THEN   ls_amounts-hwae2\n                                     WHEN ls_amounts-betr3 <> 0\n                                        THEN ls_amounts-hwae3 \" comment D\n                                    ELSE \" comment E\n                                    gc_default_currency_code ).",
+   "exp": "    ev_used_currency_code = COND #( WHEN ls_amounts-betrw <> 0 \" comment A\n                                                               THEN ls_amounts-waers\n                                    \" comment B\n                                    WHEN ls_amounts-betrh <> 0 THEN ls_amounts-hwaer\n*                                   comment C\n                                    WHEN ls_amounts-betr2 <> 0 THEN ls_amounts-hwae2\n                                    WHEN ls_amounts-betr3 <> 0 THEN ls_amounts-hwae3 \" comment D\n                                    ELSE \" comment E\n                                                                    gc_default_currency_code ).",
+   "flags": {}
+  },
+  {
+   "name": "testCommentsPreventingOneLiners",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.CREATE",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "    ev_sign = COND #( WHEN iv_negative = abap_true \" comment A\n                        THEN -1\n                          ELSE 1 ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                        THEN -1 \" comment B\n                          ELSE 1 ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                        \" comment C\n                        THEN -1\n                          ELSE 1 ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n*                        comment D\n                        THEN -1\n                          ELSE 1 ).",
+   "exp": "    ev_sign = COND #( WHEN iv_negative = abap_true \" comment A\n                      THEN -1\n                      ELSE 1 ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                      THEN -1 \" comment B\n                      ELSE 1 ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n                        \" comment C\n                      THEN -1\n                      ELSE 1 ).\n\n    ev_sign = COND #( WHEN iv_negative = abap_true\n*                        comment D\n                      THEN -1\n                      ELSE 1 ).",
+   "flags": {}
+  },
+  {
+   "name": "testContinueAfterElseAdd7",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": true,
+    "ValueIndent": "CondValueIndent.ADD_7"
+   },
+   "src": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                             WHEN sy-timlo < t\n                               THEN |{ sy-timlo TIME = ISO } AM|\n                              WHEN sy-timlo > t AND sy-timlo < '240000'\n                                THEN |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t\n                                 THEN |High Noon|\n                                ELSE THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    display_time_info( COND #( LET t = '120000' IN\n                               WHEN sy-timlo < t THEN\n                                      |{ sy-timlo TIME = ISO } AM|\n                               WHEN sy-timlo > t AND sy-timlo < '240000' THEN\n                                      |{ CONV t( sy-timlo - 12 * 3600 ) TIME = ISO } PM|\n                               WHEN sy-timlo = t THEN\n                                      |High Noon|\n                               ELSE   THROW cx_cant_be( ) ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepOneLinerSwitchAsIs",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.KEEP",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_num = SWITCH #( ev_num WHEN 999 THEN 0 ELSE ( ev_num + 1 ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_num = SWITCH #( ev_num WHEN 999 THEN 0 ELSE ( ev_num + 1 ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCreateOneLinerSwitch",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.CREATE",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_num = SWITCH #( ev_num\n                       WHEN 999 THEN 0\n                       ELSE ( ev_num + 1 ) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_num = SWITCH #( ev_num WHEN 999 THEN 0 ELSE ( ev_num + 1 ) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSwitchWithLet",
+   "config": {
+    "MaxLineLength": 120,
+    "OneLinerStyle": "CondOneLinerStyle.SPLIT",
+    "SimpleStyle": "CondSimpleStyle.VERTICAL_LAYOUT",
+    "TabularStyle": "CondTabularStyle.CREATE",
+    "GapAfterElse": true,
+    "ThenOnWhenLine": true,
+    "ContinueAfterElse": false,
+    "ValueIndent": "CondValueIndent.ADD_2"
+   },
+   "src": "  METHOD any_method.\n    ev_result = SWITCH string( LET lv_prefix = 'number ' IN sy-index WHEN 1 THEN lv_prefix + 'one' ELSE lv_prefix + 'two' ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    ev_result = SWITCH string( LET lv_prefix = 'number ' IN\n                               sy-index\n                               WHEN 1\n                               THEN lv_prefix + 'one'\n                               ELSE lv_prefix + 'two' ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

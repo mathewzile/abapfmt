@@ -1,0 +1,601 @@
+{
+ "ruleId": "DDL_EMPTY_LINES_WITHIN",
+ "testClass": "DdlEmptyLinesWithinSectionsTest",
+ "defaults": {
+  "SurroundParameterLineCountMin": 2,
+  "SurroundJoinLineCountMin": 2,
+  "SurroundAssociationLineCountMin": 2,
+  "SurroundElementLineCountMin": 2,
+  "SurroundClauseLineCountMin": 2,
+  "DetachKeyFields": true,
+  "DetachExposedAssociations": true,
+  "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+  "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+  "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+  "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+  "CondenseClauses": "DdlCondenseMode.NEVER"
+ },
+ "cases": [
+  {
+   "name": "testConfigValueEnabled",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "",
+   "exp": "",
+   "flags": {},
+   "skipped": "statement 'ArrayList < ConfigEnumValue < DdlCondenseMode >'"
+  },
+  {
+   "name": "testSurroundParametersWith2Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n    @Annotation.subAnno: 'value'\n    P_OtherParam: other_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n\n    @Annotation.subAnno: 'value'\n    P_OtherParam: other_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSurroundFirstParameterWith2Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  with parameters\n    @Annotation.subAnno: 'value'\n    P_AnyParam:   any_parameter_type,\n    P_OtherParam: other_type\n    P_ThirdParam: third_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    @Annotation.subAnno: 'value'\n    P_AnyParam:   any_parameter_type,\n\n    P_OtherParam: other_type\n    P_ThirdParam: third_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSurroundParametersWith3Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 3,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n    @Annotation.subAnno: 'value'\n    P_OtherParam: other_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n    @Annotation.subAnno: 'value'\n    P_OtherParam: other_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSurroundJoinsWith4Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 4,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity      as OtherAlias  on AnyAlias.IdField = OtherAlias.IdField\n    // comment\n    left outer join I_ThirdEntity as ThirdAlias  on  AnyAlias.IdField      = ThirdAlias.IdField\n                                                 and AnyAlias.SubIdField   = ThirdAlias.SubIdField\n                                                 and AnyAlias.ThirdIdField = ThirdAlias.ThirdIdField\n    inner join FourthEntity       as FourthAlias on AnyAlias.IdField = Fourth.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity      as OtherAlias  on AnyAlias.IdField = OtherAlias.IdField\n\n    // comment\n    left outer join I_ThirdEntity as ThirdAlias  on  AnyAlias.IdField      = ThirdAlias.IdField\n                                                 and AnyAlias.SubIdField   = ThirdAlias.SubIdField\n                                                 and AnyAlias.ThirdIdField = ThirdAlias.ThirdIdField\n\n    inner join FourthEntity       as FourthAlias on AnyAlias.IdField = Fourth.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSurroundJoinsWith5Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 5,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity      as OtherAlias  on AnyAlias.IdField = OtherAlias.IdField\n    // comment\n    left outer join I_ThirdEntity as ThirdAlias  on  AnyAlias.IdField      = ThirdAlias.IdField\n                                                 and AnyAlias.SubIdField   = ThirdAlias.SubIdField\n                                                 and AnyAlias.ThirdIdField = ThirdAlias.ThirdIdField\n    inner join FourthEntity       as FourthAlias on AnyAlias.IdField = Fourth.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity      as OtherAlias  on AnyAlias.IdField = OtherAlias.IdField\n    // comment\n    left outer join I_ThirdEntity as ThirdAlias  on  AnyAlias.IdField      = ThirdAlias.IdField\n                                                 and AnyAlias.SubIdField   = ThirdAlias.SubIdField\n                                                 and AnyAlias.ThirdIdField = ThirdAlias.ThirdIdField\n    inner join FourthEntity       as FourthAlias on AnyAlias.IdField = Fourth.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAssociationsWith4Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 4,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity2      as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  /* comment on association\n     more comment on association */\n  association [0..*] to I_FourthEntity as _FourthAlias\n    on AnyAlias.IdField = _FourthAlias.IdField\n  association [0..*] to I_FifthEntity as _FifthAlias\n    on AnyAlias.IdField = _FifthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity2      as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  /* comment on association\n     more comment on association */\n  association [0..*] to I_FourthEntity as _FourthAlias\n    on AnyAlias.IdField = _FourthAlias.IdField\n\n  association [0..*] to I_FifthEntity as _FifthAlias\n    on AnyAlias.IdField = _FifthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAssociationsWith5Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 5,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity2      as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  /* comment on association\n     more comment on association */\n  association [0..*] to I_FourthEntity as _FourthAlias\n    on AnyAlias.IdField = _FourthAlias.IdField\n  association [0..*] to I_FifthEntity as _FifthAlias\n    on AnyAlias.IdField = _FifthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity2      as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  /* comment on association\n     more comment on association */\n  association [0..*] to I_FourthEntity as _FourthAlias\n    on AnyAlias.IdField = _FourthAlias.IdField\n  association [0..*] to I_FifthEntity as _FifthAlias\n    on AnyAlias.IdField = _FifthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSurroundElementsWith1Line",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 1,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      @Annotation.subAnno: 'value'\n      sum(OtherAlias.AnyNonKeyField),\n      @Annotation.subAnno: 'value'\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField\n      @<Annotation.otherSubAnno: 'this annotation refers to the previous element!',\n      max(OtherAlias.ThirdNonKeyField)  as ThirdNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      max(ThirdAlias.FifthNonKeyField)  as FifthNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n\n      @Annotation.subAnno: 'value'\n      sum(OtherAlias.AnyNonKeyField),\n\n      @Annotation.subAnno: 'value'\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField\n      @<Annotation.otherSubAnno: 'this annotation refers to the previous element!',\n\n      max(OtherAlias.ThirdNonKeyField)  as ThirdNonKeyField,\n\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n\n      max(ThirdAlias.FifthNonKeyField)  as FifthNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSurroundElementsWith2Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      @Annotation.subAnno: 'value'\n      sum(OtherAlias.AnyNonKeyField),\n      @Annotation.subAnno: 'value'\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField\n      @<Annotation.otherSubAnno: 'this annotation refers to the previous element!',\n      max(OtherAlias.ThirdNonKeyField)  as ThirdNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      max(ThirdAlias.FifthNonKeyField)  as FifthNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n\n      @Annotation.subAnno: 'value'\n      sum(OtherAlias.AnyNonKeyField),\n\n      @Annotation.subAnno: 'value'\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField\n      @<Annotation.otherSubAnno: 'this annotation refers to the previous element!',\n\n      max(OtherAlias.ThirdNonKeyField)  as ThirdNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      max(ThirdAlias.FifthNonKeyField)  as FifthNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSurroundElementsWith3Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 3,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      @Annotation.subAnno: 'value'\n      sum(OtherAlias.AnyNonKeyField),\n\n\n\n      @Annotation.subAnno: 'value'\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField\n      @<Annotation.otherSubAnno: 'this annotation refers to the previous element!',\n      max(OtherAlias.ThirdNonKeyField)  as ThirdNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      max(ThirdAlias.FifthNonKeyField)  as FifthNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n\n      @Annotation.subAnno: 'value'\n      sum(OtherAlias.AnyNonKeyField),\n\n\n\n      @Annotation.subAnno: 'value'\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField\n      @<Annotation.otherSubAnno: 'this annotation refers to the previous element!',\n\n      max(OtherAlias.ThirdNonKeyField)  as ThirdNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      max(ThirdAlias.FifthNonKeyField)  as FifthNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSurroundClausesWith2Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\nwhere  AnyNonKeyField  > 10\n  and OtherNonKeyField = 'A'\ngroup by AnyAlias.AnyKeyField\n         AnyAlias.OtherKeyField\nhaving sum(OtherAilas.AnyNonKeyField)     > 100\n   and avg(OtherAlias.ThirdNonKeyField)   < 42\n   and max(ThirdAlias.FourthNonKeyField) >= 'Z'\n\nunion all\n  select from I_AnyEntity2         as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\nwhere  AnyNonKeyField  > 10\n  and OtherNonKeyField = 'A'\n\ngroup by AnyAlias.AnyKeyField\n         AnyAlias.OtherKeyField\n\nhaving sum(OtherAilas.AnyNonKeyField)     > 100\n   and avg(OtherAlias.ThirdNonKeyField)   < 42\n   and max(ThirdAlias.FourthNonKeyField) >= 'Z'\n\nunion all\n  select from I_AnyEntity2         as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSurroundClausesWith3Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 3,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\nwhere  AnyNonKeyField  > 10\n  and OtherNonKeyField = 'A'\ngroup by AnyAlias.AnyKeyField\n         AnyAlias.OtherKeyField\nhaving sum(OtherAilas.AnyNonKeyField)     > 100\n   and avg(OtherAlias.ThirdNonKeyField)   < 42\n   and max(ThirdAlias.FourthNonKeyField) >= 'Z'\n\nunion all\n  select from I_AnyEntity2         as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\nwhere  AnyNonKeyField  > 10\n  and OtherNonKeyField = 'A'\ngroup by AnyAlias.AnyKeyField\n         AnyAlias.OtherKeyField\n\nhaving sum(OtherAilas.AnyNonKeyField)     > 100\n   and avg(OtherAlias.ThirdNonKeyField)   < 42\n   and max(ThirdAlias.FourthNonKeyField) >= 'Z'\n\nunion all\n  select from I_AnyEntity2         as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSurroundClausesAtDocumentEndWith3Lines",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 3,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\nwhere  AnyNonKeyField  > 10\n  and OtherNonKeyField = 'A'\ngroup by AnyAlias.AnyKeyField\n         AnyAlias.OtherKeyField\nhaving sum(OtherAilas.AnyNonKeyField)     > 100\n   and avg(OtherAlias.ThirdNonKeyField)   < 42\n   and max(ThirdAlias.FourthNonKeyField) >= 'Z'",
+   "exp": "define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\nwhere  AnyNonKeyField  > 10\n  and OtherNonKeyField = 'A'\ngroup by AnyAlias.AnyKeyField\n         AnyAlias.OtherKeyField\n\nhaving sum(OtherAilas.AnyNonKeyField)     > 100\n   and avg(OtherAlias.ThirdNonKeyField)   < 42\n   and max(ThirdAlias.FourthNonKeyField) >= 'Z'",
+   "flags": {}
+  },
+  {
+   "name": "testCondenseParametersIfAllAreOneLiners",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n\n\n    P_OtherParam: other_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n    P_OtherParam: other_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNeverCondenseSingleLineParameters",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.NEVER",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n\n\n    P_OtherParam: other_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    P_AnyParam:   any_parameter_type,\n\n\n    P_OtherParam: other_type\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysCondenseSingleLineJoins",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.ALWAYS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "@EndUserText.label: 'Any Description'\ndefine view entity C_AnyEntity\n\n  as select from    I_AnyEntity     as AnyAlias\n    inner join      I_OtherEntity2  as OtherAlias  on AnyAlias.IdField = OtherAlias.IdField\n\n\n    left outer join I_ThirdEntity2  as ThirdAlias  on AnyAlias.IdField = ThirdAlias.IdField\n\n    inner join      I_FourthEntity2 as FourthAlias on  AnyAlias.IdField    = FourthAlias.IdField\n                                                   and AnyAlias.SubIdField = FourthAlias.SubIdField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion all\n  select from I_AnyEntity2               as AnyAlias\n\n    inner join I_OtherEntity             as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n\n    left outer to one join I_ThirdEntity as ThirdAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\ndefine view entity C_AnyEntity\n\n  as select from    I_AnyEntity     as AnyAlias\n    inner join      I_OtherEntity2  as OtherAlias  on AnyAlias.IdField = OtherAlias.IdField\n    left outer join I_ThirdEntity2  as ThirdAlias  on AnyAlias.IdField = ThirdAlias.IdField\n\n    inner join      I_FourthEntity2 as FourthAlias on  AnyAlias.IdField    = FourthAlias.IdField\n                                                   and AnyAlias.SubIdField = FourthAlias.SubIdField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\nunion all\n  select from I_AnyEntity2               as AnyAlias\n\n    inner join I_OtherEntity             as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n    left outer to one join I_ThirdEntity as ThirdAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysCondenseSingleLineAssociations",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.ALWAYS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity2      as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n    inner join I_OtherEntity2      as OtherAlias on AnyAlias.IdField = OtherAlias.IdField\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNeverCondenseSingleLineElements",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.NEVER",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n\n      OtherAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n\n      OtherAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysCondenseSingleLineClauses",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.ALWAYS"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\nwhere  AnyNonKeyField  > 10\n  and OtherNonKeyField = 'A'\ngroup by AnyAlias.AnyKeyField\n         AnyAlias.OtherKeyField\nhaving sum(OtherAilas.AnyNonKeyField)     > 100\n   and avg(OtherAlias.ThirdNonKeyField)   < 42\n   and max(ThirdAlias.FourthNonKeyField) >= 'Z'",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\nwhere  AnyNonKeyField  > 10\n  and OtherNonKeyField = 'A'\n\ngroup by AnyAlias.AnyKeyField\n         AnyAlias.OtherKeyField\n\nhaving sum(OtherAilas.AnyNonKeyField)     > 100\n   and avg(OtherAlias.ThirdNonKeyField)   < 42\n   and max(ThirdAlias.FourthNonKeyField) >= 'Z'",
+   "flags": {}
+  },
+  {
+   "name": "testAttachedCommentKeptWithElement",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n      // comment A\n      @Annotation.subAnno: 'value'\n      sum(OtherAlias.AnyNonKeyField),\n      /* comment B */\n      @Annotation.subAnno: 'value'\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField\n      @<Annotation.otherSubAnno: 'this annotation refers to the previous element!',\n      max(OtherAlias.ThirdNonKeyField)  as ThirdNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      max(ThirdAlias.FifthNonKeyField)  as FifthNonKeyField\n}\nwhere  AnyNonKeyField  > 10\n  and OtherNonKeyField = 'A'\n-- comment\ngroup by AnyAlias.AnyKeyField\n         AnyAlias.OtherKeyField",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n\n      // comment A\n      @Annotation.subAnno: 'value'\n      sum(OtherAlias.AnyNonKeyField),\n\n      /* comment B */\n      @Annotation.subAnno: 'value'\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField\n      @<Annotation.otherSubAnno: 'this annotation refers to the previous element!',\n\n      max(OtherAlias.ThirdNonKeyField)  as ThirdNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      max(ThirdAlias.FifthNonKeyField)  as FifthNonKeyField\n}\nwhere  AnyNonKeyField  > 10\n  and OtherNonKeyField = 'A'\n\n-- comment\ngroup by AnyAlias.AnyKeyField\n         AnyAlias.OtherKeyField",
+   "flags": {}
+  },
+  {
+   "name": "testPartlyAttachedOneLinersNotCondensed",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n\n      OtherAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n\n      OtherAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testPartlyAttachedOneLinersCondensed",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n      OtherAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n\n      OtherAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDetachKeyFieldsAndAssociations",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n      sum(OtherAlias.AnyNonKeyField),\n\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      _FourthAlias,\n\n      _FifthAlias,\n\n      _SixthAlias\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n\n      sum(OtherAlias.AnyNonKeyField),\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n\n      _FourthAlias,\n      _FifthAlias,\n      _SixthAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotDetachKeyFields",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": false,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n      sum(OtherAlias.AnyNonKeyField),\n\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      _FourthAlias,\n\n      _FifthAlias,\n\n      _SixthAlias\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n      sum(OtherAlias.AnyNonKeyField),\n\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n\n      _FourthAlias,\n      _FifthAlias,\n      _SixthAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotDetachExposedAssociations",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": false,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n      sum(OtherAlias.AnyNonKeyField),\n\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      _FourthAlias,\n\n      _FifthAlias,\n\n      _SixthAlias\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n\n      sum(OtherAlias.AnyNonKeyField),\n\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      _FourthAlias,\n\n      _FifthAlias,\n\n      _SixthAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotDetachKeyFieldsOrAssociations",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": false,
+    "DetachExposedAssociations": false,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n      sum(OtherAlias.AnyNonKeyField),\n\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      _FourthAlias,\n\n      _FifthAlias,\n\n      _SixthAlias\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n      sum(OtherAlias.AnyNonKeyField),\n\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      _FourthAlias,\n\n      _FifthAlias,\n\n      _SixthAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testCondenseElementsIfOnlyOneLinersInDetachedGroups",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n      sum(OtherAlias.AnyNonKeyField),\n\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      _FourthAlias,\n      _FifthAlias,\n\n      _SixthAlias\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n\n      sum(OtherAlias.AnyNonKeyField),\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n\n      _FourthAlias,\n      _FifthAlias,\n      _SixthAlias\n}",
+   "flags": {}
+  },
+  {
+   "name": "testCondenseElementsIfAllAreOneLinersInDetachedGroups",
+   "config": {
+    "SurroundParameterLineCountMin": 2,
+    "SurroundJoinLineCountMin": 2,
+    "SurroundAssociationLineCountMin": 2,
+    "SurroundElementLineCountMin": 2,
+    "SurroundClauseLineCountMin": 2,
+    "DetachKeyFields": true,
+    "DetachExposedAssociations": true,
+    "CondenseParameters": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseJoins": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseAssociations": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseElements": "DdlCondenseMode.IF_ONLY_DETACHED_ONE_LINERS",
+    "CondenseClauses": "DdlCondenseMode.NEVER"
+   },
+   "src": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n\n  key AnyAlias.OtherKeyField,\n      sum(OtherAlias.AnyNonKeyField),\n\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n      _FourthAlias,\n\n      _FifthAlias,\n\n      _SixthAlias\n}",
+   "exp": "define view entity C_AnyEntity\n  as select from I_AnyEntity as AnyAlias\n\n  association [0..*] to I_FourthEntity2 as _FourthAlias on AnyAlias.IdField  = _FourthAlias.IdField\n  association [0..1] to I_FifthEntity2  as _FifthAlias  on AnyAlias.IdField  = _FifthAlias.IdField\n\n  association [1..*] to I_SixthEntity2  as _SixthAlias  on  AnyAlias.IdField = _SixthAlias.IdField\n\n{\n  key AnyAlias.AnyKeyField,\n  key AnyAlias.OtherKeyField,\n\n      sum(OtherAlias.AnyNonKeyField),\n      avg(OtherAlias.OtherNonKeyField)  as OtherNonKeyField,\n      min(ThirdAlias.FourthNonKeyField) as FourthNonKeyField,\n\n      _FourthAlias,\n      _FifthAlias,\n      _SixthAlias\n}",
+   "flags": {}
+  }
+ ]
+}

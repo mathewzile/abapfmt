@@ -1,0 +1,721 @@
+{
+ "ruleId": "ALIGN_SELECT_LISTS",
+ "testClass": "AlignSelectListsTest",
+ "defaults": {
+  "MaxLineLength": 120,
+  "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+  "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+  "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+  "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+  "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+  "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+  "SelectIntoLayout": "SelectListLayout.DERIVE",
+  "ConsiderTildeAsComplex": true,
+  "AlignAsInSelectList": true,
+  "AlignAdditionsInOrderByList": false
+ },
+ "cases": [
+  {
+   "name": "testComplexSelectToMultiLineComplexGroupDerive",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT t1~any_col AS any_alias, t1~other_col AS other_alias,\n       t2~third_col,\n       SUM( fourth_col ) AS fourth_col, SUM( fifth_col ) AS fifth_col\n      FROM any_dtab AS t1\n           INNER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table ##too_many_itab_fields\n      WHERE t1~any_col    = @ms_any_struc-any_comp\n        AND t2~third_col IN @lt_other_table\n      GROUP BY t1~any_col,\n      t1~other_col,\n      t2~third_col,\n      fourth_col, fifth_col.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT t1~any_col        AS any_alias,\n           t1~other_col      AS other_alias,\n           t2~third_col,\n           SUM( fourth_col ) AS fourth_col,\n           SUM( fifth_col )  AS fifth_col\n      FROM any_dtab AS t1\n           INNER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table ##too_many_itab_fields\n      WHERE t1~any_col    = @ms_any_struc-any_comp\n        AND t2~third_col IN @lt_other_table\n      GROUP BY t1~any_col,\n               t1~other_col,\n               t2~third_col,\n               fourth_col,\n               fifth_col.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComplexSelectAndComplexGroupToSingleLine",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.ONE_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.ONE_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT t1~any_col AS any_alias, t1~other_col AS other_alias,\n       t2~third_col,\n       SUM( fourth_col ) AS fourth_col, SUM( fifth_col ) AS fifth_col\n      FROM any_dtab AS t1\n           INNER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table ##too_many_itab_fields\n      WHERE t1~any_col    = @ms_any_struc-any_comp\n        AND t2~third_col IN @lt_other_table\n      GROUP BY t1~any_col,\n      t1~other_col,\n      t2~third_col,\n      fourth_col, fifth_col.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT t1~any_col AS any_alias, t1~other_col AS other_alias, t2~third_col, SUM( fourth_col ) AS fourth_col, SUM(\n           fifth_col ) AS fifth_col\n      FROM any_dtab AS t1\n           INNER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table ##too_many_itab_fields\n      WHERE t1~any_col    = @ms_any_struc-any_comp\n        AND t2~third_col IN @lt_other_table\n      GROUP BY t1~any_col, t1~other_col, t2~third_col, fourth_col, fifth_col.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSimpleSelectMultiLineComplexOrderSingleLine110",
+   "config": {
+    "MaxLineLength": 110,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.ONE_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT first_column,\n      second_column,\n      third_column, fourth_column,\n      fifth_column, sixth_column,\n*  seventh_column\n      eigth_column\n      FROM any_dtab\n      ORDER BY seventh_column ASCENDING NULLS FIRST, first_column DESCENDING NULLS LAST, second_column DESCENDING\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT first_column,\n           second_column,\n           third_column,\n           fourth_column,\n           fifth_column,\n           sixth_column,\n*           seventh_column\n           eigth_column\n      FROM any_dtab\n      ORDER BY seventh_column ASCENDING NULLS FIRST, first_column DESCENDING NULLS LAST, second_column\n               DESCENDING\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSimpleSelectSingleLineIntoMultiLineTildeSimple",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderTildeAsComplex": false,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE t1~any_col t2~other_col t1~third_col t2~fourth_col\n      FROM any_dtab\n           INNER JOIN fifth_col ON t2~col_6 = t1~col_6\n      WHERE col_7 = @is_any_struc-any_comp\n        AND col_8 = @is_any_struc-other_comp\n      INTO ( @lv_any_value, @lv_other_value,\n      @DATA(lv_third_value),\n     @FINAL(lv_fourth_value) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE t1~any_col t2~other_col t1~third_col t2~fourth_col\n      FROM any_dtab\n           INNER JOIN fifth_col ON t2~col_6 = t1~col_6\n      WHERE col_7 = @is_any_struc-any_comp\n        AND col_8 = @is_any_struc-other_comp\n      INTO ( @lv_any_value,\n             @lv_other_value,\n             @DATA(lv_third_value),\n             @FINAL(lv_fourth_value) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComplexSelectDeriveIntoOneLineTildeComplex",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.DERIVE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.ONE_LINE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE t1~any_col t2~other_col t1~third_col t2~fourth_col\n      FROM any_dtab\n           INNER JOIN fifth_col ON t2~col_6 = t1~col_6\n      WHERE col_7 = @is_any_struc-any_comp\n        AND col_8 = @is_any_struc-other_comp\n      INTO ( @lv_any_value, @lv_other_value,\n      @DATA(lv_third_value),\n     @FINAL(lv_fourth_value) ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE t1~any_col t2~other_col t1~third_col t2~fourth_col\n      FROM any_dtab\n           INNER JOIN fifth_col ON t2~col_6 = t1~col_6\n      WHERE col_7 = @is_any_struc-any_comp\n        AND col_8 = @is_any_struc-other_comp\n      INTO ( @lv_any_value, @lv_other_value, @DATA(lv_third_value), @FINAL(lv_fourth_value) ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSimpleSelectSingleLineAscendingAligned",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.ONE_LINE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": true
+   },
+   "src": "  METHOD any_method.\n    SELECT first_column,\n      second_column,\n      third_column, fourth_column,\n      fifth_column, sixth_column,\n*  seventh_column\n      eigth_column\n      FROM any_dtab\n      ORDER BY seventh_column ASCENDING NULLS FIRST, first_column DESCENDING NULLS LAST, second_column DESCENDING\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT first_column, second_column, third_column, fourth_column, fifth_column, sixth_column,\n*           seventh_column\n           eigth_column\n      FROM any_dtab\n      ORDER BY seventh_column ASCENDING NULLS FIRST,\n               first_column   DESCENDING NULLS LAST,\n               second_column  DESCENDING\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testOneLinersSkipped",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "    SELECT SINGLE any_col other_col INTO ls_any_struc FROM any_dtab WHERE other_col = gc_any_constant.\n    SELECT any_col other_col third_col FROM any_dtab INTO TABLE lt_any_table.",
+   "exp": "    SELECT SINGLE any_col other_col INTO ls_any_struc FROM any_dtab WHERE other_col = gc_any_constant.\n    SELECT any_col other_col third_col FROM any_dtab INTO TABLE lt_any_table.",
+   "flags": {}
+  },
+  {
+   "name": "testMaxLineLength80KeepOrderBy",
+   "config": {
+    "MaxLineLength": 80,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.KEEP_AS_IS",
+    "SimpleOrderByListLayout": "SelectListLayout.KEEP_AS_IS",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col, other_col, third_col, fourth_col,\n      fifth_col, sixth_column_with_long_name, seventh_column_with_long_name\n      FROM any_dtab\n      WHERE any_col   IN @ir_any_ref\n        AND other_col IN @ir_other_ref\n      ORDER BY fifth_col,\n             any_col,\n              other_col\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col, other_col, third_col, fourth_col, fifth_col,\n           sixth_column_with_long_name, seventh_column_with_long_name\n      FROM any_dtab\n      WHERE any_col   IN @ir_any_ref\n        AND other_col IN @ir_other_ref\n      ORDER BY fifth_col,\n             any_col,\n              other_col\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectFieldsTildeSimple",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": false,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT FROM first_dtab AS t1\n             CROSS JOIN second_dtab AS t2\n           FIELDS t1~a AS a1, t1~b AS b1, t2~c AS c2, t2~d AS d2\n           WHERE t2~d = t1~d\n           ORDER BY t1~d t1~c\n           INTO CORRESPONDING FIELDS OF TABLE @lt_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT FROM first_dtab AS t1\n             CROSS JOIN second_dtab AS t2\n           FIELDS t1~a AS a1,\n                  t1~b AS b1,\n                  t2~c AS c2,\n                  t2~d AS d2\n           WHERE t2~d = t1~d\n           ORDER BY t1~d t1~c\n           INTO CORRESPONDING FIELDS OF TABLE @lt_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectAsteriskDynamicLists",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "    SELECT *\n      FROM any_dtab\n      GROUP BY (lv_group)\n      ORDER BY (lv_order)\n      INTO TABLE @lt_any.",
+   "exp": "    SELECT *\n      FROM any_dtab\n      GROUP BY (lv_group)\n      ORDER BY (lv_order)\n      INTO TABLE @lt_any.",
+   "flags": {}
+  },
+  {
+   "name": "testSimpleSelectKeepComplexOrderKeep",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.KEEP_AS_IS",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.KEEP_AS_IS",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT first_column,\n      second_column,\n      third_column, fourth_column,\n      fifth_column, sixth_column,\n*  seventh_column\n      eigth_column\n      FROM any_dtab\n      ORDER BY seventh_column ASCENDING NULLS FIRST, first_column DESCENDING NULLS LAST, second_column DESCENDING\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT first_column,\n      second_column,\n      third_column, fourth_column,\n      fifth_column, sixth_column,\n*  seventh_column\n      eigth_column\n      FROM any_dtab\n      ORDER BY seventh_column ASCENDING NULLS FIRST, first_column DESCENDING NULLS LAST, second_column DESCENDING\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIndentComment",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT first_column,\n*           second_column,\n      third_column, fourth_column,\n*fifth_column\n**\n*  seventh_column\n      eigth_column\n      FROM any_dtab\n      ORDER BY seventh_column ASCENDING NULLS FIRST, first_column DESCENDING NULLS LAST, second_column DESCENDING\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT first_column,\n*           second_column,\n           third_column,\n           fourth_column,\n*           fifth_column\n**\n*           seventh_column\n           eigth_column\n      FROM any_dtab\n      ORDER BY seventh_column ASCENDING NULLS FIRST,\n               first_column DESCENDING NULLS LAST,\n               second_column DESCENDING\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComplexFieldsMultiLineGroupingSetsSkipped",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT FROM any_dtab\n      FIELDS any_col, other_col, third_col, SUM( fourth_col ) AS fifth_col,\n             grouping( any_col ) AS col_6, grouping( other_col ) AS col_7,\n             grouping( third_col ) AS col_8\n      WHERE any_col = 'T1'\n      GROUP BY GROUPING SETS ( ( any_col, other_col, third_col ),\n                               ( any_col, other_col ),\n                               ( other_col, third_col ),\n                               ( any_col ),\n                               ( ) )\n      INTO TABLE @FINAL(lv_any_value).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT FROM any_dtab\n      FIELDS any_col,\n             other_col,\n             third_col,\n             SUM( fourth_col )     AS fifth_col,\n             grouping( any_col )   AS col_6,\n             grouping( other_col ) AS col_7,\n             grouping( third_col ) AS col_8\n      WHERE any_col = 'T1'\n      GROUP BY GROUPING SETS ( ( any_col, other_col, third_col ),\n                               ( any_col, other_col ),\n                               ( other_col, third_col ),\n                               ( any_col ),\n                               ( ) )\n      INTO TABLE @FINAL(lv_any_value).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testNonStrictSyntaxWithAdditions",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "          SELECT any_col AS any_col\n               other_col AS third_col\n           INTO CORRESPONDING FIELDS OF TABLE lt_any_table\n           FROM any_dtab\n           WHERE fourth_col = 'T1'\n           ORDER BY any_col ASCENDING other_col DESCENDING.",
+   "exp": "          SELECT any_col   AS any_col\n                 other_col AS third_col\n           INTO CORRESPONDING FIELDS OF TABLE lt_any_table\n           FROM any_dtab\n           WHERE fourth_col = 'T1'\n           ORDER BY any_col ASCENDING\n                    other_col DESCENDING.",
+   "flags": {}
+  },
+  {
+   "name": "testInnerQueries",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col, other_col, third_col FROM any_dtab APPENDING CORRESPONDING FIELDS OF TABLE @lt_any_table\n           WHERE other_col IN ( SELECT FROM other_dtab FIELDS other_col )\n             AND third_col IN ( SELECT FROM third_dtab FIELDS third_col ). \"#EC CI_BUFFSUBQ.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col, other_col, third_col FROM any_dtab APPENDING CORRESPONDING FIELDS OF TABLE @lt_any_table\n           WHERE other_col IN ( SELECT FROM other_dtab FIELDS other_col )\n             AND third_col IN ( SELECT FROM third_dtab FIELDS third_col ). \"#EC CI_BUFFSUBQ.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testComplexSelectDeriveOrderByDerive",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.DERIVE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col, CAST( ' ' AS CHAR( 2 ) ) AS other_col,\n          third_col, char1 && '_' && char2 AS fourth_col, fifth_col,\n        MIN( num1 ) * MIN( num2 ) AS fifth_col\n      FROM any_dtab\n      ORDER BY any_col,\n       third_col, fourth_col,\n           fifth_col\n      INTO @DATA(lv_any_value).\n    ENDSELECT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col, CAST( ' ' AS CHAR( 2 ) ) AS other_col, third_col, char1 && '_' && char2 AS fourth_col, fifth_col,\n           MIN( num1 ) * MIN( num2 ) AS fifth_col\n      FROM any_dtab\n      ORDER BY any_col,\n               third_col,\n               fourth_col,\n               fifth_col\n      INTO @DATA(lv_any_value).\n    ENDSELECT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testWithCommonTableExpressions",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    WITH\n      +any_cte AS (\n        SELECT any_dtab~any_id, any_name, other_id, value_from, value_to\n          FROM any_dtab\n           INNER JOIN other_dtab ON other_dtab~any_id = any_dtab~any_id\n          WHERE any_dtab~any_id BETWEEN @from_id AND @to_id ),\n\n      +other_cte AS (\n        SELECT any_id, other_id, SUM( any_value ) AS sum_value\n          FROM third_dtab\n          WHERE any_id BETWEEN @from_id AND @to_id\n          GROUP BY any_id, other_id ),\n\n      +result_cte( name, name2, name3, name4, name5 ) AS (\n        SELECT any_name, c~other_id, value_from, value_to, sum_value\n          FROM +any_cte AS c\n            INNER JOIN +other_cte AS s ON  c~any_id = s~any_id\n                                       AND c~other_id = s~other_id )\n\n      SELECT * FROM +result_cte\n        ORDER BY name, name2\n        INTO TABLE @FINAL(result1).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    WITH\n      +any_cte AS (\n        SELECT any_dtab~any_id,\n               any_name,\n               other_id,\n               value_from,\n               value_to\n          FROM any_dtab\n           INNER JOIN other_dtab ON other_dtab~any_id = any_dtab~any_id\n          WHERE any_dtab~any_id BETWEEN @from_id AND @to_id ),\n\n      +other_cte AS (\n        SELECT any_id,\n               other_id,\n               SUM( any_value ) AS sum_value\n          FROM third_dtab\n          WHERE any_id BETWEEN @from_id AND @to_id\n          GROUP BY any_id, other_id ),\n\n      +result_cte( name, name2, name3, name4, name5 ) AS (\n        SELECT any_name,\n               c~other_id,\n               value_from,\n               value_to,\n               sum_value\n          FROM +any_cte AS c\n            INNER JOIN +other_cte AS s ON  c~any_id = s~any_id\n                                       AND c~other_id = s~other_id )\n\n      SELECT * FROM +result_cte\n        ORDER BY name, name2\n        INTO TABLE @FINAL(result1).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCommentAfterIntoParenthesis",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.MULTI_LINE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col other_col\n      UP TO 10 ROWS\n      FROM any_dtab\n      INTO ( \" comment\n             ev_any_param, ev_other_param )\n      WHERE     third_col = lv_any_value\n            AND fourth_col = iv_any_param.\n    ENDSELECT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col\n           other_col\n      UP TO 10 ROWS\n      FROM any_dtab\n      INTO ( \" comment\n             ev_any_param,\n             ev_other_param )\n      WHERE     third_col = lv_any_value\n            AND fourth_col = iv_any_param.\n    ENDSELECT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSpacesInList",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT  t1~any_col AS other_col, t1~third_col AS fourth_col,t1~fifth_col AS col_6\n    FROM @it_any_table AS t1 ##ITAB_KEY_IN_SELECT\n    WHERE t1~third_col IN @gt_any_table\n    INTO CORRESPONDING FIELDS OF TABLE @mt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT t1~any_col   AS other_col,\n           t1~third_col AS fourth_col,\n           t1~fifth_col AS col_6\n    FROM @it_any_table AS t1 ##ITAB_KEY_IN_SELECT\n    WHERE t1~third_col IN @gt_any_table\n    INTO CORRESPONDING FIELDS OF TABLE @mt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCommentAtListStart",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT DISTINCT\n         \" comment1\n*       comment2\n            any_col AS c1,\n             other_col AS c2,\n             \" comment3\n              third_col AS c3\n      FROM any_cds( iv_any_param = @lv_any_value )\n      INTO CORRESPONDING FIELDS OF TABLE @mv_any_attribute\n      WHERE c1 IN @lt_any_table\n        AND c3 IN @lt_other_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT DISTINCT \" comment1\n*                    comment2\n                    any_col   AS c1,\n                    other_col AS c2,\n                    \" comment3\n                    third_col AS c3\n      FROM any_cds( iv_any_param = @lv_any_value )\n      INTO CORRESPONDING FIELDS OF TABLE @mv_any_attribute\n      WHERE c1 IN @lt_any_table\n        AND c3 IN @lt_other_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSplitSelectListAndMoveIntoOrFromToOwnLine",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col, other_col, third_col INTO TABLE lt_any_table\n      FROM any_dtab\n      WHERE any_col < 10.\n\n    SELECT any_col, other_col, third_col FROM any_dtab\n      INTO TABLE lt_any_table\n      WHERE any_col < 10.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col,\n           other_col,\n           third_col\n      INTO TABLE lt_any_table\n      FROM any_dtab\n      WHERE any_col < 10.\n\n    SELECT any_col,\n           other_col,\n           third_col\n      FROM any_dtab\n      INTO TABLE lt_any_table\n      WHERE any_col < 10.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSplitSelectListAndMoveComplexFromToOwnLine",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col, other_col, third_col FROM any_dtab AS a\n                                                INNER JOIN\n                                                  other_dtab AS b ON a~any = b~any\n      INTO TABLE lt_any_table\n      WHERE any_col < 10.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col,\n           other_col,\n           third_col\n      FROM any_dtab AS a\n             INNER JOIN\n               other_dtab AS b ON a~any = b~any\n      INTO TABLE lt_any_table\n      WHERE any_col < 10.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testRemoveSpacesBeforeComma",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col,\n           MAX( other_col ) AS c2   ,\n           MIN( third_col ) AS c3     ,\n           SUM( fourth_col ) AS c4 \" comment\n           , fifth_col AS c4\n      FROM any_dtab\n      GROUP BY any_col\n      %_HINTS HDB 'RESULT_CACHE' \"#EC CI_HINTS\n      INTO TABLE @FINAL(lv_any_value)\n           EXTENDED RESULT @lo_extended_result.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col,\n           MAX( other_col )  AS c2,\n           MIN( third_col )  AS c3,\n           SUM( fourth_col ) AS c4 \" comment\n           ,\n           fifth_col         AS c4\n      FROM any_dtab\n      GROUP BY any_col\n      %_HINTS HDB 'RESULT_CACHE' \"#EC CI_HINTS\n      INTO TABLE @FINAL(lv_any_value)\n           EXTENDED RESULT @lo_extended_result.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAddSpaceInParenthesesOfInto",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE any_col FROM any_dtab\n      WHERE any_col = @lv_any_value\n      INTO (@DATA(dobj1)).\n\n    SELECT SINGLE any_col FROM any_dtab\n      WHERE any_col = @lv_any_value\n      INTO (@FINAL(dobj2)).\n\n    SELECT SINGLE any_col FROM any_dtab\n      WHERE any_col = @lv_any_value\n      INTO (NEW @DATA(dref1)).\n\n    SELECT SINGLE any_col FROM any_dtab\n      WHERE any_col = @lv_any_value\n      INTO (NEW @FINAL(dref2)).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE any_col FROM any_dtab\n      WHERE any_col = @lv_any_value\n      INTO ( @DATA(dobj1) ).\n\n    SELECT SINGLE any_col FROM any_dtab\n      WHERE any_col = @lv_any_value\n      INTO ( @FINAL(dobj2) ).\n\n    SELECT SINGLE any_col FROM any_dtab\n      WHERE any_col = @lv_any_value\n      INTO ( NEW @DATA(dref1) ).\n\n    SELECT SINGLE any_col FROM any_dtab\n      WHERE any_col = @lv_any_value\n      INTO ( NEW @FINAL(dref2) ).\n  ENDMETHOD.",
+   "flags": {
+    "syntaxCheckAfterParse": false,
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectListWithHostVariableAndLiteral",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col, @lr_any_ref->mv_any_attribute AS other_col, third_col , '2' AS fourth_col\n      FROM any_dtab\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col,\n           @lr_any_ref->mv_any_attribute AS other_col,\n           third_col,\n           '2'                           AS fourth_col\n      FROM any_dtab\n      INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testFieldsWithCaseWhen",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE\n      FROM @data_tab AS data_tab\n      FIELDS CASE WHEN 1 = 0 THEN 0 END AS col1, col2  ,\n         CASE WHEN 1 = 0 THEN 0 END AS col3,   CASE WHEN 1 = 0 THEN 42 END AS col4, col5\n      INTO CORRESPONDING FIELDS OF @wa_ind2\n           INDICATORS NULL BITFIELD null_ind.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE\n      FROM @data_tab AS data_tab\n      FIELDS CASE WHEN 1 = 0 THEN 0 END  AS col1,\n             col2,\n             CASE WHEN 1 = 0 THEN 0 END  AS col3,\n             CASE WHEN 1 = 0 THEN 42 END AS col4,\n             col5\n      INTO CORRESPONDING FIELDS OF @wa_ind2\n           INDICATORS NULL BITFIELD null_ind.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectListWithFirstValueOver",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT\n          id,\n          col1,\n          col2,\n          col3,\n          FIRST_VALUE( col2 ) OVER( PARTITION BY col1 ORDER BY col3 )\n                      AS first_value,\n          LAST_VALUE( col2 ) OVER( PARTITION BY col1 ORDER BY col3 )\n                      AS last_value,\n          LAST_VALUE( col2 ) OVER( PARTITION BY col1 ORDER BY col3\n                      ROWS BETWEEN UNBOUNDED PRECEDING\n                      AND UNBOUNDED FOLLOWING )\n                      AS last_value_correct\n          FROM demo_update\n          INTO TABLE @DATA(result).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT id,\n           col1,\n           col2,\n           col3,\n           FIRST_VALUE( col2 ) OVER( PARTITION BY col1 ORDER BY col3 ) AS first_value,\n           LAST_VALUE( col2 ) OVER( PARTITION BY col1 ORDER BY col3 )  AS last_value,\n           LAST_VALUE( col2 ) OVER( PARTITION BY col1 ORDER BY col3\n                       ROWS BETWEEN UNBOUNDED PRECEDING\n                       AND UNBOUNDED FOLLOWING )                       AS last_value_correct\n          FROM demo_update\n          INTO TABLE @DATA(result).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAnonymousFieldWithCase",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE FROM any_table\n      FIELDS CASE WHEN any_field IS INITIAL THEN @abap_true END\n      INTO @DATA(lv_any).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE FROM any_table\n      FIELDS CASE WHEN any_field IS INITIAL THEN @abap_true END\n      INTO @DATA(lv_any).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSelectSingleForUpdate",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE FOR UPDATE * FROM any_dtab\n      INTO ls_any\n      WHERE any_key = 1.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE FOR UPDATE * FROM any_dtab\n      INTO ls_any\n      WHERE any_key = 1.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIntoListWithInlineDeclarations",
+   "config": {
+    "MaxLineLength": 100,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n    SELECT f1, f2, f3\n      FROM any_dtab\n      INTO ( @DATA(lv_var_1_with_long_name), @DATA(lv_var_2_with_very_long_name), @DATA(lv_var_3_with_long_name) ).\n    ENDSELECT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT f1, f2, f3\n      FROM any_dtab\n      INTO ( @DATA(lv_var_1_with_long_name), @DATA(lv_var_2_with_very_long_name),\n             @DATA(lv_var_3_with_long_name) ).\n    ENDSELECT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testSingleFieldWithWindowExpression",
+   "config": {
+    "MaxLineLength": 120,
+    "ComplexSelectListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleSelectListLayout": "SelectListLayout.DERIVE",
+    "ComplexGroupByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleGroupByListLayout": "SelectListLayout.DERIVE",
+    "ComplexOrderByListLayout": "SelectListLayout.MULTI_LINE",
+    "SimpleOrderByListLayout": "SelectListLayout.DERIVE",
+    "SelectIntoLayout": "SelectListLayout.DERIVE",
+    "ConsiderTildeAsComplex": true,
+    "AlignAsInSelectList": true,
+    "AlignAdditionsInOrderByList": false
+   },
+   "src": "  METHOD any_method.\n  SELECT SINGLE\n  FIRST_VALUE( any_field )\n    OVER( PARTITION BY other_field\n          ORDER BY other_field ASCENDING )\n    FROM any_table\n    INTO @DATA(lv_any_value).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  SELECT SINGLE FIRST_VALUE( any_field )\n                  OVER( PARTITION BY other_field\n                        ORDER BY other_field ASCENDING )\n    FROM any_table\n    INTO @DATA(lv_any_value).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,210 @@
+{
+ "ruleId": "DDL_POSITION_DEFINE",
+ "testClass": "DdlPositionDefineTest",
+ "defaults": {
+  "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+  "DefineIndent": 0,
+  "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+  "EntityNameIndent": 2,
+  "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+  "WithParamsIndent": 2,
+  "ParamsIndent": 4
+ },
+ "cases": [
+  {
+   "name": "testAlwaysBreakBeforeDefine",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 1,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "@EndUserText.label: 'Any Description' define\n   view\n entity\nC_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description'\n\n define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepDefineAsIs",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.KEEP_AS_IS",
+    "DefineIndent": 4,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "@EndUserText.label: 'Any Description' define\n   view\n entity\nC_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "exp": "@EndUserText.label: 'Any Description' define view entity C_AnyEntity\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNeverBreakBeforeEntityName",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "define\nview\nentity\nC_AnyEntity\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysBreakBeforeEntityName",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.ALWAYS",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "define\nview\nentity C_AnyEntity\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity\n  C_AnyEntity\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepEntityName",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.KEEP_AS_IS",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "define\nview\nentity C_AnyEntity\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlwaysBreakBeforeWithParameters",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "define view entity C_AnyEntity with\nparameters\n// comment\nP_AnyParam   : AnyType,\n     @Anno.subAnno: 'value'\n  P_OtherParam : OtherType,\n          /* multi-\n           * line\n           * comment */\n    P_ThirdParam : ThirdType as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  with parameters\n    // comment\n    P_AnyParam   : AnyType,\n    @Anno.subAnno: 'value'\n    P_OtherParam : OtherType,\n    /* multi-\n     * line\n     * comment */\n    P_ThirdParam : ThirdType as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testKeepWithParameters",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.KEEP_AS_IS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "define view entity C_AnyEntity with\nparameters\n// comment\nP_AnyParam   : AnyType,\n     @Anno.subAnno: 'value'\n  P_OtherParam : OtherType,\n    /* comment in correct position */\n    P_ThirdParam : ThirdType as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity with parameters\n    // comment\n    P_AnyParam   : AnyType,\n    @Anno.subAnno: 'value'\n    P_OtherParam : OtherType,\n    /* comment in correct position */\n    P_ThirdParam : ThirdType as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testNeverBreakBeforeWithParameters",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.NEVER",
+    "WithParamsIndent": 10,
+    "ParamsIndent": 4
+   },
+   "src": "define view entity C_AnyEntity with\nparameters\n// comment\nP_AnyParam   : AnyType,\n     @Anno.subAnno: 'value'\n  P_OtherParam : OtherType,\n    P_ThirdParam : ThirdType as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity C_AnyEntity with parameters\n    // comment\n    P_AnyParam   : AnyType,\n    @Anno.subAnno: 'value'\n    P_OtherParam : OtherType,\n    P_ThirdParam : ThirdType as select from I_AnyEntity as AnyAlias\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testMoveAttachedComments",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n// single-line comment\n/* multi-line\n   comment */\nwith\nparameters\n// comment\nP_AnyParam   : AnyType,\n  P_OtherParam : OtherType,\n    P_ThirdParam : ThirdType\n  // comment on select\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n  // single-line comment\n  /* multi-line\n     comment */\n  with parameters\n    // comment\n    P_AnyParam   : AnyType,\n    P_OtherParam : OtherType,\n    P_ThirdParam : ThirdType\n  // comment on select\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotMoveDetachedComments",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n// detached comment\n\nwith\nparameters\n// comment\nP_AnyParam   : AnyType,\n  P_OtherParam : OtherType,\n    P_ThirdParam : ThirdType\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n// detached comment\n\n  with parameters\n    // comment\n    P_AnyParam   : AnyType,\n    P_OtherParam : OtherType,\n    P_ThirdParam : ThirdType\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotMoveCommentedOutAnnotations",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n// @Anno.subAnno\n      // single-line comment\nwith\nparameters\n// comment\nP_AnyParam   : AnyType,\n  P_OtherParam : OtherType,\n    P_ThirdParam : ThirdType\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n// @Anno.subAnno\n  // single-line comment\n  with parameters\n    // comment\n    P_AnyParam   : AnyType,\n    P_OtherParam : OtherType,\n    P_ThirdParam : ThirdType\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotMoveComments",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "define view entity C_AnyEntity\n      // single-line comment\n// @Anno.subAnno\nwith\nparameters\n// comment\nP_AnyParam   : AnyType,\n  P_OtherParam : OtherType,\n    P_ThirdParam : ThirdType\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "exp": "define view entity C_AnyEntity\n      // single-line comment\n// @Anno.subAnno\n  with parameters\n    // comment\n    P_AnyParam   : AnyType,\n    P_OtherParam : OtherType,\n    P_ThirdParam : ThirdType\n\n  as select from I_AnyEntity as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n      AnyAlias.AnyNonKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testMultiCommentLineBeforeDefine",
+   "config": {
+    "BreakBeforeDefine": "DdlLineBreakWithoutNever.ALWAYS",
+    "DefineIndent": 0,
+    "BreakBeforeEntityName": "DdlLineBreak.NEVER",
+    "EntityNameIndent": 2,
+    "BreakBeforeWithParams": "DdlLineBreak.ALWAYS",
+    "WithParamsIndent": 2,
+    "ParamsIndent": 4
+   },
+   "src": "@Analytics.query: true\n/*+[hideWarning] { \"IDS\" : [ \"KEY_CHECK\" ]  } */  // any comment\ndefine view entity C_AnyQuery\n  as select from I_AnySource\n{\n  AnyField,\n  OtherField\n}",
+   "exp": "@Analytics.query: true\n\n/*+[hideWarning] { \"IDS\" : [ \"KEY_CHECK\" ]  } */  // any comment\ndefine view entity C_AnyQuery\n  as select from I_AnySource\n{\n  AnyField,\n  OtherField\n}",
+   "flags": {}
+  }
+ ]
+}

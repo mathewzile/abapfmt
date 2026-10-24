@@ -1,0 +1,232 @@
+{
+ "ruleId": "ALIGN_METHODS_REDEFINITION",
+ "testClass": "AlignMethodsRedefinitionTest",
+ "defaults": {
+  "ContinueAfterKeyword": "ChangeType.ALWAYS",
+  "ContinueAfterMethodName": "ChangeType.ALWAYS",
+  "AlignAcrossEmptyLines": true,
+  "AlignAcrossCommentLines": true
+ },
+ "cases": [
+  {
+   "name": "testSingleDeclarations",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS method_name\n    REDEFINITION. \" comment\n    METHODS another_method_name\n    REDEFINITION ##PRAGMA.\n    METHODS yet_another_method_name\n    FINAL REDEFINITION. \" other comment\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS method_name             REDEFINITION.       \" comment\n    METHODS another_method_name     REDEFINITION ##PRAGMA.\n    METHODS yet_another_method_name FINAL REDEFINITION. \" other comment\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testChain",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS:\n      method_name\n        REDEFINITION,\n      another_method_name\n        REDEFINITION,\n      yet_another_method_name\n        FINAL REDEFINITION.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS: method_name             REDEFINITION,\n             another_method_name     REDEFINITION,\n             yet_another_method_name FINAL REDEFINITION.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAcrossEmptyLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS method_name\n    REDEFINITION.\n    METHODS another_method_name\n    REDEFINITION.\n\n    METHODS yet_another_method_name\n    FINAL REDEFINITION.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS method_name             REDEFINITION.\n    METHODS another_method_name     REDEFINITION.\n\n    METHODS yet_another_method_name FINAL REDEFINITION.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNotAcrossEmptyLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS method_name\n    REDEFINITION.\n    METHODS another_method_name\n    REDEFINITION.\n\n    METHODS yet_another_method_name\n    FINAL REDEFINITION.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS method_name         REDEFINITION.\n    METHODS another_method_name REDEFINITION.\n\n    METHODS yet_another_method_name FINAL REDEFINITION.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAcrossCommentLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS method_name\n    REDEFINITION.\n* comment line\n    METHODS another_method_name\n    REDEFINITION.\n* another comment line\n    METHODS yet_another_method_name\n    FINAL REDEFINITION.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS method_name             REDEFINITION.\n* comment line\n    METHODS another_method_name     REDEFINITION.\n* another comment line\n    METHODS yet_another_method_name FINAL REDEFINITION.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNotAcrossCommentLines",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": false
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS method_name\n    REDEFINITION.\n* comment line\n    METHODS another_method_name\n    REDEFINITION.\n* another comment line\n    METHODS yet_another_method_name\n    FINAL REDEFINITION.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    METHODS method_name REDEFINITION.\n* comment line\n    METHODS another_method_name REDEFINITION.\n* another comment line\n    METHODS yet_another_method_name FINAL REDEFINITION.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testAlwaysContinue",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS method_name REDEFINITION.\n\n  METHODS another_method_name\n  REDEFINITION.\n\n  METHODS\n  yet_another_method_name FINAL REDEFINITION.\n\n  METHODS:\n    if_yet_another_interface~any_method_name\n      REDEFINITION,\n    if_yet_another_interface~other_method_name\n      REDEFINITION,\n    if_yet_another_interface~create\n      REDEFINITION.",
+   "exp": "  METHODS method_name REDEFINITION.\n\n  METHODS another_method_name REDEFINITION.\n\n  METHODS yet_another_method_name FINAL REDEFINITION.\n\n  METHODS: if_yet_another_interface~any_method_name   REDEFINITION,\n           if_yet_another_interface~other_method_name REDEFINITION,\n           if_yet_another_interface~create            REDEFINITION.",
+   "flags": {}
+  },
+  {
+   "name": "testKeepContinueAfterKeyword",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS method_name REDEFINITION.\n\n  METHODS another_method_name\n  REDEFINITION.\n\n  METHODS\n  yet_another_method_name FINAL REDEFINITION.\n\n  METHODS:\n    if_yet_another_interface~any_method_name\n      REDEFINITION,\n    if_yet_another_interface~other_method_name\n      REDEFINITION,\n    if_yet_another_interface~create\n      REDEFINITION.",
+   "exp": "  METHODS method_name REDEFINITION.\n\n  METHODS another_method_name REDEFINITION.\n\n  METHODS\n    yet_another_method_name FINAL REDEFINITION.\n\n  METHODS:\n    if_yet_another_interface~any_method_name   REDEFINITION,\n    if_yet_another_interface~other_method_name REDEFINITION,\n    if_yet_another_interface~create            REDEFINITION.",
+   "flags": {}
+  },
+  {
+   "name": "testNeverContinueAfterKeyword",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.NEVER",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS method_name REDEFINITION.\n\n  METHODS another_method_name\n  REDEFINITION.\n\n  METHODS\n  yet_another_method_name FINAL REDEFINITION.\n\n  METHODS:\n    if_yet_another_interface~any_method_name\n      REDEFINITION,\n    if_yet_another_interface~other_method_name\n      REDEFINITION,\n    if_yet_another_interface~create\n      REDEFINITION.",
+   "exp": "  METHODS\n    method_name REDEFINITION.\n\n  METHODS\n    another_method_name REDEFINITION.\n\n  METHODS\n    yet_another_method_name FINAL REDEFINITION.\n\n  METHODS:\n    if_yet_another_interface~any_method_name   REDEFINITION,\n    if_yet_another_interface~other_method_name REDEFINITION,\n    if_yet_another_interface~create            REDEFINITION.",
+   "flags": {}
+  },
+  {
+   "name": "testKeepContinueAfterMethodName",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS method_name REDEFINITION.\n\n  METHODS another_method_name\n  REDEFINITION.\n\n  METHODS\n  yet_another_method_name FINAL REDEFINITION.\n\n  METHODS:\n    if_yet_another_interface~any_method_name\n      REDEFINITION,\n    if_yet_another_interface~other_method_name\n      REDEFINITION,\n    if_yet_another_interface~create\n      REDEFINITION.",
+   "exp": "  METHODS method_name REDEFINITION.\n\n  METHODS another_method_name\n    REDEFINITION.\n\n  METHODS yet_another_method_name FINAL REDEFINITION.\n\n  METHODS: if_yet_another_interface~any_method_name\n             REDEFINITION,\n           if_yet_another_interface~other_method_name\n             REDEFINITION,\n           if_yet_another_interface~create\n             REDEFINITION.",
+   "flags": {}
+  },
+  {
+   "name": "testNeverContinueAfterMethodName",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.NEVER",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS method_name REDEFINITION.\n\n  METHODS another_method_name\n  REDEFINITION.\n\n  METHODS\n  yet_another_method_name FINAL REDEFINITION.\n\n  METHODS:\n    if_yet_another_interface~any_method_name\n      REDEFINITION,\n    if_yet_another_interface~other_method_name\n      REDEFINITION,\n    if_yet_another_interface~create\n      REDEFINITION.",
+   "exp": "  METHODS method_name\n    REDEFINITION.\n\n  METHODS another_method_name\n    REDEFINITION.\n\n  METHODS yet_another_method_name\n    FINAL REDEFINITION.\n\n  METHODS: if_yet_another_interface~any_method_name\n             REDEFINITION,\n           if_yet_another_interface~other_method_name\n             REDEFINITION,\n           if_yet_another_interface~create\n             REDEFINITION.",
+   "flags": {}
+  },
+  {
+   "name": "testKeepContinueAsIs",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.KEEP_AS_IS",
+    "ContinueAfterMethodName": "ChangeType.KEEP_AS_IS",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "    METHODS method_name REDEFINITION.\n\n    METHODS another_method_name\n    REDEFINITION.\n\n    METHODS\n    yet_another_method_name FINAL REDEFINITION.",
+   "exp": "    METHODS method_name REDEFINITION.\n\n    METHODS another_method_name\n      REDEFINITION.\n\n    METHODS\n      yet_another_method_name FINAL REDEFINITION.",
+   "flags": {}
+  },
+  {
+   "name": "testNeverContinue",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.NEVER",
+    "ContinueAfterMethodName": "ChangeType.NEVER",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS method_name REDEFINITION.\n\n  METHODS another_method_name\n  REDEFINITION.\n\n  METHODS\n  yet_another_method_name FINAL REDEFINITION.\n\n  METHODS: if_yet_another_interface~any_method_name   REDEFINITION,\n           if_yet_another_interface~other_method_name REDEFINITION,\n           if_yet_another_interface~create            REDEFINITION.",
+   "exp": "  METHODS\n    method_name\n      REDEFINITION.\n\n  METHODS\n    another_method_name\n      REDEFINITION.\n\n  METHODS\n    yet_another_method_name\n      FINAL REDEFINITION.\n\n  METHODS:\n    if_yet_another_interface~any_method_name\n      REDEFINITION,\n    if_yet_another_interface~other_method_name\n      REDEFINITION,\n    if_yet_another_interface~create\n      REDEFINITION.",
+   "flags": {}
+  },
+  {
+   "name": "testSkipNonRedefinitionMethods",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHODS setup.\n\n  METHODS: any_method\n    IMPORTING iv_param TYPE i.\n\n  METHODS other_method FOR TESTING.",
+   "exp": "  METHODS setup.\n\n  METHODS: any_method\n    IMPORTING iv_param TYPE i.\n\n  METHODS other_method FOR TESTING.",
+   "flags": {}
+  },
+  {
+   "name": "testNoSpaceAfterLineBreak",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "METHODS any_method\nREDEFINITION.\nMETHODS other_method.",
+   "exp": "METHODS any_method REDEFINITION.\nMETHODS other_method.",
+   "flags": {}
+  },
+  {
+   "name": "testMultiplePeriods",
+   "config": {
+    "ContinueAfterKeyword": "ChangeType.ALWAYS",
+    "ContinueAfterMethodName": "ChangeType.ALWAYS",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true
+   },
+   "src": "  METHOD any_method.\n  METHODS if_any_interface~medium_method_name\n    REDEFINITION.\n* comment line\n  METHODS if_any_interface~short_name\n    REDEFINITION...\n  METHODS if_any_interface~extra_long_method_name\n    REDEFINITION..\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  METHODS if_any_interface~medium_method_name     REDEFINITION.\n* comment line\n  METHODS if_any_interface~short_name             REDEFINITION...\n  METHODS if_any_interface~extra_long_method_name REDEFINITION..\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

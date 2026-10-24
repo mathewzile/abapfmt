@@ -1,0 +1,487 @@
+{
+ "ruleId": "ALIGN_SELECT_FROM",
+ "testClass": "AlignSelectFromTest",
+ "defaults": {
+  "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+  "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+  "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+  "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+  "AlignAsAcrossJoins": false,
+  "AlignOnAcrossJoins": false,
+  "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+ },
+ "cases": [
+  {
+   "name": "testIsConfigValueEnabled",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.BELOW_JOIN_WORD_2",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "",
+   "exp": "",
+   "flags": {},
+   "skipped": "assertion (assertTrue)"
+  },
+  {
+   "name": "testJoinBelowTableAfterJoin",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n        INNER JOIN other_dtab AS t2 ON t2~a = t1~a\n          LEFT OUTER JOIN third_dtab AS t3 ON t3~b = t2~a\n            INNER JOIN fourth_dtab AS t4 ON  t4~c = t3~b\n                                              AND t4~d = t3~d\n      FIELDS t1~a AS a1,\n             t1~b AS b1,\n             t2~c AS c2,\n             t3~d AS d3,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n           INNER JOIN other_dtab AS t2 ON t2~a = t1~a\n           LEFT OUTER JOIN third_dtab AS t3 ON t3~b = t2~a\n           INNER JOIN fourth_dtab AS t4 ON  t4~c = t3~b\n                                             AND t4~d = t3~d\n      FIELDS t1~a AS a1,\n             t1~b AS b1,\n             t2~c AS c2,\n             t3~d AS d3,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testJoinBelowTableAfterJoinNested",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM ( any_dtab AS t1\n           INNER JOIN\n             other_dtab AS t2 ON t2~any_col = t1~any_col )\n           LEFT OUTER JOIN\n           third_dtab AS t3 ON t3~other_col = t2~any_col\n             INNER JOIN\n             fourth_dtab AS t4 ON t4~other_col = t3~other_col\n      FIELDS t1~third_col AS any_alias,\n             t4~fifth_col AS other_alias\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM ( any_dtab AS t1\n             INNER JOIN other_dtab AS t2 ON t2~any_col = t1~any_col )\n           LEFT OUTER JOIN third_dtab AS t3 ON t3~other_col = t2~any_col\n           INNER JOIN fourth_dtab AS t4 ON t4~other_col = t3~other_col\n      FIELDS t1~third_col AS any_alias,\n             t4~fifth_col AS other_alias\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testJoinBelowPlus2TableBelowPlus2AsAligned",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": true,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n        INNER JOIN other_dtab AS t2 ON t2~a = t1~a\n          LEFT OUTER JOIN third_dtab AS t3 ON t3~b = t2~a\n            INNER JOIN fourth_dtab AS t4 ON  t4~c = t3~b\n                                              AND t4~d = t3~d\n      FIELDS t1~a AS a1,\n             t1~b AS b1,\n             t2~c AS c2,\n             t3~d AS d3,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM any_dtab                AS t1\n             INNER JOIN\n               other_dtab          AS t2 ON t2~a = t1~a\n                 LEFT OUTER JOIN\n                   third_dtab      AS t3 ON t3~b = t2~a\n                     INNER JOIN\n                       fourth_dtab AS t4 ON  t4~c = t3~b\n                                     AND t4~d = t3~d\n      FIELDS t1~a AS a1,\n             t1~b AS b1,\n             t2~c AS c2,\n             t3~d AS d3,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testJoinBelowPlus2TableBelowPlus2AsAlignedNested",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": true,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM ( any_dtab AS t1\n           INNER JOIN\n             other_dtab AS t2 ON t2~any_col = t1~any_col )\n           LEFT OUTER JOIN\n           third_dtab AS t3 ON t3~other_col = t2~any_col\n             INNER JOIN\n             fourth_dtab AS t4 ON t4~other_col = t3~other_col\n      FIELDS t1~third_col AS any_alias,\n             t4~fifth_col AS other_alias\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM ( any_dtab       AS t1\n               INNER JOIN\n                 other_dtab AS t2 ON t2~any_col = t1~any_col )\n             LEFT OUTER JOIN\n               third_dtab      AS t3 ON t3~other_col = t2~any_col\n                 INNER JOIN\n                   fourth_dtab AS t4 ON t4~other_col = t3~other_col\n      FIELDS t1~third_col AS any_alias,\n             t4~fifth_col AS other_alias\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testJoinBelowPlus4TableAfterJoinOnBelowPlus2",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_4",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.BELOW_JOIN_WORD_2",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n        INNER JOIN other_dtab AS t2 ON t2~a = t1~a\n          LEFT OUTER JOIN third_dtab AS t3 ON t3~b = t2~a\n            INNER JOIN fourth_dtab AS t4 ON  t4~c = t3~b\n                                              AND t4~d = t3~d\n      FIELDS t1~a AS a1,\n             t1~b AS b1,\n             t2~c AS c2,\n             t3~d AS d3,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n               INNER JOIN other_dtab AS t2\n                     ON t2~a = t1~a\n                   LEFT OUTER JOIN third_dtab AS t3\n                        ON t3~b = t2~a\n                       INNER JOIN fourth_dtab AS t4\n                             ON  t4~c = t3~b\n                                  AND t4~d = t3~d\n      FIELDS t1~a AS a1,\n             t1~b AS b1,\n             t2~c AS c2,\n             t3~d AS d3,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testJoinBelowPlus4TableAfterJoinOnBelowPlus2Nested",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_4",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.BELOW_JOIN_WORD_2",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM ( any_dtab AS t1\n           INNER JOIN\n             other_dtab AS t2 ON t2~any_col = t1~any_col )\n           LEFT OUTER JOIN\n           third_dtab AS t3 ON t3~other_col = t2~any_col\n             INNER JOIN\n             fourth_dtab AS t4 ON t4~other_col = t3~other_col\n      FIELDS t1~third_col AS any_alias,\n             t4~fifth_col AS other_alias\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM ( any_dtab AS t1\n                 INNER JOIN other_dtab AS t2\n                       ON t2~any_col = t1~any_col )\n               LEFT OUTER JOIN third_dtab AS t3\n                    ON t3~other_col = t2~any_col\n                   INNER JOIN fourth_dtab AS t4\n                         ON t4~other_col = t3~other_col\n      FIELDS t1~third_col AS any_alias,\n             t4~fifth_col AS other_alias\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAllBelowClientBelow",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.BELOW_PLUS_0",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_0",
+    "SelectOnPosition": "SelectFromOnPosition.BELOW_JOIN",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1 LEFT OUTER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col USING CLIENT '123'\n      FIELDS t2~other_col, t1~any_col, t2~third_col\n      INTO TABLE @FINAL(lt_any_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM\n      any_dtab AS t1\n      LEFT OUTER JOIN\n      other_dtab AS t2\n      ON t1~any_col = t2~any_col\n      USING CLIENT '123'\n      FIELDS t2~other_col, t1~any_col, t2~third_col\n      INTO TABLE @FINAL(lt_any_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepClientHandling",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.KEEP_AS_IS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1 LEFT OUTER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col USING ALL CLIENTS\n      FIELDS t2~other_col, t1~any_col, t2~third_col\n      INTO TABLE @FINAL(lt_any_table).\n    SELECT\n      FROM any_dtab AS t1 LEFT OUTER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col USING CLIENTS IN @lt_client\n      FIELDS t2~other_col, t1~any_col, t2~third_col\n      INTO TABLE @FINAL(lt_any_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n           LEFT OUTER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col USING ALL CLIENTS\n      FIELDS t2~other_col, t1~any_col, t2~third_col\n      INTO TABLE @FINAL(lt_any_table).\n    SELECT\n      FROM any_dtab AS t1\n           LEFT OUTER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col USING CLIENTS IN @lt_client\n      FIELDS t2~other_col, t1~any_col, t2~third_col\n      INTO TABLE @FINAL(lt_any_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testClientToOwnLineOnlyAfterJoins",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT *\n      FROM any_dtab CLIENT SPECIFIED\n      INTO TABLE @DATA(lt_any_table).\n\n    SELECT\n      FROM any_dtab\n      USING CLIENT '123'\n      FIELDS any_col, other_col\n      INTO TABLE @DATA(lt_any_table).\n\n    SELECT\n      FROM any_dtab \" comment\n      USING CLIENT '123'\n      FIELDS any_col, other_col\n      INTO TABLE @DATA(lt_any_table).\n\n    SELECT\n      FROM any_dtab AS t1 LEFT OUTER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col USING CLIENT '123'\n      FIELDS t2~other_col, t1~any_col, t2~third_col\n      INTO TABLE @DATA(lt_other_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT *\n      FROM any_dtab CLIENT SPECIFIED\n      INTO TABLE @DATA(lt_any_table).\n\n    SELECT\n      FROM any_dtab USING CLIENT '123'\n      FIELDS any_col, other_col\n      INTO TABLE @DATA(lt_any_table).\n\n    SELECT\n      FROM any_dtab \" comment\n      USING CLIENT '123'\n      FIELDS any_col, other_col\n      INTO TABLE @DATA(lt_any_table).\n\n    SELECT\n      FROM any_dtab AS t1\n           LEFT OUTER JOIN other_dtab AS t2 ON t1~any_col = t2~any_col\n           USING CLIENT '123'\n      FIELDS t2~other_col, t1~any_col, t2~third_col\n      INTO TABLE @DATA(lt_other_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignAsAndOn",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": true,
+    "AlignOnAcrossJoins": true,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n        INNER JOIN other_dtab AS t2 ON t2~a = t1~a\n          LEFT OUTER JOIN third_dtab AS t3 ON t3~b = t2~a\n            INNER JOIN fourth_dtab AS t4 ON  t4~c = t3~b\n                                              AND t4~d = t3~d\n      FIELDS t1~a AS a1,\n             t1~b AS b1,\n             t2~c AS c2,\n             t3~d AS d3,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM any_dtab                   AS t1\n           INNER JOIN other_dtab      AS t2 ON t2~a = t1~a\n           LEFT OUTER JOIN third_dtab AS t3 ON t3~b = t2~a\n           INNER JOIN fourth_dtab     AS t4 ON  t4~c = t3~b\n                                                 AND t4~d = t3~d\n      FIELDS t1~a AS a1,\n             t1~b AS b1,\n             t2~c AS c2,\n             t3~d AS d3,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDontAlignAsButAlignOn",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": true,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n        INNER JOIN other_dtab AS t2 ON t2~a = t1~a\n          LEFT OUTER JOIN third_dtab AS t3 ON t3~b = t2~a\n            INNER JOIN fourth_dtab AS t4 ON  t4~c = t3~b\n                                              AND t4~d = t3~d\n      FIELDS t1~a AS a1,\n             t1~b AS b1,\n             t2~c AS c2,\n             t3~d AS d3,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n           INNER JOIN other_dtab AS t2      ON t2~a = t1~a\n           LEFT OUTER JOIN third_dtab AS t3 ON t3~b = t2~a\n           INNER JOIN fourth_dtab AS t4     ON  t4~c = t3~b\n                                                 AND t4~d = t3~d\n      FIELDS t1~a AS a1,\n             t1~b AS b1,\n             t2~c AS c2,\n             t3~d AS d3,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testHierarchyUnchanged",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM HIERARCHY(\n             SOURCE any_cds\n             CHILD TO PARENT ASSOCIATION _relat\n             START WHERE id = 'A'\n             SIBLINGS ORDER BY id )\n      FIELDS any_col,\n             other_col,\n             hierarchy_level\n      INTO TABLE @DATA(hierarchy).\n\n    SELECT agg~*\n           FROM HIERARCHY_DESCENDANTS_AGGREGATE(\n                  SOURCE HIERARCHY(\n                           SOURCE any_cds\n                           CHILD TO PARENT ASSOCIATION _relat\n                           START WHERE id = 'A'\n                           SIBLINGS ORDER BY id )\n                  MEASURES MIN( num ) AS min,\n                           MAX( num ) AS max,\n                           SUM( num ) AS sum,\n                           COUNT( * ) AS cnt\n                  WHERE hierarchy_level <= @level ) AS agg\n           INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM HIERARCHY(\n             SOURCE any_cds\n             CHILD TO PARENT ASSOCIATION _relat\n             START WHERE id = 'A'\n             SIBLINGS ORDER BY id )\n      FIELDS any_col,\n             other_col,\n             hierarchy_level\n      INTO TABLE @DATA(hierarchy).\n\n    SELECT agg~*\n           FROM HIERARCHY_DESCENDANTS_AGGREGATE(\n                  SOURCE HIERARCHY(\n                           SOURCE any_cds\n                           CHILD TO PARENT ASSOCIATION _relat\n                           START WHERE id = 'A'\n                           SIBLINGS ORDER BY id )\n                  MEASURES MIN( num ) AS min,\n                           MAX( num ) AS max,\n                           SUM( num ) AS sum,\n                           COUNT( * ) AS cnt\n                  WHERE hierarchy_level <= @level ) AS agg\n           INTO TABLE @DATA(lt_any_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCdsViewWithParameter",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT * FROM any_cds( p_any = @cs_any_struc-any_comp ) AS t1\n      INNER JOIN @lt_any_table AS t2 ON t2~any_col = t1~other_col AND t2~third_col = t1~fourth_col\n      WHERE t1~fifth_col = @ls_any_struc-lo_any_instance->mv_any_attribute\n        AND ( t1~col_6 EQ 'T1' OR t1~col_7 EQ 'T2' )\n      APPENDING CORRESPONDING FIELDS OF TABLE @cs_any_struc-table ##DB_FEATURE_MODE[TABLE_LEN_MAX1].\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT * FROM any_cds( p_any = @cs_any_struc-any_comp ) AS t1\n                  INNER JOIN @lt_any_table AS t2 ON t2~any_col = t1~other_col AND t2~third_col = t1~fourth_col\n      WHERE t1~fifth_col = @ls_any_struc-lo_any_instance->mv_any_attribute\n        AND ( t1~col_6 EQ 'T1' OR t1~col_7 EQ 'T2' )\n      APPENDING CORRESPONDING FIELDS OF TABLE @cs_any_struc-table ##DB_FEATURE_MODE[TABLE_LEN_MAX1].\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testWithCommonTableExpressions",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    WITH\n      +any_cte AS (\n        SELECT any_dtab~any_id, any_name, other_id, value_from, value_to\n          FROM any_dtab\n           INNER JOIN other_dtab ON other_dtab~any_id = any_dtab~any_id\n          WHERE any_dtab~any_id BETWEEN @from_id AND @to_id ),\n\n      +other_cte AS (\n        SELECT any_id, other_id, SUM( any_value ) AS sum_value\n          FROM third_dtab\n          WHERE any_id BETWEEN @from_id AND @to_id\n          GROUP BY any_id, other_id ),\n\n      +result_cte( name, name2, name3, name4, name5 ) AS (\n        SELECT any_name, c~other_id, value_from, value_to, sum_value\n          FROM +any_cte AS c\n            INNER JOIN +other_cte AS s ON  c~any_id = s~any_id\n                                       AND c~other_id = s~other_id )\n\n      SELECT * FROM +result_cte\n        ORDER BY name, name2\n        INTO TABLE @FINAL(result1).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    WITH\n      +any_cte AS (\n        SELECT any_dtab~any_id, any_name, other_id, value_from, value_to\n          FROM any_dtab\n               INNER JOIN other_dtab ON other_dtab~any_id = any_dtab~any_id\n          WHERE any_dtab~any_id BETWEEN @from_id AND @to_id ),\n\n      +other_cte AS (\n        SELECT any_id, other_id, SUM( any_value ) AS sum_value\n          FROM third_dtab\n          WHERE any_id BETWEEN @from_id AND @to_id\n          GROUP BY any_id, other_id ),\n\n      +result_cte( name, name2, name3, name4, name5 ) AS (\n        SELECT any_name, c~other_id, value_from, value_to, sum_value\n          FROM +any_cte AS c\n               INNER JOIN +other_cte AS s ON  c~any_id = s~any_id\n                                          AND c~other_id = s~other_id )\n\n      SELECT * FROM +result_cte\n        ORDER BY name, name2\n        INTO TABLE @FINAL(result1).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testOnAfterOn",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.BELOW_JOIN_PLUS_2",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n  SELECT\n    FROM any_dtab AS t1\n        INNER JOIN other_dtab AS t2 ON t2~d = t1~d\n        LEFT OUTER JOIN third_dtab AS t3\n            INNER JOIN fourth_dtab AS t4 ON t4~l = t3~l ON t3~l = t2~d\n    FIELDS t1~a AS a1,\n           t2~d AS d2,\n           t3~i AS i3,\n           t4~l AS l4\n    INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  SELECT\n    FROM any_dtab AS t1\n           INNER JOIN\n             other_dtab AS t2\n               ON t2~d = t1~d\n               LEFT OUTER JOIN\n                 third_dtab AS t3\n                   INNER JOIN\n                     fourth_dtab AS t4\n                       ON t4~l = t3~l\n                   ON t3~l = t2~d\n    FIELDS t1~a AS a1,\n           t2~d AS d2,\n           t3~i AS i3,\n           t4~l AS l4\n    INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testOnAfterOnBelowJoin",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.BELOW_JOIN",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n  SELECT\n    FROM any_dtab AS t1\n        INNER JOIN other_dtab AS t2 ON t2~d = t1~d\n        LEFT OUTER JOIN third_dtab AS t3\n            INNER JOIN fourth_dtab AS t4 ON t4~l = t3~l ON t3~l = t2~d\n    FIELDS t1~a AS a1,\n           t2~d AS d2,\n           t3~i AS i3,\n           t4~l AS l4\n    INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  SELECT\n    FROM any_dtab AS t1\n           INNER JOIN other_dtab AS t2\n           ON t2~d = t1~d\n             LEFT OUTER JOIN third_dtab AS t3\n               INNER JOIN fourth_dtab AS t4\n               ON t4~l = t3~l\n             ON t3~l = t2~d\n    FIELDS t1~a AS a1,\n           t2~d AS d2,\n           t3~i AS i3,\n           t4~l AS l4\n    INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDynamicFrom",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT SINGLE ('any_col')\n           FROM (from)\n           WHERE (where)\n           INTO ( NEW @lr_any ).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT SINGLE ('any_col')\n           FROM (from)\n           WHERE (where)\n           INTO ( NEW @lr_any ).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testParenthesesAtEndOfFrom",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.CONTINUE",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1 CROSS JOIN ( other_dtab AS t2 CROSS JOIN third_dtab AS t3 )\n      FIELDS t1~a AS a1,\n             t2~b AS b2,\n             t3~c AS c3\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n           CROSS JOIN ( other_dtab AS t2\n                        CROSS JOIN third_dtab AS t3 )\n      FIELDS t1~a AS a1,\n             t2~b AS b2,\n             t3~c AS c3\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testOnWithParenthesisAfterTableName",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n      SELECT any_col\n        APPENDING CORRESPONDING FIELDS OF TABLE ct_any_table\n        FROM any_dtab AS t1\n        INNER JOIN other_dtab AS t2\n          ON (     t2~other_col = t1~other_col\n               AND t2~third_col = t1~third_col )\n        WHERE t2~other_col = mv_any_value.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n      SELECT any_col\n        APPENDING CORRESPONDING FIELDS OF TABLE ct_any_table\n        FROM any_dtab AS t1\n               INNER JOIN\n                 other_dtab AS t2 ON (     t2~other_col = t1~other_col\n                                       AND t2~third_col = t1~third_col )\n        WHERE t2~other_col = mv_any_value.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCommentBetweenTableNameAndOn",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT t1~any_col INTO TABLE lv_any_value\n           FROM any_dtab AS t2 LEFT OUTER JOIN other_dtab AS t1 \" comment\n           ON t2~any_col = t1~other_col AND\n              t1~any_col = sy-langu\n           ORDER BY t1~any_col t1~other_col.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT t1~any_col INTO TABLE lv_any_value\n           FROM any_dtab AS t2\n                  LEFT OUTER JOIN\n                    other_dtab AS t1 \" comment\n                                     ON t2~any_col = t1~other_col AND\n                                        t1~any_col = sy-langu\n           ORDER BY t1~any_col t1~other_col.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMultipleParentheses",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_0",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM ( ( ( any_dtab AS t1\n        INNER JOIN other_dtab AS t2 ON t2~a = t1~a )\n        LEFT OUTER JOIN third_dtab AS t3 ON t3~b = t2~a )\n          INNER JOIN fourth_dtab AS t4 ON  t4~c = t3~b\n                                       AND t4~d = t3~d )\n      FIELDS t1~a AS a1,\n             t2~c AS c2,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM ( ( ( any_dtab AS t1\n                 INNER JOIN\n                   other_dtab AS t2 ON t2~a = t1~a )\n               LEFT OUTER JOIN\n                 third_dtab AS t3 ON t3~b = t2~a )\n             INNER JOIN\n               fourth_dtab AS t4 ON  t4~c = t3~b\n                              AND t4~d = t3~d )\n      FIELDS t1~a AS a1,\n             t2~c AS c2,\n             t3~e AS e3,\n             t4~f AS f4\n      INTO CORRESPONDING FIELDS OF TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDBFeatureModePragma",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT any_col, COUNT(*) AS other_col\n      FROM    any_dtab ##DB_FEATURE_MODE[TABLE_LEN_MAX1]\n      WHERE any_col IN @lt_any_table\n      GROUP BY any_col\n      INTO TABLE @lt_other_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT any_col, COUNT(*) AS other_col\n      FROM any_dtab ##DB_FEATURE_MODE[TABLE_LEN_MAX1]\n      WHERE any_col IN @lt_any_table\n      GROUP BY any_col\n      INTO TABLE @lt_other_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testJoinWithoutOptionalInner",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n      JOIN other_dtab AS t2 ON t2~any_col = t1~any_col\n      FIELDS DISTINCT t2~other_col\n      WHERE t1~third_col = @lv_any_value\n      INTO TABLE @lt_any_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT\n      FROM any_dtab AS t1\n             JOIN\n               other_dtab AS t2 ON t2~any_col = t1~any_col\n      FIELDS DISTINCT t2~other_col\n      WHERE t1~third_col = @lv_any_value\n      INTO TABLE @lt_any_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testJoinWithoutInnerLeftOrRight",
+   "config": {
+    "FirstTableNamePosition": "SelectFromTablePosition.CONTINUE",
+    "SelectJoinIndent": "SelectFromJoinIndent.PLUS_2",
+    "FurtherTableNamePositions": "SelectFromTablePosition.BELOW_PLUS_2",
+    "SelectOnPosition": "SelectFromOnPosition.CONTINUE",
+    "AlignAsAcrossJoins": false,
+    "AlignOnAcrossJoins": false,
+    "SelectClientPosition": "SelectFromClientPosition.OWN_LINE_AFTER_JOINS"
+   },
+   "src": "  METHOD any_method.\n    SELECT *\n      FROM dtab1\n      JOIN\n      dtab2 ON dtab1~any_id = dtab2~any_id\n      JOIN\n      dtab3 ON dtab3~other_id = dtab2~other_id\n      INTO TABLE @DATA(lt_table).\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    SELECT *\n      FROM dtab1\n             JOIN\n               dtab2 ON dtab1~any_id = dtab2~any_id\n                 JOIN\n                   dtab3 ON dtab3~other_id = dtab2~other_id\n      INTO TABLE @DATA(lt_table).\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

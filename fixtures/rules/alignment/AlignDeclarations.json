@@ -1,0 +1,1965 @@
+{
+ "ruleId": "ALIGN_DECLARATIONS",
+ "testClass": "AlignDeclarationsTest",
+ "defaults": {
+  "ExecuteOnClassDefAndInterfaces": true,
+  "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+  "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+  "AlignAcrossEmptyLines": true,
+  "AlignAcrossCommentLines": true,
+  "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+  "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+  "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+  "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+  "FillPercentageToJustifyOwnColumn": 20,
+  "MaxLineLength": 130,
+  "CondenseInnerSpaces": true
+ },
+ "cases": [
+  {
+   "name": "testConstantsChain",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    CONSTANTS: lc_item_list_price_1200 TYPE ty_list_price VALUE 1200,\n      lc_item_amount_1000 TYPE ty_amount VALUE 1000,\n               lc_num_process TYPE ty_sequence_number VALUE    1,\n          lc_final_date TYPE ty_date VALUE '20201012'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CONSTANTS: lc_item_list_price_1200 TYPE ty_list_price      VALUE 1200,\n               lc_item_amount_1000     TYPE ty_amount          VALUE 1000,\n               lc_num_process          TYPE ty_sequence_number VALUE 1,\n               lc_final_date           TYPE ty_date            VALUE '20201012'.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testConstantsBlock",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    \" the rule aligns subsequent declaration lines just like chains\n    CONSTANTS lc_item_name_smartphone TYPE ty_item_name VALUE 'SMARTPHONE' ##NO_TEXT.\n    CONSTANTS lc_item_name_subscription TYPE ty_item_name      VALUE 'SUBSCRIPTION'  ##NO_TEXT.\n    CONSTANTS lc_item_name_service TYPE ty_item_name VALUE 'SERVICE' ##NO_TEXT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" the rule aligns subsequent declaration lines just like chains\n    CONSTANTS lc_item_name_smartphone   TYPE ty_item_name VALUE 'SMARTPHONE' ##NO_TEXT.\n    CONSTANTS lc_item_name_subscription TYPE ty_item_name VALUE 'SUBSCRIPTION'  ##NO_TEXT.\n    CONSTANTS lc_item_name_service      TYPE ty_item_name VALUE 'SERVICE' ##NO_TEXT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDataChain",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    DATA: ls_any_item TYPE ty_item,\n      lo_any_contract TYPE REF TO ty_contract,\n          ls_change TYPE ty_change,\n        lt_table TYPE ty_ts_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA: ls_any_item     TYPE ty_item,\n          lo_any_contract TYPE REF TO ty_contract,\n          ls_change       TYPE ty_change,\n          lt_table        TYPE ty_ts_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDataBlockWithNoCommentAlign",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    \" if only a single declaration (or a very small ratio of them) has a VALUE, a comment, etc.,\n    \" no extra column is created for it\n    DATA lth_any_table            TYPE ty_th_table. \" only line with a comment\n    DATA lo_contract TYPE REF TO cl_contract  ##NEEDED.\n    DATA      ls_any_struc  TYPE if_contract=>ty_s_struc.\n    DATA mv_any_bool_value TYPE abap_bool VALUE abap_false ##NO_TEXT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" if only a single declaration (or a very small ratio of them) has a VALUE, a comment, etc.,\n    \" no extra column is created for it\n    DATA lth_any_table     TYPE ty_th_table. \" only line with a comment\n    DATA lo_contract       TYPE REF TO cl_contract ##NEEDED.\n    DATA ls_any_struc      TYPE if_contract=>ty_s_struc.\n    DATA mv_any_bool_value TYPE abap_bool VALUE abap_false ##NO_TEXT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testFieldSymbolsChainWithCommentAlign",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    FIELD-SYMBOLS:\n         <fs_item_data> TYPE ty_s_item_data, \" first comment line\n      <lfs_invoice_amt> LIKE LINE OF its_invoice,\n    <ls_contract_data> TYPE ty_s_contract, \" second comment line\n   <ls_param> LIKE LINE OF mt_parameter.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    FIELD-SYMBOLS:\n      <fs_item_data>     TYPE ty_s_item_data,       \" first comment line\n      <lfs_invoice_amt>  LIKE LINE OF its_invoice,\n      <ls_contract_data> TYPE ty_s_contract,        \" second comment line\n      <ls_param>         LIKE LINE OF mt_parameter.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testFieldSymbolsChainWithNoCommentAlign",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 75,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    FIELD-SYMBOLS:\n         <fs_item_data> TYPE ty_s_item_data, \" first comment line\n      <lfs_invoice_amt> LIKE LINE OF its_invoice,\n    <ls_contract_data> TYPE ty_s_contract, \" second comment line\n   <ls_param> LIKE LINE OF mt_parameter.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    FIELD-SYMBOLS:\n      <fs_item_data>     TYPE ty_s_item_data, \" first comment line\n      <lfs_invoice_amt>  LIKE LINE OF its_invoice,\n      <ls_contract_data> TYPE ty_s_contract, \" second comment line\n      <ls_param>         LIKE LINE OF mt_parameter.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testFieldSymbolsBlock",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    FIELD-SYMBOLS <fs_item_data> TYPE ty_s_item_data.\n    FIELD-SYMBOLS         <lfs_invoice_amt> LIKE LINE OF          its_invoice.\n    FIELD-SYMBOLS     <ls_contract_data> TYPE ty_s_contract.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    FIELD-SYMBOLS <fs_item_data>     TYPE ty_s_item_data.\n    FIELD-SYMBOLS <lfs_invoice_amt>  LIKE LINE OF its_invoice.\n    FIELD-SYMBOLS <ls_contract_data> TYPE ty_s_contract.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignAcrossCommentsAndEmptyLines",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    \" alignment across comments and empty lines (depending on configuration):\n    DATA lv_value TYPE i.\n    \" comment\n    DATA lv_long_variable_name TYPE string.\n\n    DATA lts_sorted_table LIKE its_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" alignment across comments and empty lines (depending on configuration):\n    DATA lv_value              TYPE i.\n    \" comment\n    DATA lv_long_variable_name TYPE string.\n\n    DATA lts_sorted_table      LIKE its_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDontAlignAcrossCommentsAndEmptyLines",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": false,
+    "AlignAcrossCommentLines": false,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    \" no alignment across comments and empty lines (depending on configuration):\n    DATA lv_value TYPE i.\n    DATA lv_value_2 TYPE i.\n    \" comment\n    DATA lv_long_variable_name TYPE string.\n    DATA lv_long_variable_name_2 TYPE string.\n\n    DATA lts_sorted_table LIKE its_table.\n    DATA lts_sorted_table_2 LIKE its_table.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" no alignment across comments and empty lines (depending on configuration):\n    DATA lv_value   TYPE i.\n    DATA lv_value_2 TYPE i.\n    \" comment\n    DATA lv_long_variable_name   TYPE string.\n    DATA lv_long_variable_name_2 TYPE string.\n\n    DATA lts_sorted_table   LIKE its_table.\n    DATA lts_sorted_table_2 LIKE its_table.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testIdentifierWithLengthInParens",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    \" identifiers with length information in parentheses:\n    DATA: lv_textdat1(20) TYPE c,\n      lv_textdat2(20)  TYPE       c.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" identifiers with length information in parentheses:\n    DATA: lv_textdat1(20) TYPE c,\n          lv_textdat2(20) TYPE c.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTypesBeginOf",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN of xyz,\n           a TYPE x,\n           b TYPE y,\n           c TYPE z,\n      END OF xyz.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN of xyz,\n             a TYPE x,\n             b TYPE y,\n             c TYPE z,\n           END OF xyz.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testTypesBeginOfWithComments",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN of xyz,\n           a TYPE x, \" comment\n           b TYPE y,\n           c TYPE z, \" comment\n      END OF xyz.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN of xyz,\n             a TYPE x, \" comment\n             b TYPE y,\n             c TYPE z, \" comment\n           END OF xyz.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testTypesBeginOfTypesEndOf",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN OF ty_s_struc,\n    comp TYPE i.\n    TYPES END OF ty_s_struc.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN OF ty_s_struc,\n             comp TYPE i.\n    TYPES  END OF ty_s_struc.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testTypesBeginOfIncludeTypesEndOf",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN OF ty_s_struc,\n    comp TYPE i.\n    INCLUDE TYPE ty_s_include.\n    TYPES END OF ty_s_struc.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN OF ty_s_struc,\n             comp TYPE i.\n             INCLUDE TYPE ty_s_include.\n    TYPES  END OF ty_s_struc.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testTypesBeginOfBetweenOtherTypes",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES ty_any TYPE string.\n    TYPES ty_other TYPE string.\n    TYPES: BEGIN OF ty_s_struc,\n    comp TYPE i.\n    INCLUDE TYPE ty_s_include.\n    TYPES: END OF ty_s_struc.\n    TYPES ty_any_long TYPE string.\n    TYPES ty_other_long TYPE string.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES ty_any   TYPE string.\n    TYPES ty_other TYPE string.\n    TYPES: BEGIN OF ty_s_struc,\n             comp TYPE i.\n             INCLUDE TYPE ty_s_include.\n    TYPES: END OF ty_s_struc.\n    TYPES ty_any_long   TYPE string.\n    TYPES ty_other_long TYPE string.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testBeginOfWithInclude",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES:\n    BEGIN OF ty_s_any_struc,\n    component_a TYPE i,\n    component_b_long  TYPE i.\n    INCLUDE TYPE ty_s_include.\n    TYPES:\n    component_c TYPE i,\n    END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES:\n      BEGIN OF ty_s_any_struc,\n        component_a      TYPE i,\n        component_b_long TYPE i.\n        INCLUDE TYPE ty_s_include.\n    TYPES:\n        component_c      TYPE i,\n      END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testBeginOfWithIncludeAndComment",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN OF ty_s_any_struc,\n    component_a TYPE i,\n    comp_b TYPE string.\n    INCLUDE TYPE ty_s_include. \" comment\n    TYPES: END OF ty_s_any_struc.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN OF ty_s_any_struc,\n             component_a TYPE i,\n             comp_b      TYPE string.\n             INCLUDE TYPE ty_s_include. \" comment\n    TYPES: END OF ty_s_any_struc.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testBeginOfWithIncludeAndCommentLines",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES:\n    \" comment\n    BEGIN OF ty_s_any_struc,\n    component_a TYPE i,\n    component_b_long  TYPE i.\n    \" comment\n    INCLUDE TYPE ty_s_include.\n    TYPES:\n    \" comment\n    component_c TYPE i,\n    \" comment\n    END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES:\n      \" comment\n      BEGIN OF ty_s_any_struc,\n        component_a      TYPE i,\n        component_b_long TYPE i.\n        \" comment\n        INCLUDE TYPE ty_s_include.\n    TYPES:\n        \" comment\n        component_c      TYPE i,\n        \" comment\n      END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNestedBeginOf",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES:\n    BEGIN OF ty_s_any_struc,\n    component_a TYPE i,\n    BEGIN OF ty_s_inner,\n    comp_1_long TYPE i,\n    comp_2 TYPE i,\n    END OF ty_s_inner,\n    component_b_long  TYPE i,\n    component_c TYPE i,\n    END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES:\n      BEGIN OF ty_s_any_struc,\n        component_a      TYPE i,\n        BEGIN OF ty_s_inner,\n          comp_1_long TYPE i,\n          comp_2      TYPE i,\n        END OF ty_s_inner,\n        component_b_long TYPE i,\n        component_c      TYPE i,\n      END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNestedBeginOfWithComments",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES:\n    \" comment\n    BEGIN OF ty_s_any_struc,\n    \" comment\n    component_a TYPE i,\n    BEGIN OF ty_s_inner,\n    comp_1_long TYPE i,\n    \" comment\n    comp_2 TYPE i,\n    END OF ty_s_inner,\n    component_b_long  TYPE i,\n    component_c TYPE i,\n    \" comment\n    END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES:\n      \" comment\n      BEGIN OF ty_s_any_struc,\n        \" comment\n        component_a      TYPE i,\n        BEGIN OF ty_s_inner,\n          comp_1_long TYPE i,\n          \" comment\n          comp_2      TYPE i,\n        END OF ty_s_inner,\n        component_b_long TYPE i,\n        component_c      TYPE i,\n        \" comment\n      END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNestedBeginOfBehindKeyword",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN OF ty_s_any_struc,\n    component_a TYPE i,\n    BEGIN OF ty_s_inner,\n    comp_1_long TYPE i,\n    comp_2 TYPE i,\n    END OF ty_s_inner,\n    component_b_long  TYPE i,\n    component_c TYPE i,\n    END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN OF ty_s_any_struc,\n             component_a      TYPE i,\n             BEGIN OF ty_s_inner,\n               comp_1_long TYPE i,\n               comp_2      TYPE i,\n             END OF ty_s_inner,\n             component_b_long TYPE i,\n             component_c      TYPE i,\n           END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNestedBeginOfBehindKeywordWithComments",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN OF ty_s_any_struc,\n    component_a TYPE i, \" comment A\n    BEGIN OF ty_s_inner,\n    comp_1_long TYPE i,\n    comp_2 TYPE i, \" comment 2\n    END OF ty_s_inner,\n    component_b_long  TYPE i, \" comment B\n    component_c TYPE i,\n    END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES: BEGIN OF ty_s_any_struc,\n             component_a      TYPE i, \" comment A\n             BEGIN OF ty_s_inner,\n               comp_1_long TYPE i,\n               comp_2      TYPE i, \" comment 2\n             END OF ty_s_inner,\n             component_b_long TYPE i, \" comment B\n             component_c      TYPE i,\n           END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testNestedBeginOfWithInclude",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES:\n    BEGIN OF ty_s_any_struc,\n    component_a TYPE i,\n    BEGIN OF ty_s_inner,\n    comp_1_long TYPE i,\n    comp_2 TYPE i,\n    END OF ty_s_inner,\n    component_b_long  TYPE i.\n    INCLUDE TYPE ty_s_include.\n    TYPES:\n    component_c_long  TYPE i,\n    component_d TYPE i,\n    END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    TYPES:\n      BEGIN OF ty_s_any_struc,\n        component_a      TYPE i,\n        BEGIN OF ty_s_inner,\n          comp_1_long TYPE i,\n          comp_2      TYPE i,\n        END OF ty_s_inner,\n        component_b_long TYPE i.\n        INCLUDE TYPE ty_s_include.\n    TYPES:\n        component_c_long TYPE i,\n        component_d      TYPE i,\n      END OF ty_s_any_struc.\n\n    DATA mv_any TYPE i.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDataBeginOf",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    DATA:\n    BEGIN OF address,\n    BEGIN OF name,\n    title TYPE string VALUE `Mr.`,\n    prename TYPE string VALUE `Duncan`,\n    surname TYPE string VALUE `Pea`,\n    END OF name,\n    BEGIN OF street,\n    name TYPE string VALUE `Vegetable Lane`,\n    number TYPE string VALUE `11`,\n    END OF street,\n    BEGIN OF city,\n    zipcode TYPE string VALUE `349875`,\n    name TYPE string VALUE `Botanica`,\n    END OF city,\n    END OF address.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA:\n      BEGIN OF address,\n        BEGIN OF name,\n          title   TYPE string VALUE `Mr.`,\n          prename TYPE string VALUE `Duncan`,\n          surname TYPE string VALUE `Pea`,\n        END OF name,\n        BEGIN OF street,\n          name   TYPE string VALUE `Vegetable Lane`,\n          number TYPE string VALUE `11`,\n        END OF street,\n        BEGIN OF city,\n          zipcode TYPE string VALUE `349875`,\n          name    TYPE string VALUE `Botanica`,\n        END OF city,\n      END OF address.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDataBeginOfNested",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    DATA:\n    BEGIN OF address,\n    BEGIN OF name,\n    title TYPE string VALUE `Mr.`,\n    prename TYPE string VALUE `Duncan`,\n    surname TYPE string VALUE `Pea`,\n    END OF name,\n    BEGIN OF street,\n    name TYPE string VALUE `Vegetable Lane`,\n    number TYPE string VALUE `11`,\n    END OF street,\n    BEGIN OF city,\n    zipcode TYPE string VALUE `349875`,\n    name TYPE string VALUE `Botanica`,\n    END OF city,\n    END OF address.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA:\n      BEGIN OF address,\n        BEGIN OF name,\n          title   TYPE string VALUE `Mr.`,\n          prename TYPE string VALUE `Duncan`,\n          surname TYPE string VALUE `Pea`,\n        END OF name,\n        BEGIN OF street,\n          name   TYPE string VALUE `Vegetable Lane`,\n          number TYPE string VALUE `11`,\n        END OF street,\n        BEGIN OF city,\n          zipcode TYPE string VALUE `349875`,\n          name    TYPE string VALUE `Botanica`,\n        END OF city,\n      END OF address.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTableDeclarationWithKeyOf3Components",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    DATA:\n      lt_item     TYPE ty_tt_item,\n      lts_buffer      TYPE SORTED TABLE OF ty_s_buffer\n                            WITH NON-UNIQUE KEY comp1 comp2 comp3,\n      lv_index         TYPE i.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA:\n      lt_item    TYPE ty_tt_item,\n      lts_buffer TYPE SORTED TABLE OF ty_s_buffer\n                            WITH NON-UNIQUE KEY comp1 comp2 comp3,\n      lv_index   TYPE i.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTableDeclarationWithMultiKey",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    DATA:\n      lt_item     TYPE ty_tt_item,\n      lts_buffer      TYPE SORTED TABLE OF ty_s_buffer\n                    WITH NON-UNIQUE KEY comp1 comp2 comp3\n                    WITH UNIQUE KEY key_name COMPONENTS comp1 comp2\n                                                        comp3 comp4,\n      lv_index         TYPE i.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA:\n      lt_item    TYPE ty_tt_item,\n      lts_buffer TYPE SORTED TABLE OF ty_s_buffer\n                    WITH NON-UNIQUE KEY comp1 comp2 comp3\n                    WITH UNIQUE KEY key_name COMPONENTS comp1 comp2\n                                                        comp3 comp4,\n      lv_index   TYPE i.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testChainSignAttachedToVarName",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    \" consider that there may be no space after the : colon:\n    CONSTANTS:lc_any TYPE if_any_interface=>ty_any_type VALUE '101',\n              lc_other TYPE ty_any_quantity VALUE '%' ##NO_TEXT.\n\n    DATA:lv_msgv_item_id                TYPE sy-msgv1,\n         lv_long_variable_name      TYPE sy-tabix VALUE 1.\n\n    FIELD-SYMBOLS:<ls_any> TYPE ty_s_any,\n                  <ls_other> TYPE ty_s_other.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    \" consider that there may be no space after the : colon:\n    CONSTANTS: lc_any   TYPE if_any_interface=>ty_any_type VALUE '101',\n               lc_other TYPE ty_any_quantity               VALUE '%' ##NO_TEXT.\n\n    DATA: lv_msgv_item_id       TYPE sy-msgv1,\n          lv_long_variable_name TYPE sy-tabix VALUE 1.\n\n    FIELD-SYMBOLS: <ls_any>   TYPE ty_s_any,\n                   <ls_other> TYPE ty_s_other.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignClassDefinition",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CONSTANTS lc_item_name_smartphone TYPE ty_item_name VALUE 'SMARTPHONE' ##NO_TEXT.\n    CONSTANTS lc_item_name_subscription TYPE ty_item_name      VALUE 'SUBSCRIPTION'  ##NO_TEXT.\n    CONSTANTS lc_item_name_service TYPE ty_item_name VALUE 'SERVICE' ##NO_TEXT.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CONSTANTS lc_item_name_smartphone   TYPE ty_item_name VALUE 'SMARTPHONE' ##NO_TEXT.\n    CONSTANTS lc_item_name_subscription TYPE ty_item_name VALUE 'SUBSCRIPTION'  ##NO_TEXT.\n    CONSTANTS lc_item_name_service      TYPE ty_item_name VALUE 'SERVICE' ##NO_TEXT.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDontAlignClassDefinition",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": false,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CONSTANTS lc_item_name_smartphone TYPE ty_item_name VALUE 'SMARTPHONE' ##NO_TEXT.\n    CONSTANTS lc_item_name_subscription TYPE ty_item_name      VALUE 'SUBSCRIPTION'  ##NO_TEXT.\n    CONSTANTS lc_item_name_service TYPE ty_item_name VALUE 'SERVICE' ##NO_TEXT.\nENDCLASS.",
+   "exp": "CLASS any_class DEFINITION.\n  PUBLIC SECTION.\n    CONSTANTS lc_item_name_smartphone TYPE ty_item_name VALUE 'SMARTPHONE' ##NO_TEXT.\n    CONSTANTS lc_item_name_subscription TYPE ty_item_name      VALUE 'SUBSCRIPTION'  ##NO_TEXT.\n    CONSTANTS lc_item_name_service TYPE ty_item_name VALUE 'SERVICE' ##NO_TEXT.\nENDCLASS.",
+   "flags": {
+    "wrappers": [
+     "ClassDef"
+    ]
+   }
+  },
+  {
+   "name": "testDataWithLengthDecimalsReadOnly",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    DATA price TYPE p LENGTH 8 DECIMALS 2 VALUE '1.99' READ-ONLY.\n    DATA duration TYPE p LENGTH 5 DECIMALS 1 VALUE '57.3' READ-ONLY.\n    DATA info TYPE c LENGTH 250 VALUE 'text' READ-ONLY.\n    DATA tag TYPE p LENGTH 12 DECIMALS 10 VALUE '8.012345789' READ-ONLY.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA price    TYPE p LENGTH 8   DECIMALS 2  VALUE '1.99'        READ-ONLY.\n    DATA duration TYPE p LENGTH 5   DECIMALS 1  VALUE '57.3'        READ-ONLY.\n    DATA info     TYPE c LENGTH 250             VALUE 'text'        READ-ONLY.\n    DATA tag      TYPE p LENGTH 12  DECIMALS 10 VALUE '8.012345789' READ-ONLY.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDataWithDefaultType",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n  DATA lv_offset TYPE i.\n  DATA lv_text(100).\n  DATA lv_substring TYPE string.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  DATA lv_offset    TYPE i.\n  DATA lv_text(100).\n  DATA lv_substring TYPE string.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testDataChainWithDefaultType",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n  DATA: lv_offset TYPE i,\n  lv_text(100),\n   lv_substring TYPE string.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  DATA: lv_offset    TYPE i,\n        lv_text(100),\n        lv_substring TYPE string.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTypesWithSpecialCompNames",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES: BEGIN OF ty_structure,\n             component TYPE i,\n             data TYPE i,\n             types TYPE i,\n             methods TYPE i,\n           END OF ty_structure.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES: BEGIN OF ty_structure,\n             component TYPE i,\n             data      TYPE i,\n             types     TYPE i,\n             methods   TYPE i,\n           END OF ty_structure.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTableWithShortKeyDefiniton",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    DATA lv_any_num TYPE i.\n    DATA lt_any_table TYPE STANDARD TABLE OF any_data_element WITH NON-UNIQUE DEFAULT KEY.\n    DATA lt_other_table TYPE STANDARD TABLE OF any_data_element WITH EMPTY KEY.\n    DATA lv_other_value TYPE string.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lv_any_num     TYPE i.\n    DATA lt_any_table   TYPE STANDARD TABLE OF any_data_element WITH NON-UNIQUE DEFAULT KEY.\n    DATA lt_other_table TYPE STANDARD TABLE OF any_data_element WITH EMPTY KEY.\n    DATA lv_other_value TYPE string.\n  ENDMETHOD.",
+   "flags": {}
+  },
+  {
+   "name": "testTypesColonIncludeTypes",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  TYPES:\n    BEGIN OF ty_s_any_struc.\n        INCLUDE TYPE ty_s_include.\n    TYPES component TYPE i.\n    TYPES END OF ty_s_any_struc.",
+   "exp": "  TYPES: BEGIN OF ty_s_any_struc.\n           INCLUDE TYPE ty_s_include.\n  TYPES    component TYPE i.\n  TYPES  END OF ty_s_any_struc.",
+   "flags": {}
+  },
+  {
+   "name": "testCommentAfterTypesMovedUp",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  TYPES:\n      \"! documentation\n    BEGIN OF ty_s_any_struc,\n        component TYPE string.\n        INCLUDE TYPE ty_s_include.\n    TYPES END OF ty_s_any_struc.",
+   "exp": "  TYPES: \"! documentation\n         BEGIN OF ty_s_any_struc,\n           component TYPE string.\n           INCLUDE TYPE ty_s_include.\n  TYPES  END OF ty_s_any_struc.",
+   "flags": {}
+  },
+  {
+   "name": "testAsteriskCommentAfterTypesKept",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  TYPES:\n* comment\n    BEGIN OF ty_s_any_struc,\n        component TYPE string.\n        INCLUDE TYPE ty_s_include.\n    TYPES END OF ty_s_any_struc.",
+   "exp": "  TYPES:\n* comment\n         BEGIN OF ty_s_any_struc,\n           component TYPE string.\n           INCLUDE TYPE ty_s_include.\n  TYPES  END OF ty_s_any_struc.",
+   "flags": {}
+  },
+  {
+   "name": "testTypesColonTypesInclude",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  TYPES:\n    BEGIN OF ty_s_struc.\n    TYPES component TYPE string.\n    INCLUDE TYPE ty_s_include.\n    TYPES END OF ty_s_struc .",
+   "exp": "  TYPES: BEGIN OF ty_s_struc.\n  TYPES    component TYPE string.\n           INCLUDE TYPE ty_s_include.\n  TYPES  END OF ty_s_struc .",
+   "flags": {}
+  },
+  {
+   "name": "testLongNameAfterEndOfStructure",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "    TYPES:\n      BEGIN OF ty_s_struc,\n      comp1 TYPE string,\n      component2 TYPE string,\n      END OF ty_s_struc,\n      ty_tt_table_with_long_name TYPE TABLE OF ty_s_struc.\n\n    DATA mv_any TYPE i.",
+   "exp": "    TYPES:\n      BEGIN OF ty_s_struc,\n        comp1      TYPE string,\n        component2 TYPE string,\n      END OF ty_s_struc,\n      ty_tt_table_with_long_name TYPE TABLE OF ty_s_struc.\n\n    DATA mv_any TYPE i.",
+   "flags": {}
+  },
+  {
+   "name": "testAlignAllInnerStructures",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.ACROSS_LEVELS",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ty_s_outer,\n      one TYPE i,\n      two TYPE i,\n      BEGIN OF ty_s_inner,\n      a1 TYPE i,\n      b2 TYPE i,\n      c3 TYPE i,\n      END OF ty_s_inner,\n      three TYPE i,\n      four TYPE i,\n      BEGIN OF ty_s_another_inner,\n      long_component_name TYPE i,\n      very_long_component_name TYPE i,\n      END OF ty_s_another_inner,\n      seventeen TYPE i,\n      eighteen TYPE i,\n      END OF ty_s_outer,\n      ty_tt_outer TYPE STANDARD TABLE OF ty_s_outer WITH DEFAULT KEY,\n\n      BEGIN OF ty_s_outer_2,\n      any_component TYPE i,\n      BEGIN OF ty_s_inner,\n      alpha TYPE i,\n      beta TYPE i,\n      END OF ty_s_inner,\n      other_component TYPE i,\n      END OF ty_s_outer_2.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ty_s_outer,\n        one                        TYPE i,\n        two                        TYPE i,\n        BEGIN OF ty_s_inner,\n          a1                       TYPE i,\n          b2                       TYPE i,\n          c3                       TYPE i,\n        END OF ty_s_inner,\n        three                      TYPE i,\n        four                       TYPE i,\n        BEGIN OF ty_s_another_inner,\n          long_component_name      TYPE i,\n          very_long_component_name TYPE i,\n        END OF ty_s_another_inner,\n        seventeen                  TYPE i,\n        eighteen                   TYPE i,\n      END OF ty_s_outer,\n      ty_tt_outer TYPE STANDARD TABLE OF ty_s_outer WITH DEFAULT KEY,\n\n      BEGIN OF ty_s_outer_2,\n        any_component   TYPE i,\n        BEGIN OF ty_s_inner,\n          alpha         TYPE i,\n          beta          TYPE i,\n        END OF ty_s_inner,\n        other_component TYPE i,\n      END OF ty_s_outer_2.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignPerSection",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_SECTION",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ty_s_outer,\n      one TYPE i,\n      two TYPE i,\n      BEGIN OF ty_s_inner,\n      a1 TYPE i,\n      b2 TYPE i,\n      c3 TYPE i,\n      END OF ty_s_inner,\n      three TYPE i,\n      four TYPE i,\n      BEGIN OF ty_s_another_inner,\n      long_component_name TYPE i,\n      very_long_component_name TYPE i,\n      END OF ty_s_another_inner,\n      seventeen TYPE i,\n      eighteen TYPE i,\n      END OF ty_s_outer,\n      ty_tt_outer TYPE STANDARD TABLE OF ty_s_outer WITH DEFAULT KEY,\n\n      BEGIN OF ty_s_outer_2,\n      any_component TYPE i,\n      BEGIN OF ty_s_inner,\n      alpha TYPE i,\n      beta TYPE i,\n      END OF ty_s_inner,\n      other_component TYPE i,\n      END OF ty_s_outer_2.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ty_s_outer,\n        one TYPE i,\n        two TYPE i,\n        BEGIN OF ty_s_inner,\n          a1 TYPE i,\n          b2 TYPE i,\n          c3 TYPE i,\n        END OF ty_s_inner,\n        three TYPE i,\n        four  TYPE i,\n        BEGIN OF ty_s_another_inner,\n          long_component_name      TYPE i,\n          very_long_component_name TYPE i,\n        END OF ty_s_another_inner,\n        seventeen TYPE i,\n        eighteen  TYPE i,\n      END OF ty_s_outer,\n      ty_tt_outer TYPE STANDARD TABLE OF ty_s_outer WITH DEFAULT KEY,\n\n      BEGIN OF ty_s_outer_2,\n        any_component TYPE i,\n        BEGIN OF ty_s_inner,\n          alpha TYPE i,\n          beta  TYPE i,\n        END OF ty_s_inner,\n        other_component TYPE i,\n      END OF ty_s_outer_2.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testJoinLengthIntoType",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n   TYPES: BEGIN OF ty_s_struc,\n          any_comp TYPE string,\n          other_comp TYPE string,\n           c1 TYPE c     LENGTH 10,\n          p1 TYPE p   LENGTH 8 DECIMALS 0,\n          third_comp    TYPE i,\n             p2 TYPE p LENGTH 6 DECIMALS 0,\n          c2 TYPE c LENGTH 9,\n        c3 TYPE c LENGTH 1,\n           c4 TYPE c LENGTH 4,\n           c5 TYPE c LENGTH 40,\n            END OF ty_s_struc.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n   TYPES: BEGIN OF ty_s_struc,\n            any_comp   TYPE string,\n            other_comp TYPE string,\n            c1         TYPE c LENGTH 10,\n            p1         TYPE p LENGTH 8  DECIMALS 0,\n            third_comp TYPE i,\n            p2         TYPE p LENGTH 6  DECIMALS 0,\n            c2         TYPE c LENGTH 9,\n            c3         TYPE c LENGTH 1,\n            c4         TYPE c LENGTH 4,\n            c5         TYPE c LENGTH 40,\n          END OF ty_s_struc.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testJoinValueColumn",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    DATA:\n      ls_any_struc TYPE ty_s_struc,\n      lv_any_value TYPE i,\n      lv_other_value TYPE i VALUE 1000000. \" comment\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA:\n      ls_any_struc   TYPE ty_s_struc,\n      lv_any_value   TYPE i,\n      lv_other_value TYPE i VALUE 1000000. \" comment\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCreateValueColumnButJoinCommentColumn",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "    DATA:\n      ls_any_struc TYPE ty_s_struc,\n      lv_any_value TYPE i VALUE 10, \" comment\n      lv_other_value TYPE i VALUE 1000000.",
+   "exp": "    DATA:\n      ls_any_struc   TYPE ty_s_struc,\n      lv_any_value   TYPE i          VALUE 10, \" comment\n      lv_other_value TYPE i          VALUE 1000000.",
+   "flags": {}
+  },
+  {
+   "name": "testAlignAcrossEnabled",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_AND_TYPE",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "",
+   "exp": "",
+   "flags": {},
+   "skipped": "assertion (assertTrue)"
+  },
+  {
+   "name": "testAlignAcrossNotEnabled",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_ONLY",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "",
+   "exp": "",
+   "flags": {},
+   "skipped": "assertion (assertFalse)"
+  },
+  {
+   "name": "testAlignStructureActionEnabled",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_AND_TYPE",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "",
+   "exp": "",
+   "flags": {},
+   "skipped": "assertion (assertTrue)"
+  },
+  {
+   "name": "testAlignStructureActionNotEnabled",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_ONLY",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "",
+   "exp": "",
+   "flags": {},
+   "skipped": "assertion (assertFalse)"
+  },
+  {
+   "name": "testFillPercentageNotEnabled",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_AND_TYPE",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_ONLY",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "",
+   "exp": "",
+   "flags": {},
+   "skipped": "assertion (assertFalse)"
+  },
+  {
+   "name": "testChainAlignNameAndTypeOnly",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_AND_TYPE",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    CONSTANTS: lc_any_price TYPE ty_price VALUE 1200,\n      lc_other_price TYPE ty_price VALUE 1000,\n               lc_num_contract_change TYPE ty_sequence_number VALUE    1,\n          lc_start_date TYPE ty_start_date VALUE '20220312'.\n\n    FIELD-SYMBOLS:\n         <ls_data> TYPE ty_s_data,   \" first comment line\n      <ls_amount> LIKE LINE OF its_amount,\n    <ls_contract> TYPE ty_s_contract, \" second comment line\n   <ls_param>  LIKE LINE OF mt_parameter.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CONSTANTS: lc_any_price           TYPE ty_price VALUE 1200,\n               lc_other_price         TYPE ty_price VALUE 1000,\n               lc_num_contract_change TYPE ty_sequence_number VALUE 1,\n               lc_start_date          TYPE ty_start_date VALUE '20220312'.\n\n    FIELD-SYMBOLS:\n      <ls_data>     TYPE ty_s_data, \" first comment line\n      <ls_amount>   LIKE LINE OF its_amount,\n      <ls_contract> TYPE ty_s_contract, \" second comment line\n      <ls_param>    LIKE LINE OF mt_parameter.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testChainAlignNameOnly",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_ONLY",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    CONSTANTS: lc_any_price TYPE ty_price VALUE 1200,\n      lc_other_price TYPE ty_price VALUE 1000,\n               lc_num_contract_change TYPE ty_sequence_number VALUE    1,\n          lc_start_date TYPE ty_start_date VALUE '20220312'.\n\n    FIELD-SYMBOLS:\n         <ls_data> TYPE ty_s_data,   \" first comment line\n      <ls_amount> LIKE LINE OF its_amount,\n    <ls_contract> TYPE ty_s_contract, \" second comment line\n   <ls_param>  LIKE LINE OF mt_parameter.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CONSTANTS: lc_any_price TYPE ty_price VALUE 1200,\n               lc_other_price TYPE ty_price VALUE 1000,\n               lc_num_contract_change TYPE ty_sequence_number VALUE 1,\n               lc_start_date TYPE ty_start_date VALUE '20220312'.\n\n    FIELD-SYMBOLS:\n      <ls_data> TYPE ty_s_data, \" first comment line\n      <ls_amount> LIKE LINE OF its_amount,\n      <ls_contract> TYPE ty_s_contract, \" second comment line\n      <ls_param> LIKE LINE OF mt_parameter.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testBlockAlignNameAndTypeOnly",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_AND_TYPE",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    CONSTANTS   lc_pi TYPE p LENGTH 10 DECIMALS 10 VALUE '3.1415926536'.\n    CONSTANTS lc_e TYPE p LENGTH 8 DECIMALS 10 VALUE '2.718281828'.\n    CONSTANTS lc_sqrt_2 TYPE p LENGTH 8 DECIMALS 4 VALUE '1.4142'.\n    CONSTANTS    lc_sqrt_32 TYPE p LENGTH 8 DECIMALS 10 VALUE '5.6568542495'.\n    CONSTANTS lc_ln_10 TYPE p  LENGTH 8 DECIMALS 4 VALUE '2.3026'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CONSTANTS lc_pi      TYPE p LENGTH 10 DECIMALS 10 VALUE '3.1415926536'.\n    CONSTANTS lc_e       TYPE p LENGTH 8 DECIMALS 10 VALUE '2.718281828'.\n    CONSTANTS lc_sqrt_2  TYPE p LENGTH 8 DECIMALS 4 VALUE '1.4142'.\n    CONSTANTS lc_sqrt_32 TYPE p LENGTH 8 DECIMALS 10 VALUE '5.6568542495'.\n    CONSTANTS lc_ln_10   TYPE p LENGTH 8 DECIMALS 4 VALUE '2.3026'.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignNameOnly",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_ONLY",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "    CONSTANTS   lc_pi TYPE p LENGTH 10 DECIMALS 10 VALUE '3.1415926536'.\n    CONSTANTS lc_e TYPE p LENGTH 8 DECIMALS 10 VALUE '2.718281828'.\n    CONSTANTS lc_sqrt_2 TYPE p LENGTH 8 DECIMALS 4 VALUE '1.4142'.\n    CONSTANTS    lc_sqrt_32 TYPE p LENGTH 8 DECIMALS 10 VALUE '5.6568542495'.\n    CONSTANTS lc_ln_10 TYPE p  LENGTH 8 DECIMALS 4 VALUE '2.3026'.",
+   "exp": "    CONSTANTS lc_pi TYPE p LENGTH 10 DECIMALS 10 VALUE '3.1415926536'.\n    CONSTANTS lc_e TYPE p LENGTH 8 DECIMALS 10 VALUE '2.718281828'.\n    CONSTANTS lc_sqrt_2 TYPE p LENGTH 8 DECIMALS 4 VALUE '1.4142'.\n    CONSTANTS lc_sqrt_32 TYPE p LENGTH 8 DECIMALS 10 VALUE '5.6568542495'.\n    CONSTANTS lc_ln_10 TYPE p LENGTH 8 DECIMALS 4 VALUE '2.3026'.",
+   "flags": {}
+  },
+  {
+   "name": "testStructureAlignNameAndTypeOnly",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_AND_TYPE",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ty_s_outer,\n      one TYPE i,\n      two TYPE i,\n      BEGIN OF ty_s_inner,\n      alpha TYPE p LENGTH 5 DECIMALS 2,\n      beta TYPE p LENGTH 10 DECIMALS 2,\n      gamma TYPE i,\n      END OF ty_s_inner,\n      three  TYPE i,\n      four   TYPE i,\n      END OF ty_s_outer.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ty_s_outer,\n        one   TYPE i,\n        two   TYPE i,\n        BEGIN OF ty_s_inner,\n          alpha TYPE p LENGTH 5 DECIMALS 2,\n          beta  TYPE p LENGTH 10 DECIMALS 2,\n          gamma TYPE i,\n        END OF ty_s_inner,\n        three TYPE i,\n        four  TYPE i,\n      END OF ty_s_outer.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testStructureAlignNameOnly",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_ONLY",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ty_s_outer,\n      one TYPE i,\n      two TYPE i,\n      BEGIN OF ty_s_inner,\n      alpha TYPE p LENGTH 5 DECIMALS 2,\n      beta TYPE p LENGTH 10 DECIMALS 2,\n      gamma TYPE i,\n      END OF ty_s_inner,\n      three  TYPE i,\n      four   TYPE i,\n      END OF ty_s_outer.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ty_s_outer,\n        one TYPE i,\n        two TYPE i,\n        BEGIN OF ty_s_inner,\n          alpha TYPE p LENGTH 5 DECIMALS 2,\n          beta TYPE p LENGTH 10 DECIMALS 2,\n          gamma TYPE i,\n        END OF ty_s_inner,\n        three TYPE i,\n        four TYPE i,\n      END OF ty_s_outer.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testChainNoCondense",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_AND_TYPE",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": false
+   },
+   "src": "  METHOD any_method.\n    CONSTANTS: lc_any_price TYPE ty_price VALUE 1200,\n      lc_other_price TYPE ty_price   VALUE 1000,\n               lc_num_contract_change TYPE ty_sequence_number VALUE    1,\n          lc_start_date TYPE ty_start_date VALUE '20220312'.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    CONSTANTS: lc_any_price           TYPE ty_price VALUE 1200,\n               lc_other_price         TYPE ty_price   VALUE 1000,\n               lc_num_contract_change TYPE ty_sequence_number VALUE    1,\n               lc_start_date          TYPE ty_start_date VALUE '20220312'.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testBlockNoCondense",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_AND_TYPE",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": false
+   },
+   "src": "  METHOD any_method.\n    DATA lth_any_table TYPE ty_th_hash_table_type.   \" only line with a comment\n    DATA lo_contract TYPE REF TO  cl_contract  ##NEEDED.\n    DATA ls_item_data   TYPE   if_any_interface=>ty_s_item.\n    DATA lv_was_saved   TYPE abap_bool  VALUE abap_false  ##NO_TEXT.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lth_any_table TYPE ty_th_hash_table_type.   \" only line with a comment\n    DATA lo_contract   TYPE REF TO  cl_contract  ##NEEDED.\n    DATA ls_item_data  TYPE   if_any_interface=>ty_s_item.\n    DATA lv_was_saved  TYPE abap_bool  VALUE abap_false  ##NO_TEXT.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testStructureNoCondense",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_ONLY",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": false
+   },
+   "src": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ty_s_outer_2,\n      any_component TYPE i,\n      BEGIN OF ty_s_inner,\n      alpha  TYPE i,\n      beta   TYPE i,\n      END OF ty_s_inner,\n      other_component TYPE i,\n      END OF ty_s_outer_2.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ty_s_outer_2,\n        any_component TYPE i,\n        BEGIN OF ty_s_inner,\n          alpha  TYPE i,\n          beta   TYPE i,\n        END OF ty_s_inner,\n        other_component TYPE i,\n      END OF ty_s_outer_2.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepOverlengthValuesBehindType",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 140,
+    "CondenseInnerSpaces": true
+   },
+   "src": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name TYPE if_any_interface=>ty_other_type VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name TYPE if_any_interface=>ty_third_type VALUE if_any_interface=>co_third_value.",
+   "exp": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type   VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name  TYPE if_any_interface=>ty_other_type VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name  TYPE if_any_interface=>ty_third_type VALUE if_any_interface=>co_third_value.",
+   "flags": {}
+  },
+  {
+   "name": "testMoveOverlengthValuesBelowType",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name TYPE if_any_interface=>ty_other_type VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name TYPE if_any_interface=>ty_third_type VALUE if_any_interface=>co_third_value.",
+   "exp": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type\n                                             VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name  TYPE if_any_interface=>ty_other_type\n                                             VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name  TYPE if_any_interface=>ty_third_type VALUE if_any_interface=>co_third_value.",
+   "flags": {}
+  },
+  {
+   "name": "testMoveOverlengthValuesBelowNameOrType",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 90,
+    "CondenseInnerSpaces": true
+   },
+   "src": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name TYPE if_any_interface=>ty_other_type VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name TYPE if_any_interface=>ty_third_type VALUE if_any_interface=>co_third_value.",
+   "exp": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type\n              VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name  TYPE if_any_interface=>ty_other_type\n              VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name  TYPE if_any_interface=>ty_third_type\n                                             VALUE if_any_interface=>co_third_value.",
+   "flags": {}
+  },
+  {
+   "name": "testMoveOverlengthValuesBehindType",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 140,
+    "CondenseInnerSpaces": true
+   },
+   "src": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type\n                                             VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name  TYPE if_any_interface=>ty_other_type\n                                             VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name  TYPE if_any_interface=>ty_third_type VALUE if_any_interface=>co_third_value.",
+   "exp": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type   VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name  TYPE if_any_interface=>ty_other_type VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name  TYPE if_any_interface=>ty_third_type VALUE if_any_interface=>co_third_value.",
+   "flags": {}
+  },
+  {
+   "name": "testMoveOverlengthValuesBelowTypeAlignNameOnly",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_ONLY",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name TYPE if_any_interface=>ty_other_type VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name TYPE if_any_interface=>ty_third_type VALUE if_any_interface=>co_third_value.",
+   "exp": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type\n                                             VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name TYPE if_any_interface=>ty_other_type\n                                            VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name TYPE if_any_interface=>ty_third_type VALUE if_any_interface=>co_third_value.",
+   "flags": {}
+  },
+  {
+   "name": "testMoveOverlengthValuesBelowNameOrTypeAlignNameOnly",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_ONLY",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 90,
+    "CondenseInnerSpaces": true
+   },
+   "src": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name TYPE if_any_interface=>ty_other_type VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name TYPE if_any_interface=>ty_third_type VALUE if_any_interface=>co_third_value.",
+   "exp": "    CONSTANTS lc_any_constant_with_long_name TYPE if_any_interface=>ty_any_type\n              VALUE if_any_interface=>co_any_value_with_long_name.\n    CONSTANTS lc_other_const_with_long_name TYPE if_any_interface=>ty_other_type\n              VALUE if_any_interface=>co_other_value_with_long_name.\n    CONSTANTS lc_third_const_with_long_name TYPE if_any_interface=>ty_third_type\n                                            VALUE if_any_interface=>co_third_value.",
+   "flags": {}
+  },
+  {
+   "name": "testTypeTableAndLengthColumn",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\nDATA: gt_any_table TYPE STANDARD TABLE OF ty_any_type,\n      gv_any_value TYPE decfloat16 LENGTH 2 DECIMALS 3,\n      gv_other_value TYPE p LENGTH 2 DECIMALS 0,\n      gv_third_value TYPE abap_bool.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\nDATA: gt_any_table   TYPE STANDARD TABLE OF ty_any_type,\n      gv_any_value   TYPE decfloat16 LENGTH 2 DECIMALS 3,\n      gv_other_value TYPE p          LENGTH 2 DECIMALS 0,\n      gv_third_value TYPE abap_bool.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignEnumNamesAndValues",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ENUM number,\n        zero VALUE IS INITIAL,\n         one VALUE 1,\n        two VALUE 2,\n       three VALUE 3,\n      END OF ENUM number.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ENUM number,\n        zero  VALUE IS INITIAL,\n        one   VALUE 1,\n        two   VALUE 2,\n        three VALUE 3,\n      END OF ENUM number.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testAlignEnumNamesOnly",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_ONLY",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ENUM number,\n        zero VALUE IS INITIAL,\n         one VALUE 1,\n        two VALUE 2,\n       three VALUE 3,\n      END OF ENUM number.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES:\n      BEGIN OF ENUM number,\n        zero VALUE IS INITIAL,\n        one VALUE 1,\n        two VALUE 2,\n        three VALUE 3,\n      END OF ENUM number.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTwoEnumsInOneChain",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES: BEGIN OF ENUM number,\n      zero VALUE IS INITIAL,\n      one VALUE 1,\n      two VALUE 2,\n      END OF ENUM number,\n\n      BEGIN OF ENUM alphabet BASE TYPE char1,\n      none VALUE IS INITIAL,\n      alpha VALUE 'a',\n      beta VALUE 'b',\n      END OF ENUM alphabet.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES: BEGIN OF ENUM number,\n             zero VALUE IS INITIAL,\n             one  VALUE 1,\n             two  VALUE 2,\n           END OF ENUM number,\n\n           BEGIN OF ENUM alphabet BASE TYPE char1,\n             none  VALUE IS INITIAL,\n             alpha VALUE 'a',\n             beta  VALUE 'b',\n           END OF ENUM alphabet.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testKeepEnumOneLiners",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n  TYPES: BEGIN OF ENUM size,\n  s, m, l, xl, xxl,\n   END OF ENUM size,\n\n   BEGIN OF ENUM number,\n   one, two, three,\n    END OF ENUM number.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  TYPES: BEGIN OF ENUM size,\n           s, m, l, xl, xxl,\n         END OF ENUM size,\n\n         BEGIN OF ENUM number,\n           one, two, three,\n         END OF ENUM number.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testExpandEnumTwoLiner",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n  TYPES: BEGIN OF ENUM size,\n  s, m, l,\n   xl, xxl,\n   END OF ENUM size.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  TYPES: BEGIN OF ENUM size,\n           s,\n           m,\n           l,\n           xl,\n           xxl,\n         END OF ENUM size.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testExpandEnumOneLinerWithValues",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n  TYPES:\n   BEGIN OF ENUM number,\n   zero VALUE IS INITIAL, one VALUE 1, two VALUE 2, three VALUE 3,\n    END OF ENUM number.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  TYPES:\n    BEGIN OF ENUM number,\n      zero  VALUE IS INITIAL,\n      one   VALUE 1,\n      two   VALUE 2,\n      three VALUE 3,\n    END OF ENUM number.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testTypesAtEndOfIncludeLine",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES: BEGIN OF ts_any.\n           INCLUDE TYPE ty_s_other AS other. TYPES:\n           comp TYPE i,\n           END OF ts_any.\n    TYPES: BEGIN OF ts_any,\n           comp TYPE i.\n           INCLUDE TYPE ty_s_other AS other. TYPES\n           END OF ts_any.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES: BEGIN OF ts_any.\n             INCLUDE TYPE ty_s_other AS other. TYPES:\n             comp TYPE i,\n           END OF ts_any.\n    TYPES: BEGIN OF ts_any,\n             comp TYPE i.\n             INCLUDE TYPE ty_s_other AS other. TYPES\n           END OF ts_any.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testCommaAtLineStart",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n  TYPES: BEGIN OF ty_s_any\n           ,value1 TYPE i\n*           ,value2 TYPE i\n           ,value3 TYPE i\n           \" comment line\n           ,value4 TYPE i  \" line-end comment\n         ,END OF ty_s_any.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  TYPES: BEGIN OF ty_s_any\n           ,\n           value1 TYPE i\n*           ,value2 TYPE i\n           ,\n           value3 TYPE i\n           \" comment line\n           ,\n           value4 TYPE i  \" line-end comment\n         ,\n         END OF ty_s_any.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testMultiplePeriods",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    DATA lth_any_table TYPE ty_th_hash_table_type.. \" only line with a comment\n    \" comment line\n    DATA lo_contract TYPE REF TO  cl_contract  ##NEEDED...\n    DATA ls_item_data   TYPE if_any_interface=>ty_s_item..\n    DATA lv_was_saved   TYPE abap_bool  VALUE abap_false  ##NO_TEXT....\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA lth_any_table TYPE ty_th_hash_table_type.. \" only line with a comment\n    \" comment line\n    DATA lo_contract   TYPE REF TO cl_contract ##NEEDED...\n    DATA ls_item_data  TYPE if_any_interface=>ty_s_item..\n    DATA lv_was_saved  TYPE abap_bool VALUE abap_false  ##NO_TEXT....\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testLineEndComments",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    DATA: lo_any_ref TYPE REF TO cl_any_class__,\n      lt_any_table TYPE TABLE OF string,  \" comment A\n      lt_other_table TYPE STANDARD TABLE OF ty_s_any_struc. \" comment B\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    DATA: lo_any_ref     TYPE REF TO cl_any_class__,\n          lt_any_table   TYPE TABLE OF string,  \" comment A\n          lt_other_table TYPE STANDARD TABLE OF ty_s_any_struc. \" comment B\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testReadOnlyAndCommentAfterPeriod",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n  DATA lv_any TYPE i READ-ONLY.\n  DATA lv_other TYPE string READ-ONLY.\n  DATA lv_third TYPE i. \" comment at line end\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n  DATA lv_any   TYPE i      READ-ONLY.\n  DATA lv_other TYPE string READ-ONLY.\n  DATA lv_third TYPE i. \" comment at line end\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testGenStrucContainingUnchanged",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.UNCHANGED",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY\n      STRUCTURE CONTAINING %cid_ref TYPE abp_behv_cid\n      %is_draft TYPE\n     abp_behv_flag other_struc TYPE\n            ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n        comp1 TYPE string, END OF s_any,\n    gen_struc2\n   TYPE ANY STRUCTURE\n              CONTAINING %cid_ref TYPE abp_behv_cid %is_draft TYPE\n     abp_behv_flag, ty_any TYPE n LENGTH 4.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY STRUCTURE CONTAINING %cid_ref    TYPE abp_behv_cid\n                                                  %is_draft   TYPE abp_behv_flag\n                                                  other_struc TYPE ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n             comp1 TYPE string,\n           END OF s_any,\n           gen_struc2 TYPE ANY STRUCTURE\n              CONTAINING %cid_ref  TYPE abp_behv_cid\n                         %is_draft TYPE abp_behv_flag,\n           ty_any     TYPE n LENGTH 4.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testGenStrucContainingContinue",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.CONTINUE",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY\n      STRUCTURE CONTAINING %cid_ref TYPE abp_behv_cid\n      %is_draft TYPE\n     abp_behv_flag other_struc TYPE\n            ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n        comp1 TYPE string, END OF s_any,\n    gen_struc2\n   TYPE ANY STRUCTURE\n              CONTAINING %cid_ref TYPE abp_behv_cid %is_draft TYPE\n     abp_behv_flag, ty_any TYPE n LENGTH 4.\n\n    TYPES gen_struc3 TYPE ANY STRUCTURE \" comment\n    CONTAINING %cid_ref TYPE abp_behv_cid %is_draft TYPE abp_behv_flag.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY STRUCTURE CONTAINING %cid_ref    TYPE abp_behv_cid\n                                                  %is_draft   TYPE abp_behv_flag\n                                                  other_struc TYPE ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n             comp1 TYPE string,\n           END OF s_any,\n           gen_struc2 TYPE ANY STRUCTURE CONTAINING %cid_ref  TYPE abp_behv_cid\n                                                    %is_draft TYPE abp_behv_flag,\n           ty_any     TYPE n LENGTH 4.\n\n    TYPES gen_struc3 TYPE ANY STRUCTURE \" comment\n                                        CONTAINING %cid_ref  TYPE abp_behv_cid\n                                                   %is_draft TYPE abp_behv_flag.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testGenStrucContainingContinueThenBreak",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.CONTINUE_AND_BREAK",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY\n      STRUCTURE CONTAINING %cid_ref TYPE abp_behv_cid\n      %is_draft TYPE\n     abp_behv_flag other_struc TYPE\n            ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n        comp1 TYPE string, END OF s_any,\n    gen_struc2\n   TYPE ANY STRUCTURE\n              CONTAINING %cid_ref TYPE abp_behv_cid %is_draft TYPE\n     abp_behv_flag, ty_any TYPE n LENGTH 4.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY STRUCTURE CONTAINING\n            %cid_ref    TYPE abp_behv_cid\n            %is_draft   TYPE abp_behv_flag\n            other_struc TYPE ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n             comp1 TYPE string,\n           END OF s_any,\n           gen_struc2 TYPE ANY STRUCTURE CONTAINING\n             %cid_ref  TYPE abp_behv_cid\n             %is_draft TYPE abp_behv_flag,\n           ty_any     TYPE n LENGTH 4.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testGenStrucContainingBelowTypesKeywordPlus2",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_KEYWORD_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY\n      STRUCTURE CONTAINING %cid_ref TYPE abp_behv_cid\n      %is_draft TYPE\n     abp_behv_flag other_struc TYPE\n            ANY STRUCTURE.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY STRUCTURE\n      CONTAINING %cid_ref    TYPE abp_behv_cid\n                 %is_draft   TYPE abp_behv_flag\n                 other_struc TYPE ANY STRUCTURE.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testGenStrucContainingBelowTypeNamePlus2",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_IDENTIFIER_PLUS_2",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY\n      STRUCTURE CONTAINING %cid_ref TYPE abp_behv_cid\n      %is_draft TYPE\n     abp_behv_flag other_struc TYPE\n            ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n        comp1 TYPE string, END OF s_any,\n    gen_struc2\n   TYPE ANY STRUCTURE\n              CONTAINING %cid_ref TYPE abp_behv_cid %is_draft TYPE\n     abp_behv_flag, ty_any TYPE n LENGTH 4.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY STRUCTURE\n            CONTAINING %cid_ref    TYPE abp_behv_cid\n                       %is_draft   TYPE abp_behv_flag\n                       other_struc TYPE ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n             comp1 TYPE string,\n           END OF s_any,\n           gen_struc2 TYPE ANY STRUCTURE\n             CONTAINING %cid_ref  TYPE abp_behv_cid\n                        %is_draft TYPE abp_behv_flag,\n           ty_any     TYPE n LENGTH 4.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testGenStrucContainingBelowTypeKeyword",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_TYPE",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY\n      STRUCTURE CONTAINING %cid_ref TYPE abp_behv_cid\n      %is_draft TYPE\n     abp_behv_flag other_struc TYPE\n            ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n        comp1 TYPE string, END OF s_any,\n    gen_struc2\n   TYPE ANY STRUCTURE\n              CONTAINING %cid_ref TYPE abp_behv_cid %is_draft TYPE\n     abp_behv_flag, ty_any TYPE n LENGTH 4.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY STRUCTURE\n                    CONTAINING %cid_ref    TYPE abp_behv_cid\n                               %is_draft   TYPE abp_behv_flag\n                               other_struc TYPE ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n             comp1 TYPE string,\n           END OF s_any,\n           gen_struc2 TYPE ANY STRUCTURE\n                      CONTAINING %cid_ref  TYPE abp_behv_cid\n                                 %is_draft TYPE abp_behv_flag,\n           ty_any     TYPE n LENGTH 4.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  },
+  {
+   "name": "testGenStrucContainingBelowAnyStructure",
+   "config": {
+    "ExecuteOnClassDefAndInterfaces": true,
+    "AlignChainAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignNonChainsAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "AlignAcrossEmptyLines": true,
+    "AlignAcrossCommentLines": true,
+    "AlignStructureAction": "AlignDeclarationsAction.ALIGN_NAME_TYPE_LENGTH_ETC",
+    "StructureAlignStyle": "StructureAlignStyle.PER_LEVEL",
+    "AlignEnumAction": "AlignEnumAction.ALIGN_NAME_AND_VALUE",
+    "ContainingPosition": "ContainingPosition.BELOW_ANY_STRUCTURE",
+    "FillPercentageToJustifyOwnColumn": 20,
+    "MaxLineLength": 130,
+    "CondenseInnerSpaces": true
+   },
+   "src": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY\n      STRUCTURE CONTAINING %cid_ref TYPE abp_behv_cid\n      %is_draft TYPE\n     abp_behv_flag other_struc TYPE\n            ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n        comp1 TYPE string, END OF s_any,\n    gen_struc2\n   TYPE ANY STRUCTURE\n              CONTAINING %cid_ref TYPE abp_behv_cid %is_draft TYPE\n     abp_behv_flag, ty_any TYPE n LENGTH 4.\n  ENDMETHOD.",
+   "exp": "  METHOD any_method.\n    TYPES gen_struc TYPE ANY STRUCTURE\n                         CONTAINING %cid_ref    TYPE abp_behv_cid\n                                    %is_draft   TYPE abp_behv_flag\n                                    other_struc TYPE ANY STRUCTURE.\n\n    TYPES: BEGIN OF s_any,\n             comp1 TYPE string,\n           END OF s_any,\n           gen_struc2 TYPE ANY STRUCTURE\n                           CONTAINING %cid_ref  TYPE abp_behv_cid\n                                      %is_draft TYPE abp_behv_flag,\n           ty_any     TYPE n LENGTH 4.\n  ENDMETHOD.",
+   "flags": {
+    "wrappers": [
+     "Method"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,183 @@
+{
+ "ruleId": "ALIGN_FORM_DECLARATION",
+ "testClass": "AlignFormDeclarationTest",
+ "defaults": {
+  "ParamCountBehindFormName": 3,
+  "ContinueAfterParamGroupKeyword": true,
+  "AlignTypes": true,
+  "AddEmptyLine": true,
+  "RemoveEmptyLine": true
+ },
+ "cases": [
+  {
+   "name": "testContinueAfterFormNameAddEmptyLine",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM other_form USING iv_any_value TYPE i iv_other_value TYPE string CHANGING cv_third_value TYPE i.\n  \" other FORM implementation\nENDFORM.",
+   "exp": "FORM other_form USING    iv_any_value   TYPE i\n                         iv_other_value TYPE string\n                CHANGING cv_third_value TYPE i.\n\n  \" other FORM implementation\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testBreakAfterFormName",
+   "config": {
+    "ParamCountBehindFormName": 1,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM other_form USING iv_any_value TYPE i CHANGING cv_third_value TYPE i.\n  \" other FORM implementation\nENDFORM.",
+   "exp": "FORM other_form\n  USING    iv_any_value   TYPE i\n  CHANGING cv_third_value TYPE i.\n\n  \" other FORM implementation\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testContinueAfterFormNameBreakAfterKeywords",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": false,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM other_form USING iv_any_value TYPE i iv_other_value TYPE string CHANGING cv_third_value TYPE i.\nENDFORM.",
+   "exp": "FORM other_form USING\n                  iv_any_value   TYPE i\n                  iv_other_value TYPE string\n                CHANGING\n                  cv_third_value TYPE i.\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testBreakAfterFormNameAddEmptyLine",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM third_form_with_a_long_name TABLES it_any_table STRUCTURE ty_s_any_struc\n  it_other_table TYPE STANDARD TABLE it_third_table it_fourth_table TYPE ty_tt_any\n  CHANGING ct_table TYPE ty_tt_table cs_struc TYPE LINE OF ty_tt_any cs_other_struc LIKE cs_any\n    cs_third_struc LIKE LINE OF ct_table.\n  \" third FORM implementation\nENDFORM.",
+   "exp": "FORM third_form_with_a_long_name\n  TABLES   it_any_table    STRUCTURE ty_s_any_struc\n           it_other_table  TYPE STANDARD TABLE\n           it_third_table\n           it_fourth_table TYPE ty_tt_any\n  CHANGING ct_table        TYPE ty_tt_table\n           cs_struc        TYPE LINE OF ty_tt_any\n           cs_other_struc  LIKE cs_any\n           cs_third_struc  LIKE LINE OF ct_table.\n\n  \" third FORM implementation\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testBreakAfterFormNameBreakAfterKeywords",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": false,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM fourth_form\n  USING\n    VALUE(iv_any) TYPE string\n    iv_other TYPE REF TO object\n  RAISING\n    cx_any_exception RESUMABLE(cx_other_exception) cx_third_exception.\n  \" fourth FORM implementation\nENDFORM.",
+   "exp": "FORM fourth_form\n  USING\n    VALUE(iv_any) TYPE string\n    iv_other      TYPE REF TO object\n  RAISING\n    cx_any_exception\n    RESUMABLE(cx_other_exception)\n    cx_third_exception.\n\n  \" fourth FORM implementation\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAlignTypes",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": false,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM third_form_with_a_long_name TABLES it_any_table STRUCTURE ty_s_any_struc\n  it_other_table TYPE STANDARD TABLE it_third_table it_fourth_table TYPE ty_tt_any\n  CHANGING ct_table TYPE ty_tt_table cs_struc TYPE LINE OF ty_tt_any cs_other_struc LIKE cs_any\n    cs_third_struc LIKE LINE OF ct_table.\n  \" third FORM implementation\nENDFORM.",
+   "exp": "FORM third_form_with_a_long_name\n  TABLES   it_any_table STRUCTURE ty_s_any_struc\n           it_other_table TYPE STANDARD TABLE\n           it_third_table\n           it_fourth_table TYPE ty_tt_any\n  CHANGING ct_table TYPE ty_tt_table\n           cs_struc TYPE LINE OF ty_tt_any\n           cs_other_struc LIKE cs_any\n           cs_third_struc LIKE LINE OF ct_table.\n\n  \" third FORM implementation\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testDoNotAddEmptyLineAfterMultiLiner",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": true,
+    "AddEmptyLine": false,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM fourth_form\n  USING\n    VALUE(iv_any) TYPE string\n    iv_other TYPE REF TO object.\n  \" fourth FORM implementation\nENDFORM.",
+   "exp": "FORM fourth_form USING VALUE(iv_any) TYPE string\n                       iv_other      TYPE REF TO object.\n  \" fourth FORM implementation\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testRemoveEmptyLineAfterOneLiner",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM any_form USING iv_any_value TYPE string.\n\n  \" any FORM implementation\nENDFORM.",
+   "exp": "FORM any_form USING iv_any_value TYPE string.\n  \" any FORM implementation\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testAddEmptyLineBlocked",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM fourth_form\n  USING\n    VALUE(iv_any) TYPE string\n    iv_other TYPE REF TO object.\n  \" fourth FORM implementation\nENDFORM.",
+   "exp": "FORM fourth_form USING VALUE(iv_any) TYPE string\n                       iv_other      TYPE REF TO object.\n  \" fourth FORM implementation\nENDFORM.",
+   "flags": {},
+   "skipped": "call blockCommand(...)"
+  },
+  {
+   "name": "testKeepEmptyLineAfterOneLiner",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": false
+   },
+   "src": "FORM any_form USING iv_any_value TYPE string.\n\n  \" any FORM implementation\nENDFORM.",
+   "exp": "FORM any_form USING iv_any_value TYPE string.\n\n  \" any FORM implementation\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testFormWithoutParameters",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM any_form.\n  \" any FORM implementation\nENDFORM.",
+   "exp": "FORM any_form.\n  \" any FORM implementation\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testEmptyFormWithoutParameters",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM any_form.\nENDFORM.",
+   "exp": "FORM any_form.\nENDFORM.",
+   "flags": {}
+  },
+  {
+   "name": "testComments",
+   "config": {
+    "ParamCountBehindFormName": 3,
+    "ContinueAfterParamGroupKeyword": true,
+    "AlignTypes": true,
+    "AddEmptyLine": true,
+    "RemoveEmptyLine": true
+   },
+   "src": "FORM \" comment1\n  other_form \" comment2\n  USING \" commment3\n  iv_any_value TYPE \" comment4\n  i iv_other_value \" comment5\n  TYPE string CHANGING cv_third_value \" comment6\n  TYPE i \" comment7\n  .\n  \" other FORM implementation\nENDFORM.",
+   "exp": "FORM \" comment1\n     other_form \" comment2\n                USING \" commment3\n                         iv_any_value   TYPE \" comment4\n                           i\n                         iv_other_value \" comment5\n                                        TYPE string\n                CHANGING cv_third_value \" comment6\n                                        TYPE i \" comment7\n  .\n\n  \" other FORM implementation\nENDFORM.",
+   "flags": {}
+  }
+ ]
+}

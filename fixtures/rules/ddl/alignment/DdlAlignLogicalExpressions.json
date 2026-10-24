@@ -1,0 +1,801 @@
+{
+ "ruleId": "DDL_ALIGN_LOGICAL_EXPRESSIONS",
+ "testClass": "DdlAlignLogicalExpressionsTest",
+ "defaults": {
+  "AlignJoinOn": true,
+  "AlignAssociationOn": true,
+  "AlignWhen": true,
+  "AlignPathExpressions": true,
+  "AlignWhere": true,
+  "AlignHaving": true,
+  "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+  "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+  "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+  "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+  "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+  "RightAlignComparisonOps": true,
+  "MaxInnerSpaces": 20
+ },
+ "cases": [
+  {
+   "name": "testAlignJoinOnAndAssociationOnLeft",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n         and ( OtherAlias.AnyType = 'X' or\n      OtherAlias.AnyType = 'Y' )\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField and\n    OtherAlias.OtherKeyField = _ThirdSource.OtherKeyField\n    and OtherAlias.NumericField >= _ThirdSource.NumericField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on  OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n      and (   OtherAlias.AnyType = 'X'\n           or OtherAlias.AnyType = 'Y')\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on  AnyAlias.AnyKeyField      = _ThirdSource.AnyKeyField\n    and OtherAlias.OtherKeyField  = _ThirdSource.OtherKeyField\n    and OtherAlias.NumericField  >= _ThirdSource.NumericField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignJoinOnAndAssociationOnDetached",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n         and ( OtherAlias.AnyType = 'X' or\n      OtherAlias.AnyType = 'Y' )\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField and\n    OtherAlias.OtherKeyField = _ThirdSource.OtherKeyField\n    and OtherAlias.NumericField >= _ThirdSource.NumericField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on     OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n         and (   OtherAlias.AnyType = 'X'\n              or OtherAlias.AnyType = 'Y')\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on     AnyAlias.AnyKeyField      = _ThirdSource.AnyKeyField\n       and OtherAlias.OtherKeyField  = _ThirdSource.OtherKeyField\n       and OtherAlias.NumericField  >= _ThirdSource.NumericField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSkipJoinOn",
+   "config": {
+    "AlignJoinOn": false,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n         and ( OtherAlias.AnyType = 'X' or\n      OtherAlias.AnyType = 'Y' )\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField and\n    OtherAlias.OtherKeyField = _ThirdSource.OtherKeyField\n    and OtherAlias.NumericField >= _ThirdSource.NumericField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n         and ( OtherAlias.AnyType = 'X' or\n      OtherAlias.AnyType = 'Y' )\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on  AnyAlias.AnyKeyField      = _ThirdSource.AnyKeyField\n    and OtherAlias.OtherKeyField  = _ThirdSource.OtherKeyField\n    and OtherAlias.NumericField  >= _ThirdSource.NumericField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSkipAssociationOn",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": false,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n         and ( OtherAlias.AnyType = 'X' or\n      OtherAlias.AnyType = 'Y' )\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField and\n    OtherAlias.OtherKeyField = _ThirdSource.OtherKeyField\n    and OtherAlias.NumericField >= _ThirdSource.NumericField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on  OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n      and (   OtherAlias.AnyType = 'X'\n           or OtherAlias.AnyType = 'Y')\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField and\n    OtherAlias.OtherKeyField = _ThirdSource.OtherKeyField\n    and OtherAlias.NumericField >= _ThirdSource.NumericField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignWhenRight",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      case when AnyAlias.Category = 'A' then 'category A'\n           when AnyAlias.Category = 'B' or\n      AnyAlias.Category = 'C' then 'category B or C'\n      end as CategoryText,\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      case when AnyAlias.Category = 'A' then 'category A'\n           when AnyAlias.Category = 'B'\n             or AnyAlias.Category = 'C' then 'category B or C'\n      end as CategoryText,\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignWhenLeft",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      case when AnyAlias.Category = 'A' then 'category A'\n           when AnyAlias.Category = 'B' or\n      AnyAlias.Category = 'C' then 'category B or C'\n      end as CategoryText,\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      case when AnyAlias.Category = 'A' then 'category A'\n           when AnyAlias.Category = 'B'\n           or   AnyAlias.Category = 'C' then 'category B or C'\n      end as CategoryText,\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignWhenDetached",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      case when AnyAlias.Category = 'A' then 'category A'\n           when AnyAlias.Category = 'B' or\n      AnyAlias.Category = 'C' then 'category B or C'\n      end as CategoryText,\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      case when AnyAlias.Category = 'A' then 'category A'\n           when    AnyAlias.Category = 'B'\n                or AnyAlias.Category = 'C' then 'category B or C'\n      end as CategoryText,\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSkipWhen",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": false,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      case when AnyAlias.Category = 'A' then 'category A'\n           when AnyAlias.Category = 'B' or\n      AnyAlias.Category = 'C' then 'category B or C'\n      end as CategoryText,\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField,\n\n      case when AnyAlias.Category = 'A' then 'category A'\n           when AnyAlias.Category = 'B' or\n      AnyAlias.Category = 'C' then 'category B or C'\n      end as CategoryText,\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignPathExpression",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField,\n\n      max(_ThirdSource[1:SubCategory = 'X' or\n      SubCategory = 'Y'\n      or SubCategory = 'Z'].NumericField) as MaxNumericField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField,\n\n      max(_ThirdSource[1:    SubCategory = 'X'\n                          or SubCategory = 'Y'\n                          or SubCategory = 'Z'].NumericField) as MaxNumericField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testSkipPathExpressions",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": false,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField,\n\n      max(_ThirdSource[1:SubCategory = 'X' or\n      SubCategory = 'Y'\n      or SubCategory = 'Z'].NumericField) as MaxNumericField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField,\n\n      max(_ThirdSource[1:SubCategory = 'X' or\n      SubCategory = 'Y'\n      or SubCategory = 'Z'].NumericField) as MaxNumericField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testAlignWhereRight",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\nwhere\nOtherAlias.OtherKeyField > 'NN' and\nOtherAlias.NumericField > 100\nand ( AnyAlias.Category = 'A' or\nAnyAlias.Category = 'B'\nor AnyAlias.Category = 'C')",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\nwhere OtherAlias.OtherKeyField > 'NN'\n  and OtherAlias.NumericField  > 100\n  and (   AnyAlias.Category = 'A'\n       or AnyAlias.Category = 'B'\n       or AnyAlias.Category = 'C')",
+   "flags": {}
+  },
+  {
+   "name": "testAlignWhereLeft",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where\nOtherAlias.OtherKeyField > 'NN' and\nOtherAlias.NumericField > 100\nand ( AnyAlias.Category = 'A' or\nAnyAlias.Category = 'B'\nor AnyAlias.Category = 'C')",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where OtherAlias.OtherKeyField > 'NN'\n  and   OtherAlias.NumericField  > 100\n  and   (   AnyAlias.Category = 'A'\n         or AnyAlias.Category = 'B'\n         or AnyAlias.Category = 'C')",
+   "flags": {}
+  },
+  {
+   "name": "testAlignWhereDetached",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where\nOtherAlias.OtherKeyField > 'NN' and\nOtherAlias.NumericField > 100\nand ( AnyAlias.Category = 'A' or\nAnyAlias.Category = 'B'\nor AnyAlias.Category = 'C')",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where     OtherAlias.OtherKeyField > 'NN'\n        and OtherAlias.NumericField  > 100\n        and (   AnyAlias.Category = 'A'\n             or AnyAlias.Category = 'B'\n             or AnyAlias.Category = 'C')",
+   "flags": {}
+  },
+  {
+   "name": "testSkipWhere",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": false,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where\nOtherAlias.OtherKeyField > 'NN' and\nOtherAlias.NumericField > 100\nand ( AnyAlias.Category = 'A' or\nAnyAlias.Category = 'B'\nor AnyAlias.Category = 'C')",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where\nOtherAlias.OtherKeyField > 'NN' and\nOtherAlias.NumericField > 100\nand ( AnyAlias.Category = 'A' or\nAnyAlias.Category = 'B'\nor AnyAlias.Category = 'C')",
+   "flags": {}
+  },
+  {
+   "name": "testAlignHavingRight",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\n  group by AnyAlias.AnyKeyField,\n           OtherAlias.OtherKeyField,\n           OtherAlias.AnyType,\n           AnyAlias.Category\n\n  having AnyAlias.Category = 'A' and\n  avg(OtherAlias.NumericField) >= 200 or\n    AnyAlias.Category = 'B'\n  and sum(OtherAlias.NumericField) >= 1000 and\nsum(OtherAlias.NumericField) < 5000",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\n  group by AnyAlias.AnyKeyField,\n           OtherAlias.OtherKeyField,\n           OtherAlias.AnyType,\n           AnyAlias.Category\n\n  having     AnyAlias.Category             = 'A'\n         and avg(OtherAlias.NumericField) >= 200\n      or     AnyAlias.Category             = 'B'\n         and sum(OtherAlias.NumericField) >= 1000\n         and sum(OtherAlias.NumericField)  < 5000",
+   "flags": {}
+  },
+  {
+   "name": "testAlignHavingLeft",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\n  group by AnyAlias.AnyKeyField,\n           OtherAlias.OtherKeyField,\n           OtherAlias.AnyType,\n           AnyAlias.Category\n\n  having AnyAlias.Category = 'A' and\n  avg(OtherAlias.NumericField) >= 200 or\n    AnyAlias.Category = 'B'\n  and sum(OtherAlias.NumericField) >= 1000 and\nsum(OtherAlias.NumericField) < 5000",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\n  group by AnyAlias.AnyKeyField,\n           OtherAlias.OtherKeyField,\n           OtherAlias.AnyType,\n           AnyAlias.Category\n\n  having     AnyAlias.Category             = 'A'\n         and avg(OtherAlias.NumericField) >= 200\n  or         AnyAlias.Category             = 'B'\n         and sum(OtherAlias.NumericField) >= 1000\n         and sum(OtherAlias.NumericField)  < 5000",
+   "flags": {}
+  },
+  {
+   "name": "testAlignHavingDetached",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.DO_NOT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\n  group by AnyAlias.AnyKeyField,\n           OtherAlias.OtherKeyField,\n           OtherAlias.AnyType,\n           AnyAlias.Category\n\n  having AnyAlias.Category = 'A' and\n  avg(OtherAlias.NumericField) >= 200 or\n    AnyAlias.Category = 'B'\n  and sum(OtherAlias.NumericField) >= 1000 and\nsum(OtherAlias.NumericField) < 5000",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\n  group by AnyAlias.AnyKeyField,\n           OtherAlias.OtherKeyField,\n           OtherAlias.AnyType,\n           AnyAlias.Category\n\n  having        AnyAlias.Category             = 'A'\n            and avg(OtherAlias.NumericField) >= 200\n         or     AnyAlias.Category             = 'B'\n            and sum(OtherAlias.NumericField) >= 1000\n            and sum(OtherAlias.NumericField)  < 5000",
+   "flags": {}
+  },
+  {
+   "name": "testSkipHaving",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": false,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\n  group by AnyAlias.AnyKeyField,\n           OtherAlias.OtherKeyField,\n           OtherAlias.AnyType,\n           AnyAlias.Category\n\n  having AnyAlias.Category = 'A' and\n  avg(OtherAlias.NumericField) >= 200 or\n    AnyAlias.Category = 'B'\n  and sum(OtherAlias.NumericField) >= 1000 and\nsum(OtherAlias.NumericField) < 5000",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\n  group by AnyAlias.AnyKeyField,\n           OtherAlias.OtherKeyField,\n           OtherAlias.AnyType,\n           AnyAlias.Category\n\n  having AnyAlias.Category = 'A' and\n  avg(OtherAlias.NumericField) >= 200 or\n    AnyAlias.Category = 'B'\n  and sum(OtherAlias.NumericField) >= 1000 and\nsum(OtherAlias.NumericField) < 5000",
+   "flags": {}
+  },
+  {
+   "name": "testLeftAlignComparisonOps",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": false,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField and\n    OtherAlias.OtherKeyField = _ThirdSource.OtherKeyField\n    and OtherAlias.NumericField >= _ThirdSource.NumericField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on  AnyAlias.AnyKeyField     =  _ThirdSource.AnyKeyField\n    and OtherAlias.OtherKeyField =  _ThirdSource.OtherKeyField\n    and OtherAlias.NumericField  >= _ThirdSource.NumericField\n\n{\n  key AnyAlias.AnyKeyField\n}",
+   "flags": {}
+  },
+  {
+   "name": "testMaxInnerSpacesLow",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 12
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\n  group by AnyAlias.AnyKeyField,\n           OtherAlias.OtherKeyField,\n           OtherAlias.AnyType,\n           AnyAlias.Category\n\n  having AnyAlias.Category = 'A' and\n  avg(OtherAlias.NumericField) >= 200 or\n    AnyAlias.Category = 'B'\n  and sum(OtherAlias.NumericField) >= 1000 and\nsum(OtherAlias.NumericField) < 5000",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n  association [1..*] to I_ThirdSource  as _ThirdSource\n    on AnyAlias.AnyKeyField = _ThirdSource.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n\n  group by AnyAlias.AnyKeyField,\n           OtherAlias.OtherKeyField,\n           OtherAlias.AnyType,\n           AnyAlias.Category\n\n  having     AnyAlias.Category = 'A'\n         and avg(OtherAlias.NumericField) >= 200\n      or     AnyAlias.Category = 'B'\n         and sum(OtherAlias.NumericField) >= 1000\n         and sum(OtherAlias.NumericField)  < 5000",
+   "flags": {}
+  },
+  {
+   "name": "testHierarchySkipped",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define hierarchy AnyHierarchy\n  with parameters\n    p_date_from : dats,\n    p_date_to   : dats\n\n  as parent child hierarchy(\n    source AnySource\n    child to parent association _relat\n    start where id = 'A'\n    siblings order by id\n  )\n\n{\n  id,\n  parent\n}",
+   "exp": "define hierarchy AnyHierarchy\n  with parameters\n    p_date_from : dats,\n    p_date_to   : dats\n\n  as parent child hierarchy(\n    source AnySource\n    child to parent association _relat\n    start where id = 'A'\n    siblings order by id\n  )\n\n{\n  id,\n  parent\n}",
+   "flags": {}
+  },
+  {
+   "name": "testCommentAfterWhereKeyword",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where // comment\nOtherAlias.OtherKeyField > 'NN' and\nOtherAlias.NumericField > 100\nand ( AnyAlias.Category = 'A' or\nAnyAlias.Category = 'B'\nor AnyAlias.Category = 'C')",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where // comment\n        OtherAlias.OtherKeyField > 'NN'\n    and OtherAlias.NumericField  > 100\n    and (   AnyAlias.Category = 'A'\n         or AnyAlias.Category = 'B'\n         or AnyAlias.Category = 'C')",
+   "flags": {}
+  },
+  {
+   "name": "testSpacesInsideParentheses",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.ALWAYS"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where\nOtherAlias.OtherKeyField > 'NN' and\nOtherAlias.NumericField > 100\nand ( AnyAlias.Category = 'A' or\nAnyAlias.Category = 'B'\nor AnyAlias.Category = 'C')",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where OtherAlias.OtherKeyField > 'NN'\n    and OtherAlias.NumericField  > 100\n    and (    AnyAlias.Category = 'A'\n          or AnyAlias.Category = 'B'\n          or AnyAlias.Category = 'C' )",
+   "flags": {}
+  },
+  {
+   "name": "testParenthesesOnOwnLineAtEnd",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where\nOtherAlias.OtherKeyField > 'NN' and\nOtherAlias.NumericField > 100\nand\n(\nAnyAlias.Category = 'A' or\nAnyAlias.Category = 'B'\nor AnyAlias.Category = 'C'\n)",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where OtherAlias.OtherKeyField > 'NN'\n    and OtherAlias.NumericField  > 100\n    and (   AnyAlias.Category = 'A'\n         or AnyAlias.Category = 'B'\n         or AnyAlias.Category = 'C')",
+   "flags": {}
+  },
+  {
+   "name": "testParenthesesOnOwnLine",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where\nOtherAlias.OtherKeyField > 'NN' and\n(\nAnyAlias.Category = 'A' or\nAnyAlias.Category = 'B'\nor AnyAlias.Category = 'C'\n   ) and\nOtherAlias.NumericField > 100",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where OtherAlias.OtherKeyField > 'NN'\n    and (   AnyAlias.Category = 'A'\n         or AnyAlias.Category = 'B'\n         or AnyAlias.Category = 'C')\n    and OtherAlias.NumericField > 100",
+   "flags": {}
+  },
+  {
+   "name": "testCommentsBlockingParentheses",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where\nOtherAlias.OtherKeyField > 'NN' and\nOtherAlias.NumericField > 100\nand\n( // comment1\nAnyAlias.Category = 'A' or\nAnyAlias.Category = 'B'\nor AnyAlias.Category = 'C' // comment2\n)",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n    inner join I_OtherSource as OtherAlias\n      on OtherAlias.AnyKeyField = AnyAlias.AnyKeyField\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where OtherAlias.OtherKeyField > 'NN'\n    and OtherAlias.NumericField  > 100\n    and ( // comment1\n         AnyAlias.Category = 'A'\n  or AnyAlias.Category = 'B'\n  or AnyAlias.Category = 'C' // comment2\n  )",
+   "flags": {}
+  },
+  {
+   "name": "testAlignAlternativeNotEqualsOperator",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "  define view entity C_AnyEntity\n    as select from I_AnyEntity as AnyAlias\n  {\n    key AnyKeyField\n  }\n  where AnyKeyField  !=   5",
+   "exp": "  define view entity C_AnyEntity\n    as select from I_AnyEntity as AnyAlias\n  {\n    key AnyKeyField\n  }\n  where AnyKeyField != 5",
+   "flags": {}
+  },
+  {
+   "name": "testParenthesisWithTwoExprsOnOneLine",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where (AnyAlias.AnyField = 'X' and AnyAlias.AnyNum < 0 )\n    or (AnyAlias.OtherField != 'Y' and AnyAlias.OtherNum != 10 )",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where (AnyAlias.AnyField    = 'X' and AnyAlias.AnyNum    < 0)\n     or (AnyAlias.OtherField != 'Y' and AnyAlias.OtherNum != 10)",
+   "flags": {}
+  },
+  {
+   "name": "testAlignWhereWithSpacesInsideParens",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.ALWAYS"
+    }
+   },
+   "src": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where (AnyAlias.AnyField = 'X' and AnyAlias.AnyNum < 0 )\n    or (AnyAlias.OtherField != 'Y' and AnyAlias.OtherNum <> 10 )",
+   "exp": "define view entity I_AnyEntity\n  as select from I_AnySource as AnyAlias\n\n{\n  key AnyAlias.AnyKeyField\n}\n  where ( AnyAlias.AnyField    = 'X' and AnyAlias.AnyNum    < 0 )\n     or ( AnyAlias.OtherField != 'Y' and AnyAlias.OtherNum <> 10 )",
+   "flags": {}
+  },
+  {
+   "name": "testAlignWhereWithCardinality",
+   "config": {
+    "AlignJoinOn": true,
+    "AlignAssociationOn": true,
+    "AlignWhen": true,
+    "AlignPathExpressions": true,
+    "AlignWhere": true,
+    "AlignHaving": true,
+    "AlignOnWithBoolOps": "AlignStyle.LEFT_ALIGN",
+    "AlignFilterWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhenWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignWhereWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "AlignHavingWithBoolOps": "AlignStyle.RIGHT_ALIGN",
+    "RightAlignComparisonOps": true,
+    "MaxInnerSpaces": 20
+   },
+   "otherRules": {
+    "DDL_SPACES_AROUND_BRACKETS": {
+     "SpacesInsideArithParens": "ChangeType.NEVER"
+    }
+   },
+   "src": "define view entity any_view\n  as select from dtab._association[status <> 'C' and status <> 'X']\n\n{\n  key field1,\n\n      field2\n}\n\nwhere _association.field3 > '0'\nand _Items[to one: currency <> 'EUR'].field4   =   'any'",
+   "exp": "define view entity any_view\n  as select from dtab._association[status <> 'C' and status <> 'X']\n\n{\n  key field1,\n\n      field2\n}\n\nwhere _association.field3 > '0'\n  and _Items[to one: currency <> 'EUR'].field4 = 'any'",
+   "flags": {}
+  }
+ ]
+}
