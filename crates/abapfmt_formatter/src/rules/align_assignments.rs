@@ -64,7 +64,7 @@ pub fn align_assignments(doc: &mut Doc, config: &RuleConfig) {
                 section_start = ci;
                 in_section = 1;
             }
-        } else if var.is_some() && cmd.first + 1 <= cmd.last && doc.lines[cmd.first + 1] == 0 {
+        } else if var.is_some() && cmd.first < cmd.last && doc.lines[cmd.first + 1] == 0 {
             in_section += 1;
         }
     }
