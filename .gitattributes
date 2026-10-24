@@ -1,0 +1,4 @@
+# fixtures are byte-exact test data; never normalize line endings
+fixtures/** -text
+*.rs text eol=lf
+*.toml text eol=lf
