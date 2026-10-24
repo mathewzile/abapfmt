@@ -1,0 +1,8 @@
+{
+  "alignment/AlignPerform.json::testMoveIfFoundUp": "moves IF FOUND in front of TABLES (reorders tokens)",
+  "alignment/AlignPerform.json::testAlignWithFormName": "moves IF FOUND in front of TABLES (reorders tokens)",
+  "alignment/AlignPerform.json::testBreakAfterTablesUsingAndChanging": "moves IF FOUND in front of TABLES (reorders tokens)",
+  "emptylines/EmptyLinesInClassDefinition.json::testRemoveDoNotIncludeComments": "RemoveIncludeWarnings deletes the generated *\"* comment lines",
+  "spaces/ClosingBracketsPosition.json::testParameterListWithConflictingComments": "merges two comments into one",
+  "spaces/ClosingBracketsPosition.json::testPragmaAndConflictingComments": "merges two comments into one"
+}

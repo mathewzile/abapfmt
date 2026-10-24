@@ -320,7 +320,7 @@ mod tests {
     fn unparseable_statements_use_the_fallback() {
         let s = parse("FOO BAR value.", Options::default()).unwrap();
         assert!(!s.commands[0].fully_matched);
-        assert!(s.sources.iter().any(|x| *x == Source::Fallback));
+        assert!(s.sources.contains(&Source::Fallback));
         // `value` is a grammar word, so the guess can only be a keyword: the known weakness
         assert_eq!(s.types[2], Keyword);
     }
