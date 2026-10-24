@@ -152,13 +152,30 @@ struct Entry {
 
 pub(crate) fn assign_levels(commands: &mut [Command]) {
     let mut stack: Vec<Entry> = Vec::new();
+    let mut in_class_definition = false;
     for c in commands.iter_mut() {
+        assign_one(c, &mut stack, &mut in_class_definition);
+        c.depth_after = stack.len() as u32;
+    }
+}
+
+fn assign_one(c: &mut Command, stack: &mut Vec<Entry>, in_class_definition: &mut bool) {
+    {
         c.level = stack.len() as u32;
+        match c.statement.filter(|_| !c.is_comment_only) {
+            Some("ClassDefinition") => *in_class_definition = true,
+            Some("ClassImplementation") => *in_class_definition = false,
+            _ => {}
+        }
+        c.in_class_definition = *in_class_definition;
+        if c.statement == Some("EndClass") {
+            *in_class_definition = false;
+        }
         let Some(name) = c.statement.filter(|_| !c.is_comment_only) else {
-            continue;
+            return;
         };
         let Some((mut family, mut pos)) = role(name) else {
-            continue;
+            return;
         };
         let is_event_opener = family == Family::Event && EVENTS.contains(&name);
         c.starts_event_block = is_event_opener;

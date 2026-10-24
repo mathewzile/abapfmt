@@ -13,6 +13,8 @@ pub struct Doc<'a> {
     pub spaces: Vec<u32>,
     /// Replacement text for a token, if changed.
     pub text: Vec<Option<String>>,
+    /// Output order of the tokens; rules may move a period or comma in front of comments.
+    order: Vec<usize>,
     orig_lines: Vec<u32>,
     orig_spaces: Vec<u32>,
     eol: &'static str,
@@ -30,6 +32,7 @@ impl<'a> Doc<'a> {
             lines,
             spaces,
             text: vec![None; n],
+            order: (0..n).collect(),
             eol: if src.contains("\r\n") { "\r\n" } else { "\n" },
             syn,
         })
@@ -98,12 +101,51 @@ impl<'a> Doc<'a> {
         (i + 1..=last).find(|j| !matches!(self.syn.types[*j], Comment | Pragma))
     }
 
+    /// Token indices of `cmd` in current output order.
+    pub fn order_of(&self, cmd: &Command) -> &[usize] {
+        &self.order[cmd.first..=cmd.last]
+    }
+
+    /// Move token `t` so that it is output directly before token `target` (both in `cmd`).
+    pub fn move_before(&mut self, cmd: &Command, t: usize, target: usize) {
+        let range = cmd.first..=cmd.last;
+        let from = self.order[range.clone()]
+            .iter()
+            .position(|x| *x == t)
+            .unwrap()
+            + cmd.first;
+        self.order.remove(from);
+        let to = self.order[cmd.first..cmd.last]
+            .iter()
+            .position(|x| *x == target)
+            .unwrap()
+            + cmd.first;
+        self.order.insert(to, t);
+    }
+
+    /// Indentation of code that follows command `ci`: the spaces of the enclosing top-level
+    /// command plus two per open block (abap-cleaner's `Command.getIndent()`).
+    pub fn indent_after(&self, ci: usize) -> u32 {
+        let cmds = self.commands();
+        let base = cmds[..=ci]
+            .iter()
+            .rev()
+            .find(|c| c.level == 0 && !c.is_comment_only)
+            .map_or(0, |c| self.spaces[c.first]);
+        base + 2 * cmds[ci].depth_after
+    }
+
     pub fn render(&self) -> String {
         let src = self.syn.src;
         let mut out = String::with_capacity(src.len());
-        let mut prev_end = 0usize;
-        for (i, t) in self.syn.tokens.iter().enumerate() {
-            let gap = &src[prev_end..t.start as usize];
+        for &i in &self.order {
+            let t = &self.syn.tokens[i];
+            let before = if i == 0 {
+                0
+            } else {
+                self.syn.tokens[i - 1].end as usize
+            };
+            let gap = &src[before..t.start as usize];
             if self.lines[i] == self.orig_lines[i] && self.spaces[i] == self.orig_spaces[i] {
                 out.push_str(gap);
             } else {
@@ -113,9 +155,9 @@ impl<'a> Doc<'a> {
                 out.extend(std::iter::repeat_n(' ', self.spaces[i] as usize));
             }
             out.push_str(self.token_text(i));
-            prev_end = t.end as usize;
         }
-        out.push_str(&src[prev_end..]);
+        let tail = self.syn.tokens.last().map_or(0, |t| t.end as usize);
+        out.push_str(&src[tail..]);
         out
     }
 }

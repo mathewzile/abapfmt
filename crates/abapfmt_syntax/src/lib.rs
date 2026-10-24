@@ -58,6 +58,10 @@ pub struct Command {
     pub starts_event_block: bool,
     /// Closes an event block (the next event, CLASS, FORM or MODULE).
     pub ends_event_block: bool,
+    /// From `CLASS ... DEFINITION` to its `ENDCLASS` (inclusive).
+    pub in_class_definition: bool,
+    /// Number of open blocks after this command (the level of the code that follows it).
+    pub depth_after: u32,
 }
 
 impl Command {
@@ -210,6 +214,8 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
                 level: 0,
                 starts_event_block: false,
                 ends_event_block: false,
+                in_class_definition: false,
+                depth_after: 0,
             });
             i += 1;
             continue;
@@ -243,6 +249,8 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
             level: 0,
             starts_event_block: false,
             ends_event_block: false,
+            in_class_definition: false,
+            depth_after: 0,
         });
     }
     // attach grammar results to commands
