@@ -34,6 +34,9 @@ dependencies = [
 [[package]]
 name = "abapfmt_lexer"
 version = "0.0.0"
+dependencies = [
+ "serde_json",
+]
 
 [[package]]
 name = "abapfmt_lsp"
