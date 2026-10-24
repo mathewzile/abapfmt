@@ -153,13 +153,24 @@ struct Entry {
 pub(crate) fn assign_levels(commands: &mut [Command]) {
     let mut stack: Vec<Entry> = Vec::new();
     let mut in_class_definition = false;
+    let mut in_interface_definition = false;
     for c in commands.iter_mut() {
-        assign_one(c, &mut stack, &mut in_class_definition);
+        assign_one(
+            c,
+            &mut stack,
+            &mut in_class_definition,
+            &mut in_interface_definition,
+        );
         c.depth_after = stack.len() as u32;
     }
 }
 
-fn assign_one(c: &mut Command, stack: &mut Vec<Entry>, in_class_definition: &mut bool) {
+fn assign_one(
+    c: &mut Command,
+    stack: &mut Vec<Entry>,
+    in_class_definition: &mut bool,
+    in_interface_definition: &mut bool,
+) {
     {
         c.level = stack.len() as u32;
         match c.statement.filter(|_| !c.is_comment_only) {
@@ -168,6 +179,25 @@ fn assign_one(c: &mut Command, stack: &mut Vec<Entry>, in_class_definition: &mut
             _ => {}
         }
         c.in_class_definition = *in_class_definition;
+        if c.statement.filter(|_| !c.is_comment_only) == Some("Interface") {
+            *in_interface_definition = true;
+        }
+        c.in_interface_definition = *in_interface_definition;
+        if c.statement == Some("EndInterface") {
+            *in_interface_definition = false;
+        }
+        c.in_oo_context = stack
+            .iter()
+            .any(|e| matches!(e.family, Family::Class | Family::Interface | Family::Method))
+            || matches!(
+                c.statement.filter(|_| !c.is_comment_only),
+                Some(
+                    "ClassDefinition"
+                        | "ClassImplementation"
+                        | "Interface"
+                        | "MethodImplementation"
+                )
+            );
         if c.statement == Some("EndClass") {
             *in_class_definition = false;
         }

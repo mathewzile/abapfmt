@@ -27,6 +27,8 @@ pub enum TokenType {
     Comma,
     Colon,
     OtherOp,
+    /// Inside `EXEC SQL ... ENDEXEC`; never touched by any rule.
+    NonAbap,
 }
 
 /// How the type of a word was decided.
@@ -60,6 +62,10 @@ pub struct Command {
     pub ends_event_block: bool,
     /// From `CLASS ... DEFINITION` to its `ENDCLASS` (inclusive).
     pub in_class_definition: bool,
+    /// From `INTERFACE` to its `ENDINTERFACE` (inclusive).
+    pub in_interface_definition: bool,
+    /// Inside (or opening) a CLASS, INTERFACE or METHOD.
+    pub in_oo_context: bool,
     /// Number of open blocks after this command (the level of the code that follows it).
     pub depth_after: u32,
 }
@@ -184,8 +190,17 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
     let (mut kw, mut id) = (vec![false; n], vec![false; n]);
     let mut cmd_matched: Vec<(usize, bool, Option<&'static str>)> = Vec::new(); // (last token, matched, name)
     for s in &stmts {
-        for (g, c) in s.tokens.iter().zip(&s.classes) {
+        for (k, (g, c)) in s.tokens.iter().zip(&s.classes).enumerate() {
             let Some(i) = find(g.start) else { continue };
+            // CLEAR ... WITH NULL: the grammar reads NULL as a field, but it is a keyword
+            if s.statement == Some("Clear")
+                && g.text(src).eq_ignore_ascii_case("NULL")
+                && k > 0
+                && s.tokens[k - 1].text(src).eq_ignore_ascii_case("WITH")
+            {
+                kw[i] = true;
+                continue;
+            }
             match c {
                 Some(Class::Keyword) => kw[i] = true,
                 Some(Class::Identifier) => id[i] = true,
@@ -215,6 +230,8 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
                 starts_event_block: false,
                 ends_event_block: false,
                 in_class_definition: false,
+                in_interface_definition: false,
+                in_oo_context: false,
                 depth_after: 0,
             });
             i += 1;
@@ -250,6 +267,8 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
             starts_event_block: false,
             ends_event_block: false,
             in_class_definition: false,
+            in_interface_definition: false,
+            in_oo_context: false,
             depth_after: 0,
         });
     }
@@ -287,6 +306,12 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
             TokenKind::Pragma => (TokenType::Pragma, Source::Lexer),
             TokenKind::Literal => (TokenType::Literal, Source::Lexer),
             TokenKind::AssignmentOp => (TokenType::AssignmentOp, Source::Lexer),
+            // a textual operator (BETWEEN, IN, CO...) is a name if the grammar only sees a name
+            TokenKind::ComparisonOp
+                if id[idx] && !kw[idx] && t.text(src).starts_with(|c: char| c.is_alphabetic()) =>
+            {
+                (TokenType::Identifier, Source::Grammar)
+            }
             TokenKind::ComparisonOp => (TokenType::ComparisonOp, Source::Lexer),
             TokenKind::Period => (TokenType::Period, Source::Lexer),
             TokenKind::Comma => (TokenType::Comma, Source::Lexer),
@@ -306,6 +331,26 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
         };
         types.push(ty);
         sources.push(from);
+    }
+
+    // native SQL between EXEC SQL and ENDEXEC is not ABAP
+    let mut native = false;
+    for idx in 0..n {
+        if native {
+            if tokens[idx].kind == TokenKind::Word
+                && tokens[idx].text(src).eq_ignore_ascii_case("ENDEXEC")
+            {
+                native = false;
+            } else if tokens[idx].kind != TokenKind::Comment {
+                types[idx] = TokenType::NonAbap;
+                sources[idx] = Source::Lexer;
+            }
+        } else if commands
+            .iter()
+            .any(|c| c.last == idx && c.statement == Some("ExecSQL"))
+        {
+            native = true;
+        }
     }
 
     // brackets
