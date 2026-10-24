@@ -4,6 +4,12 @@ fn main() {
     let path = std::env::args().nth(1).unwrap();
     let src = std::fs::read_to_string(path).unwrap();
     let s = parse(&src, Options::default()).unwrap();
+    for c in &s.commands {
+        println!(
+            "CMD {:?} first={} last={} full={}",
+            c.statement, c.first, c.last, c.fully_matched
+        );
+    }
     for i in 0..s.tokens.len() {
         println!(
             "{i:3} {:?} {:?} lines={} sp={} br={:?} par={:?}",

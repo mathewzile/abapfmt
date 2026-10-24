@@ -41,24 +41,6 @@ fn text_is(doc: &Doc, i: usize, any: &[&str]) -> bool {
     any.iter().any(|a| t.eq_ignore_ascii_case(a))
 }
 
-/// Column where token `i` starts (`Token.getStartIndexInLine`).
-fn start_x(doc: &Doc, first: usize, i: usize) -> i64 {
-    let mut k = i;
-    while k > first && doc.lines[k] == 0 {
-        k -= 1;
-    }
-    let mut x = i64::from(doc.spaces[k]);
-    for j in k + 1..=i {
-        x += len(doc, j - 1) + i64::from(doc.spaces[j]);
-    }
-    x
-}
-
-/// `Token.isFirstTokenInLine`: also true for the very first token of the source.
-fn first_in_line(doc: &Doc, i: usize) -> bool {
-    doc.lines[i] > 0 || i == 0
-}
-
 fn prev_code(doc: &Doc, first: usize, i: usize) -> Option<usize> {
     (first..i).rev().find(|j| !is_comment(doc, *j))
 }
@@ -341,26 +323,6 @@ fn skip_until_token(doc: &Doc, cmd: &Command, t: usize) -> Option<usize> {
     close.filter(|c| *c == t + 1)
 }
 
-fn is_asterisk_comment_line(doc: &Doc, i: usize) -> bool {
-    is_comment(doc, i) && doc.lines[i] > 0 && doc.syn.text(i).starts_with('*')
-}
-
-/// `Command.addIndent`: shifts the first tokens of the following lines.
-fn add_indent(doc: &mut Doc, cmd_last: usize, from: usize, add: i64, min_spaces: i64) {
-    if add == 0 {
-        return;
-    }
-    for t in from..=cmd_last {
-        if doc.lines[t] > 0 && !is_asterisk_comment_line(doc, t) {
-            if i64::from(doc.spaces[t]) >= min_spaces {
-                doc.spaces[t] = (i64::from(doc.spaces[t]) + add).max(0) as u32;
-            } else {
-                break;
-            }
-        }
-    }
-}
-
 /// `Token.setSpacesLeftAdjustingIndent(new, false)`.
 fn set_spaces_adjusting_indent(
     doc: &mut Doc,
@@ -378,12 +340,12 @@ fn set_spaces_adjusting_indent(
         return;
     }
     let min_spaces = if doc.lines[t + 1] == 0 {
-        start_x(doc, cmd_first, t + 1)
+        doc.start_x(cmd_first, t + 1)
     } else {
-        start_x(doc, cmd_first, t) + 1
+        doc.start_x(cmd_first, t) + 1
     };
     doc.spaces[t] = new as u32;
-    add_indent(doc, cmd_last, t + 1, new - old, min_spaces);
+    doc.add_indent(cmd_last, t + 1, new - old, min_spaces, true);
 }
 
 fn remove_spaces_from_empty_brackets(doc: &mut Doc, cmds: &[Command]) {
@@ -394,10 +356,10 @@ fn remove_spaces_from_empty_brackets(doc: &mut Doc, cmds: &[Command]) {
                 && doc.lines[t + 1] == 0
                 && doc.spaces[t + 1] > 1
             {
-                let start = start_x(doc, cmd.first, t + 1);
+                let start = doc.start_x(cmd.first, t + 1);
                 let add = 1 - i64::from(doc.spaces[t + 1]);
                 doc.spaces[t + 1] = 1;
-                add_indent(doc, cmd.last, t + 1, add, start);
+                doc.add_indent(cmd.last, t + 1, add, start, true);
             }
         }
     }
@@ -560,10 +522,9 @@ fn process_sequence(
     if special {
         let mut all_same_start = true;
         for tp in &list[start..end] {
-            if !first_in_line(doc, tp.tok) {
+            if !doc.first_in_line(tp.tok) {
                 let p = tp.tok - 1;
-                max_prev_end =
-                    max_prev_end.max(start_x(doc, cmd_first_of(tp.tok), p) + len(doc, p));
+                max_prev_end = max_prev_end.max(doc.start_x(cmd_first_of(tp.tok), p) + len(doc, p));
             }
             if tp.start_x != list[start].start_x {
                 all_same_start = false;
@@ -580,12 +541,12 @@ fn process_sequence(
     for tp in &list[start..end] {
         let t = tp.tok;
         let here = if special {
-            start_x(doc, cmd_first_of(t), t) - max_prev_end - 1
+            doc.start_x(cmd_first_of(t), t) - max_prev_end - 1
         } else {
             i64::from(doc.spaces[t]) - 1
         };
         spare = spare.min(here);
-        if !first_in_line(doc, t) {
+        if !doc.first_in_line(t) {
             first_in_line_only = false;
         }
     }

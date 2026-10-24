@@ -68,6 +68,12 @@ pub struct Command {
     pub in_oo_context: bool,
     /// Number of open blocks after this command (the level of the code that follows it).
     pub depth_after: u32,
+    /// Indentation from the enclosing blocks, in spaces, without the indentation of the first
+    /// command of the code (see `root_no_base`).
+    pub indent_rel: u32,
+    /// The outermost command of the block structure is a CLASS, INTERFACE or introductory
+    /// statement, so that the indentation of the first command of the code is not added.
+    pub root_no_base: bool,
 }
 
 impl Command {
@@ -233,6 +239,8 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
                 in_interface_definition: false,
                 in_oo_context: false,
                 depth_after: 0,
+                indent_rel: 0,
+                root_no_base: false,
             });
             i += 1;
             continue;
@@ -270,6 +278,8 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
             in_interface_definition: false,
             in_oo_context: false,
             depth_after: 0,
+            indent_rel: 0,
+            root_no_base: false,
         });
     }
     // attach grammar results to commands
@@ -294,8 +304,27 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
             .iter()
             .find(|t| t.kind == TokenKind::Word);
         c.statement = first.and_then(|t| blocks::guess_statement(t.text(src)));
+        if c.statement.is_none()
+            && first.is_some_and(|t| t.text(src).eq_ignore_ascii_case("AUTHORITY-CHECK"))
+        {
+            let words: Vec<String> = tokens[c.first..=c.last]
+                .iter()
+                .filter(|t| t.kind == TokenKind::Word)
+                .take(3)
+                .map(|t| t.text(src).to_ascii_uppercase())
+                .collect();
+            c.statement = match (
+                words.get(1).map(String::as_str),
+                words.get(2).map(String::as_str),
+            ) {
+                (Some("DISABLE"), Some("BEGIN")) => Some("AuthorityCheckDisableBegin"),
+                (Some("DISABLE"), Some("END")) => Some("AuthorityCheckDisableEnd"),
+                _ => None,
+            };
+        }
     }
-    blocks::assign_levels(&mut commands);
+    reclassify_select(&mut commands, &tokens, src);
+    blocks::assign_levels(&mut commands, &tokens, src);
 
     // final types
     let mut types = Vec::with_capacity(n);
@@ -382,6 +411,131 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
         bracket_match,
         parent,
     })
+}
+
+/// Does the select list contain a field that is not an aggregate (nor an alias)?
+fn has_plain_field(top: &[String], aggregates: &[&str]) -> bool {
+    const LIST_END: &[&str] = &[
+        "FROM",
+        "INTO",
+        "APPENDING",
+        "WHERE",
+        "GROUP",
+        "HAVING",
+        "ORDER",
+        "UP",
+        "FOR",
+        "UNION",
+        "INTERSECT",
+        "EXCEPT",
+    ];
+    // the FIELDS clause of the new syntax (not CORRESPONDING FIELDS OF)
+    let start = (0..top.len())
+        .find(|&p| top[p] == "FIELDS" && p > 0 && top[p - 1] != "CORRESPONDING")
+        .map_or(1, |p| p + 1);
+    let mut prev = "";
+    for t in &top[start.min(top.len())..] {
+        if LIST_END.contains(&t.as_str()) {
+            break;
+        }
+        let skip = matches!(
+            t.as_str(),
+            "," | "AS" | "DISTINCT" | "UNIQUE" | "*" | "SINGLE"
+        ) || prev == "AS"
+            || t.starts_with(')')
+            || aggregates.iter().any(|a| t.starts_with(a));
+        if !skip {
+            return true;
+        }
+        prev = t;
+    }
+    false
+}
+
+/// abaplint tells `SELECT ... ENDSELECT` loops from single statements, and `WITH ... ENDWITH`
+/// likewise, only after parsing; this mirrors its `isSelectLoop` / `isWithLoop` on the top-level
+/// tokens of the command.
+fn reclassify_select(commands: &mut [Command], tokens: &[Token], src: &str) {
+    const AGGREGATES: &[&str] = &[
+        "AVG(",
+        "MEDIAN(",
+        "MAX(",
+        "MIN(",
+        "SUM(",
+        "PRODUCT(",
+        "STDDEV(",
+        "VAR(",
+        "CORR(",
+        "CORR_SPEARMAN(",
+        "STRING_AGG(",
+        "COUNT(",
+        "GROUPING(",
+    ];
+    for c in commands.iter_mut().filter(|c| !c.is_comment_only) {
+        let is_with = matches!(c.statement, Some("With" | "WithLoop"));
+        if !is_with && !matches!(c.statement, Some("Select" | "SelectLoop")) {
+            continue;
+        }
+        let mut depth = 0i32;
+        let mut top: Vec<String> = Vec::new();
+        for t in tokens[c.first..=c.last]
+            .iter()
+            .filter(|t| t.kind != TokenKind::Comment)
+        {
+            let text = t.text(src);
+            if closes_level(text, t.kind) {
+                depth -= 1;
+            }
+            if depth <= 0 {
+                top.push(text.to_ascii_uppercase());
+            }
+            if opens_level(text, t.kind) {
+                depth += 1;
+            }
+        }
+        let has = |w: &str| top.iter().any(|t| t == w);
+        let followed = |a: &str, b: &str| top.windows(2).any(|p| p[0] == a && p[1] == b);
+        let package_size = followed("PACKAGE", "SIZE");
+        let into_table = top.iter().enumerate().any(|(k, t)| {
+            if t != "INTO" && t != "APPENDING" {
+                return false;
+            }
+            let mut next = k + 1;
+            if top.get(next).is_some_and(|w| w == "CORRESPONDING") {
+                next += 3; // CORRESPONDING FIELDS OF
+            }
+            top.get(next).is_some_and(|w| w == "TABLE")
+        });
+        let is_loop = if is_with {
+            package_size || !into_table
+        } else if top.get(1).is_some_and(|w| w == "SINGLE") {
+            false
+        } else if package_size {
+            true
+        } else if into_table {
+            false
+        } else {
+            let into_any = has("INTO") || has("APPENDING");
+            let group_by = followed("GROUP", "BY");
+            let aggregation = top
+                .iter()
+                .any(|t| AGGREGATES.iter().any(|a| t.starts_with(a)))
+                && !has_plain_field(&top, AGGREGATES);
+            if !into_any && !group_by && !has("HAVING") && !followed("ORDER", "BY") && aggregation {
+                false
+            } else if has("UNION") || has("INTERSECT") || has("EXCEPT") {
+                true
+            } else {
+                group_by || !aggregation
+            }
+        };
+        c.statement = Some(match (is_with, is_loop) {
+            (true, true) => "WithLoop",
+            (true, false) => "With",
+            (false, true) => "SelectLoop",
+            (false, false) => "Select",
+        });
+    }
 }
 
 #[cfg(test)]

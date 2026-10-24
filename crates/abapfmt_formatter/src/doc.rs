@@ -18,6 +18,10 @@ pub struct Doc<'a> {
     orig_lines: Vec<u32>,
     orig_spaces: Vec<u32>,
     eol: &'static str,
+    /// Indentation of the first command of the code (before any rule changed it).
+    base_indent: u32,
+    /// The code has an introductory statement (REPORT ...) or a class, so `base_indent` is not used.
+    has_intro_or_class: bool,
 }
 
 impl<'a> Doc<'a> {
@@ -26,7 +30,47 @@ impl<'a> Doc<'a> {
         let lines: Vec<u32> = syn.tokens.iter().map(|t| t.lines_before).collect();
         let spaces: Vec<u32> = syn.tokens.iter().map(|t| t.spaces_before).collect();
         let n = lines.len();
+        let word = |c: &Command| {
+            (c.first..=c.last)
+                .find(|i| syn.types[*i] != abapfmt_syntax::TokenType::Comment)
+                .map(|i| syn.text(i).to_ascii_uppercase())
+                .unwrap_or_default()
+        };
+        let has_intro_or_class = syn.commands.iter().any(|c| {
+            !c.is_comment_only
+                && (c.is_class_start()
+                    || matches!(
+                        word(c).as_str(),
+                        "CLASS-POOL"
+                            | "FUNCTION-POOL"
+                            | "INTERFACE-POOL"
+                            | "PROGRAM"
+                            | "REPORT"
+                            | "TYPE-POOL"
+                    ))
+        });
+        let base_indent = syn
+            .commands
+            .iter()
+            .find(|c| !c.is_comment_only)
+            .map(|c| {
+                let spaces = syn.tokens[c.first].spaces_before;
+                if c.is_method_start() {
+                    spaces.max(2)
+                } else {
+                    spaces
+                }
+            })
+            .or_else(|| {
+                syn.commands
+                    .iter()
+                    .find(|c| c.is_comment_only && syn.text(c.first).starts_with('"'))
+                    .map(|c| syn.tokens[c.first].spaces_before)
+            })
+            .unwrap_or(0);
         Some(Doc {
+            base_indent,
+            has_intro_or_class,
             orig_lines: lines.clone(),
             orig_spaces: spaces.clone(),
             lines,
@@ -133,6 +177,91 @@ impl<'a> Doc<'a> {
             .find(|c| c.level == 0 && !c.is_comment_only)
             .map_or(0, |c| self.spaces[c.first]);
         base + 2 * cmds[ci].depth_after
+    }
+
+    /// Column where token `i` starts (`Token.getStartIndexInLine`); `first` is the first token
+    /// of its command.
+    pub fn start_x(&self, first: usize, i: usize) -> i64 {
+        let len = |j: usize| self.token_text(j).chars().count() as i64;
+        let mut k = i;
+        while k > first && self.lines[k] == 0 {
+            k -= 1;
+        }
+        let mut x = i64::from(self.spaces[k]);
+        for j in k + 1..=i {
+            x += len(j - 1) + i64::from(self.spaces[j]);
+        }
+        x
+    }
+
+    /// `Token.isFirstTokenInLine`: also true for the very first token of the source.
+    pub fn first_in_line(&self, i: usize) -> bool {
+        self.lines[i] > 0 || i == 0
+    }
+
+    /// `Command.addIndent`: adds `add` spaces to the first token of every line from token `from`
+    /// to `cmd_last` whose indent is at least `min_spaces`. With `stop_at_lower_indent`, stops at
+    /// the first line with a lower indent. Asterisk comment lines are not moved.
+    pub fn add_indent(
+        &mut self,
+        cmd_last: usize,
+        from: usize,
+        add: i64,
+        min_spaces: i64,
+        stop_at_lower_indent: bool,
+    ) {
+        if add == 0 {
+            return;
+        }
+        for t in from..=cmd_last {
+            let asterisk = self.syn.types[t] == abapfmt_syntax::TokenType::Comment
+                && self.lines[t] > 0
+                && self.syn.text(t).starts_with('*');
+            if self.first_in_line(t) && !asterisk {
+                if i64::from(self.spaces[t]) >= min_spaces {
+                    self.spaces[t] = (i64::from(self.spaces[t]) + add).max(0) as u32;
+                } else if stop_at_lower_indent {
+                    break;
+                }
+            }
+        }
+    }
+
+    /// The indentation command `ci` should have (`Command.getIndent`).
+    pub fn indent_of(&self, ci: usize) -> u32 {
+        use abapfmt_syntax::TokenType::{Colon, Comma};
+        let cmds = self.commands();
+        let c = &cmds[ci];
+        if self.is_declaration_include(c) {
+            // mimic the pretty printer: INCLUDE inside BEGIN OF ... END OF follows the previous element
+            let prev = cmds[..ci]
+                .iter()
+                .rev()
+                .find(|p| !p.is_comment_only && !self.is_declaration_include(p));
+            if let Some(p) = prev
+                && self.is_declaration(p)
+                && let Some(sep) = (p.first..=p.last).rev().find(|j| {
+                    matches!(self.syn.types[*j], Colon | Comma) && self.syn.parent[*j].is_none()
+                })
+                && let Some(start) = self.next_code_token(sep, p.last)
+            {
+                let mut x = self.start_x(p.first, start) as u32;
+                let begins = self.syn.text(start).eq_ignore_ascii_case("BEGIN")
+                    && self
+                        .next_code_token(start, p.last)
+                        .is_some_and(|n| self.syn.text(n).eq_ignore_ascii_case("OF"));
+                if begins {
+                    x += 2;
+                }
+                return x;
+            }
+        }
+        let base = if c.root_no_base || self.has_intro_or_class {
+            0
+        } else {
+            self.base_indent
+        };
+        c.indent_rel + base
     }
 
     pub fn render(&self) -> String {
