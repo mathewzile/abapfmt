@@ -1,6 +1,7 @@
 //! The rules, one module per upstream rule group.
 use crate::RuleFn;
 
+mod align_assignments;
 mod align_declarations;
 mod case;
 mod empty_lines;
@@ -36,6 +37,7 @@ pub const ALL: &[(&str, RuleFn)] = &[
     ),
     ("NEEDLESS_SPACES", needless_spaces::needless_spaces),
     ("INSET", inset::inset),
+    ("ALIGN_ASSIGNMENTS", align_assignments::align_assignments),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];
