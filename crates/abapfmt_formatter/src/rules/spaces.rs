@@ -281,3 +281,102 @@ pub fn space_around_text_literal(doc: &mut Doc, config: &RuleConfig) {
         }
     }
 }
+
+/// The tokens before and after `t` in the current output order of `cmd`.
+fn neighbours(doc: &Doc, cmd: &Command, t: usize) -> (Option<usize>, Option<usize>) {
+    let order = doc.order_of(cmd);
+    let pos = order.iter().position(|x| *x == t).unwrap();
+    (
+        pos.checked_sub(1).map(|p| order[p]),
+        order.get(pos + 1).copied(),
+    )
+}
+
+/// CLOSING_BRACKETS_POSITION: closes brackets at line end by moving `)`, `]` (and then the period)
+/// to the previous line, together with a line-end comment or pragma that precedes them.
+///
+/// abap-cleaner merges two line-end comments into one when both a bracket's predecessor and its
+/// successor carry one; abapfmt does not edit comments, so such a bracket stays where it is.
+pub fn closing_brackets_position(doc: &mut Doc, _config: &RuleConfig) {
+    let is_comment = |doc: &Doc, i: usize| doc.syn.types[i] == TokenType::Comment;
+    let is_pragma = |doc: &Doc, i: usize| doc.syn.types[i] == TokenType::Pragma;
+
+    for cmd in doc.commands().to_vec() {
+        let mut move_period = false;
+        let mut cur = Some(doc.order_of(&cmd)[0]);
+        while let Some(token) = cur {
+            let (prev, next) = neighbours(doc, &cmd, token);
+            let text = doc.syn.text(token);
+            let is_closer = doc.syn.bracket_match[token].is_some_and(|o| o < token);
+            let text_match = (is_closer && matches!(text, ")" | "]"))
+                || (move_period && doc.syn.types[token] == TokenType::Period);
+            let Some(prev) = prev else {
+                cur = next;
+                continue;
+            };
+            // `prev` is a comment alone on its line
+            let prev_is_comment_line =
+                is_comment(doc, prev) && doc.first_in_line(prev) && doc.lines[token] > 0;
+            if doc.lines[token] == 0 || !text_match || prev_is_comment_line {
+                cur = next;
+                continue;
+            }
+            let prev_after_code = is_comment(doc, prev) && doc.lines[prev] == 0;
+            let comment2 = next.filter(|n| doc.lines[*n] == 0 && is_comment(doc, *n));
+            if prev_after_code && comment2.is_some() {
+                // would require merging the two comments
+                cur = next;
+                continue;
+            }
+
+            // the next token takes the bracket's position; a final line-end comment moves up with the period
+            if let Some(n) = next
+                && doc.lines[n] == 0
+            {
+                if doc.syn.types[token] == TokenType::Period && is_comment(doc, n) {
+                    doc.lines[n] = 0;
+                    doc.spaces[n] = 1;
+                } else {
+                    doc.lines[n] = doc.lines[token];
+                    doc.spaces[n] = doc.spaces[token];
+                }
+            }
+            // a period that follows this bracket (even on the next line) moves up behind it, too
+            if next.is_some_and(|n| doc.syn.types[n] == TokenType::Period) {
+                move_period = true;
+            }
+
+            let is_period = doc.syn.types[token] == TokenType::Period;
+            doc.lines[token] = 0;
+            doc.spaces[token] = u32::from(!is_period);
+            let token_len = doc.token_text(token).chars().count() as i64;
+
+            // a preceding line-end comment moves behind the bracket or period
+            if prev_after_code {
+                let new_spaces =
+                    (i64::from(doc.spaces[prev]) - i64::from(doc.spaces[token]) - token_len).max(1);
+                doc.spaces[prev] = new_spaces as u32;
+                doc.move_after(&cmd, prev, token);
+            }
+            // pragmas stay in front of the period, but behind a closing bracket
+            if !is_period {
+                loop {
+                    let (p, _) = neighbours(doc, &cmd, token);
+                    let Some(p) = p.filter(|p| is_pragma(doc, *p) && !doc.first_in_line(token))
+                    else {
+                        break;
+                    };
+                    let new_spaces = if doc.first_in_line(p) {
+                        1
+                    } else {
+                        (i64::from(doc.spaces[p]) - i64::from(doc.spaces[token]) - token_len).max(1)
+                    };
+                    doc.spaces[p] = new_spaces as u32;
+                    doc.lines[p] = 0;
+                    doc.move_after(&cmd, p, token);
+                }
+            }
+            cur = neighbours(doc, &cmd, token).1;
+        }
+    }
+}

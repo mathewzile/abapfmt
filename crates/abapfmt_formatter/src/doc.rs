@@ -167,6 +167,22 @@ impl<'a> Doc<'a> {
         self.order.insert(to, t);
     }
 
+    /// Move token `t` so that it is output directly after token `anchor` (both in `cmd`).
+    pub fn move_after(&mut self, cmd: &Command, t: usize, anchor: usize) {
+        let from = self.order[cmd.first..=cmd.last]
+            .iter()
+            .position(|x| *x == t)
+            .unwrap()
+            + cmd.first;
+        self.order.remove(from);
+        let to = self.order[cmd.first..cmd.last]
+            .iter()
+            .position(|x| *x == anchor)
+            .unwrap()
+            + cmd.first;
+        self.order.insert(to + 1, t);
+    }
+
     /// Indentation of code that follows command `ci`: the spaces of the enclosing top-level
     /// command plus two per open block (abap-cleaner's `Command.getIndent()`).
     pub fn indent_after(&self, ci: usize) -> u32 {
