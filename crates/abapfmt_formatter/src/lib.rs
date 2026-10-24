@@ -74,6 +74,25 @@ pub fn run_rule(rule_id: &str, src: &str, config: &RuleConfig) -> Option<String>
     Some(doc.render())
 }
 
+/// Run all implemented rules in order. `configs` maps a rule id to its options (defaults for
+/// absent ones); a rule mapped to `None` is switched off. The source is re-parsed between rules,
+/// because a rule may move tokens.
+pub fn format(src: &str, configs: &BTreeMap<String, Option<RuleConfig>>) -> String {
+    let default = RuleConfig::new();
+    let mut text = src.to_string();
+    for (id, _) in rules() {
+        let config = match configs.get(*id) {
+            Some(None) => continue,
+            Some(Some(c)) => c,
+            None => &default,
+        };
+        if let Some(out) = run_rule(id, &text, config) {
+            text = out;
+        }
+    }
+    text
+}
+
 /// Is `after` the same token stream as `before`? Only whitespace and the case of words,
 /// operators and pragmas may differ. Code tokens (everything but comments) are compared in order;
 /// comments and pragmas are compared as separate streams (comments ignoring whitespace inside them,

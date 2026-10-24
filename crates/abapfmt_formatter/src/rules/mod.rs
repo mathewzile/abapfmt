@@ -8,31 +8,32 @@ mod needless_spaces;
 mod one_command_per_line;
 mod spaces;
 
+/// In the order the rules run (upstream's registry order).
 pub const ALL: &[(&str, RuleFn)] = &[
-    ("EMPTY_LINES_OUTSIDE_METHODS", empty_lines::outside_methods),
     ("EMPTY_LINES_WITHIN_METHODS", empty_lines::within_methods),
-    ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
-    (
-        "ONE_COMMAND_PER_LINE",
-        one_command_per_line::one_command_per_line,
-    ),
-    ("INSET", inset::inset),
+    ("EMPTY_LINES_OUTSIDE_METHODS", empty_lines::outside_methods),
     (
         "EMPTY_LINES_IN_CLASS_DEFINITION",
         empty_lines::in_class_definition,
     ),
-    ("NEEDLESS_SPACES", needless_spaces::needless_spaces),
     (
-        "SPACES_IN_EMPTY_BRACKETS",
-        spaces::space_around_text_literal,
-    ),
-    (
-        "CLOSING_BRACKETS_POSITION",
-        spaces::closing_brackets_position,
+        "ONE_COMMAND_PER_LINE",
+        one_command_per_line::one_command_per_line,
     ),
     ("SPACE_BEFORE_PERIOD", spaces::space_before_period),
     (
         "SPACE_AROUND_COMMENT_SIGN",
         spaces::space_around_comment_sign,
     ),
+    (
+        "CLOSING_BRACKETS_POSITION",
+        spaces::closing_brackets_position,
+    ),
+    (
+        "SPACES_IN_EMPTY_BRACKETS",
+        spaces::space_around_text_literal,
+    ),
+    ("NEEDLESS_SPACES", needless_spaces::needless_spaces),
+    ("INSET", inset::inset),
+    ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];
