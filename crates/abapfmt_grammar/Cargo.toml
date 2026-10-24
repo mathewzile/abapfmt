@@ -9,4 +9,4 @@ publish.workspace = true
 workspace = true
 
 [dependencies]
-abapfmt_lexer = { path = "../abapfmt_lexer" }
+fancy-regex = "0.14"

@@ -1,3 +1,4 @@
 /target
 *.vsix
 node_modules/
+.spike/
