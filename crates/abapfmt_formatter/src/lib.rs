@@ -6,6 +6,7 @@
 
 use std::collections::BTreeMap;
 
+mod align;
 mod doc;
 mod rules;
 
