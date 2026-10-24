@@ -50,6 +50,7 @@ pub fn outside_methods(doc: &mut Doc, config: &RuleConfig) {
 
 /// EMPTY_LINES_WITHIN_METHODS: limit empty lines in methods and separate declarations from the
 /// first executable statement.
+#[allow(clippy::if_same_then_else)] // keeps the structure of the upstream condition chain
 pub fn within_methods(doc: &mut Doc, config: &RuleConfig) {
     let max_at_start = config.int("MaxEmptyLinesAtMethodStart", 0) as u32;
     let max_within = config.int("MaxEmptyLinesWithinMethods", 1) as u32;
