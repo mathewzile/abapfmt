@@ -6,6 +6,11 @@
 
 use std::collections::BTreeMap;
 
+mod doc;
+mod rules;
+
+pub use doc::Doc;
+
 use abapfmt_lexer::{TokenKind, lex};
 
 /// A rule option value, as in the fixture files and (later) the config file.
@@ -20,20 +25,53 @@ pub enum ConfigValue {
 /// Option name (upstream `Config*` name without the prefix) to value.
 pub type RuleConfig = BTreeMap<String, ConfigValue>;
 
-/// A single-rule formatter: the whole source in, the whole source out.
-pub type RuleFn = fn(src: &str, config: &RuleConfig) -> String;
+/// Read helpers for rule options; fixtures always carry every option, the default only covers
+/// hand-written configs.
+pub trait ConfigExt {
+    fn int(&self, name: &str, default: i64) -> i64;
+    fn bool(&self, name: &str, default: bool) -> bool;
+    /// The enum constant name, without any `Type.` prefix.
+    fn choice(&self, name: &str, default: &str) -> String;
+}
+
+impl ConfigExt for RuleConfig {
+    fn int(&self, name: &str, default: i64) -> i64 {
+        match self.get(name) {
+            Some(ConfigValue::Int(i)) => *i,
+            _ => default,
+        }
+    }
+    fn bool(&self, name: &str, default: bool) -> bool {
+        match self.get(name) {
+            Some(ConfigValue::Bool(b)) => *b,
+            _ => default,
+        }
+    }
+    fn choice(&self, name: &str, default: &str) -> String {
+        match self.get(name) {
+            Some(ConfigValue::Str(v)) => v.rsplit('.').next().unwrap_or(v).to_string(),
+            _ => default.to_string(),
+        }
+    }
+}
+
+/// A single rule: edits the layout/case of the document.
+pub type RuleFn = fn(doc: &mut Doc, config: &RuleConfig);
 
 /// Rules implemented so far, keyed by upstream rule id (e.g. `"EMPTY_LINES_WITHIN_METHODS"`).
 pub fn rules() -> &'static [(&'static str, RuleFn)] {
-    &[]
+    rules::ALL
 }
 
-/// Run only the rule `rule_id`; `None` if it is not implemented.
+/// Run only the rule `rule_id`; `None` if it is not implemented. Source that cannot be
+/// tokenized is returned unchanged.
 pub fn run_rule(rule_id: &str, src: &str, config: &RuleConfig) -> Option<String> {
-    rules()
-        .iter()
-        .find(|(id, _)| *id == rule_id)
-        .map(|(_, f)| f(src, config))
+    let (_, rule) = rules().iter().find(|(id, _)| *id == rule_id)?;
+    let Some(mut doc) = Doc::new(src) else {
+        return Some(src.to_string());
+    };
+    rule(&mut doc, config);
+    Some(doc.render())
 }
 
 /// Is `after` the same token stream as `before`? Only whitespace and the case of words,

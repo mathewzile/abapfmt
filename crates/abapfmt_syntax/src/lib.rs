@@ -38,7 +38,7 @@ pub enum Source {
 }
 
 /// A statement (possibly a chain `A: b, c.`) as a token range `first..=last` that ends with its
-/// period, or a run of comments.
+/// period, or a single comment line.
 #[derive(Clone, Debug)]
 pub struct Command {
     pub first: usize,
@@ -50,6 +50,42 @@ pub struct Command {
     /// Every chain element was matched by the grammar.
     pub fully_matched: bool,
     pub is_comment_only: bool,
+}
+
+impl Command {
+    fn is(&self, names: &[&str]) -> bool {
+        self.statement.is_some_and(|s| names.contains(&s))
+    }
+    pub fn is_class_start(&self) -> bool {
+        self.is(&["ClassDefinition", "ClassImplementation"])
+    }
+    pub fn is_class_end(&self) -> bool {
+        self.is(&["EndClass"])
+    }
+    pub fn is_interface_start(&self) -> bool {
+        self.is(&["Interface"])
+    }
+    pub fn is_interface_end(&self) -> bool {
+        self.is(&["EndInterface"])
+    }
+    pub fn is_class_or_interface_start(&self) -> bool {
+        self.is_class_start() || self.is_interface_start()
+    }
+    pub fn is_class_or_interface_end(&self) -> bool {
+        self.is_class_end() || self.is_interface_end()
+    }
+    pub fn is_method_start(&self) -> bool {
+        self.is(&["MethodImplementation"])
+    }
+    pub fn is_method_end(&self) -> bool {
+        self.is(&["EndMethod"])
+    }
+    pub fn is_method_function_or_form_start(&self) -> bool {
+        self.is(&["MethodImplementation", "FunctionModule", "Form"])
+    }
+    pub fn is_method_function_or_form_end(&self) -> bool {
+        self.is(&["EndMethod", "EndFunction", "EndForm"])
+    }
 }
 
 pub struct Syntax<'a> {
@@ -146,13 +182,7 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
     while i < n {
         let start = i;
         if tokens[i].kind == TokenKind::Comment && (i + 1 == n || tokens[i + 1].lines_before > 0) {
-            // a comment on its own line(s)
-            while i + 1 < n
-                && tokens[i + 1].kind == TokenKind::Comment
-                && tokens[i + 1].lines_before > 0
-            {
-                i += 1;
-            }
+            // a comment on its own line: one command per comment line, as in abap-cleaner
             commands.push(Command {
                 first: start,
                 last: i,

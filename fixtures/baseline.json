@@ -1,1 +1,17 @@
-[]
+[
+  "emptylines/EmptyLinesOutsideMethods.json::testAdd1LineBetweenClassAndMethod",
+  "emptylines/EmptyLinesOutsideMethods.json::testAdd1LineBetweenClasses",
+  "emptylines/EmptyLinesOutsideMethods.json::testAdd1LineBetweenMethods",
+  "emptylines/EmptyLinesOutsideMethods.json::testAdd2LinesBetweenClassAndMethod",
+  "emptylines/EmptyLinesOutsideMethods.json::testAdd2LinesBetweenMethods",
+  "emptylines/EmptyLinesOutsideMethods.json::testAdd3LinesBetweenClasses",
+  "emptylines/EmptyLinesOutsideMethods.json::testAdd3LinesBetweenClassesAndInterfaces",
+  "emptylines/EmptyLinesOutsideMethods.json::testAdd3LinesBetweenInterfaces",
+  "emptylines/EmptyLinesOutsideMethods.json::testAddAndRemoveLineBetweenClassAndMethod",
+  "emptylines/EmptyLinesOutsideMethods.json::testRemoveAllLinesBetweenClasses",
+  "emptylines/EmptyLinesOutsideMethods.json::testRemoveAllLinesBetweenMethods",
+  "emptylines/EmptyLinesOutsideMethods.json::testRemoveLinesBetweenClassAndMethod",
+  "emptylines/EmptyLinesOutsideMethods.json::testRemoveLinesBetweenClasses",
+  "emptylines/EmptyLinesOutsideMethods.json::testRemoveLinesBetweenClassesWithComment",
+  "emptylines/EmptyLinesOutsideMethods.json::testRemoveLinesBetweenMethods"
+]
