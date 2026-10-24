@@ -5,12 +5,17 @@ mod case;
 mod empty_lines;
 mod inset;
 mod needless_spaces;
+mod one_command_per_line;
 mod spaces;
 
 pub const ALL: &[(&str, RuleFn)] = &[
     ("EMPTY_LINES_OUTSIDE_METHODS", empty_lines::outside_methods),
     ("EMPTY_LINES_WITHIN_METHODS", empty_lines::within_methods),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
+    (
+        "ONE_COMMAND_PER_LINE",
+        one_command_per_line::one_command_per_line,
+    ),
     ("INSET", inset::inset),
     (
         "EMPTY_LINES_IN_CLASS_DEFINITION",

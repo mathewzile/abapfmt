@@ -323,31 +323,6 @@ fn skip_until_token(doc: &Doc, cmd: &Command, t: usize) -> Option<usize> {
     close.filter(|c| *c == t + 1)
 }
 
-/// `Token.setSpacesLeftAdjustingIndent(new, false)`.
-fn set_spaces_adjusting_indent(
-    doc: &mut Doc,
-    cmd_first: usize,
-    cmd_last: usize,
-    t: usize,
-    new: i64,
-) {
-    let old = i64::from(doc.spaces[t]);
-    if new == old {
-        return;
-    }
-    if t == cmd_last {
-        doc.spaces[t] = new as u32;
-        return;
-    }
-    let min_spaces = if doc.lines[t + 1] == 0 {
-        doc.start_x(cmd_first, t + 1)
-    } else {
-        doc.start_x(cmd_first, t) + 1
-    };
-    doc.spaces[t] = new as u32;
-    doc.add_indent(cmd_last, t + 1, new - old, min_spaces, true);
-}
-
 fn remove_spaces_from_empty_brackets(doc: &mut Doc, cmds: &[Command]) {
     for cmd in cmds {
         for t in cmd.first..=cmd.last {
@@ -560,7 +535,7 @@ fn process_sequence(
             continue;
         }
         let new = i64::from(doc.spaces[t]) - spare;
-        set_spaces_adjusting_indent(doc, cmd_first, tp.cmd_last, t, new);
+        doc.set_spaces_adjusting_indent(tp.cmd_last, t, new, false);
     }
 }
 

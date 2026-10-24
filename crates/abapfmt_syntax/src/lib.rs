@@ -255,10 +255,10 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
             i += 1;
         }
         let last = i.min(n - 1);
-        // a same-line comment after the period belongs to this command
+        // a same-line comment or pragma after the period belongs to this command
         let mut end = last;
         while end + 1 < n
-            && tokens[end + 1].kind == TokenKind::Comment
+            && matches!(tokens[end + 1].kind, TokenKind::Comment | TokenKind::Pragma)
             && tokens[end + 1].lines_before == 0
         {
             end += 1;

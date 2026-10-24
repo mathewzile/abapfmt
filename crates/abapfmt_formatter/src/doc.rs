@@ -243,6 +243,33 @@ impl<'a> Doc<'a> {
         }
     }
 
+    /// `Token.setSpacesLeftAdjustingIndent`: sets the spaces before token `t` and shifts the
+    /// following lines of its command (`cmd_last` is the command's last token) by the same amount.
+    pub fn set_spaces_adjusting_indent(
+        &mut self,
+        cmd_last: usize,
+        t: usize,
+        new: i64,
+        adjust_if_directly_below: bool,
+    ) {
+        let old = i64::from(self.spaces[t]);
+        if new == old {
+            return;
+        }
+        if t == cmd_last {
+            self.spaces[t] = new as u32;
+            return;
+        }
+        let min_spaces = if adjust_if_directly_below || self.lines[t + 1] > 0 {
+            let x = self.start_x(0, t);
+            if adjust_if_directly_below { x } else { x + 1 }
+        } else {
+            self.start_x(0, t + 1)
+        };
+        self.spaces[t] = new as u32;
+        self.add_indent(cmd_last, t + 1, new - old, min_spaces, true);
+    }
+
     /// The indentation command `ci` should have (`Command.getIndent`).
     pub fn indent_of(&self, ci: usize) -> u32 {
         use abapfmt_syntax::TokenType::{Colon, Comma};
