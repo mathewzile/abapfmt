@@ -11,3 +11,7 @@ workspace = true
 [dependencies]
 abapfmt_lexer = { path = "../abapfmt_lexer" }
 abapfmt_grammar = { path = "../abapfmt_grammar" }
+
+[dev-dependencies]
+serde_json = "1"
+abapfmt_lexer = { path = "../abapfmt_lexer" }
