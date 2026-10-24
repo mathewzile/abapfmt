@@ -149,3 +149,149 @@ pub fn within_methods(doc: &mut Doc, config: &RuleConfig) {
         }
     }
 }
+
+/// `ALIASES`, `INTERFACES`, `CLASS-DATA`, `CLASS-EVENTS`, `CLASS-METHODS`, `METHODS`, `EVENTS`.
+fn is_declaration_in_class_def(doc: &Doc, c: &abapfmt_syntax::Command) -> bool {
+    doc.first_code_text(c).is_some_and(|t| {
+        matches!(
+            t.as_str(),
+            "ALIASES"
+                | "INTERFACES"
+                | "CLASS-DATA"
+                | "CLASS-EVENTS"
+                | "CLASS-METHODS"
+                | "METHODS"
+                | "EVENTS"
+        )
+    })
+}
+
+fn is_section_start(doc: &Doc, c: &abapfmt_syntax::Command) -> bool {
+    !c.is_comment_only
+        && matches!(
+            doc.first_code_text(c).as_deref(),
+            Some("PUBLIC" | "PROTECTED" | "PRIVATE")
+        )
+        && doc
+            .next_code_token(c.first, c.last)
+            .is_some_and(|n| doc.syn.text(n).eq_ignore_ascii_case("SECTION"))
+}
+
+/// `BEGIN OF` minus `END OF` in a declaration (a nesting level for the rules that skip those).
+fn block_level_diff(doc: &Doc, c: &abapfmt_syntax::Command) -> i32 {
+    if !doc.is_declaration(c) {
+        return 0;
+    }
+    let words: Vec<&str> = (c.first..=c.last)
+        .filter(|i| doc.syn.types[*i] != abapfmt_syntax::TokenType::Comment)
+        .map(|i| doc.syn.text(i))
+        .collect();
+    let count = |a: &str| {
+        words
+            .windows(2)
+            .filter(|w| w[0].eq_ignore_ascii_case(a) && w[1].eq_ignore_ascii_case("OF"))
+            .count() as i32
+    };
+    count("BEGIN") - count("END")
+}
+
+/// EMPTY_LINES_IN_CLASS_DEFINITION. The upstream option `RemoveIncludeWarnings` deletes the
+/// generated `*"* do not include other source files here!!!` comments; abapfmt never removes
+/// tokens, so it is ignored.
+pub fn in_class_definition(doc: &mut Doc, config: &RuleConfig) {
+    let add_above_sections = config.bool("AddEmptyLineAboveSections", true);
+    let remove_below_sections = config.bool("RemoveEmptyLineBelowSections", true);
+    let remove_above_endclass = config.bool("RemoveEmptyLineAboveEndClass", false);
+    let max_break = config.int("MaxEmptyLines", 1) as u32 + 1;
+    let style = config.choice("AddLineBetweenDefTypes", "ADD_CONSIDER_STATIC");
+
+    let cmds = doc.commands().to_vec();
+    let mut block_level = 0;
+    for (ci, cmd) in cmds.iter().enumerate() {
+        let diff = block_level_diff(doc, cmd);
+        let skip = block_level != 0;
+        block_level += diff;
+        if skip || !cmd.in_class_definition {
+            continue;
+        }
+        let first = cmd.first;
+
+        // limit the empty lines inside the command (but keep those above a CLASS ... DEFINITION)
+        let from = if cmd.statement == Some("ClassDefinition") {
+            first + 1
+        } else {
+            first
+        };
+        for t in from..=cmd.last {
+            if doc.lines[t] > max_break {
+                doc.lines[t] = max_break;
+            }
+        }
+
+        // add an empty line above PUBLIC / PROTECTED / PRIVATE SECTION
+        let next = cmds.get(ci + 1);
+        if add_above_sections
+            && let Some(next) = next
+            && is_section_start(doc, next)
+        {
+            let one_liner = cmd.statement == Some("ClassDefinition")
+                && !(first + 1..=cmd.last).any(|t| doc.lines[t] > 0);
+            if !one_liner && doc.lines[next.first] <= 1 {
+                doc.lines[next.first] = 2;
+            }
+        }
+
+        // remove the empty line below PUBLIC / PROTECTED / PRIVATE SECTION
+        let prev = ci.checked_sub(1).map(|p| &cmds[p]);
+        if remove_below_sections
+            && !is_section_start(doc, cmd)
+            && !cmd.is_class_end()
+            && prev.is_some_and(|p| is_section_start(doc, p))
+            && doc.lines[first] > 1
+        {
+            doc.lines[first] = 1;
+        }
+
+        // remove the empty line above ENDCLASS (except below an empty SECTION start)
+        if remove_above_endclass
+            && cmd.is_class_end()
+            && prev.is_some_and(|p| !is_section_start(doc, p))
+            && doc.lines[first] > 1
+        {
+            doc.lines[first] = 1;
+        }
+
+        // add an empty line between CONSTANTS, DATA, METHODS etc.
+        if style != "NEVER"
+            && let Some(prev) = prev
+            && (doc.is_declaration(prev) || is_declaration_in_class_def(doc, prev))
+            && doc.lines[first] <= 1
+        {
+            // a comment line belongs to the declaration below it, unless an empty line separates them
+            let mut n = ci;
+            let mut empty_line_found = false;
+            while cmds[n].is_comment_only {
+                n += 1;
+                if n >= cmds.len() || doc.lines[cmds[n].first] > 1 {
+                    empty_line_found = true;
+                    break;
+                }
+            }
+            if !empty_line_found
+                && (doc.is_declaration(&cmds[n]) || is_declaration_in_class_def(doc, &cmds[n]))
+            {
+                let keyword = |c: &abapfmt_syntax::Command| {
+                    let t = doc.syn.text(c.first).to_ascii_uppercase();
+                    if style == "ADD_IGNORE_STATIC" {
+                        t.strip_prefix("CLASS-").map_or(t.clone(), str::to_string)
+                    } else {
+                        t
+                    }
+                };
+                if keyword(prev) != keyword(&cmds[n]) {
+                    doc.lines[first] = 2;
+                }
+            }
+        }
+    }
+}

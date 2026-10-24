@@ -12,6 +12,10 @@ pub const ALL: &[(&str, RuleFn)] = &[
     ("EMPTY_LINES_WITHIN_METHODS", empty_lines::within_methods),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
     ("INSET", inset::inset),
+    (
+        "EMPTY_LINES_IN_CLASS_DEFINITION",
+        empty_lines::in_class_definition,
+    ),
     ("NEEDLESS_SPACES", needless_spaces::needless_spaces),
     ("SPACE_BEFORE_PERIOD", spaces::space_before_period),
     (
