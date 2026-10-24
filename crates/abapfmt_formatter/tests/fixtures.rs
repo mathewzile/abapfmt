@@ -123,6 +123,21 @@ fn fixture_ratchet() {
             }
         } else {
             failing += 1;
+            if std::env::var_os("SHOW_FAILS")
+                .is_some_and(|v| c.key.contains(v.to_str().unwrap_or("")))
+            {
+                eprintln!(
+                    "FAIL {}
+--- src
+{}
+--- exp
+{}
+--- got
+{out}
+",
+                    c.key, c.src, c.exp
+                );
+            }
         }
     }
 

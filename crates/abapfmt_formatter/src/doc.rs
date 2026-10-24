@@ -52,6 +52,52 @@ impl<'a> Doc<'a> {
         self.spaces[i] = spaces;
     }
 
+    /// The first token of a command that is neither a comment nor a pragma.
+    pub fn first_code_token(&self, cmd: &Command) -> Option<usize> {
+        use abapfmt_syntax::TokenType::{Comment, Pragma};
+        (cmd.first..=cmd.last).find(|i| !matches!(self.syn.types[*i], Comment | Pragma))
+    }
+
+    /// Upper-cased text of the first code token.
+    pub fn first_code_text(&self, cmd: &Command) -> Option<String> {
+        self.first_code_token(cmd)
+            .map(|i| self.syn.text(i).to_ascii_uppercase())
+    }
+
+    /// `TYPES`, `CONSTANTS`, `DATA`, `FIELD-SYMBOLS`, `CLASS-DATA`, `STATICS`, `RANGES`.
+    pub fn is_declaration(&self, cmd: &Command) -> bool {
+        self.first_code_text(cmd).is_some_and(|t| {
+            matches!(
+                t.as_str(),
+                "TYPES"
+                    | "CONSTANTS"
+                    | "DATA"
+                    | "FIELD-SYMBOLS"
+                    | "CLASS-DATA"
+                    | "STATICS"
+                    | "RANGES"
+            )
+        })
+    }
+
+    /// `INCLUDE TYPE` / `INCLUDE STRUCTURE`.
+    pub fn is_declaration_include(&self, cmd: &Command) -> bool {
+        let Some(i) = self.first_code_token(cmd) else {
+            return false;
+        };
+        self.syn.text(i).eq_ignore_ascii_case("INCLUDE")
+            && self.next_code_token(i, cmd.last).is_some_and(|n| {
+                let t = self.syn.text(n);
+                t.eq_ignore_ascii_case("TYPE") || t.eq_ignore_ascii_case("STRUCTURE")
+            })
+    }
+
+    /// The next token after `i` (up to `last`) that is neither a comment nor a pragma.
+    pub fn next_code_token(&self, i: usize, last: usize) -> Option<usize> {
+        use abapfmt_syntax::TokenType::{Comment, Pragma};
+        (i + 1..=last).find(|j| !matches!(self.syn.types[*j], Comment | Pragma))
+    }
+
     pub fn render(&self) -> String {
         let src = self.syn.src;
         let mut out = String::with_capacity(src.len());

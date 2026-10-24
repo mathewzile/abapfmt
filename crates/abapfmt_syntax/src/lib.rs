@@ -6,6 +6,8 @@
 //! rewrites tokens.
 #![forbid(unsafe_code)]
 
+mod blocks;
+
 use abapfmt_grammar::{Class, ParsedStatement, is_grammar_word, parse_statements};
 use abapfmt_lexer::{LexError, Token, TokenKind, lex};
 
@@ -50,6 +52,12 @@ pub struct Command {
     /// Every chain element was matched by the grammar.
     pub fully_matched: bool,
     pub is_comment_only: bool,
+    /// Nesting level of the command itself (ELSE/WHEN/ENDIF... sit at the level of their opener).
+    pub level: u32,
+    /// Opens an event block (`START-OF-SELECTION`, `AT SELECTION-SCREEN`, ...).
+    pub starts_event_block: bool,
+    /// Closes an event block (the next event, CLASS, FORM or MODULE).
+    pub ends_event_block: bool,
 }
 
 impl Command {
@@ -79,6 +87,15 @@ impl Command {
     }
     pub fn is_method_end(&self) -> bool {
         self.is(&["EndMethod"])
+    }
+    pub fn is_function_start(&self) -> bool {
+        self.is(&["FunctionModule"])
+    }
+    pub fn is_method_function_form_or_event_block_start(&self) -> bool {
+        self.is_method_function_or_form_start() || self.starts_event_block
+    }
+    pub fn is_method_function_form_or_event_block_end(&self) -> bool {
+        self.is_method_function_or_form_end() || self.ends_event_block
     }
     pub fn is_method_function_or_form_start(&self) -> bool {
         self.is(&["MethodImplementation", "FunctionModule", "Form"])
@@ -190,6 +207,9 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
                 statement: None,
                 fully_matched: true,
                 is_comment_only: true,
+                level: 0,
+                starts_event_block: false,
+                ends_event_block: false,
             });
             i += 1;
             continue;
@@ -220,6 +240,9 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
             statement: None,
             fully_matched: true,
             is_comment_only: false,
+            level: 0,
+            starts_event_block: false,
+            ends_event_block: false,
         });
     }
     // attach grammar results to commands
@@ -234,6 +257,18 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
             }
         }
     }
+
+    // commands the grammar could not parse still shape the block structure: guess from the keyword
+    for c in commands
+        .iter_mut()
+        .filter(|c| c.statement.is_none() && !c.is_comment_only)
+    {
+        let first = tokens[c.first..=c.last]
+            .iter()
+            .find(|t| t.kind == TokenKind::Word);
+        c.statement = first.and_then(|t| blocks::guess_statement(t.text(src)));
+    }
+    blocks::assign_levels(&mut commands);
 
     // final types
     let mut types = Vec::with_capacity(n);
