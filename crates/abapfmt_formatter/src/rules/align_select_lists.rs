@@ -512,15 +512,15 @@ fn build_space_sep_list(
     let mut token = Some(start);
     while let Some(t) = token {
         // determine the next field
-        let field_last;
-        if clause_type == Clause::GroupBy && matches_seq(doc, t, last, &["GROUPING", "SETS|SETS("])
+        let field_last = if clause_type == Clause::GroupBy
+            && matches_seq(doc, t, last, &["GROUPING", "SETS|SETS("])
         {
             // GROUPING SETS ( ... )
             let mut x = next_sibling(doc, t, last).unwrap_or(t);
             while !opens_level(doc, x) && x < clause.last {
                 x += 1;
             }
-            field_last = doc.syn.bracket_match[x].filter(|c| *c > x).unwrap_or(x);
+            doc.syn.bracket_match[x].filter(|c| *c > x).unwrap_or(x)
         } else {
             let mut fl = None;
             // window expressions: 'win_func OVER( ... )'
@@ -535,8 +535,8 @@ fn build_space_sep_list(
             {
                 fl = Some(close);
             }
-            field_last = fl.unwrap_or_else(|| arithmetic_last(doc, t, last));
-        }
+            fl.unwrap_or_else(|| arithmetic_last(doc, t, last))
+        };
         let line = table.add_line();
         table.set_cell(line, FIELD, Cell::new(doc, t, field_last));
         if field_last == clause.last {
