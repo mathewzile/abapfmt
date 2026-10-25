@@ -1,0 +1,84 @@
+{
+  "name": "abapfmt",
+  "displayName": "abapfmt",
+  "description": "Formatter for ABAP and CDS (DDL/DCL) code: document and range formatting powered by the abapfmt language server.",
+  "version": "0.0.1",
+  "publisher": "abapfmt",
+  "license": "Apache-2.0",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Formatters"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:abap",
+    "onLanguage:abap-cds"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "abap",
+        "aliases": [
+          "ABAP",
+          "abap"
+        ],
+        "extensions": [
+          ".abap"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "abap-cds",
+        "aliases": [
+          "ABAP CDS",
+          "abap-cds"
+        ],
+        "extensions": [
+          ".acds",
+          ".asddls",
+          ".asdcls",
+          ".ddls",
+          ".dcls"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "configuration": {
+      "title": "abapfmt",
+      "properties": {
+        "abapfmt.path": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Path of the `abapfmt` executable. Empty uses the executable bundled with the extension."
+        },
+        "abapfmt.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the abapfmt language server."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./ --noEmit && esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --sourcemap",
+    "bundle": "node scripts/bundle-binary.mjs",
+    "package": "npm run compile && npm run bundle && vsce package --allow-missing-repository --skip-license"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.4.0"
+  }
+}

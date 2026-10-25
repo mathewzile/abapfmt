@@ -14,9 +14,12 @@ abapfmt - an ABAP and CDS formatter
 USAGE:
     abapfmt [OPTIONS] <PATH>...
     abapfmt [OPTIONS] --stdin
+    abapfmt lsp
 
 Directories are searched for ABAP and CDS (DDL/DCL) files. Without --write or --check, the
 formatted code of a single file is printed.
+
+The lsp subcommand runs the language server (document and range formatting) on stdio.
 
 OPTIONS:
     -w, --write                 Rewrite files in place
@@ -153,6 +156,10 @@ fn has_known_extension(p: &Path) -> bool {
 }
 
 fn run() -> Result<ExitCode, String> {
+    if std::env::args().nth(1).as_deref() == Some("lsp") {
+        abapfmt_lsp::run()?;
+        return Ok(ExitCode::SUCCESS);
+    }
     let Some(options) = parse_args(std::env::args().skip(1))? else {
         return Ok(ExitCode::SUCCESS);
     };

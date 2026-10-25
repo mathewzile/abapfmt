@@ -11,6 +11,7 @@ workspace = true
 [dependencies]
 abapfmt_formatter = { path = "../abapfmt_formatter" }
 abapfmt_config = { path = "../abapfmt_config" }
+abapfmt_lsp = { path = "../abapfmt_lsp" }
 
 [[bin]]
 name = "abapfmt"
