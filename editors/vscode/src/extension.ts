@@ -29,13 +29,12 @@ export async function activate(context: ExtensionContext): Promise<void> {
   }
 
   const serverOptions: ServerOptions = { command, args: ['lsp'] };
+  // no scheme: local files as well as documents of remote file systems (e.g. ABAP systems via ADT)
   const clientOptions: LanguageClientOptions = {
-    documentSelector: [
-      { scheme: 'file', language: 'abap' },
-      { scheme: 'file', language: 'abap-cds' },
-      { scheme: 'untitled', language: 'abap' },
-      { scheme: 'untitled', language: 'abap-cds' },
-    ],
+    documentSelector: [{ language: 'abap' }, { language: 'abap-cds' }],
+    initializationOptions: {
+      configPath: workspace.getConfiguration('abapfmt').get<string>('configPath') ?? '',
+    },
   };
   client = new LanguageClient('abapfmt', 'abapfmt', serverOptions, clientOptions);
   context.subscriptions.push({ dispose: () => void client?.stop() });

@@ -8,6 +8,7 @@ use std::collections::BTreeMap;
 
 mod align;
 mod doc;
+mod reflow;
 mod rules;
 
 pub use doc::Doc;
@@ -162,9 +163,32 @@ fn with_cross_rule_settings(
 pub fn format_checked(
     src: &str,
     configs: &BTreeMap<String, Option<RuleConfig>>,
+    options: &Options,
 ) -> Result<String, String> {
-    let out = format(src, configs);
+    let mut out = format(src, configs);
+    if let Some(width) = options.line_width {
+        out = reflow::reflow(&out, width);
+    }
     same_tokens(src, &out).map(|()| out)
+}
+
+/// Settings that do not belong to a rule.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Options {
+    /// Statements with longer lines are broken after all rules have run; `None` switches the
+    /// reflow off, so that only the per-rule line length options apply. Applies to ABAP only.
+    pub line_width: Option<usize>,
+}
+
+/// The default line width, as recommended by the Clean ABAP style guide.
+pub const DEFAULT_LINE_WIDTH: usize = 120;
+
+impl Default for Options {
+    fn default() -> Options {
+        Options {
+            line_width: Some(DEFAULT_LINE_WIDTH),
+        }
+    }
 }
 
 /// Run all implemented rules in order. `configs` maps a rule id to its options (defaults for

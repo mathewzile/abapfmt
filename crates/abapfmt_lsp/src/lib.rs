@@ -30,17 +30,65 @@ pub fn run() -> Result<(), String> {
         document_range_formatting_provider: Some(OneOf::Left(true)),
         ..ServerCapabilities::default()
     };
-    connection
-        .initialize(serde_json::json!(capabilities))
+    let (id, params) = connection
+        .initialize_start()
         .map_err(|e| format!("initialize: {e}"))?;
-    main_loop(&connection)?;
+    let settings = Settings::from_initialize_params(&params);
+    connection
+        .initialize_finish(id, serde_json::json!({ "capabilities": capabilities }))
+        .map_err(|e| format!("initialize: {e}"))?;
+    main_loop(&connection, &settings)?;
     drop(connection);
     io_threads.join().map_err(|e| format!("io: {e}"))?;
     Ok(())
 }
 
-fn main_loop(connection: &Connection) -> Result<(), String> {
-    let mut documents: HashMap<Uri, String> = HashMap::new();
+/// What the client tells at start-up: the workspace and the optional explicit configuration.
+#[derive(Default)]
+struct Settings {
+    /// Workspace folders that are local directories.
+    workspace_folders: Vec<PathBuf>,
+    /// `initializationOptions.configPath`: relative paths are resolved in the first folder.
+    config_path: Option<PathBuf>,
+}
+
+impl Settings {
+    fn from_initialize_params(params: &serde_json::Value) -> Settings {
+        let mut folders: Vec<PathBuf> = params["workspaceFolders"]
+            .as_array()
+            .into_iter()
+            .flatten()
+            .filter_map(|f| f["uri"].as_str())
+            .filter_map(|u| u.parse::<Uri>().ok())
+            .filter_map(|u| uri_to_path(&u))
+            .collect();
+        if folders.is_empty()
+            && let Some(root) = params["rootUri"]
+                .as_str()
+                .and_then(|u| u.parse::<Uri>().ok())
+            && let Some(path) = uri_to_path(&root)
+        {
+            folders.push(path);
+        }
+        let config_path = params["initializationOptions"]["configPath"]
+            .as_str()
+            .filter(|p| !p.trim().is_empty())
+            .map(|p| {
+                let p = PathBuf::from(p.trim());
+                match folders.first() {
+                    Some(f) if p.is_relative() => f.join(p),
+                    _ => p,
+                }
+            });
+        Settings {
+            workspace_folders: folders,
+            config_path,
+        }
+    }
+}
+
+fn main_loop(connection: &Connection, settings: &Settings) -> Result<(), String> {
+    let mut documents: HashMap<String, String> = HashMap::new();
     for message in &connection.receiver {
         match message {
             Message::Request(req) => {
@@ -50,7 +98,7 @@ fn main_loop(connection: &Connection) -> Result<(), String> {
                 {
                     return Ok(());
                 }
-                let response = handle_request(&documents, req);
+                let response = handle_request(&documents, settings, req);
                 connection
                     .sender
                     .send(Message::Response(response))
@@ -63,11 +111,14 @@ fn main_loop(connection: &Connection) -> Result<(), String> {
     Ok(())
 }
 
-fn handle_notification(documents: &mut HashMap<Uri, String>, note: Notification) {
+fn handle_notification(documents: &mut HashMap<String, String>, note: Notification) {
     match note.method.as_str() {
         DidOpenTextDocument::METHOD => {
             if let Ok(p) = serde_json::from_value::<DidOpenTextDocumentParams>(note.params) {
-                documents.insert(p.text_document.uri, p.text_document.text);
+                documents.insert(
+                    p.text_document.uri.as_str().to_string(),
+                    p.text_document.text,
+                );
             }
         }
         DidChangeTextDocument::METHOD => {
@@ -75,28 +126,34 @@ fn handle_notification(documents: &mut HashMap<Uri, String>, note: Notification)
                 && let Some(change) = p.content_changes.into_iter().last()
             {
                 // the server announces full synchronization
-                documents.insert(p.text_document.uri, change.text);
+                documents.insert(p.text_document.uri.as_str().to_string(), change.text);
             }
         }
         DidCloseTextDocument::METHOD => {
             if let Ok(p) = serde_json::from_value::<DidCloseTextDocumentParams>(note.params) {
-                documents.remove(&p.text_document.uri);
+                documents.remove(p.text_document.uri.as_str());
             }
         }
         _ => {}
     }
 }
 
-fn handle_request(documents: &HashMap<Uri, String>, req: Request) -> Response {
+fn handle_request(
+    documents: &HashMap<String, String>,
+    settings: &Settings,
+    req: Request,
+) -> Response {
     let id = req.id.clone();
     let result = match req.method.as_str() {
         Formatting::METHOD => serde_json::from_value::<DocumentFormattingParams>(req.params)
             .map_err(|e| e.to_string())
-            .and_then(|p| format_document(documents, &p.text_document.uri, None)),
+            .and_then(|p| format_document(documents, settings, &p.text_document.uri, None)),
         RangeFormatting::METHOD => {
             serde_json::from_value::<DocumentRangeFormattingParams>(req.params)
                 .map_err(|e| e.to_string())
-                .and_then(|p| format_document(documents, &p.text_document.uri, Some(p.range)))
+                .and_then(|p| {
+                    format_document(documents, settings, &p.text_document.uri, Some(p.range))
+                })
         }
         other => {
             return Response::new_err(id, -32601, format!("method not supported: {other}"));
@@ -109,25 +166,35 @@ fn handle_request(documents: &HashMap<Uri, String>, req: Request) -> Response {
 }
 
 fn format_document(
-    documents: &HashMap<Uri, String>,
+    documents: &HashMap<String, String>,
+    settings: &Settings,
     uri: &Uri,
     range: Option<Range>,
 ) -> Result<Vec<TextEdit>, String> {
     let src = documents
-        .get(uri)
+        .get(uri.as_str())
         .ok_or_else(|| format!("document is not open: {}", uri.as_str()))?;
-    let config = load_config(uri)?;
-    let formatted = format_checked(src, &config.rules)?;
+    let config = load_config(settings, uri)?;
+    let formatted = format_checked(src, &config.rules, &config.options())?;
     let lines = range.map(|r| (r.start.line, r.end.line));
     Ok(line_edits(src, &formatted, lines))
 }
 
-/// The configuration for a document: the nearest `abapfmt.json`, or the defaults.
-fn load_config(uri: &Uri) -> Result<Config, String> {
-    let Some(dir) = uri_to_path(uri).and_then(|p| p.parent().map(PathBuf::from)) else {
-        return Ok(Config::default());
-    };
-    match abapfmt_config::find_config(&dir) {
+/// The configuration for a document, in this order:
+/// 1. the explicitly configured file;
+/// 2. for local files, the nearest `abapfmt.json` in the directory of the file or its ancestors
+///    (also in their `.vscode` and `.github` folders), as for a checked-out repository;
+/// 3. the configuration of the workspace folders, which applies to documents of remote file
+///    systems (e.g. ABAP systems opened through ADT) and to files outside of any configured tree;
+/// 4. the defaults.
+fn load_config(settings: &Settings, uri: &Uri) -> Result<Config, String> {
+    let local_dir = uri_to_path(uri).and_then(|p| p.parent().map(PathBuf::from));
+    let path = settings
+        .config_path
+        .clone()
+        .or_else(|| local_dir.and_then(|d| abapfmt_config::find_config(&d)))
+        .or_else(|| abapfmt_config::find_config_in_workspace(&settings.workspace_folders));
+    match path {
         Some(path) => abapfmt_config::load_file(&path).map(|l| l.config),
         None => Ok(Config::default()),
     }

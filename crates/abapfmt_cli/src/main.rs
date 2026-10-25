@@ -174,8 +174,11 @@ fn run() -> Result<ExitCode, String> {
             .read_to_string(&mut src)
             .map_err(|e| format!("stdin: {e}"))?;
         let file = options.stdin_filepath.clone().unwrap_or_default();
-        let out = format_checked(&src, &configs.for_file(&file)?.rules)
-            .map_err(|e| format!("stdin: {e}"))?;
+        let out = {
+            let config = configs.for_file(&file)?;
+            format_checked(&src, &config.rules, &config.options())
+        }
+        .map_err(|e| format!("stdin: {e}"))?;
         std::io::stdout()
             .write_all(out.as_bytes())
             .map_err(|e| e.to_string())?;
@@ -201,7 +204,7 @@ fn run() -> Result<ExitCode, String> {
             }
         };
         let config = configs.for_file(file)?;
-        let out = match format_checked(&src, &config.rules) {
+        let out = match format_checked(&src, &config.rules, &config.options()) {
             Ok(o) => o,
             Err(e) => {
                 eprintln!("error: {}: {e}", file.display());

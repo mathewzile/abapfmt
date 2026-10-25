@@ -16,8 +16,16 @@ case is left untouched).
 
 ## Configuration
 
-abapfmt looks for the nearest `abapfmt.json` in the file's directory and its parents
-(`--config <file>` and `--no-config` override this).
+abapfmt looks for the configuration in the directory of the file and in each parent directory,
+nearest first. In every directory it checks `abapfmt.json`, `.vscode/abapfmt.json` and
+`.github/abapfmt.json`, in this order. This covers ABAP files that are committed to a repository.
+`--config <file>` and `--no-config` override the search.
+
+In the editor, documents of remote file systems (for example ABAP systems opened through ADT) have
+no directory to search from; for them, and for local files without a configuration, the server uses
+the configuration found in the workspace folders (same locations, e.g. `.vscode/abapfmt.json` of
+the workspace). All systems of a workspace therefore share one configuration. The setting
+`abapfmt.configPath` names a file explicitly and takes precedence.
 
 ```json
 {
@@ -25,9 +33,16 @@ abapfmt looks for the nearest `abapfmt.json` in the file's directory and its par
     "ALIGN_PARAMETERS": { "MaxLineLength": 100 },
     "DDL_ALIGN_FIELD_LISTS": { "NameListPos": "LINE_START_PLUS_4" },
     "INSET": false
-  }
+  },
+  "lineWidth": 120
 }
 ```
+
+`lineWidth` (default 120, as recommended by Clean ABAP) is the maximum line width for ABAP: after
+all rules have run, statements with longer lines get line breaks at token boundaries, preferably
+where the nesting is shallowest. Lines that fit are left alone. `"lineWidth": "off"` switches this
+off, so that only the line length options of the individual rules apply. CDS sources are not
+reflowed; their rules have their own `MaxLineLength` options. Chains and comments are not broken.
 
 Rule ids and option names are those of abap-cleaner; enum options are written by name. `false`
 (or `"enabled": false`) switches a rule off. Rules that abapfmt does not implement (those that

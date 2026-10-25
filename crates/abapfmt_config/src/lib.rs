@@ -16,13 +16,37 @@ use std::sync::OnceLock;
 use abapfmt_formatter::{ConfigValue, RuleConfig};
 use serde_json::Value;
 
-/// Names of the configuration files that are searched for, nearest directory first.
-pub const CONFIG_FILE_NAMES: &[&str] = &["abapfmt.json"];
+/// Where a directory may keep its configuration, in order of precedence.
+pub const CONFIG_LOCATIONS: &[&str] = &[
+    "abapfmt.json",
+    ".vscode/abapfmt.json",
+    ".github/abapfmt.json",
+];
 
 /// The options per rule id; a rule mapped to `None` is switched off, absent rules use defaults.
-#[derive(Clone, Debug, Default, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Config {
     pub rules: BTreeMap<String, Option<RuleConfig>>,
+    /// Maximum line width (default 120); `None` switches the reflow off.
+    pub line_width: Option<usize>,
+}
+
+impl Default for Config {
+    fn default() -> Config {
+        Config {
+            rules: BTreeMap::new(),
+            line_width: Some(abapfmt_formatter::DEFAULT_LINE_WIDTH),
+        }
+    }
+}
+
+impl Config {
+    /// The formatter options of this configuration.
+    pub fn options(&self) -> abapfmt_formatter::Options {
+        abapfmt_formatter::Options {
+            line_width: self.line_width,
+        }
+    }
 }
 
 /// A loaded configuration together with things the user should know about.
@@ -121,6 +145,16 @@ pub fn parse_json(text: &str) -> Result<Loaded, String> {
     for (key, value) in obj {
         match key.as_str() {
             "$schema" => {}
+            "lineWidth" => {
+                loaded.config.line_width = match value {
+                    Value::String(s) if s == "off" => None,
+                    Value::Number(n) => match n.as_u64() {
+                        Some(w) if (40..=1000).contains(&w) => Some(w as usize),
+                        _ => return Err("\"lineWidth\" must be between 40 and 1000".into()),
+                    },
+                    _ => return Err("\"lineWidth\" must be a number or \"off\"".into()),
+                };
+            }
             "rules" => {
                 let rules = value.as_object().ok_or("\"rules\" must be an object")?;
                 for (id, options) in rules {
@@ -234,14 +268,24 @@ pub fn load_file(path: &Path) -> Result<Loaded, String> {
     result.map_err(|e| format!("{}: {e}", path.display()))
 }
 
-/// The nearest configuration file in `dir` or one of its ancestors.
+/// The configuration file of `dir` itself (see [`CONFIG_LOCATIONS`]).
+pub fn config_in_dir(dir: &Path) -> Option<PathBuf> {
+    CONFIG_LOCATIONS
+        .iter()
+        .map(|n| dir.join(n))
+        .find(|p| p.is_file())
+}
+
+/// The nearest configuration file in `dir` or one of its ancestors: for files in a local
+/// checkout.
 pub fn find_config(dir: &Path) -> Option<PathBuf> {
-    dir.ancestors().find_map(|d| {
-        CONFIG_FILE_NAMES
-            .iter()
-            .map(|n| d.join(n))
-            .find(|p| p.is_file())
-    })
+    dir.ancestors().find_map(config_in_dir)
+}
+
+/// The configuration file of the first workspace folder that has one: for documents that are not
+/// local files (remote file systems), which have no directory to search upwards from.
+pub fn find_config_in_workspace(folders: &[PathBuf]) -> Option<PathBuf> {
+    folders.iter().find_map(|f| config_in_dir(f))
 }
 
 #[cfg(test)]
@@ -260,11 +304,57 @@ mod tests {
     }
 
     #[test]
+    fn line_width_defaults_to_120_and_can_be_changed_or_switched_off() {
+        assert_eq!(Config::default().line_width, Some(120));
+        assert_eq!(parse_json("{}").unwrap().config.line_width, Some(120));
+        assert_eq!(
+            parse_json(r#"{"lineWidth":100}"#)
+                .unwrap()
+                .config
+                .line_width,
+            Some(100)
+        );
+        assert_eq!(
+            parse_json(r#"{"lineWidth":"off"}"#)
+                .unwrap()
+                .config
+                .line_width,
+            None
+        );
+    }
+
+    #[test]
+    fn config_is_found_in_vscode_and_github_folders() {
+        let root = std::env::temp_dir().join(format!("abapfmt-config-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(root.join(".github")).unwrap();
+        std::fs::create_dir_all(root.join("src/deep")).unwrap();
+        std::fs::write(root.join(".github/abapfmt.json"), "{}").unwrap();
+        let found = find_config(&root.join("src/deep")).unwrap();
+        assert!(found.ends_with(std::path::Path::new(".github").join("abapfmt.json")));
+        assert_eq!(
+            find_config_in_workspace(&[root.join("src"), root.clone()]),
+            Some(found)
+        );
+        // abapfmt.json in the folder itself wins
+        std::fs::write(root.join("abapfmt.json"), "{}").unwrap();
+        assert!(config_in_dir(&root).unwrap().ends_with("abapfmt.json"));
+        assert!(
+            !config_in_dir(&root)
+                .unwrap()
+                .to_string_lossy()
+                .contains(".github")
+        );
+    }
+
+    #[test]
     fn json_rejects_bad_values() {
         assert!(parse_json(r#"{"rules":{"ALIGN_PARAMETERS":{"MaxLineLength":"x"}}}"#).is_err());
         assert!(parse_json(r#"{"rules":{"ALIGN_PARAMETERS":{"Nope":1}}}"#).is_err());
         assert!(parse_json(r#"{"rules":{"NOPE":{}}}"#).is_err());
-        assert!(parse_json(r#"{"lineWidth":80}"#).is_err());
+        assert!(parse_json(r#"{"lineWidth":10}"#).is_err());
+        assert!(parse_json(r#"{"lineWidth":"wide"}"#).is_err());
+        assert!(parse_json(r#"{"unknown":1}"#).is_err());
     }
 
     #[test]
