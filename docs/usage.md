@@ -24,7 +24,7 @@ In the editor, documents of remote file systems (for example ABAP systems opened
 no directory to search from; for them, and for local files without a configuration, the server uses
 the configuration found in the workspace folders (same locations, e.g. `.vscode/abapfmt.json` of
 the workspace). All systems of a workspace therefore share one configuration. The setting
-`abapfmt.configPath` names a file explicitly (anywhere, for example `.github/abapfmt.json`) and takes precedence.
+`abapfmt.configPath` names a file explicitly (anywhere, for example `config/abapfmt.json`) and takes precedence.
 
 ```json
 {
