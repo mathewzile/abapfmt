@@ -340,6 +340,17 @@ impl Table {
 
     /// `AlignColumn.joinIntoPreviousColumns(condense, 1, false)`
     pub fn join_into_previous_columns(&mut self, doc: &mut Doc, col: usize, condense: bool) {
+        self.join_into_previous_columns_ex(doc, col, condense, false);
+    }
+
+    /// `AlignColumn.joinIntoPreviousColumns(condense, 1, removeLineBreaksBetweenCells)`
+    pub fn join_into_previous_columns_ex(
+        &mut self,
+        doc: &mut Doc,
+        col: usize,
+        condense: bool,
+        remove_line_breaks: bool,
+    ) {
         assert!(col > 0);
         for li in 0..self.lines.len() {
             let Some(cell) = self.lines[li].cells[col].take() else {
@@ -347,7 +358,7 @@ impl Table {
             };
             for i in (0..col).rev() {
                 if let Some(dest) = self.lines[li].cells[i].clone() {
-                    if condense && !doc.first_in_line(cell.first) {
+                    if condense && (remove_line_breaks || !doc.first_in_line(cell.first)) {
                         let prev = cell.first - 1;
                         if !is_comment(doc, prev) {
                             cell.set_whitespace(doc, 0, 1, true, false, None);
@@ -372,6 +383,43 @@ impl Table {
                 }
             }
         }
+    }
+
+    /// `AlignColumn.hasAnyLineBreakBefore`
+    pub fn has_any_line_break_before(&self, doc: &Doc, col: usize) -> bool {
+        self.lines
+            .iter()
+            .filter_map(|l| l.cells[col].as_ref())
+            .any(|c| doc.lines[c.first] > 0)
+    }
+
+    /// `AlignColumn.removeLineBreaksBefore`
+    pub fn remove_line_breaks_before(&mut self, doc: &mut Doc, col: usize) {
+        for line in &self.lines {
+            let Some(cell) = &line.cells[col] else {
+                continue;
+            };
+            let first = cell.first;
+            if doc.lines[first] == 0 || (first > 0 && is_comment(doc, first - 1)) {
+                continue;
+            }
+            doc.lines[first] = 0;
+            doc.spaces[first] = 1;
+        }
+    }
+
+    /// `AlignTable.getTotalMultiLineWidth`
+    pub fn total_multi_line_width(&self, doc: &Doc) -> i64 {
+        let mut total = 0;
+        let mut result = 0;
+        for col in 0..self.cols.len() {
+            result += self.width_with_space(doc, col, true);
+            if self.cols[col].force_line_break_after {
+                total = total.max(result);
+                result = 0;
+            }
+        }
+        (total.max(result) - 1).max(0)
     }
 
     /// `AlignColumn.removeFromTable`

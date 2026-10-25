@@ -5,6 +5,7 @@ mod align_abap_doc;
 mod align_aliases_for;
 mod align_assignments;
 mod align_clear_free_and_sort;
+mod align_cond_expressions;
 pub(crate) mod align_declarations;
 mod align_form_declaration;
 mod align_methods_declaration;
@@ -73,6 +74,10 @@ pub const ALL: &[(&str, RuleFn)] = &[
         align_methods_without_params::align_methods_redefinition,
     ),
     ("ALIGN_ABAP_DOC", align_abap_doc::align_abap_doc),
+    (
+        "ALIGN_COND_EXPRESSIONS",
+        align_cond_expressions::align_cond_expressions,
+    ),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];
