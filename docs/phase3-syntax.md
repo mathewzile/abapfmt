@@ -17,7 +17,10 @@ errors; 0.6 s in a release build. Remaining misses are statements newer than the
   names when the INSET rule is ported (phase 5); the grammar crate does not generate abaplint's
   `3_structures`.
 - **Heuristic refiner details** (operand-position cases A–F, constructor-operator checks from the
-  old `token-type-refiner.ts`): only the plain keyword guess is ported; the 2.7% fallback words
-  decide whether more is needed once the fixture harness (phase 4) shows failures.
+  old `token-type-refiner.ts`): only the plain keyword guess is ported. Measured after the rules
+  were done (`cargo run --example unmatched` and `--example fallback` in `abapfmt_syntax`): 28 of
+  3,767 commands in the fixtures are not fully matched (macros, native SQL, statements newer than
+  the pinned abaplint, exotic SELECT lists), and no fixture fails because of a fallback word, so
+  the refiner cases are not needed.
 - DDL / non-ABAP sections in the formatter lexer.
 - Lowercase-keyword list for UPPER_AND_LOWER_CASE (`abap_true`, `sy`, ... ) arrives with that rule.

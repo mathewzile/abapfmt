@@ -12,7 +12,7 @@ is left as is; abapfmt starts in a **new repo**, copying only fixtures and refer
 - **Layout:** preserve user line breaks (abap-cleaner model) + gofmt-style reflow of a statement
   only when it exceeds `lineWidth`. `lineWidth` is configurable; `"off"` = behave exactly like
   abap-cleaner (only the per-rule max-line-length options of e.g. ALIGN_PARAMETERS apply).
-  Default: `"off"` (parity).
+  Default: 120 (Clean ABAP); rows of tables in tabular style may be longer (`tabularLineWidth`, 160).
 - **Keyword typing:** abaplint statement/expression grammar (MIT), **generated** into Rust by a
   build-time tool from a pinned abaplint version; hand-written overrides for non-declarative files.
   New ABAP syntax = bump pin + regenerate. Unparseable statement → heuristic typing fallback
@@ -76,8 +76,8 @@ before, compared case-insensitively. Plus idempotence: `fmt(fmt(x)) == fmt(x)`.
    from upstream Java) → DDL.
 6. **Config + CLI** (incl. `.cfj` import).
 7. **LSP + VS Code extension;** package VSIX; usage guide. Checkpoint: user tests.
-8. **lineWidth reflow** (gofmt-style), default off.
-9. **Benchmarks** vs old TS engine numbers in old repo NEXT-STEPS §0b.
+8. **lineWidth reflow** (gofmt-style), default 120. Done.
+9. **Benchmarks** vs old TS engine numbers in old repo NEXT-STEPS §0b. Done, see `benchmarks.md`.
 
 ## Verification
 - `cargo test` — fixture suite (target: 100% of non-skipped keep-scope cases), safety invariant
