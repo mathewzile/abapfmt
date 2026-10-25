@@ -8,6 +8,7 @@ mod align_clear_free_and_sort;
 mod align_cond_expressions;
 pub(crate) mod align_declarations;
 mod align_form_declaration;
+mod align_logical_expressions;
 mod align_methods_declaration;
 mod align_methods_without_params;
 mod align_perform;
@@ -88,6 +89,10 @@ pub const ALL: &[(&str, RuleFn)] = &[
     ),
     ("ALIGN_SELECT_FROM", align_select_from::align_select_from),
     ("ALIGN_SELECT_LISTS", align_select_lists::align_select_lists),
+    (
+        "ALIGN_LOGICAL_EXPRESSIONS",
+        align_logical_expressions::align_logical_expressions,
+    ),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];

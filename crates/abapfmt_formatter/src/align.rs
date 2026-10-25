@@ -37,14 +37,14 @@ impl Cell {
         (self.first..self.last).any(|t| is_comment(doc, t))
     }
 
-    fn mono_width(&self, doc: &Doc) -> i64 {
+    pub(crate) fn mono_width(&self, doc: &Doc) -> i64 {
         self.add_indent
             + self
                 .override_width
                 .unwrap_or_else(|| sum_text_and_space_width(doc, self.first, self.last))
     }
 
-    fn multi_width(&self, doc: &Doc) -> i64 {
+    pub(crate) fn multi_width(&self, doc: &Doc) -> i64 {
         self.add_indent
             + self.override_width.unwrap_or_else(|| {
                 max_end_index_in_any_line(doc, self.first, self.last) - doc.start_x(0, self.first)
@@ -66,7 +66,7 @@ impl Cell {
 
     /// `AlignCell.setWhitespace`; `overlength` is the token that got an emergency line break
     /// and the indent it must be aligned to.
-    fn set_whitespace(
+    pub(crate) fn set_whitespace(
         &self,
         doc: &mut Doc,
         lines: u32,

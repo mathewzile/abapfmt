@@ -273,7 +273,7 @@ fn is_assignment_op(text: &str) -> bool {
     matches!(text, "=" | "?=" | "+=" | "-=" | "*=" | "/=" | "&&=")
 }
 
-fn is_comparison_op(text: &str) -> bool {
+pub fn is_comparison_op(text: &str) -> bool {
     let up = text.to_ascii_uppercase();
     matches!(
         up.as_str(),

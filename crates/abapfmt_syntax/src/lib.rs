@@ -7,6 +7,7 @@
 #![forbid(unsafe_code)]
 
 mod blocks;
+mod operators;
 
 use abapfmt_grammar::{Class, ParsedStatement, is_grammar_word, parse_statements};
 use abapfmt_lexer::{LexError, Token, TokenKind, lex};
@@ -401,6 +402,8 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
             stack.clear();
         }
     }
+
+    operators::distinguish_operators(src, &tokens, &commands, &bracket_match, &parent, &mut types);
 
     Ok(Syntax {
         src,
