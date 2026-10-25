@@ -404,34 +404,31 @@ fn end_of_params(doc: &Doc, cmd: &Command, t: usize) -> Option<usize> {
         .first_code_token(cmd)
         .is_some_and(|f| is_abap_sql_operation(doc, cmd, f));
     let parent = doc.syn.parent[t];
-    if text_any(doc, t, &["boolc(", "xsdbool("]) {
-        return None;
-    } else if is_sql
-        && text_any(
-            doc,
-            t,
-            &[
-                "OVER(",
-                "HIERARCHY(",
-                "HIERARCHY_SIBLINGS(",
-                "HIERARCHY_ANCESTORS(",
-                "HIERARCHY_DESCENDANTS(",
-                "HIERARCHY_ANCESTORS_AGGREGATE(",
-                "HIERARCHY_DESCENDANTS_AGGREGATE(",
-            ],
-        )
+    if text_any(doc, t, &["boolc(", "xsdbool("])
+        || is_sql
+            && (text_any(
+                doc,
+                t,
+                &[
+                    "OVER(",
+                    "HIERARCHY(",
+                    "HIERARCHY_SIBLINGS(",
+                    "HIERARCHY_ANCESTORS(",
+                    "HIERARCHY_DESCENDANTS(",
+                    "HIERARCHY_ANCESTORS_AGGREGATE(",
+                    "HIERARCHY_DESCENDANTS_AGGREGATE(",
+                ],
+            ) || doc.syn.text(t) == "@("
+                || doc.syn.text(t).ends_with('['))
     {
         return None;
-    } else if is_sql && text_any(doc, t, SQL_FUNCTIONS) {
+    }
+    if is_sql && text_any(doc, t, SQL_FUNCTIONS) {
         return if text_any(doc, t, SQL_FUNCTIONS_WITH_ASSIGNMENTS) {
             next_code_sib(doc, cmd, t)
         } else {
             None
         };
-    } else if is_sql && doc.syn.text(t) == "@(" {
-        return None;
-    } else if is_sql && doc.syn.text(t).ends_with('[') {
-        return None;
     } else if doc.syn.text(t) == "(" {
         let prev = prev_code_sib(doc, cmd, t);
         if parent.is_none() && opens_group_key(doc, cmd, t) {
@@ -996,11 +993,10 @@ fn align_params(
         let first_token = table.first_token();
         let start_line_breaks = if ts.force_table_to_next_line {
             1
-        } else if ts.continue_on_same_line && first_token == Some(parent_token_of_first_line + 1) {
-            0
         } else if ts.continue_on_same_line
-            && first_token.is_some_and(|f| doc.lines[f] == 0)
-            && table.first_token_column_index() != Some(PARAMETER)
+            && (first_token == Some(parent_token_of_first_line + 1)
+                || first_token.is_some_and(|f| doc.lines[f] == 0)
+                    && table.first_token_column_index() != Some(PARAMETER))
         {
             0
         } else {
@@ -1134,9 +1130,10 @@ fn build_align_table(
             let parameter = tk;
             let mut keyword = prev_code_tok(doc, cmd, parameter);
             if let Some(k) = keyword {
-                if matches!(ct, Content::GroupKey | Content::ImportOrExport) {
-                    keyword = None;
-                } else if !is_keyword(doc, k) || Some(k) != prev_code_sib(doc, cmd, parameter) {
+                if matches!(ct, Content::GroupKey | Content::ImportOrExport)
+                    || !is_keyword(doc, k)
+                    || Some(k) != prev_code_sib(doc, cmd, parameter)
+                {
                     keyword = None;
                 } else if any_kw(
                     doc,
@@ -1325,20 +1322,15 @@ fn determine_table_start(
         2 * INDENT_STEP
     };
     let first_token_in_table = table.first_token();
-    let mut continue_on_same_line = if matches!(
+    let mut continue_on_same_line = matches!(
         ct,
         Content::ConstructorExpr
             | Content::RowInValueOrNew
             | Content::GroupKey
             | Content::ImportOrExport
-    ) {
-        true
-    } else if first_token_in_table.is_some() && next_tok(cmd, parent_token) == first_token_in_table
-    {
-        true
-    } else {
-        next_tok(cmd, parent_token).is_none_or(|n| doc.lines[n] == 0)
-    };
+    ) || (first_token_in_table.is_some()
+        && next_tok(cmd, parent_token) == first_token_in_table)
+        || next_tok(cmd, parent_token).is_none_or(|n| doc.lines[n] == 0);
 
     let start_in_parentheses = end_x(doc, parent_token) + 1;
     let mut start_indent = start_in_parentheses;
