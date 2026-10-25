@@ -1,4 +1,12 @@
 [
+  "alignment/AlignAbapDoc.json::testAlignAcrossEmptyLines",
+  "alignment/AlignAbapDoc.json::testAlignAcrossNonEmptyLines",
+  "alignment/AlignAbapDoc.json::testAlignParametersAndRaising",
+  "alignment/AlignAbapDoc.json::testDoNotAlignAcrossEmptyLines",
+  "alignment/AlignAbapDoc.json::testDoNotAlignDetachedAbapDoc",
+  "alignment/AlignAbapDoc.json::testDoNotAlignIfDocuInNextLine",
+  "alignment/AlignAbapDoc.json::testDonNotAlignAcrossNonEmptyLines",
+  "alignment/AlignAbapDoc.json::testOtherAbapDocWithPipe",
   "alignment/AlignAliasesFor.json::testAcrossCommentLine",
   "alignment/AlignAliasesFor.json::testAcrossEmptyLine",
   "alignment/AlignAliasesFor.json::testChain",

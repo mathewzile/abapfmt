@@ -1,6 +1,7 @@
 //! The rules, one module per upstream rule group.
 use crate::RuleFn;
 
+mod align_abap_doc;
 mod align_aliases_for;
 mod align_assignments;
 mod align_clear_free_and_sort;
@@ -71,6 +72,7 @@ pub const ALL: &[(&str, RuleFn)] = &[
         "ALIGN_METHODS_REDEFINITION",
         align_methods_without_params::align_methods_redefinition,
     ),
+    ("ALIGN_ABAP_DOC", align_abap_doc::align_abap_doc),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];
