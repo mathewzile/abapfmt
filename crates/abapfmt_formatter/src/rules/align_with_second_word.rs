@@ -33,7 +33,7 @@ fn is_assignment(doc: &Doc, cmd: &Command) -> bool {
     doc.syn.types[next] == TokenType::AssignmentOp
 }
 
-fn is_abap_sql_operation(doc: &Doc, cmd: &Command, first: usize) -> bool {
+pub(crate) fn is_abap_sql_operation(doc: &Doc, cmd: &Command, first: usize) -> bool {
     let last = cmd.last;
     let up = doc.syn.text(first).to_ascii_uppercase();
     match up.as_str() {

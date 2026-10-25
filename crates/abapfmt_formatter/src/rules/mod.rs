@@ -11,12 +11,14 @@ mod align_form_declaration;
 mod align_methods_declaration;
 mod align_methods_without_params;
 mod align_perform;
+mod align_select_clauses;
 mod align_with_second_word;
 mod case;
 mod empty_lines;
 mod inset;
 mod needless_spaces;
 mod one_command_per_line;
+mod select_query;
 mod spaces;
 
 /// In the order the rules run (upstream's registry order).
@@ -77,6 +79,10 @@ pub const ALL: &[(&str, RuleFn)] = &[
     (
         "ALIGN_COND_EXPRESSIONS",
         align_cond_expressions::align_cond_expressions,
+    ),
+    (
+        "ALIGN_SELECT_CLAUSES",
+        align_select_clauses::align_select_clauses,
     ),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
