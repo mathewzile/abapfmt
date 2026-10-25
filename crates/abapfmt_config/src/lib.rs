@@ -338,6 +338,32 @@ mod tests {
         );
     }
 
+    /// A profile exported from abap-cleaner 1.29 (the "Essential" profile).
+    #[test]
+    fn real_cfj_export_is_imported() {
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../fixtures/profiles/essential.cfj");
+        let loaded = load_file(&path).unwrap();
+        // inactive rules are switched off, active ones keep their settings
+        assert_eq!(loaded.config.rules["ALIGN_DECLARATIONS"], None);
+        let params = loaded.config.rules["ALIGN_PARAMETERS"].as_ref().unwrap();
+        assert_eq!(
+            params["MaxLineLength"],
+            abapfmt_formatter::ConfigValue::Int(120)
+        );
+        assert_eq!(
+            params["KeepOtherOneLiners"],
+            abapfmt_formatter::ConfigValue::Str("NEVER".into())
+        );
+        // the active rules that rewrite code are reported once
+        assert_eq!(loaded.warnings.len(), 1);
+        assert!(
+            loaded.warnings[0].contains("24 rules"),
+            "{:?}",
+            loaded.warnings
+        );
+    }
+
     #[test]
     fn tabular_line_width_defaults_to_160_and_the_rule_option_wins() {
         assert_eq!(Config::default().options().tabular_line_width, 160);
