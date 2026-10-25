@@ -45,6 +45,7 @@ pub fn align_aliases_for(doc: &mut Doc, config: &RuleConfig) {
     for_each_section(
         doc,
         config,
+        true,
         |doc, cmd| is_alias_for(doc, cmd, true),
         |doc, cmd, _| is_alias_for(doc, cmd, false),
         execute_on,

@@ -276,6 +276,7 @@ pub fn align_declarations(doc: &mut Doc, config: &RuleConfig) {
     for_each_section(
         doc,
         config,
+        true,
         |doc, cmd| {
             !cmd.is_comment_only
                 && doc.is_declaration(cmd)
@@ -291,12 +292,13 @@ pub fn align_declarations(doc: &mut Doc, config: &RuleConfig) {
 pub(crate) fn for_each_section(
     doc: &mut Doc,
     config: &RuleConfig,
+    across_comments_default: bool,
     matches_first: impl Fn(&Doc, &Command) -> bool,
     matches_further: impl Fn(&Doc, &Command, &str) -> bool,
     mut exec: impl FnMut(&mut Doc, &[Command], usize, usize, bool),
 ) {
     let across_empty = config.bool("AlignAcrossEmptyLines", true);
-    let across_comments = config.bool("AlignAcrossCommentLines", true);
+    let across_comments = config.bool("AlignAcrossCommentLines", across_comments_default);
 
     let cmds = doc.commands().to_vec();
     let mut ci = 0;

@@ -195,6 +195,21 @@ impl Line {
     pub fn last_token(&self) -> Option<usize> {
         self.last_cell().map(|c| c.last)
     }
+    pub fn last_cell_index(&self) -> Option<usize> {
+        self.cells.iter().rposition(Option::is_some)
+    }
+    pub fn contains_comments(&self, doc: &Doc) -> bool {
+        match (self.first_token(), self.last_token()) {
+            (Some(a), Some(b)) => (a..=b).any(|t| is_comment(doc, t)),
+            _ => false,
+        }
+    }
+    pub fn contains_inner_line_breaks(&self, doc: &Doc) -> bool {
+        match (self.first_token(), self.last_token()) {
+            (Some(a), Some(b)) => (a + 1..=b).any(|t| doc.lines[t] > 0),
+            _ => false,
+        }
+    }
 }
 
 pub struct Table {
@@ -256,6 +271,39 @@ impl Table {
     pub fn set_force_indent(&mut self, col: usize, base: Option<usize>, offset: i64) {
         self.cols[col].force_indent_base = base;
         self.cols[col].force_indent_offset = offset;
+    }
+
+    /// `AlignTable.overrideWidthIfColumnIsFollowedByLineBreaks`
+    pub fn override_width_if_followed_by_line_breaks(&mut self, doc: &Doc, col: usize) {
+        let mut followed = true;
+        if !self.cols[col].force_line_break_after {
+            for line in &self.lines {
+                if line.cells[col].is_none() {
+                    continue;
+                }
+                if let Some(next) = line.cells[col + 1..].iter().flatten().next()
+                    && doc.lines[next.first] == 0
+                {
+                    followed = false;
+                    break;
+                }
+            }
+        }
+        if followed {
+            for line in &mut self.lines {
+                if let Some(c) = line.cells[col].as_mut() {
+                    c.override_width = Some(1);
+                }
+            }
+        }
+    }
+
+    pub fn column_force_line_break_after(&self, col: usize) -> bool {
+        self.cols[col].force_line_break_after
+    }
+
+    pub fn line_index_of_last_non_empty_cell(&self, col: usize) -> Option<usize> {
+        self.lines.iter().rposition(|l| l.cells[col].is_some())
     }
 
     pub fn set_minimum_width(&mut self, col: usize, w: i64) {
