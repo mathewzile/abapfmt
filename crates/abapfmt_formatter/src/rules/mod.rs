@@ -1,6 +1,7 @@
 //! The rules, one module per upstream rule group.
 use crate::RuleFn;
 
+mod align_aliases_for;
 mod align_assignments;
 pub(crate) mod align_declarations;
 mod align_with_second_word;
@@ -43,6 +44,7 @@ pub const ALL: &[(&str, RuleFn)] = &[
         "ALIGN_WITH_SECOND_WORD",
         align_with_second_word::align_with_second_word,
     ),
+    ("ALIGN_ALIASES_FOR", align_aliases_for::align_aliases_for),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];

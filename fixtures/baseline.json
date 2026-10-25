@@ -1,4 +1,13 @@
 [
+  "alignment/AlignAliasesFor.json::testAcrossCommentLine",
+  "alignment/AlignAliasesFor.json::testAcrossEmptyLine",
+  "alignment/AlignAliasesFor.json::testChain",
+  "alignment/AlignAliasesFor.json::testCommentPreventingChange",
+  "alignment/AlignAliasesFor.json::testMultiplePeriods",
+  "alignment/AlignAliasesFor.json::testNotAcrossCommentLine",
+  "alignment/AlignAliasesFor.json::testNotAcrossEmptyLine",
+  "alignment/AlignAliasesFor.json::testWithCommentAlign",
+  "alignment/AlignAliasesFor.json::testWithoutComments",
   "alignment/AlignAssignments.json::testAcrossCommentLines",
   "alignment/AlignAssignments.json::testAcrossEmptyLines",
   "alignment/AlignAssignments.json::testAlignAcrossCommentsAndEmptyLines",

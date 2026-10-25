@@ -273,6 +273,28 @@ struct TableStart {
 
 pub fn align_declarations(doc: &mut Doc, config: &RuleConfig) {
     let on_class_def = config.bool("ExecuteOnClassDefAndInterfaces", true);
+    for_each_section(
+        doc,
+        config,
+        |doc, cmd| {
+            !cmd.is_comment_only
+                && doc.is_declaration(cmd)
+                && (on_class_def || !(cmd.in_class_definition || cmd.in_interface_definition))
+        },
+        is_match_for_further,
+        |doc, cmds, start, end, chain| execute_on(doc, config, cmds, start, end, chain),
+    );
+}
+
+/// `AlignDeclarationSectionRuleBase.executeOn`: finds sections of consecutive declaration
+/// commands (including a chain) and calls `exec(doc, cmds, start, end, is_chain)` for each.
+pub(crate) fn for_each_section(
+    doc: &mut Doc,
+    config: &RuleConfig,
+    matches_first: impl Fn(&Doc, &Command) -> bool,
+    matches_further: impl Fn(&Doc, &Command, &str) -> bool,
+    mut exec: impl FnMut(&mut Doc, &[Command], usize, usize, bool),
+) {
     let across_empty = config.bool("AlignAcrossEmptyLines", true);
     let across_comments = config.bool("AlignAcrossCommentLines", true);
 
@@ -280,10 +302,7 @@ pub fn align_declarations(doc: &mut Doc, config: &RuleConfig) {
     let mut ci = 0;
     while ci < cmds.len() {
         let cmd = &cmds[ci];
-        let matches_first = !cmd.is_comment_only
-            && doc.is_declaration(cmd)
-            && (on_class_def || !(cmd.in_class_definition || cmd.in_interface_definition));
-        if !matches_first {
+        if !matches_first(doc, cmd) {
             ci += 1;
             continue;
         }
@@ -318,16 +337,15 @@ pub fn align_declarations(doc: &mut Doc, config: &RuleConfig) {
                         break;
                     }
                 }
-                let continues = skip_command(doc, c)
-                    || belongs_to_block
-                    || is_match_for_further(doc, c, &keyword);
+                let continues =
+                    skip_command(doc, c) || belongs_to_block || matches_further(doc, c, &keyword);
                 if !continues {
                     break;
                 }
                 end += 1;
             }
         }
-        execute_on(doc, config, &cmds, start, end, start_is_chain);
+        exec(doc, &cmds, start, end, start_is_chain);
         ci = end;
     }
 }
