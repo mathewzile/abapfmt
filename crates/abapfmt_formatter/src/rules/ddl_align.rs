@@ -291,7 +291,7 @@ fn align_parameters(
         let next = t + 1;
         if doc.syn.types[t] == TokenType::Identifier
             && doc.syn.text(next) == op_text
-            && next + 1 <= cmd_last
+            && next < cmd_last
             && !is_comment(doc, next + 1)
         {
             let op = next_code_sibling(doc, t, cmd_last).unwrap_or(next);
