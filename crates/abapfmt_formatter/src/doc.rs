@@ -246,7 +246,8 @@ impl<'a> Doc<'a> {
             return;
         }
         for t in from..end {
-            let asterisk = self.syn.types[t] == abapfmt_syntax::TokenType::Comment
+            let asterisk = self.syn.ddl.is_none()
+                && self.syn.types[t] == abapfmt_syntax::TokenType::Comment
                 && self.lines[t] > 0
                 && self.syn.text(t).starts_with('*');
             if self.first_in_line(t) && !asterisk {

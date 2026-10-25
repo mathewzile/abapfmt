@@ -1,6 +1,7 @@
 //! DDL_SPACES_* rules.
 use abapfmt_syntax::TokenType;
 
+use super::ddl_util::prev_code_sibling;
 use crate::{ConfigExt, Doc, RuleConfig};
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -38,37 +39,6 @@ fn prev_code(doc: &Doc, first: usize, i: usize) -> Option<usize> {
 /// The enclosing bracket token of `i`, as in `Token.getParent`.
 fn parent(doc: &Doc, i: usize) -> Option<usize> {
     doc.syn.parent[i]
-}
-
-/// `Token.getPrevCodeSibling`: the previous code token on the same level (skipping over
-/// bracketed groups, whose closing token stands for the group).
-fn prev_code_sibling(doc: &Doc, first: usize, i: usize) -> Option<usize> {
-    let mut cur = i;
-    loop {
-        if cur == first {
-            return None;
-        }
-        let mut p = cur - 1;
-        if doc.syn.parent[cur] == Some(p) {
-            return None;
-        }
-        // the previous sibling of a token after a closed group is the group's closing token
-        if is_comment(doc, p) {
-            cur = p;
-            continue;
-        }
-        if doc.syn.parent[p] != doc.syn.parent[cur] {
-            // p is inside a group: step to the closing token's own level
-            p = (first..cur)
-                .rev()
-                .find(|j| doc.syn.parent[*j] == doc.syn.parent[cur])?;
-            if is_comment(doc, p) {
-                cur = p;
-                continue;
-            }
-        }
-        return Some(p);
-    }
 }
 
 fn may_be_followed_by_arithmetic_op(doc: &Doc, i: usize) -> bool {

@@ -258,3 +258,101 @@ pub fn entity_name_token(doc: &Doc, ci: usize) -> Option<usize> {
     seqs.iter()
         .find_map(|s| last_of_sequence(doc, start, last, s))
 }
+
+/// `Token.getPrevCodeSibling`: the previous code token on the same level (skipping over
+/// bracketed groups, whose closing token stands for the group).
+pub fn prev_code_sibling(doc: &Doc, first: usize, i: usize) -> Option<usize> {
+    let mut cur = i;
+    loop {
+        if cur == first {
+            return None;
+        }
+        let mut p = cur - 1;
+        if doc.syn.parent[cur] == Some(p) {
+            return None;
+        }
+        // the previous sibling of a token after a closed group is the group's closing token
+        if is_comment(doc, p) {
+            cur = p;
+            continue;
+        }
+        if doc.syn.parent[p] != doc.syn.parent[cur] {
+            // p is inside a group: step to the closing token's own level
+            p = (first..cur)
+                .rev()
+                .find(|j| doc.syn.parent[*j] == doc.syn.parent[cur])?;
+            if is_comment(doc, p) {
+                cur = p;
+                continue;
+            }
+        }
+        return Some(p);
+    }
+}
+
+/// `Token.getLastTokenOfDdlLogicalExpression` for `WHERE`, `HAVING`, `ON` and `DEFAULT FILTER`.
+pub fn last_token_of_ddl_logical_expression(doc: &Doc, ci: usize, t: usize) -> Option<usize> {
+    let (cmd_first, cmd_last) = (doc.syn.commands[ci].first, doc.syn.commands[ci].last);
+    let prev_code = (cmd_first..t).rev().find(|j| !is_comment(doc, *j));
+    let starts = is_any_kw(doc, t, &["WHERE", "HAVING"])
+        || (is_kw(doc, t, "ON") && !prev_code.is_some_and(|p| is_kw(doc, p, "PROJECTION")))
+        || (is_kw(doc, t, "FILTER") && prev_code.is_some_and(|p| is_kw(doc, p, "DEFAULT")));
+    if !starts {
+        return None;
+    }
+    let is_having = is_kw(doc, t, "HAVING");
+    let mut end = next_code_sibling(doc, t, cmd_last);
+    while let Some(e) = end {
+        if matches!(doc.syn.text(e), "{" | "," | ";") {
+            break;
+        }
+        if doc.syn.types[e] == TokenType::Keyword {
+            let fits = is_any_kw(
+                doc,
+                e,
+                &[
+                    "NOT", "AND", "OR", "IS", "BETWEEN", "IN", "LIKE", "NULL", "INITIAL", "ESCAPE",
+                    "CASE", "WHEN", "THEN", "ELSE", "END", "CAST",
+                ],
+            ) || (is_having
+                && is_any_kw(doc, e, &["MAX", "MIN", "AVG", "SUM", "COUNT"]));
+            if !fits {
+                break;
+            }
+        }
+        end = next_code_sibling(doc, e, cmd_last);
+    }
+    if let Some(e) = end {
+        let ok = matches!(doc.syn.text(e), "{" | "," | ";")
+            || is_any_kw(
+                doc,
+                e,
+                &[
+                    "UNION",
+                    "INTERSECT",
+                    "EXCEPT",
+                    "GROUP",
+                    "HAVING",
+                    "INNER",
+                    "LEFT",
+                    "RIGHT",
+                    "JOIN",
+                    "CROSS",
+                    "EXACT",
+                    "MANY",
+                    "ONE",
+                    "TO",
+                    "ASSOCIATION",
+                    "COMPOSITION",
+                    "WITH",
+                ],
+            );
+        if !ok {
+            end = None;
+        }
+    }
+    match end {
+        None => last_code(doc, ci),
+        Some(e) => (cmd_first..e).rev().find(|j| !is_comment(doc, *j)),
+    }
+}
