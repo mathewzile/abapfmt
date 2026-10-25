@@ -7,6 +7,7 @@ mod align_clear_free_and_sort;
 pub(crate) mod align_declarations;
 mod align_form_declaration;
 mod align_methods_declaration;
+mod align_methods_without_params;
 mod align_perform;
 mod align_with_second_word;
 mod case;
@@ -61,6 +62,14 @@ pub const ALL: &[(&str, RuleFn)] = &[
     (
         "ALIGN_METHODS_DECLARATION",
         align_methods_declaration::align_methods_declaration,
+    ),
+    (
+        "ALIGN_METHODS_FOR_TESTING",
+        align_methods_without_params::align_methods_for_testing,
+    ),
+    (
+        "ALIGN_METHODS_REDEFINITION",
+        align_methods_without_params::align_methods_redefinition,
     ),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),

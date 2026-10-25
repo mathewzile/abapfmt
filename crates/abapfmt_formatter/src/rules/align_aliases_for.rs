@@ -24,7 +24,7 @@ fn is_alias_for(doc: &Doc, cmd: &Command, with_colon: bool) -> bool {
         && doc.syn.text(t + 1).eq_ignore_ascii_case("FOR")
 }
 
-fn contains_inner_comment_line(doc: &Doc, cmd: &Command) -> bool {
+pub(crate) fn contains_inner_comment_line(doc: &Doc, cmd: &Command) -> bool {
     let n = doc.syn.tokens.len();
     let mut at_start_or_end = true;
     for t in cmd.first..=cmd.last {

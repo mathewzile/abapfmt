@@ -260,10 +260,7 @@ fn add_access_or_exception(
     if is_any_kw(doc, token, &["EXCEPTIONS", "RAISING"])
         || is_event && is_kw(doc, token, "IMPORTING")
     {
-        loop {
-            let Some(n) = next_non_comment_sibling(doc, token, last) else {
-                break;
-            };
+        while let Some(n) = next_non_comment_sibling(doc, token, last) {
             token = n;
             if table.lines[line].cells[PARAMETER_NAME].is_none() {
                 // like PrettyPrinter, these names do not influence the PARAMETER_NAME column width
