@@ -711,3 +711,380 @@ fn align_data_source_table(doc: &mut Doc, o: &DataSourceOpts, table: &mut Table)
     }
     table.align(doc, min_indent, 1, true, true);
 }
+
+// ---- DDL_ALIGN_FIELD_LISTS ----
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum ListLayout {
+    MultiLine,
+    OneLine,
+    Derive,
+    KeepAsIs,
+}
+
+fn list_layout(config: &RuleConfig, name: &str) -> ListLayout {
+    match config.choice(name, "MULTI_LINE").as_str() {
+        "ONE_LINE" => ListLayout::OneLine,
+        "DERIVE" => ListLayout::Derive,
+        "KEEP_AS_IS" => ListLayout::KeepAsIs,
+        _ => ListLayout::MultiLine,
+    }
+}
+
+struct FieldListOpts {
+    max_line_length: i64,
+    consider_dot_as_complex: bool,
+}
+
+pub fn field_lists(doc: &mut Doc, config: &RuleConfig) {
+    let o = FieldListOpts {
+        max_line_length: config.int("MaxLineLength", 120),
+        consider_dot_as_complex: config.bool("ConsiderDotAsComplex", true),
+    };
+    let name_pos = config.choice("NameListPos", "LINE_START_PLUS_2");
+    let name_layout = list_layout(config, "NameListLayout");
+    let group_pos = config.choice("GroupByListPos", "CONTINUE");
+    let complex_group = list_layout(config, "ComplexGroupByListLayout");
+    let simple_group = list_layout(config, "SimpleGroupByListLayout");
+    for ci in 0..doc.syn.commands.len() {
+        if cmd_parent(doc, ci).is_some() || is_comment_line(doc, ci) {
+            continue;
+        }
+        let Some(first) = first_code(doc, ci) else {
+            continue;
+        };
+        let last = doc.syn.commands[ci].last;
+        use P::{Ident, Opt, T};
+        // name list (DDIC-based views only)
+        if let Some(open) = last_of_sequence(
+            doc,
+            first,
+            last,
+            &[Opt("DEFINE"), Opt("ROOT"), T("VIEW"), Ident, T("(")],
+        ) && open < last
+            && doc.syn.parent[open + 1] == Some(open)
+        {
+            align_name_list(doc, &o, ci, open, &name_pos, name_layout);
+            continue;
+        }
+        // GROUP BY clause
+        let mut t = Some(first);
+        while let Some(x) = t {
+            if is_kw(doc, x, "GROUP")
+                && let Some(by) = next_code_sibling(doc, x, last).filter(|b| is_kw(doc, *b, "BY"))
+            {
+                align_group_by(doc, &o, ci, x, by, &group_pos, complex_group, simple_group);
+                break;
+            }
+            t = next_code_sibling(doc, x, last);
+        }
+    }
+}
+
+fn align_name_list(
+    doc: &mut Doc,
+    o: &FieldListOpts,
+    ci: usize,
+    open: usize,
+    pos: &str,
+    layout: ListLayout,
+) {
+    let (cmd_first, last) = (doc.syn.commands[ci].first, doc.syn.commands[ci].last);
+    let Some(view) = prev_code_sibling(doc, cmd_first, open) else {
+        return;
+    };
+    let Some(close) = next_code_sibling(doc, open, last) else {
+        return;
+    };
+    let list_start = (open + 1..=last)
+        .find(|t| !is_comment(doc, *t))
+        .unwrap_or(open + 1);
+    let Some(mut table) = build_comma_list(doc, list_start, close, last) else {
+        return;
+    };
+    let (first_line_breaks, basic_indent);
+    match pos {
+        "CONTINUE" => {
+            if is_comment(doc, open - 1) {
+                let x = end_x(doc, view).max(0) as u32;
+                set_ws(doc, open, 1, x);
+            } else {
+                set_ws(doc, open, 0, 0);
+            }
+            first_line_breaks = 0;
+            basic_indent = end_x(doc, open) + 1;
+            if is_comment(doc, close - 1) {
+                let x = end_x(doc, view).max(0) as u32;
+                set_ws(doc, close, 1, x);
+            } else {
+                set_ws(doc, close, 0, 1);
+            }
+        }
+        "LINE_START_PLUS_2" => {
+            set_ws(doc, open, 1, 0);
+            first_line_breaks = 1;
+            basic_indent = 2;
+            set_ws(doc, close, 1, 0);
+        }
+        "LINE_START_PLUS_4" => {
+            set_ws(doc, open, 1, 2);
+            first_line_breaks = 1;
+            basic_indent = 4;
+            set_ws(doc, close, 1, 2);
+        }
+        "VIEW_NAME_PLUS_2" => {
+            let x = start_index(doc, view);
+            set_ws(doc, open, 1, x.max(0) as u32);
+            first_line_breaks = 1;
+            basic_indent = x + 2;
+            set_ws(doc, close, 1, x.max(0) as u32);
+        }
+        "VIEW_NAME_PLUS_4" => {
+            let x = start_index(doc, view) + 2;
+            set_ws(doc, open, 1, x.max(0) as u32);
+            first_line_breaks = 1;
+            basic_indent = start_index(doc, view) + 4;
+            set_ws(doc, close, 1, x.max(0) as u32);
+        }
+        _ => {
+            first_line_breaks = doc.lines[list_start];
+            basic_indent = start_index(doc, list_start);
+        }
+    }
+    align_field_table(
+        doc,
+        o,
+        &mut table,
+        open,
+        list_start,
+        close,
+        first_line_breaks,
+        basic_indent,
+        layout,
+        layout,
+    );
+}
+
+#[allow(clippy::too_many_arguments)]
+fn align_group_by(
+    doc: &mut Doc,
+    o: &FieldListOpts,
+    ci: usize,
+    group: usize,
+    by: usize,
+    pos: &str,
+    complex: ListLayout,
+    simple: ListLayout,
+) {
+    let last = doc.syn.commands[ci].last;
+    let Some(list_start) = next_code_sibling(doc, by, last) else {
+        return;
+    };
+    let Some(last_clause) = last_code(doc, ci) else {
+        return;
+    };
+    let Some(mut table) = build_comma_list(doc, list_start, last_clause, last) else {
+        return;
+    };
+    let (first_line_breaks, basic_indent);
+    match pos {
+        "CONTINUE" => {
+            first_line_breaks = 0;
+            basic_indent = end_x(doc, by) + 1;
+        }
+        "LINE_START_PLUS_2" => {
+            first_line_breaks = 1;
+            basic_indent = first_token_in_line_spaces(doc, by) + 2;
+        }
+        "LINE_START_PLUS_4" => {
+            first_line_breaks = 1;
+            basic_indent = first_token_in_line_spaces(doc, by) + 4;
+        }
+        _ => {
+            first_line_breaks = doc.lines[list_start];
+            basic_indent = start_index(doc, list_start);
+        }
+    }
+    align_field_table(
+        doc,
+        o,
+        &mut table,
+        group,
+        list_start,
+        last_clause,
+        first_line_breaks,
+        basic_indent,
+        complex,
+        simple,
+    );
+}
+
+/// `buildTableFromCommaSepList`; the last term runs up to (and includes) `last_clause`.
+fn build_comma_list(
+    doc: &mut Doc,
+    list_start: usize,
+    last_clause: usize,
+    cmd_last: usize,
+) -> Option<Table> {
+    let mut table = Table::new(1);
+    let mut token = Some(list_start);
+    loop {
+        let first_in_term = token?;
+        let mut last_in_term = first_in_term;
+        while let Some(t) = token {
+            if matches!(doc.syn.text(t), "," | ";") {
+                break;
+            }
+            last_in_term = t;
+            if t == last_clause {
+                token = None;
+                break;
+            }
+            token = next_code_sibling(doc, t, cmd_last);
+        }
+        let line = table.add_line();
+        table.set_cell(line, 0, Cell::new(doc, first_in_term, last_in_term));
+        let Some(t) = token else { break };
+        let attached = doc.lines[t] == 0 && doc.spaces[t] == 0;
+        if doc.syn.types[t] == TokenType::Comma && !attached && !is_comment(doc, t - 1) {
+            set_ws(doc, t, 0, 0);
+        }
+        token = next_code_sibling(doc, t, cmd_last);
+        if token.is_none() {
+            break;
+        }
+    }
+    Some(table)
+}
+
+#[allow(clippy::too_many_arguments)]
+fn align_field_table(
+    doc: &mut Doc,
+    o: &FieldListOpts,
+    table: &mut Table,
+    first_clause: usize,
+    list_start: usize,
+    last_clause: usize,
+    first_line_breaks: u32,
+    basic_indent: i64,
+    complex: ListLayout,
+    simple: ListLayout,
+) {
+    if table.lines.is_empty() || (complex == ListLayout::KeepAsIs && simple == ListLayout::KeepAsIs)
+    {
+        return;
+    }
+    // determine the layout
+    let mut layout = if complex == simple {
+        complex
+    } else {
+        let (mut multi_token, mut has_dot) = (false, false);
+        for l in &table.lines {
+            if let Some(c) = &l.cells[0] {
+                if c.first != c.last {
+                    multi_token = true;
+                } else if doc.syn.text(c.first).contains('.') {
+                    has_dot = true;
+                }
+            }
+        }
+        if multi_token || (has_dot && o.consider_dot_as_complex) {
+            complex
+        } else {
+            simple
+        }
+    };
+    if layout == ListLayout::KeepAsIs {
+        return;
+    }
+    if layout == ListLayout::Derive {
+        let (mut breaks, mut cont) = (0, 0);
+        for l in table.lines.iter().skip(1) {
+            if l.first_token().is_some_and(|t| doc.lines[t] > 0) {
+                breaks += 1;
+            } else {
+                cont += 1;
+            }
+        }
+        layout = if breaks > cont {
+            ListLayout::MultiLine
+        } else {
+            ListLayout::OneLine
+        };
+    }
+
+    // the list starts directly behind the keyword(s), unless a comment is in the way
+    if !is_comment(doc, list_start - 1) {
+        set_ws(doc, list_start, 0, 1);
+    }
+    if layout == ListLayout::OneLine {
+        super::ddl_position::condense_up_to(
+            doc,
+            first_clause,
+            last_clause,
+            o.max_line_length,
+            basic_indent.max(0) as u32,
+        );
+    } else {
+        table.align_ex(doc, basic_indent, first_line_breaks, true, true, true);
+    }
+
+    // align comments
+    let token_before = (0..list_start).rev().find(|t| !is_comment(doc, *t));
+    let cmd_first = doc.syn.commands[cmd_of(doc, list_start)].first;
+    let cmd_last = doc.syn.commands[cmd_of(doc, list_start)].last;
+    let mut token = list_start;
+    while token > cmd_first && is_comment_line_tok(doc, token - 1) {
+        token -= 1;
+    }
+    if is_comment_line_tok(doc, token)
+        && doc.spaces[token] > 0
+        && token > cmd_first
+        && Some(token - 1) == token_before
+        && end_x(doc, token - 1) + 1 == basic_indent
+    {
+        set_ws(doc, token, 0, 1);
+        token += 1;
+    }
+    let mut t = Some(token);
+    while let Some(x) = t {
+        if is_comment_line_tok(doc, x) {
+            indent_comment(doc, x, basic_indent);
+        }
+        if x == last_clause {
+            break;
+        }
+        t = next_sibling_any(doc, x, cmd_last);
+    }
+}
+
+fn is_comment_line_tok(doc: &Doc, t: usize) -> bool {
+    is_comment(doc, t)
+        && (doc.lines[t] > 0 || t == 0)
+        && doc.lines.get(t + 1).is_none_or(|l| *l > 0)
+}
+
+fn indent_comment(doc: &mut Doc, t: usize, basic_indent: i64) {
+    let text = doc.syn.text(t).to_string();
+    if doc.spaces[t] > 0 || !text.starts_with("//") {
+        let l = doc.lines[t];
+        set_ws(doc, t, l, basic_indent.max(0) as u32);
+    } else if text.chars().count() > 2 {
+        let sign = text.chars().next().unwrap_or('/');
+        let sign_end = text.find(|c| c != sign).unwrap_or(text.len());
+        if sign_end >= text.len() {
+            return;
+        }
+        let rest = &text[sign_end..];
+        let text_pos = sign_end + (rest.len() - rest.trim_start_matches(' ').len());
+        let new = format!(
+            "{}{}{}",
+            &text[..sign_end],
+            " ".repeat(basic_indent.max(0) as usize),
+            &text[text_pos..]
+        );
+        if new != text {
+            doc.text[t] = Some(new);
+        }
+    }
+}

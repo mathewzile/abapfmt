@@ -224,7 +224,7 @@ fn condense(doc: &mut Doc, start: usize, last: usize) {
     condense_up_to(doc, start, last, 999, indent);
 }
 
-fn condense_up_to(doc: &mut Doc, start: usize, last: usize, max_len: i64, indent: u32) {
+pub(super) fn condense_up_to(doc: &mut Doc, start: usize, last: usize, max_len: i64, indent: u32) {
     if start == last {
         return;
     }

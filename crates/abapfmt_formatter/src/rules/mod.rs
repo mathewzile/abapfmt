@@ -33,6 +33,7 @@ mod spaces;
 /// In the order the rules run (upstream's registry order).
 pub const ALL: &[(&str, RuleFn)] = &[
     ("DDL_ALIGN_DATA_SOURCES", ddl_align::data_sources),
+    ("DDL_ALIGN_FIELD_LISTS", ddl_align::field_lists),
     ("DDL_ALIGN_ENTITY_PARAMETERS", ddl_align::entity_parameters),
     ("DDL_ALIGN_SOURCE_PARAMETERS", ddl_align::source_parameters),
     (
