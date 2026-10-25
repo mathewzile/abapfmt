@@ -559,3 +559,69 @@ fn overlength_indent(
         _ => x1,
     }
 }
+
+/// A comment alone on its line (`Token.isCommentLine`).
+pub fn is_comment_line(doc: &Doc, t: usize) -> bool {
+    is_comment(doc, t)
+        && doc.first_in_line(t)
+        && (t + 1 >= doc.syn.tokens.len() || doc.lines[t + 1] > 0)
+}
+
+/// `Token.condenseUpTo`: puts the tokens after `first` up to `last` behind each other, breaking
+/// lines at `indent` where `max_line_length` would be exceeded.
+pub fn condense_up_to(
+    doc: &mut Doc,
+    first: usize,
+    last: usize,
+    max_line_length: i64,
+    indent: i64,
+    keep_comment_lines: bool,
+) {
+    if first == last {
+        return;
+    }
+    let mut index_in_line = end_x(doc, first);
+    let mut last_movable: Option<usize> = None;
+    let n = doc.syn.tokens.len();
+    let mut t = first + 1;
+    while t < n {
+        let attached = doc.lines[t] == 0 && doc.spaces[t] == 0;
+        let ty = doc.syn.types[t];
+        let spaces_left = i64::from(
+            !(attached || matches!(ty, TokenType::Comma | TokenType::Period | TokenType::Colon)),
+        );
+        if spaces_left > 0 {
+            last_movable = Some(t);
+        }
+        let comment_line = is_comment_line(doc, t);
+        let asterisk_line = comment_line && doc.syn.text(t).starts_with('*');
+        let quot_line = comment_line && doc.syn.text(t).starts_with('"');
+        if asterisk_line || keep_comment_lines && quot_line {
+            // do nothing
+        } else if is_comment(doc, t - 1) {
+            doc.lines[t] = 1;
+            doc.spaces[t] = indent.max(0) as u32;
+            last_movable = None;
+            index_in_line = end_x(doc, t);
+        } else if let Some(m) = last_movable
+            && index_in_line + spaces_left + len(doc, t) > max_line_length
+        {
+            doc.lines[m] = 1;
+            doc.spaces[m] = indent.max(0) as u32;
+            if t != m {
+                doc.lines[t] = 0;
+                doc.spaces[t] = spaces_left as u32;
+            }
+            last_movable = None;
+            index_in_line = end_x(doc, t);
+        } else {
+            doc.lines[t] = 0;
+            doc.spaces[t] = spaces_left as u32;
+            index_in_line += spaces_left + len(doc, t);
+        }
+        if t == last {
+            break;
+        }
+        t += 1;
+    }
+}
