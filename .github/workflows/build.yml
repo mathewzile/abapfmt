@@ -25,7 +25,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Add the target
         run: rustup target add ${{ matrix.target }}
       - name: Test
@@ -37,7 +37,7 @@ jobs:
         run: |
           mkdir -p editors/vscode/bin/${{ matrix.dir }}
           cp target/${{ matrix.target }}/release/${{ matrix.exe }} editors/vscode/bin/${{ matrix.dir }}/
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: bin-${{ matrix.dir }}
           path: editors/vscode/bin
@@ -48,21 +48,21 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           pattern: bin-*
           path: editors/vscode/bin
           merge-multiple: true
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: lts/*
       - name: Package
         working-directory: editors/vscode
         run: |
           npm ci
           npm run package:all
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: abapfmt-vsix
           path: editors/vscode/*.vsix
