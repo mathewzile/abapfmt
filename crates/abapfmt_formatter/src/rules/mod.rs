@@ -13,6 +13,7 @@ mod align_methods_without_params;
 mod align_perform;
 mod align_select_clauses;
 mod align_select_from;
+mod align_select_lists;
 mod align_with_second_word;
 mod case;
 mod empty_lines;
@@ -86,6 +87,7 @@ pub const ALL: &[(&str, RuleFn)] = &[
         align_select_clauses::align_select_clauses,
     ),
     ("ALIGN_SELECT_FROM", align_select_from::align_select_from),
+    ("ALIGN_SELECT_LISTS", align_select_lists::align_select_lists),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];
