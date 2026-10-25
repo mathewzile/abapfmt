@@ -69,16 +69,28 @@ pub fn rules() -> &'static [(&'static str, RuleFn)] {
 /// tokenized is returned unchanged.
 pub fn run_rule(rule_id: &str, src: &str, config: &RuleConfig) -> Option<String> {
     let (_, rule) = rules().iter().find(|(id, _)| *id == rule_id)?;
-    let Some(mut doc) = Doc::new(src) else {
-        return Some(src.to_string());
-    };
-    // DDL rules only apply to CDS sources and ABAP rules only to ABAP
-    if rule_id.starts_with("DDL_") != doc.syn.ddl.is_some() {
-        return Some(src.to_string());
+    let mut text = src.to_string();
+    // a rule that moved tokens asks to be run again on the parsed result
+    for _ in 0..MAX_RERUNS {
+        let Some(mut doc) = Doc::new(&text) else {
+            return Some(text);
+        };
+        // DDL rules only apply to CDS sources and ABAP rules only to ABAP
+        if rule_id.starts_with("DDL_") != doc.syn.ddl.is_some() {
+            return Some(text);
+        }
+        rule(&mut doc, config);
+        let rerun = doc.rerun;
+        text = doc.render();
+        if !rerun {
+            break;
+        }
     }
-    rule(&mut doc, config);
-    Some(doc.render())
+    Some(text)
 }
+
+/// How often a rule may ask to be run again on its own output.
+const MAX_RERUNS: usize = 3;
 
 /// Settings that a rule reads from another rule upstream: (rule, source rule, setting names).
 const CROSS_RULE_SETTINGS: &[(&str, &str, &[&str])] = &[
@@ -262,17 +274,18 @@ pub fn format(src: &str, configs: &BTreeMap<String, Option<RuleConfig>>) -> Stri
             let before = doc.snapshot();
             rule(&mut doc, &config);
             if !doc.is_unchanged_since(&before) {
-                changed_at = Some(k);
+                // a rule that asked to run again continues with itself on the changed source
+                changed_at = Some(if doc.rerun { k } else { k + 1 });
                 break;
             }
         }
-        let Some(k) = changed_at else {
+        let Some(resume) = changed_at else {
             break;
         };
         let out = doc.render();
         drop(doc);
         text = out;
-        next = k + 1;
+        next = resume;
     }
     text
 }

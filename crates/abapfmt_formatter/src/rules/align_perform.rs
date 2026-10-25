@@ -92,9 +92,30 @@ pub fn align_perform(doc: &mut Doc, config: &RuleConfig) {
     let continue_after_group = config.bool("ContinueAfterParamGroupKeyword", true);
     let param_count_to_condense = config.int("ParamCountToCondense", 16);
 
+    // moving IF FOUND changes the token order, which the command ranges do not follow: move first,
+    // then run again on the parsed result
+    let mut moved = false;
+    for ci in 0..doc.commands().len() {
+        let cmd = doc.commands()[ci].clone();
+        if cmd.is_comment_only
+            || doc.first_code_text(&cmd).as_deref() != Some("PERFORM")
+            || cmd.colon.is_some()
+        {
+            continue;
+        }
+        let perform = doc.first_code_token(&cmd).unwrap();
+        if let Some((token, _)) = params_start(doc, perform, cmd.last) {
+            moved |= move_late_if_found(doc, &cmd, token);
+        }
+    }
+    if moved {
+        doc.rerun = true;
+        return;
+    }
+
     let mut ci = 0;
     while ci < doc.commands().len() {
-        let mut cmd = doc.commands()[ci].clone();
+        let cmd = doc.commands()[ci].clone();
         ci += 1;
         if cmd.is_comment_only
             || doc.first_code_text(&cmd).as_deref() != Some("PERFORM")
@@ -103,22 +124,9 @@ pub fn align_perform(doc: &mut Doc, config: &RuleConfig) {
             continue;
         }
         let perform = doc.first_code_token(&cmd).unwrap();
-        let Some((mut token, mut has_additions)) = params_start(doc, perform, cmd.last) else {
+        let Some((token, has_additions)) = params_start(doc, perform, cmd.last) else {
             continue;
         };
-        if move_late_if_found(doc, &cmd, token) {
-            // token moves invalidate the command ranges: render and parse again
-            let text: &'static str = Box::leak(doc.render().into_boxed_str());
-            let Some(fresh) = Doc::new(text) else { return };
-            *doc = fresh;
-            cmd = doc.commands()[ci - 1].clone();
-            let perform = doc.first_code_token(&cmd).unwrap();
-            let Some((t, _)) = params_start(doc, perform, cmd.last) else {
-                continue;
-            };
-            token = t;
-            has_additions = true;
-        }
         let last = cmd.last;
         let perform = doc.first_code_token(&cmd).unwrap();
         let Some(term_last) = prev_code(doc, token, perform) else {

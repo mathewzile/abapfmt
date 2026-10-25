@@ -24,6 +24,9 @@ pub struct Doc<'a> {
     eol: &'static str,
     /// Empty lines after the last token are removed.
     trim_end: bool,
+    /// Set by a rule that moved tokens and needs the changed source to be parsed again before it
+    /// can continue; the rule is then run once more on the re-parsed source.
+    pub rerun: bool,
     /// Indentation of the first command of the code (before any rule changed it).
     base_indent: u32,
     /// The code has an introductory statement (REPORT ...) or a class, so `base_indent` is not used.
@@ -83,6 +86,7 @@ impl<'a> Doc<'a> {
             has_intro_or_class,
             orig_lines: lines.clone(),
             trim_end: false,
+            rerun: false,
             orig_spaces: spaces.clone(),
             lines,
             spaces,
