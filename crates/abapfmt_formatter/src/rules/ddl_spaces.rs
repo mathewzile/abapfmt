@@ -201,12 +201,12 @@ pub fn around_signs(doc: &mut Doc, config: &RuleConfig) {
                 let star_in_parens = ttext == "*"
                     && prev_token.is_some_and(|p| doc.syn.text(p).ends_with('('))
                     && next_token.is_some_and(|n| doc.syn.text(n).starts_with(')'));
-                if ttext == "*" && child_of_assoc {
-                } else if ttext == "*" && prev_ends_dot {
-                } else if ttext == "*" && in_path_bracket {
-                } else if star_in_parens {
-                } else if ttext == "/" && around_arith == Change::Never {
-                } else {
+                // "[1..*]", "$extension.*", "_Any[*:...]" and "count(*)" must stay as they are, and
+                // "/" is not detached from namespaces such as /ANY/Identifier
+                let skip = (ttext == "*" && (child_of_assoc || prev_ends_dot || in_path_bracket))
+                    || star_in_parens
+                    || (ttext == "/" && around_arith == Change::Never);
+                if !skip {
                     let spaces = if around_arith == Change::Always {
                         i64::from(doc.spaces[t]).max(1)
                     } else {

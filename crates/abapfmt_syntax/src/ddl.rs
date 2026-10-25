@@ -2,6 +2,10 @@
 //! and `Command.finishBuildDdlOrDcl`). The result is a [`Syntax`] like for ABAP, plus
 //! [`DdlInfo`] with the command hierarchy: select list elements, parameters and joins are
 //! commands of their own, nested below the command that opens the `{ ... }` / `SELECT` list.
+// The condition chains mirror abap-cleaner's `Command.canAddToDdl`, which keeps each case apart
+// for readability even where several return the same value.
+#![allow(clippy::if_same_then_else)]
+
 use std::collections::HashMap;
 
 use abapfmt_lexer::{Token, TokenKind};
@@ -576,9 +580,10 @@ impl B<'_> {
             return false;
         }
 
-        if at_top && !self.comment(t) && self.tx(t) == "{" {
-            return false;
-        } else if at_top && last_code.is_some_and(|lc| self.tx(lc) == "{") {
+        if at_top
+            && ((!self.comment(t) && self.tx(t) == "{")
+                || last_code.is_some_and(|lc| self.tx(lc) == "{"))
+        {
             return false;
         } else if at_top
             && last_code.is_some_and(|lc| self.text_any(lc, &["SELECT", "DISTINCT"]))
@@ -607,8 +612,10 @@ impl B<'_> {
             return false;
         }
 
-        if at_top && self.types[t] == TokenType::Keyword && first_code.is_some() {
-            let fc = first_code.unwrap();
+        if at_top
+            && self.types[t] == TokenType::Keyword
+            && let Some(fc) = first_code
+        {
             if self.any_kw(fc, &["REDEFINE", "ASSOCIATION", "COMPOSITION"]) {
                 // skip this section
             } else if self.is_kw(t, "TO")
@@ -846,8 +853,7 @@ pub fn parse_ddl(src: &str) -> Option<Syntax<'_>> {
         toks,
     };
     let dcl_kws = keywords(DCL_COLLOCATIONS);
-    for i in 0..n {
-        let text = texts[i];
+    for (i, &text) in texts.iter().enumerate() {
         let ty = if dcl {
             // DCL keywords are taken from the DCL collocation table
             if text.starts_with("//") || text.starts_with("--") || text.starts_with("/*") {

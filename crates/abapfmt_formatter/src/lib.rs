@@ -104,7 +104,14 @@ pub fn format(src: &str, configs: &BTreeMap<String, Option<RuleConfig>>) -> Stri
 /// pragmas ignoring case), because rules may move a closing bracket or period in front of a
 /// trailing comment or pragma and re-indent commented-out code.
 pub fn same_tokens(before: &str, after: &str) -> Result<(), String> {
-    let (Ok(a), Ok(b)) = (lex(before), lex(after)) else {
+    let tokenize = |src: &str| {
+        if abapfmt_syntax::is_ddl_source(src) {
+            abapfmt_syntax::parse_ddl(src).map(|s| s.tokens)
+        } else {
+            lex(src).ok()
+        }
+    };
+    let (Some(a), Some(b)) = (tokenize(before), tokenize(after)) else {
         return Err("source cannot be tokenized".into());
     };
     let split = |src: &str, tokens: &[abapfmt_lexer::Token]| {
