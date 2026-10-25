@@ -88,6 +88,11 @@ fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures")
 }
 
+/// Upstream configurations whose rule is not stable on its own output: a second run condenses
+/// the empty lines that the first run added.
+const NOT_IDEMPOTENT_UPSTREAM: &[&str] =
+    &["ddl/emptylines/DdlEmptyLinesWithinSections.json::testSurroundElementsWith1Line"];
+
 #[test]
 fn fixture_ratchet() {
     let root = root();
@@ -118,8 +123,23 @@ fn fixture_ratchet() {
         }
         if out == c.exp {
             passing.insert(c.key.clone());
-            if run_rule(&c.rule, &out, &c.config).as_deref() != Some(out.as_str()) {
-                not_idempotent.push(c.key.clone());
+            let again = run_rule(&c.rule, &out, &c.config);
+            if again.as_deref() != Some(out.as_str()) {
+                if std::env::var_os("SHOW_FAILS")
+                    .is_some_and(|v| c.key.contains(v.to_str().unwrap_or("")))
+                {
+                    eprintln!(
+                        "NOT IDEMPOTENT {}
+--- second run
+{}
+",
+                        c.key,
+                        again.unwrap_or_default()
+                    );
+                }
+                if !NOT_IDEMPOTENT_UPSTREAM.contains(&c.key.as_str()) {
+                    not_idempotent.push(c.key.clone());
+                }
             }
         } else {
             failing += 1;

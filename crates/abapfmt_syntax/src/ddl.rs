@@ -101,6 +101,7 @@ struct Tok {
     lines: u32,
     spaces: u32,
     line: u32,
+    comment: bool,
 }
 
 fn is_ident_start(c: char) -> bool {
@@ -160,14 +161,14 @@ fn tokenize(src: &str) -> Option<Vec<Tok>> {
             i
         };
         let end;
+        let comment = in_ml_comment || starts(pos, "/*") || starts(pos, "//") || starts(pos, "--");
         if in_ml_comment || (c == '/' && starts(pos, "/*")) {
             // asterisk comment: up to `*/` or the line end
             let line_end = (pos..n)
                 .find(|i| matches!(at(*i), Some('\r' | '\n')))
                 .unwrap_or(n);
             let search = pos + if starts(pos, "/*") { 2 } else { 0 };
-            let ce = (search..n).find(|i| starts(*i, "*/"))?;
-            let ce = ce + 2;
+            let ce = (search..n).find(|i| starts(*i, "*/")).map_or(n, |i| i + 2);
             end = line_end.min(ce);
             in_ml_comment = ce > line_end;
         } else if starts(pos, "//") || starts(pos, "--") {
@@ -229,6 +230,7 @@ fn tokenize(src: &str) -> Option<Vec<Tok>> {
             lines,
             spaces,
             line,
+            comment,
         });
         pos = end;
     }
@@ -854,7 +856,9 @@ pub fn parse_ddl(src: &str) -> Option<Syntax<'_>> {
     };
     let dcl_kws = keywords(DCL_COLLOCATIONS);
     for (i, &text) in texts.iter().enumerate() {
-        let ty = if dcl {
+        let ty = if b.toks[i].comment {
+            TokenType::Comment
+        } else if dcl {
             // DCL keywords are taken from the DCL collocation table
             if text.starts_with("//") || text.starts_with("--") || text.starts_with("/*") {
                 TokenType::Comment

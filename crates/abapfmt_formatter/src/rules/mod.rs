@@ -18,7 +18,9 @@ mod align_select_from;
 mod align_select_lists;
 mod align_with_second_word;
 mod case;
+mod ddl_empty_lines;
 mod ddl_spaces;
+mod ddl_util;
 mod empty_lines;
 mod inset;
 mod needless_spaces;
@@ -28,6 +30,8 @@ mod spaces;
 
 /// In the order the rules run (upstream's registry order).
 pub const ALL: &[(&str, RuleFn)] = &[
+    ("DDL_EMPTY_LINES_BETWEEN", ddl_empty_lines::between_sections),
+    ("DDL_EMPTY_LINES_WITHIN", ddl_empty_lines::within_sections),
     ("DDL_SPACES_AROUND_SIGNS", ddl_spaces::around_signs),
     ("DDL_SPACES_AROUND_BRACKETS", ddl_spaces::around_brackets),
     ("EMPTY_LINES_WITHIN_METHODS", empty_lines::within_methods),
