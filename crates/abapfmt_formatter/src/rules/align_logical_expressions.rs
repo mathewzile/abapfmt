@@ -805,6 +805,7 @@ impl TreeAlign {
         right_align_comparison_ops: bool,
         only_align_same_objects: bool,
         max_inner_spaces: i64,
+        attach_parentheses: bool,
     ) {
         // the leftmost indent of all content to align
         let mut left_most = i64::MAX;
@@ -901,8 +902,21 @@ impl TreeAlign {
             } else {
                 column_indent = self.cols[self.cols[ci].prev.unwrap()].indent_for_next;
             }
-            let min_spaces_left = i64::from(!after_attached_open);
+            let mut column_indent = column_indent;
+            let mut min_spaces_left = i64::from(!after_attached_open);
+            if attach_parentheses
+                && col_closes_bracket(self.cols[ci].ty)
+                && column_width == 1
+                && self.cols[ci].prev.is_some()
+            {
+                column_indent -= 1;
+                min_spaces_left = 0;
+            }
             let spaces_right = if column_width == 0 {
+                0
+            } else if attach_parentheses && col_opens_bracket(self.cols[ci].ty) && column_width == 1
+            {
+                after_attached_open = true;
                 0
             } else {
                 after_attached_open = false;
@@ -1104,5 +1118,55 @@ fn execute_on(
         right_align_comparison_ops,
         only_align_same_objects,
         max_inner_spaces,
+        false,
+    );
+}
+
+/// DDL_ALIGN_LOGICAL_EXPRESSIONS: runs the same tree alignment on DDL conditions.
+#[allow(clippy::too_many_arguments)]
+pub fn align_ddl_expression(
+    doc: &mut Doc,
+    ci: usize,
+    keyword: usize,
+    last_in_expr: usize,
+    style: &str,
+    right_align_comparison_ops: bool,
+    max_inner_spaces: i64,
+    attach_parentheses: bool,
+) {
+    let cmd = doc.syn.commands[ci].clone();
+    let Some(start) = next_code(doc, keyword, cmd.last) else {
+        return;
+    };
+    let cx = Ctx {
+        cmd_first: cmd.first,
+        cmd_last: cmd.last,
+        is_sql: true,
+    };
+    let Some(exp) = LogExp::create(doc, &cx, None, start, last_in_expr) else {
+        return;
+    };
+    if !exp.supported {
+        return;
+    }
+    let mut tree = TreeAlign {
+        cols: Vec::new(),
+        cur: None,
+        first_token: exp.first,
+        stop_cells: HashSet::new(),
+        in_oo_context: false,
+    };
+    if exp.to_tree_align(doc, &cx, &mut tree).is_none() {
+        return;
+    }
+    tree.align(
+        doc,
+        &cmd,
+        keyword,
+        style,
+        right_align_comparison_ops,
+        false,
+        max_inner_spaces,
+        attach_parentheses,
     );
 }

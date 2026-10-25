@@ -294,6 +294,24 @@ pub fn prev_code_sibling(doc: &Doc, first: usize, i: usize) -> Option<usize> {
 pub fn last_token_of_ddl_logical_expression(doc: &Doc, ci: usize, t: usize) -> Option<usize> {
     let (cmd_first, cmd_last) = (doc.syn.commands[ci].first, doc.syn.commands[ci].last);
     let prev_code = (cmd_first..t).rev().find(|j| !is_comment(doc, *j));
+    if is_kw(doc, t, "WHEN") {
+        let then = find_sibling(doc, t, cmd_last, "THEN")?;
+        return (cmd_first..then).rev().find(|j| !is_comment(doc, *j));
+    }
+    if let Some(open) = doc.syn.parent[t].filter(|p| doc.syn.text(*p) == "[")
+        && !is_annotation(doc, ci)
+    {
+        let next = next_sibling_any(doc, t, cmd_last);
+        let is_start = (doc.syn.text(t) == ":"
+            && next.is_some_and(|n| !is_any_kw(doc, n, &["INNER", "LEFT", "WHERE"])))
+            || (is_any_kw(doc, t, &["INNER", "OUTER"])
+                && next.is_some_and(|n| !is_kw(doc, n, "WHERE")))
+            || is_kw(doc, t, "WHERE");
+        if is_start {
+            let close = doc.syn.bracket_match[open]?;
+            return (cmd_first..close).rev().find(|j| !is_comment(doc, *j));
+        }
+    }
     let starts = is_any_kw(doc, t, &["WHERE", "HAVING"])
         || (is_kw(doc, t, "ON") && !prev_code.is_some_and(|p| is_kw(doc, p, "PROJECTION")))
         || (is_kw(doc, t, "FILTER") && prev_code.is_some_and(|p| is_kw(doc, p, "DEFAULT")));

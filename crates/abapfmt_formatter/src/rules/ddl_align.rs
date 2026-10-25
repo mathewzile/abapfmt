@@ -1088,3 +1088,118 @@ fn indent_comment(doc: &mut Doc, t: usize, basic_indent: i64) {
         }
     }
 }
+
+// ---- DDL_ALIGN_LOGICAL_EXPRESSIONS ----
+
+pub fn logical_expressions(doc: &mut Doc, config: &RuleConfig) {
+    let right_align = config.bool("RightAlignComparisonOps", true);
+    let max_inner = config.int("MaxInnerSpaces", 20);
+    let attach = config.choice("SpacesInsideArithParens", "NEVER") == "NEVER";
+    for ci in 0..doc.syn.commands.len() {
+        if is_comment_line(doc, ci) {
+            continue;
+        }
+        let last = doc.syn.commands[ci].last;
+        let Some(first_code_tok) = first_code(doc, ci) else {
+            continue;
+        };
+        let mut token = Some(first_code_tok);
+        while let Some(t) = token {
+            // skip anything inside of "HIERARCHY( ... )"
+            if is_kw(doc, t, "HIERARCHY")
+                && let Some(n) = next_code_any(doc, t, last)
+                && doc.syn.text(n) == "("
+                && let Some(close) = doc.syn.bracket_match[n]
+            {
+                token = next_code_any(doc, close, last);
+                continue;
+            }
+            let Some(end) = last_token_of_ddl_logical_expression(doc, ci, t) else {
+                token = next_code_any(doc, t, last);
+                continue;
+            };
+            let enabled = if is_any_kw(doc, t, &["ON", "FILTER"]) {
+                if starts_join(doc, ci) {
+                    config.bool("AlignJoinOn", true)
+                } else {
+                    config.bool("AlignAssociationOn", true)
+                }
+            } else if is_kw(doc, t, "WHEN") {
+                config.bool("AlignWhen", true)
+            } else if is_kw(doc, t, "WHERE") {
+                config.bool("AlignWhere", true)
+            } else if is_kw(doc, t, "HAVING") {
+                config.bool("AlignHaving", true)
+            } else if doc.syn.parent[t].is_some_and(|p| doc.syn.text(p) == "[") {
+                config.bool("AlignPathExpressions", true)
+            } else {
+                true
+            };
+            if enabled {
+                preprocess_ddl_expression(doc, t, end);
+                let style = if is_kw(doc, t, "ON") {
+                    config.choice("AlignOnWithBoolOps", "LEFT_ALIGN")
+                } else if is_kw(doc, t, "FILTER") {
+                    config.choice("AlignFilterWithBoolOps", "RIGHT_ALIGN")
+                } else if is_kw(doc, t, "WHEN") {
+                    config.choice("AlignWhenWithBoolOps", "RIGHT_ALIGN")
+                } else if is_kw(doc, t, "WHERE") {
+                    config.choice("AlignWhereWithBoolOps", "RIGHT_ALIGN")
+                } else if is_kw(doc, t, "HAVING") {
+                    config.choice("AlignHavingWithBoolOps", "RIGHT_ALIGN")
+                } else {
+                    "DO_NOT_ALIGN".to_string()
+                };
+                super::align_logical_expressions::align_ddl_expression(
+                    doc,
+                    ci,
+                    t,
+                    end,
+                    &style,
+                    right_align,
+                    max_inner,
+                    attach,
+                );
+            }
+            token = next_code_any(doc, end, last);
+        }
+    }
+}
+
+fn next_code_any(doc: &Doc, t: usize, last: usize) -> Option<usize> {
+    (t + 1..=last).find(|j| !is_comment(doc, *j))
+}
+
+fn preprocess_ddl_expression(doc: &mut Doc, keyword: usize, last_in_expr: usize) {
+    if is_any_kw(doc, keyword, &["WHERE", "HAVING"])
+        && !is_comment(doc, keyword + 1)
+        && doc.lines[keyword + 1] > 0
+    {
+        set_ws(doc, keyword + 1, 0, 1);
+    }
+    for t in keyword..=last_in_expr {
+        let next = t + 1;
+        let has_next = next < doc.lines.len();
+        if !has_next {
+            if doc.syn.text(t) == ")" && doc.lines[t] > 0 && t > 0 && !is_comment(doc, t - 1) {
+                set_ws(doc, t, 0, 1);
+            }
+            break;
+        }
+        if is_any_kw(doc, t, &["AND", "OR"]) && doc.lines[next] > 0 {
+            if doc.lines[t] == 0 {
+                doc.lines[t] = doc.lines[next];
+                doc.spaces[t] = doc.spaces[next];
+            }
+            set_ws(doc, next, 0, 1);
+        } else if doc.syn.text(t) == "(" && doc.lines[next] > 0 && !is_comment(doc, next) {
+            set_ws(doc, next, 0, 1);
+        } else if doc.syn.text(t) == ")" && doc.lines[t] > 0 && t > 0 && !is_comment(doc, t - 1) {
+            if doc.lines[next] == 0 {
+                doc.lines[next] = doc.lines[t];
+                doc.spaces[next] = doc.spaces[t];
+            }
+            set_ws(doc, t, 0, 1);
+        }
+    }
+}
