@@ -69,7 +69,14 @@ it activates that abapfmt does not implement are ignored with a warning.
 
 ## VS Code
 
-Build the extension from `editors/vscode`:
+**One extension for all platforms.** The GitHub Actions workflow `.github/workflows/build.yml` builds
+abapfmt for Windows (x64), Linux (x64) and macOS (Intel and Apple Silicon), runs the tests on each,
+and packages a single `abapfmt-<version>.vsix` that contains all four builds (download it from the
+`abapfmt-vsix` artifact of the run). The extension starts the build for the platform it runs on.
+Start the workflow from the Actions tab (Run workflow), or push a tag such as `v0.1.0`. Nothing has
+to be installed locally for this.
+
+**Local build for this platform only** (for development), from `editors/vscode`:
 
 ```
 cargo build --release -p abapfmt_cli
@@ -106,5 +113,6 @@ These are deliberate choices or accepted approximations; none of them is planned
   `abapfmt.json`; there are no per-system settings.
 - **Speed:** about 30,000 lines per second (see `benchmarks.md`). Each rule that changes the text
   causes one more parse; this is not a problem at these speeds and is not being optimised further.
-- **The VS Code extension** is packaged for the platform it was built on only. Build it on each
-  platform you need.
+- **Platforms:** the VSIX from the workflow supports Windows x64, Linux x64, macOS Intel and macOS
+  Apple Silicon. Other platforms (for example Linux or Windows on ARM) need `abapfmt.path` to point at
+  a build of abapfmt for that platform.

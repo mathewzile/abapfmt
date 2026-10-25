@@ -74,7 +74,8 @@
   "scripts": {
     "compile": "tsc -p ./ --noEmit && esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --sourcemap",
     "bundle": "node scripts/bundle-binary.mjs",
-    "package": "npm run compile && npm run bundle && vsce package --allow-missing-repository --skip-license"
+    "package": "npm run compile && npm run bundle && vsce package --allow-missing-repository --skip-license",
+    "package:all": "npm run compile && node scripts/check-binaries.mjs && vsce package --allow-missing-repository --skip-license"
   },
   "dependencies": {
     "vscode-languageclient": "^9.0.1"

@@ -1,0 +1,69 @@
+name: build
+
+# Builds abapfmt for every platform, runs the tests, and packages one VS Code extension (VSIX) that
+# contains all builds. Run it manually (Actions > build > Run workflow) or push a tag like v0.1.0.
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+  pull_request:
+
+jobs:
+  build:
+    name: build ${{ matrix.dir }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-latest, target: x86_64-pc-windows-msvc, dir: win32-x64, exe: abapfmt.exe, test: true }
+          - { os: ubuntu-latest, target: x86_64-unknown-linux-gnu, dir: linux-x64, exe: abapfmt, test: true }
+          - { os: macos-latest, target: aarch64-apple-darwin, dir: darwin-arm64, exe: abapfmt, test: true }
+          # built on an Apple Silicon runner, so it is not run here
+          - { os: macos-latest, target: x86_64-apple-darwin, dir: darwin-x64, exe: abapfmt, test: false }
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add the target
+        run: rustup target add ${{ matrix.target }}
+      - name: Test
+        if: matrix.test
+        run: cargo test --workspace --release
+      - name: Build
+        run: cargo build --release -p abapfmt_cli --target ${{ matrix.target }}
+      - name: Collect the binary
+        run: |
+          mkdir -p editors/vscode/bin/${{ matrix.dir }}
+          cp target/${{ matrix.target }}/release/${{ matrix.exe }} editors/vscode/bin/${{ matrix.dir }}/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bin-${{ matrix.dir }}
+          path: editors/vscode/bin
+          if-no-files-found: error
+
+  package:
+    name: package the extension
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: bin-*
+          path: editors/vscode/bin
+          merge-multiple: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Package
+        working-directory: editors/vscode
+        run: |
+          npm ci
+          npm run package:all
+      - uses: actions/upload-artifact@v4
+        with:
+          name: abapfmt-vsix
+          path: editors/vscode/*.vsix
+          if-no-files-found: error
