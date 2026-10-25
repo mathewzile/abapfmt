@@ -304,49 +304,6 @@ fn run_on_commands(doc: &mut Doc, mut f: impl FnMut(&mut Doc, usize)) {
     }
 }
 
-// ---- sequence helpers ----
-
-/// First sibling token (from `start` on) that is one of the `|`-separated texts.
-fn find_sibling(doc: &Doc, start: usize, last: usize, alts: &str) -> Option<usize> {
-    let mut t = Some(start);
-    while let Some(x) = t {
-        if alts
-            .split('|')
-            .any(|a| doc.syn.text(x).eq_ignore_ascii_case(a))
-        {
-            return Some(x);
-        }
-        t = next_code_sibling(doc, x, last);
-    }
-    None
-}
-
-/// Last token of the first run of consecutive siblings that matches `texts` (`ASTERISK, texts...`).
-fn find_sibling_seq(doc: &Doc, start: usize, last: usize, texts: &[&str]) -> Option<usize> {
-    let mut from = Some(start);
-    while let Some(s) = from {
-        let mut t = Some(s);
-        let mut end = None;
-        for want in texts {
-            match t {
-                Some(x) if doc.syn.text(x).eq_ignore_ascii_case(want) => {
-                    end = Some(x);
-                    t = next_code_sibling(doc, x, last);
-                }
-                _ => {
-                    end = None;
-                    break;
-                }
-            }
-        }
-        if end.is_some() {
-            return end;
-        }
-        from = next_code_sibling(doc, s, last);
-    }
-    None
-}
-
 // ---- DDL_POSITION_BRACES ----
 
 pub fn braces(doc: &mut Doc, config: &RuleConfig) {

@@ -530,3 +530,184 @@ pub fn function_parameters(doc: &mut Doc, config: &RuleConfig) {
         }
     }
 }
+
+// ---- DDL_ALIGN_DATA_SOURCES ----
+
+const KEYWORDS: usize = 0;
+const TO_KEYWORDS: usize = 1;
+const DATA_SOURCE: usize = 2;
+const AS_ALIAS: usize = 3;
+const ON_CONDITION: usize = 4;
+
+struct DataSourceOpts {
+    align_data_sources: bool,
+    align_aliases: bool,
+    align_on_conditions: bool,
+    align_assocs_with_joins: bool,
+    align_association_to: bool,
+    consider_all_param_lines: bool,
+}
+
+pub fn data_sources(doc: &mut Doc, config: &RuleConfig) {
+    let o = DataSourceOpts {
+        align_data_sources: config.bool("AlignDataSources", true),
+        align_aliases: config.bool("AlignAliases", true),
+        align_on_conditions: config.bool("AlignOnConditions", true),
+        align_assocs_with_joins: config.bool("AlignAssociationsWithJoins", false),
+        align_association_to: config.bool("AlignAssociationTo", true),
+        consider_all_param_lines: config.bool("ConsiderAllParamAssignLines", false),
+    };
+    for ci in 0..doc.syn.commands.len() {
+        if cmd_parent(doc, ci).is_some() || is_comment_line(doc, ci) {
+            continue;
+        }
+        let Some(source) = from_data_source(doc, ci) else {
+            continue;
+        };
+        data_sources_of(doc, &o, ci, source);
+    }
+}
+
+fn data_sources_of(doc: &mut Doc, o: &DataSourceOpts, ci: usize, source: usize) {
+    // build and align the table of SELECT and JOIN commands
+    let mut table = Table::new(5);
+    build_data_source_line(doc, o, &mut table, ci, source, false);
+    let mut cmd = next_non_comment_sibling(doc, ci);
+    while let Some(c) = cmd {
+        let Some(target) = join_target(doc, c) else {
+            break;
+        };
+        build_data_source_line(doc, o, &mut table, c, target, true);
+        cmd = next_non_comment(doc, c);
+    }
+    if !o.align_assocs_with_joins {
+        align_data_source_table(doc, o, &mut table);
+        table = Table::new(5);
+    }
+    // ... and of the ASSOCIATION commands (possibly together with the SELECT FROM and JOINs)
+    while let Some(c) = cmd {
+        let Some(target) = association_target(doc, c) else {
+            break;
+        };
+        build_data_source_line(doc, o, &mut table, c, target, true);
+        cmd = next_non_comment(doc, c);
+    }
+    // if the 'TO ...' column of all ASSOCIATIONs only consists of the 'to' keywords, join it
+    if !table.column_is_empty(TO_KEYWORDS)
+        && table
+            .lines
+            .iter()
+            .filter_map(|l| l.cells[TO_KEYWORDS].as_ref())
+            .map(|c| c.mono_width(doc))
+            .max()
+            == Some(2)
+    {
+        table.join_into_previous_columns(doc, TO_KEYWORDS, false);
+    }
+    align_data_source_table(doc, o, &mut table);
+}
+
+fn build_data_source_line(
+    doc: &Doc,
+    o: &DataSourceOpts,
+    table: &mut Table,
+    ci: usize,
+    source: usize,
+    has_on: bool,
+) {
+    let (cmd_first, last) = (doc.syn.commands[ci].first, doc.syn.commands[ci].last);
+    let line = table.add_line();
+    let mut first_in_line = source;
+    while first_in_line > cmd_first && doc.lines[first_in_line] == 0 {
+        first_in_line -= 1;
+    }
+    let to_kw = if is_kw(doc, first_in_line, "ASSOCIATION") {
+        find_sibling(doc, first_in_line, last, "TO")
+    } else {
+        None
+    };
+    if first_in_line != source {
+        let keywords_last = prev_code_sibling(doc, cmd_first, source).unwrap_or(first_in_line);
+        if let Some(to) = to_kw.filter(|_| o.align_association_to) {
+            let before_to = prev_code_sibling(doc, cmd_first, to).unwrap_or(first_in_line);
+            table.set_cell(line, KEYWORDS, Cell::new(doc, first_in_line, before_to));
+            table.set_cell(line, TO_KEYWORDS, Cell::new(doc, to, keywords_last));
+        } else {
+            table.set_cell(line, KEYWORDS, Cell::new(doc, first_in_line, keywords_last));
+        }
+    }
+
+    // alias: the last "AS identifier" among the siblings
+    let mut alias: Option<usize> = None;
+    let mut t = Some(source);
+    while let Some(x) = t {
+        if doc.syn.text(x).eq_ignore_ascii_case("AS")
+            && let Some(n) = next_code_sibling(doc, x, last)
+            && doc.syn.types[n] == TokenType::Identifier
+        {
+            alias = Some(n);
+        }
+        t = next_code_sibling(doc, x, last);
+    }
+    let as_tok = alias.and_then(|a| prev_code_sibling(doc, cmd_first, a));
+    let on = if has_on {
+        find_sibling(doc, alias.unwrap_or(source), last, "ON")
+    } else {
+        None
+    };
+    let last_code_tok = last_code(doc, ci).unwrap_or(last);
+    let source_last = if let Some(a) = as_tok {
+        prev_code_sibling(doc, cmd_first, a)
+    } else if let Some(on) = on {
+        prev_code_sibling(doc, cmd_first, on)
+    } else {
+        Some(last_code_tok)
+    }
+    .unwrap_or(source);
+    table.set_cell(line, DATA_SOURCE, Cell::new(doc, source, source_last));
+    if let (Some(a), Some(al)) = (as_tok, alias) {
+        table.set_cell(line, AS_ALIAS, Cell::new(doc, a, al));
+    }
+    if let Some(on) = on.filter(|o| doc.lines[*o] == 0) {
+        table.set_cell(line, ON_CONDITION, Cell::new(doc, on, last_code_tok));
+    }
+}
+
+fn align_data_source_table(doc: &mut Doc, o: &DataSourceOpts, table: &mut Table) {
+    if table.column_is_empty(KEYWORDS) {
+        return;
+    }
+    // line starts of the KEYWORDS column may deliberately differ in indent
+    let mut min_indent = i64::MAX;
+    for line in &table.lines {
+        if let Some(c) = &line.cells[KEYWORDS] {
+            min_indent = min_indent.min(i64::from(doc.spaces[c.first]));
+        }
+    }
+    for line in &mut table.lines {
+        if let Some(c) = &mut line.cells[KEYWORDS] {
+            c.add_indent = i64::from(doc.spaces[c.first]) - min_indent;
+        }
+    }
+    let mut column_with_sources = DATA_SOURCE;
+    if !o.align_data_sources {
+        table.join_into_previous_columns(doc, DATA_SOURCE, true);
+        column_with_sources = KEYWORDS;
+    }
+    if !o.align_aliases {
+        table.join_into_previous_columns(doc, AS_ALIAS, true);
+    }
+    if !o.align_on_conditions {
+        table.join_into_previous_columns(doc, ON_CONDITION, true);
+    }
+    if !o.consider_all_param_lines {
+        for li in 0..table.lines.len() {
+            if let Some(c) = &mut table.lines[li].cells[column_with_sources]
+                && (c.first + 1..=c.last).any(|t| doc.lines[t] > 0)
+            {
+                c.override_width = Some(end_x(doc, c.last) - doc.start_x(0, c.first));
+            }
+        }
+    }
+    table.align(doc, min_indent, 1, true, true);
+}

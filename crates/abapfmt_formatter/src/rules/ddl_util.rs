@@ -411,3 +411,85 @@ pub fn is_parameters_element(doc: &Doc, ci: usize) -> bool {
 pub fn is_select_element(doc: &Doc, ci: usize) -> bool {
     is_list_element(doc, ci, &["{", "SELECT", "DISTINCT"], &["}", "FROM"])
 }
+
+/// First sibling token (from `start` on) that is one of the `|`-separated texts.
+pub fn find_sibling(doc: &Doc, start: usize, last: usize, alts: &str) -> Option<usize> {
+    let mut t = Some(start);
+    while let Some(x) = t {
+        if alts
+            .split('|')
+            .any(|a| doc.syn.text(x).eq_ignore_ascii_case(a))
+        {
+            return Some(x);
+        }
+        t = next_code_sibling(doc, x, last);
+    }
+    None
+}
+
+/// Last token of the first run of consecutive siblings that matches `texts` (`ASTERISK, texts...`).
+pub fn find_sibling_seq(doc: &Doc, start: usize, last: usize, texts: &[&str]) -> Option<usize> {
+    let mut from = Some(start);
+    while let Some(s) = from {
+        let mut t = Some(s);
+        let mut end = None;
+        for want in texts {
+            match t {
+                Some(x) if doc.syn.text(x).eq_ignore_ascii_case(want) => {
+                    end = Some(x);
+                    t = next_code_sibling(doc, x, last);
+                }
+                _ => {
+                    end = None;
+                    break;
+                }
+            }
+        }
+        if end.is_some() {
+            return end;
+        }
+        from = next_code_sibling(doc, s, last);
+    }
+    None
+}
+
+pub fn next_non_comment(doc: &Doc, ci: usize) -> Option<usize> {
+    (ci + 1..doc.syn.commands.len()).find(|c| !is_comment_line(doc, *c))
+}
+
+/// `Command.getDdlJoinTarget`.
+pub fn join_target(doc: &Doc, ci: usize) -> Option<usize> {
+    if !starts_join(doc, ci) {
+        return None;
+    }
+    let (f, l) = (first_code(doc, ci)?, doc.syn.commands[ci].last);
+    let join =
+        find_sibling(doc, f, l, "JOIN").filter(|j| doc.syn.types[*j] == TokenType::Keyword)?;
+    next_code_sibling(doc, join, l)
+}
+
+/// `Command.getDdlAssociationTarget`.
+pub fn association_target(doc: &Doc, ci: usize) -> Option<usize> {
+    if !starts_association(doc, ci) {
+        return None;
+    }
+    let (f, l) = (first_code(doc, ci)?, doc.syn.commands[ci].last);
+    use P::{Opt, T};
+    let seqs: &[&[P]] = &[
+        &[T("ASSOCIATION"), T("TO"), T("PARENT")],
+        &[T("ASSOCIATION|COMPOSITION"), T("["), T("]"), T("TO|OF")],
+        &[
+            T("ASSOCIATION|COMPOSITION"),
+            T("OF"),
+            Opt("EXACT"),
+            T("ONE|MANY"),
+            T("TO"),
+            Opt("EXACT"),
+            T("ONE|MANY"),
+        ],
+        &[T("ASSOCIATION|COMPOSITION"), T("TO|OF")],
+        &[T("REDEFINE"), T("ASSOCIATION")],
+    ];
+    let last = seqs.iter().find_map(|s| last_of_sequence(doc, f, l, s))?;
+    next_code_sibling(doc, last, l)
+}
