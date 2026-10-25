@@ -49,18 +49,9 @@ fn is_abap_sql_operation(doc: &Doc, cmd: &Command, first: usize) -> bool {
             into.is_none() || next_non_comment(doc, first, last) == into
         }
         "DELETE" => {
-            if matches_seq(
-                doc,
-                first,
-                last,
-                &["DELETE", "FROM", "MEMORY|DATABASE|SHARED"],
-            ) {
-                false
-            } else if matches_seq(doc, first, last, &["DELETE", "FROM"]) {
-                true
-            } else {
-                false
-            }
+            !matches_seq(doc, first, last, &["DELETE", "FROM", "MEMORY|DATABASE|SHARED"])
+                && matches_seq(doc, first, last, &["DELETE", "FROM"])
+        }
         }
         _ => false,
     }
