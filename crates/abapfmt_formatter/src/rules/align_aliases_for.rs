@@ -19,7 +19,7 @@ fn is_alias_for(doc: &Doc, cmd: &Command, with_colon: bool) -> bool {
     if with_colon && t <= cmd.last && doc.syn.types[t] == TokenType::Colon {
         t += 1;
     }
-    t + 1 <= cmd.last
+    t < cmd.last
         && doc.syn.types[t] == TokenType::Identifier
         && doc.syn.text(t + 1).eq_ignore_ascii_case("FOR")
 }
