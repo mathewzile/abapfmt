@@ -81,7 +81,7 @@ fn matches_first(doc: &Doc, cmd: &Command, kind: Kind) -> bool {
                 }
                 let name = first + 2;
                 ident_for_testing(doc, name, last)
-                    || (name + 1 <= last
+                    || (name < last
                         && doc.syn.types[name] == TokenType::Identifier
                         && doc.syn.types[name + 1] == TokenType::Comma)
             } else {
