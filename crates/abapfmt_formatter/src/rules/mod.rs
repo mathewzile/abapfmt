@@ -19,6 +19,7 @@ mod align_select_lists;
 mod align_with_second_word;
 mod case;
 mod ddl_align;
+mod ddl_anno;
 mod ddl_empty_lines;
 mod ddl_position;
 mod ddl_spaces;
@@ -32,6 +33,7 @@ mod spaces;
 
 /// In the order the rules run (upstream's registry order).
 pub const ALL: &[(&str, RuleFn)] = &[
+    ("DDL_ANNO_LAYOUT", ddl_anno::layout),
     ("DDL_ALIGN_DATA_SOURCES", ddl_align::data_sources),
     ("DDL_ALIGN_FIELD_LISTS", ddl_align::field_lists),
     ("DDL_ALIGN_SELECT_LIST", ddl_align::select_list),
