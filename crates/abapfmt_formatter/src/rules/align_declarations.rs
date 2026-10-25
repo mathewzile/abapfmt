@@ -57,24 +57,24 @@ enum TableKind {
 
 // ---- token navigation (siblings = tokens on the same bracket level) ----
 
-fn eq(doc: &Doc, t: usize, s: &str) -> bool {
+pub(crate) fn eq(doc: &Doc, t: usize, s: &str) -> bool {
     doc.syn.text(t).eq_ignore_ascii_case(s)
 }
 
-fn is_kw(doc: &Doc, t: usize, s: &str) -> bool {
+pub(crate) fn is_kw(doc: &Doc, t: usize, s: &str) -> bool {
     doc.syn.types[t] != TokenType::Literal && eq(doc, t, s)
 }
 
-fn is_any_kw(doc: &Doc, t: usize, set: &[&str]) -> bool {
+pub(crate) fn is_any_kw(doc: &Doc, t: usize, set: &[&str]) -> bool {
     set.iter().any(|s| is_kw(doc, t, s))
 }
 
-fn is_comma_or_period(doc: &Doc, t: usize) -> bool {
+pub(crate) fn is_comma_or_period(doc: &Doc, t: usize) -> bool {
     matches!(doc.syn.types[t], TokenType::Comma | TokenType::Period)
 }
 
 /// The next sibling: a token that opens a level is followed by its closing token.
-fn next_sibling(doc: &Doc, t: usize, last: usize) -> Option<usize> {
+pub(crate) fn next_sibling(doc: &Doc, t: usize, last: usize) -> Option<usize> {
     let n = match doc.syn.bracket_match[t] {
         Some(close) if close > t => close,
         _ => t + 1,
@@ -82,11 +82,11 @@ fn next_sibling(doc: &Doc, t: usize, last: usize) -> Option<usize> {
     (n <= last).then_some(n)
 }
 
-fn next_non_comment(doc: &Doc, t: usize, last: usize) -> Option<usize> {
+pub(crate) fn next_non_comment(doc: &Doc, t: usize, last: usize) -> Option<usize> {
     (t + 1..=last).find(|j| !is_comment(doc, *j))
 }
 
-fn next_non_comment_sibling(doc: &Doc, t: usize, last: usize) -> Option<usize> {
+pub(crate) fn next_non_comment_sibling(doc: &Doc, t: usize, last: usize) -> Option<usize> {
     let mut n = next_sibling(doc, t, last)?;
     while is_comment(doc, n) {
         n = next_sibling(doc, n, last)?;
@@ -95,7 +95,7 @@ fn next_non_comment_sibling(doc: &Doc, t: usize, last: usize) -> Option<usize> {
 }
 
 /// The last token of a term that starts with `t` (`Term.createSimple`): brackets are included.
-fn term_last(doc: &Doc, t: usize) -> usize {
+pub(crate) fn term_last(doc: &Doc, t: usize) -> usize {
     let mut last = t;
     while let Some(close) = doc.syn.bracket_match[last].filter(|c| *c > last) {
         last = close;
@@ -104,7 +104,7 @@ fn term_last(doc: &Doc, t: usize) -> usize {
 }
 
 /// `matchesOnSiblings(true, pats...)`; each pattern is a `|`-separated list.
-fn matches_seq(doc: &Doc, t: usize, last: usize, pats: &[&str]) -> bool {
+pub(crate) fn matches_seq(doc: &Doc, t: usize, last: usize, pats: &[&str]) -> bool {
     let mut cur = Some(t);
     for p in pats {
         let Some(c) = cur else { return false };
@@ -120,7 +120,7 @@ fn matches_seq(doc: &Doc, t: usize, last: usize, pats: &[&str]) -> bool {
 }
 
 /// `getLastTokenOnSiblings(true, pats...)` at exactly `t`: the last token of the match.
-fn match_seq_last(doc: &Doc, t: usize, last: usize, pats: &[&str]) -> Option<usize> {
+pub(crate) fn match_seq_last(doc: &Doc, t: usize, last: usize, pats: &[&str]) -> Option<usize> {
     let mut cur = t;
     for (i, p) in pats.iter().enumerate() {
         let ok = if *p == "@ID" {
@@ -143,7 +143,7 @@ fn match_seq_last(doc: &Doc, t: usize, last: usize, pats: &[&str]) -> Option<usi
 }
 
 /// `getLastTokenOnSiblings(true, ASTERISK, pats...)`: searches forward from `t` for the sequence.
-fn find_seq_last(doc: &Doc, t: usize, last: usize, pats: &[&str]) -> Option<usize> {
+pub(crate) fn find_seq_last(doc: &Doc, t: usize, last: usize, pats: &[&str]) -> Option<usize> {
     let mut cur = Some(t);
     while let Some(c) = cur {
         if let Some(l) = match_seq_last(doc, c, last, pats) {
@@ -154,13 +154,13 @@ fn find_seq_last(doc: &Doc, t: usize, last: usize, pats: &[&str]) -> Option<usiz
     None
 }
 
-fn cmd_index_of(cmds: &[Command], t: usize) -> usize {
+pub(crate) fn cmd_index_of(cmds: &[Command], t: usize) -> usize {
     cmds.iter()
         .position(|c| (c.first..=c.last).contains(&t))
         .unwrap()
 }
 
-fn is_simple_chain(doc: &Doc, cmd: &Command) -> bool {
+pub(crate) fn is_simple_chain(doc: &Doc, cmd: &Command) -> bool {
     let (Some(first), Some(colon)) = (doc.first_code_token(cmd), cmd.colon) else {
         return false;
     };
@@ -168,7 +168,7 @@ fn is_simple_chain(doc: &Doc, cmd: &Command) -> bool {
         && doc.next_code_token(first, cmd.last) == Some(colon)
 }
 
-fn skip_command(doc: &Doc, cmd: &Command) -> bool {
+pub(crate) fn skip_command(doc: &Doc, cmd: &Command) -> bool {
     cmd.is_comment_only
         || (doc.syn.types[cmd.first] == TokenType::Period
             && (cmd.first == cmd.last

@@ -2,7 +2,8 @@
 use crate::RuleFn;
 
 mod align_assignments;
-mod align_declarations;
+pub(crate) mod align_declarations;
+mod align_with_second_word;
 mod case;
 mod empty_lines;
 mod inset;
@@ -38,6 +39,10 @@ pub const ALL: &[(&str, RuleFn)] = &[
     ("NEEDLESS_SPACES", needless_spaces::needless_spaces),
     ("INSET", inset::inset),
     ("ALIGN_ASSIGNMENTS", align_assignments::align_assignments),
+    (
+        "ALIGN_WITH_SECOND_WORD",
+        align_with_second_word::align_with_second_word,
+    ),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];
