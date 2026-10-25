@@ -1203,3 +1203,391 @@ fn preprocess_ddl_expression(doc: &mut Doc, keyword: usize, last_in_expr: usize)
         }
     }
 }
+
+// ---- DDL_ALIGN_SELECT_LIST ----
+
+const KEY_OR_VIRTUAL: usize = 0;
+const ELEMENT: usize = 1;
+const SELECT_AS_ALIAS: usize = 2;
+
+struct SelectListOpts {
+    align_keywords: bool,
+    align_aliases: bool,
+    consider_simple_without_alias: bool,
+    consider_complex_without_alias: bool,
+    consider_all_lines: bool,
+    max_alias_start: i64,
+    align_textual_comments: bool,
+    align_commented_out_code: bool,
+}
+
+/// The text of a comment without its comment signs.
+fn comment_body(text: &str) -> &str {
+    text.trim_start_matches(['/', '*', '-'])
+        .trim_end_matches("*/")
+        .trim()
+}
+
+/// Stand-in for `CommentIdentifier.identifyComment(...).isCode()` for DDL: does a comment look like
+/// (a part of) commented-out DDL rather than text?
+fn comment_is_code(text: &str) -> bool {
+    let body = comment_body(text);
+    if body.is_empty() {
+        return false;
+    }
+    if body.starts_with("//") || body.starts_with("/*") || body.starts_with('@') {
+        return true;
+    }
+    let mut words = body.split_whitespace();
+    let first = words.next().unwrap_or("");
+    if matches!(first, "key" | "virtual") && words.next().is_some() {
+        return true;
+    }
+    let chars: Vec<char> = body.chars().collect();
+    let is_word = |c: char| c.is_alphanumeric() || c == '_';
+    for w in chars.windows(3) {
+        if is_word(w[0]) && (w[1] == '.' || w[1] == '(') && (is_word(w[2]) || w[1] == '(') {
+            return true;
+        }
+    }
+    !body.contains(' ') && body.ends_with(',')
+}
+
+fn select_list_text(doc: &Doc, ci: usize) -> String {
+    doc.syn.text(doc.syn.commands[ci].first).to_string()
+}
+
+pub fn select_list(doc: &mut Doc, config: &RuleConfig) {
+    let o = SelectListOpts {
+        align_keywords: config.bool("AlignKeyKeyword", true),
+        align_aliases: config.bool("AlignAliases", true),
+        consider_simple_without_alias: config.bool("ConsiderSimpleElementsWithoutAlias", true),
+        consider_complex_without_alias: config.bool("ConsiderComplexElementsWithoutAlias", false),
+        consider_all_lines: config.bool("ConsiderAllElementLines", false),
+        max_alias_start: config.int("MaxAliasStart", 120),
+        align_textual_comments: config.bool("AlignTextualComments", true),
+        align_commented_out_code: config.bool("AlignCommentedOutCode", true),
+    };
+    for ci in 0..doc.syn.commands.len() {
+        if cmd_parent(doc, ci).is_some() || !opens_level(doc, ci) {
+            continue;
+        }
+        let Some(last) = last_code(doc, ci) else {
+            continue;
+        };
+        if doc.syn.text(last) != "{" && !is_any_kw(doc, last, &["SELECT", "DISTINCT"]) {
+            continue;
+        }
+        let indent = first_token_in_line_spaces(doc, last) + 2;
+        select_list_of(doc, &o, ci, indent);
+    }
+}
+
+fn ends_multi_line_comment(doc: &Doc, ci: usize) -> bool {
+    is_comment_line(doc, ci) && select_list_text(doc, ci).contains("*/")
+}
+
+fn starts_multi_line_comment(doc: &Doc, ci: usize) -> bool {
+    is_comment_line(doc, ci)
+        && select_list_text(doc, ci).starts_with("/*")
+        && !ends_multi_line_comment(doc, ci)
+}
+
+fn select_list_of(doc: &mut Doc, o: &SelectListOpts, ci: usize, indent: i64) {
+    let mut table = Table::new(3);
+    let mut line_start_comments: Vec<usize> = Vec::new();
+    let mut textual_multi_line: Vec<(usize, usize)> = Vec::new();
+    let mut cmd = first_child(doc, ci);
+    while let Some(c) = cmd {
+        if starts_multi_line_comment(doc, c) {
+            // textual multi-line comments are aligned with the elements; those that contain
+            // code are skipped completely
+            let mut last = c;
+            while !ends_multi_line_comment(doc, last) {
+                match next_sibling(doc, last).filter(|n| is_comment_line(doc, *n)) {
+                    Some(n) => last = n,
+                    None => return,
+                }
+            }
+            let all_textual = (c..=last).all(|k| !comment_is_code(&select_list_text(doc, k)));
+            if all_textual {
+                textual_multi_line.push((c, last));
+            }
+            cmd = next_sibling(doc, last);
+            continue;
+        }
+        build_select_line(doc, o, &mut table, c, &mut line_start_comments);
+        cmd = next_sibling(doc, c);
+    }
+    align_select_table(
+        doc,
+        o,
+        &mut table,
+        indent,
+        &textual_multi_line,
+        &line_start_comments,
+    );
+}
+
+fn build_select_line(
+    doc: &Doc,
+    o: &SelectListOpts,
+    table: &mut Table,
+    ci: usize,
+    line_start_comments: &mut Vec<usize>,
+) {
+    let (cmd_first, cmd_last) = (doc.syn.commands[ci].first, doc.syn.commands[ci].last);
+    // comments at line start are handled in align_select_table and do not create a table line
+    if is_comment_line(doc, ci) && doc.spaces[cmd_first] == 0 {
+        let text = select_list_text(doc, ci);
+        if !o.align_textual_comments || comment_is_code(&text) {
+            line_start_comments.push(ci);
+            return;
+        } else if text.chars().all(|c| c == '/')
+            && line_start_comments.last().is_some_and(|l| l + 1 == ci)
+        {
+            // a comment that only consists of comment signs after another line-start comment
+            line_start_comments.push(ci);
+            return;
+        }
+    }
+    let line = table.add_line();
+    // annotations and other comments only fill the ELEMENT cell, without contributing to its width
+    if is_annotation(doc, ci) || is_comment_line(doc, ci) {
+        table.set_cell(
+            line,
+            ELEMENT,
+            Cell::special(doc, cmd_first, cmd_last, 0, true),
+        );
+        return;
+    }
+    let Some(first_code_tok) = first_code(doc, ci) else {
+        return;
+    };
+    let mut element_start = first_code_tok;
+    if is_any_kw(doc, first_code_tok, &["KEY", "VIRTUAL"]) {
+        table.set_cell(
+            line,
+            KEY_OR_VIRTUAL,
+            Cell::new(doc, first_code_tok, first_code_tok),
+        );
+        let Some(n) = next_code_sibling(doc, first_code_tok, cmd_last) else {
+            return;
+        };
+        element_start = n;
+    }
+    // alias
+    let mut alias: Option<usize> = None;
+    let mut t = Some(first_code_tok);
+    while let Some(x) = t {
+        if doc.syn.text(x).eq_ignore_ascii_case("AS")
+            && let Some(n) = next_code_sibling(doc, x, cmd_last)
+            && doc.syn.types[n] == TokenType::Identifier
+        {
+            alias = Some(n);
+        }
+        t = next_code_sibling(doc, x, cmd_last);
+    }
+    let as_tok = alias.and_then(|a| prev_code_sibling(doc, cmd_first, a));
+    let last_code_tok = last_code(doc, ci).unwrap_or(cmd_last);
+    let element_last = match as_tok {
+        Some(a) => prev_code_sibling(doc, cmd_first, a).unwrap_or(element_start),
+        None => last_code_tok,
+    };
+    let mut element = Cell::new(doc, element_start, element_last);
+    if as_tok.is_none() {
+        // a simple element is just the element start before the "," and has one dot at max
+        let is_simple = element_start + 1 == element_last
+            && doc.syn.text(element_start).matches('.').count() <= 1;
+        let consider = if is_simple {
+            o.consider_simple_without_alias
+        } else {
+            o.consider_complex_without_alias
+        };
+        if !consider {
+            element.override_width = Some(1);
+        }
+    }
+    table.set_cell(line, ELEMENT, element);
+    if let (Some(a), Some(al)) = (as_tok, alias) {
+        table.set_cell(line, SELECT_AS_ALIAS, Cell::new(doc, a, al));
+    }
+}
+
+fn align_select_table(
+    doc: &mut Doc,
+    o: &SelectListOpts,
+    table: &mut Table,
+    basic_indent: i64,
+    textual_multi_line: &[(usize, usize)],
+    line_start_comments: &[usize],
+) {
+    let key_empty = table.column_is_empty(KEY_OR_VIRTUAL);
+    // join columns if they shall not be aligned
+    let mut column_with_elements = ELEMENT;
+    if !o.align_keywords && !key_empty {
+        table.join_into_previous_columns(doc, ELEMENT, true);
+        column_with_elements = KEY_OR_VIRTUAL;
+    }
+    if o.align_aliases {
+        table.set_force_max_indent(SELECT_AS_ALIAS, o.max_alias_start);
+    } else {
+        table.join_into_previous_columns_ex(doc, SELECT_AS_ALIAS, true, true);
+    }
+    // only consider the length of the last line of multi-line elements
+    if !o.consider_all_lines {
+        for li in 0..table.lines.len() {
+            if let Some(c) = &mut table.lines[li].cells[column_with_elements]
+                && c.override_width.is_none()
+                && (c.first + 1..=c.last).any(|t| doc.lines[t] > 0)
+            {
+                c.override_width = Some(end_x(doc, c.last) - doc.start_x(0, c.first));
+            }
+        }
+    }
+    table.align(doc, basic_indent, 1, true, true);
+
+    // align textual multi-line comments (multi-line comments that contain code are skipped)
+    if o.align_textual_comments {
+        let comment_indent = table.effective_indent(column_with_elements);
+        for &(first, last) in textual_multi_line {
+            let add = comment_indent - doc.start_x(0, doc.syn.commands[first].first);
+            if add != 0 {
+                for k in first..=last {
+                    let t = doc.syn.commands[k].first;
+                    let new = (i64::from(doc.spaces[t]) + add).max(0) as u32;
+                    doc.set_spaces(t, new);
+                }
+            }
+        }
+    }
+
+    // align commented-out code, i.e. entire elements "[KEY|VIRTUAL] element [AS alias],"
+    if !o.align_commented_out_code {
+        return;
+    }
+    let element_column_indent = if column_with_elements == ELEMENT {
+        table.effective_indent(ELEMENT)
+    } else {
+        0
+    };
+    let alias_column_indent = if o.align_aliases {
+        table.effective_indent(SELECT_AS_ALIAS)
+    } else {
+        0
+    };
+    for &comment in line_start_comments {
+        let text: Vec<char> = select_list_text(doc, comment).chars().collect();
+        let Some(sign_end) = text.iter().position(|c| *c != '/') else {
+            continue;
+        };
+        let Some(start) = text[sign_end..]
+            .iter()
+            .position(|c| *c != ' ')
+            .map(|p| p + sign_end)
+        else {
+            continue;
+        };
+        let rest: String = text[start..].iter().collect();
+        let in_code = rest.starts_with("//") || rest.starts_with("--") || rest.starts_with("/*");
+        if !in_code && skip_select_comment(doc, comment) {
+            continue;
+        }
+        let full: String = text.iter().collect();
+        // keyword ("key" or "virtual"), element and (optionally) alias
+        let first_word_end = text[start..]
+            .iter()
+            .position(|c| *c == ' ')
+            .map(|p| p + start);
+        let first_word: String = first_word_end
+            .map(|e| text[start..e].iter().collect())
+            .unwrap_or_default();
+        let (key_keyword, element_start) = if first_word == "key" || first_word == "virtual" {
+            let e = first_word_end.unwrap_or(start);
+            (
+                first_word,
+                text[e..].iter().position(|c| *c != ' ').map(|p| p + e),
+            )
+        } else {
+            (String::new(), Some(start))
+        };
+        // the alias is identified by " as " with no closing parenthesis behind it
+        let mut as_pos = if in_code { None } else { full.rfind(" as ") };
+        if as_pos.is_none_or(|p| p == 0 || full[p..].contains(')')) {
+            as_pos = None;
+        }
+        let as_pos_chars = as_pos.map_or(text.len(), |p| full[..p].chars().count());
+        let element: String = element_start
+            .filter(|s| *s <= as_pos_chars)
+            .map(|s| text[s..as_pos_chars].iter().collect())
+            .unwrap_or_default();
+        let alias: Option<String> =
+            (as_pos_chars < text.len()).then(|| text[as_pos_chars + 1..].iter().collect());
+
+        // build the comment anew
+        let mut new: String = text[..sign_end].iter().collect();
+        let initial = new.chars().count();
+        new.push_str(&" ".repeat(basic_indent.max(0) as usize));
+        new.push_str(&key_keyword);
+        let current = (new.chars().count() - initial) as i64;
+        let mut spaces = (element_column_indent - current).max(1);
+        if (!o.align_keywords && key_keyword.is_empty()) || (o.align_keywords && key_empty) {
+            spaces = 0;
+        }
+        new.push_str(&" ".repeat(spaces as usize));
+        new.push_str(&element);
+        if let Some(alias) = alias {
+            let current = (new.chars().count() - initial) as i64;
+            let spaces = (alias_column_indent - current).max(1);
+            new.push_str(&" ".repeat(spaces as usize));
+            new.push_str(&alias);
+        }
+        if new != full {
+            let t = doc.syn.commands[comment].first;
+            doc.text[t] = Some(new);
+        }
+    }
+}
+
+fn skip_select_comment(doc: &Doc, comment: usize) -> bool {
+    let text = select_list_text(doc, comment);
+    // textual comments are skipped
+    if !comment_is_code(&text) {
+        return true;
+    }
+    // so are comments that continue a list element rather than starting a new one
+    if !comment_starts_new_element(doc, comment) {
+        return true;
+    }
+    // and comments that do not end with a comma (with no closing parenthesis behind it)
+    match text.rfind(',') {
+        Some(p) if p > 0 && !text[p..].contains(')') => false,
+        _ => true,
+    }
+}
+
+fn comment_starts_new_element(doc: &Doc, comment: usize) -> bool {
+    // the previous element (possibly commented-out and partial) must end with a comma
+    let mut prev = comment.checked_sub(1);
+    while let Some(p) = prev {
+        if is_annotation(doc, p) {
+            // skip annotations
+        } else if !is_comment_line(doc, p) {
+            break;
+        } else {
+            // commented-out annotations and commented-out comments are skipped, too
+            let text = select_list_text(doc, p);
+            let body = comment_body(&text);
+            let skipped = body.starts_with(['@', '/']);
+            if !skipped && comment_is_code(&text) {
+                break;
+            }
+        }
+        prev = p.checked_sub(1);
+    }
+    match prev {
+        None => true,
+        Some(p) if is_comment_line(doc, p) => doc.syn.text(doc.syn.commands[p].last).ends_with(','),
+        Some(p) => last_code(doc, p).is_some_and(|t| doc.syn.text(t).ends_with(',')),
+    }
+}

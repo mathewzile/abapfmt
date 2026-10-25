@@ -172,6 +172,8 @@ pub struct Column {
     minimum_width: i64,
     force_indent_base: Option<usize>,
     force_indent_offset: i64,
+    /** if a cell would start beyond this indent, it moves to the next line (-1: off) */
+    force_max_indent: i64,
     effective_indent: i64,
 }
 
@@ -224,6 +226,7 @@ impl Table {
             cols: vec![
                 Column {
                     force_indent_offset: -1,
+                    force_max_indent: -1,
                     ..Column::default()
                 };
                 ncols
@@ -296,6 +299,11 @@ impl Table {
                 }
             }
         }
+    }
+
+    /// `AlignColumn.setForceMaxIndent`
+    pub fn set_force_max_indent(&mut self, col: usize, max_indent: i64) {
+        self.cols[col].force_max_indent = max_indent;
     }
 
     /// `AlignColumn.getEffectiveIndent`
@@ -601,12 +609,18 @@ impl Table {
             let mut column_indent = basic_indent;
             #[allow(clippy::needless_range_loop)]
             for ci in 0..self.cols.len() {
+                let mut force_max = false;
                 if self.cols[ci].force_indent_offset >= 0 {
                     let base = self.cols[ci]
                         .force_indent_base
                         .map_or(basic_indent, |b| self.cols[b].effective_indent);
                     column_indent = base + self.cols[ci].force_indent_offset;
                     spaces_left = column_indent;
+                } else if self.cols[ci].force_max_indent >= 0
+                    && column_indent > self.cols[ci].force_max_indent
+                {
+                    column_indent = self.cols[ci].force_max_indent;
+                    force_max = true;
                 }
                 self.cols[ci].effective_indent = column_indent;
                 if self.column_is_empty(ci) {
@@ -623,7 +637,17 @@ impl Table {
                 };
                 let prev = cell.first.checked_sub(1);
 
-                if line_breaks == 0 {
+                if let Some(p) = prev.filter(|_| force_max) {
+                    // a cell either moves to the next line or continues, depending on whether it
+                    // can (individually) keep the forced maximum indent
+                    if end_x(doc, p) >= column_indent {
+                        line_breaks = 1;
+                        spaces_left = column_indent;
+                    } else {
+                        line_breaks = 0;
+                        spaces_left = column_indent - end_x(doc, p);
+                    }
+                } else if line_breaks == 0 {
                     if prev.is_some_and(|p| is_comment(doc, p)) {
                         // prevent code from being appended to a comment
                         line_breaks = 1;

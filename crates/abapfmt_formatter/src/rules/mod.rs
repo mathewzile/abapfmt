@@ -34,6 +34,7 @@ mod spaces;
 pub const ALL: &[(&str, RuleFn)] = &[
     ("DDL_ALIGN_DATA_SOURCES", ddl_align::data_sources),
     ("DDL_ALIGN_FIELD_LISTS", ddl_align::field_lists),
+    ("DDL_ALIGN_SELECT_LIST", ddl_align::select_list),
     (
         "DDL_ALIGN_LOGICAL_EXPRESSIONS",
         ddl_align::logical_expressions,
