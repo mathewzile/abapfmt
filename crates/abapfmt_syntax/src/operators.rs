@@ -149,19 +149,6 @@ impl State<'_> {
         }
     }
 
-    fn starts_functional_method_call(&self, t: usize, first: usize) -> bool {
-        if self.types[t] != TokenType::Identifier || !self.opens(t) || !self.text(t).ends_with('(')
-        {
-            return false;
-        }
-        if t + 1 > self.cx.last || self.is_attached(t + 1) {
-            return false;
-        }
-        !self
-            .prev_code_token(t, first)
-            .is_some_and(|p| self.is_any_kw(p, CONSTRUCTOR_OPS))
-    }
-
     fn may_start_lhs_of_assignment(&self, t: usize) -> bool {
         if self.types[t] != TokenType::Identifier || self.closes(t) {
             return false;
@@ -169,15 +156,6 @@ impl State<'_> {
         let end = self.next_sibling_while_level_opener(t);
         self.next_code_sibling(end)
             .is_some_and(|op| self.text(op) == "=")
-    }
-
-    fn starts_lhs_of_assignment(&self, t: usize) -> bool {
-        if self.types[t] != TokenType::Identifier || self.closes(t) {
-            return false;
-        }
-        let end = self.next_sibling_while_level_opener(t);
-        self.next_code_sibling(end)
-            .is_some_and(|op| self.types[op] == TokenType::AssignmentOp)
     }
 
     // ---- expressions ----

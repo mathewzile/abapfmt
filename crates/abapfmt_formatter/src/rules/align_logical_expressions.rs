@@ -98,9 +98,9 @@ pub(crate) fn last_token_of_logical_expression(
             Some(e) => prev_code(doc, prev_code(doc, e)?),
         };
     } else if kw(doc, first_code, "ASSERT") {
-        if kw(doc, t, "CONDITION") {
-            return prev_code(doc, last_code?);
-        } else if t == first_code && find_phrase(doc, t, last, "CONDITION").is_none() {
+        if kw(doc, t, "CONDITION")
+            || t == first_code && find_phrase(doc, t, last, "CONDITION").is_none()
+        {
             return prev_code(doc, last_code?);
         }
         return None;
@@ -176,7 +176,6 @@ struct LogExp {
     inner: Vec<LogExp>,
     rel: RelType,
     supported: bool,
-    end_token: Option<usize>,
 }
 
 struct Ctx {
@@ -238,7 +237,6 @@ impl LogExp {
             inner: Vec::new(),
             rel: RelType::None,
             supported: true,
-            end_token,
         };
         let start = e.first_except_open(doc, cx)?;
         let end = if in_parens { Some(last) } else { end_token };
@@ -383,9 +381,8 @@ impl LogExp {
             ]
             .iter()
             .any(|f| text_is(doc, start, f))
+            || cx.is_sql && kw(doc, start, "EXISTS")
         {
-            return Some(start);
-        } else if cx.is_sql && kw(doc, start, "EXISTS") {
             return Some(start);
         }
         // predicative method calls
@@ -632,11 +629,10 @@ impl TreeAlign {
                     }
                 }
                 if col.ty == ColType::OpenBracketForBoolOp {
-                    if col.brack_level < brack_level {
-                        break;
-                    } else if col.brack_level == brack_level
-                        && ty != ColType::BoolOperator
-                        && ty != ColType::OpenBracketForBoolOp
+                    if col.brack_level < brack_level
+                        || col.brack_level == brack_level
+                            && ty != ColType::BoolOperator
+                            && ty != ColType::OpenBracketForBoolOp
                     {
                         break;
                     }
@@ -714,8 +710,7 @@ impl TreeAlign {
         let keyword_last_in_line = (keyword + 1..=cmd.last)
             .find(|j| !(is_comment(doc, *j) && doc.lines[*j] == 0))
             .is_none_or(|j| doc.lines[j] > 0);
-        let basic_indent;
-        if keyword_last_in_line && doc.start_x(0, keyword) > left_most {
+        let basic_indent = if keyword_last_in_line && doc.start_x(0, keyword) > left_most {
             let mut bi = left_most;
             if let Some(parent) = doc.syn.parent[keyword]
                 && let Some(fc) = (parent + 1..=cmd.last).find(|j| !is_comment(doc, *j))
@@ -723,8 +718,7 @@ impl TreeAlign {
             {
                 bi = doc.start_x(0, fc);
             }
-            bi = bi.max(i64::from(doc.spaces[cmd.first]) + 2);
-            basic_indent = bi;
+            bi.max(i64::from(doc.spaces[cmd.first]) + 2)
         } else if style != "DO_NOT_ALIGN"
             && self.cols.len() >= 2
             && self.cols[0].ty == ColType::OpenBracketForBoolOp
@@ -734,10 +728,10 @@ impl TreeAlign {
             let cell = Cell::new(doc, keyword, keyword);
             self.add_cell(doc, 1, cell, true);
             self.cols[1].right_align = style == "RIGHT_ALIGN";
-            basic_indent = doc.start_x(0, keyword);
+            doc.start_x(0, keyword)
         } else {
-            basic_indent = end_x(doc, keyword) + 1;
-        }
+            end_x(doc, keyword) + 1
+        };
         // left- or right-align comparison operators
         for col in &mut self.cols {
             if col.ty == ColType::RelOperator {
