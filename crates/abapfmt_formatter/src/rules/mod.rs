@@ -3,6 +3,7 @@ use crate::RuleFn;
 
 mod align_aliases_for;
 mod align_assignments;
+mod align_clear_free_and_sort;
 pub(crate) mod align_declarations;
 mod align_form_declaration;
 mod align_perform;
@@ -52,6 +53,10 @@ pub const ALL: &[(&str, RuleFn)] = &[
         align_form_declaration::align_form_declaration,
     ),
     ("ALIGN_PERFORM", align_perform::align_perform),
+    (
+        "ALIGN_CLEAR_FREE_AND_SORT",
+        align_clear_free_and_sort::align_clear_free_and_sort,
+    ),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];
