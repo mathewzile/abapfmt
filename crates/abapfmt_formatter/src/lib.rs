@@ -128,14 +128,17 @@ pub fn same_tokens(before: &str, after: &str) -> Result<(), String> {
         (code, comments, pragmas)
     };
     let ((ca, ma, pa), (cb, mb, pb)) = (split(before, &a), split(after, &b));
-    if ca.len() != cb.len() {
+    // DDL annotations may be written as one token ("@Anno.sub") that was several tokens before
+    // ("@Anno. sub"); only the whitespace between their parts changes
+    let ddl_joined = abapfmt_syntax::is_ddl_source(before) && ca.concat() == cb.concat();
+    if ca.len() != cb.len() && !ddl_joined {
         return Err(format!(
             "code token count changed: {} -> {}",
             ca.len(),
             cb.len()
         ));
     }
-    if let Some(i) = (0..ca.len()).find(|i| ca[*i] != cb[*i]) {
+    if let Some(i) = (0..ca.len()).find(|i| !ddl_joined && ca[*i] != cb[*i]) {
         return Err(format!(
             "code token {i} changed: `{}` -> `{}`",
             ca[i], cb[i]
