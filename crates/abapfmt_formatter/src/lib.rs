@@ -79,6 +79,94 @@ pub fn run_rule(rule_id: &str, src: &str, config: &RuleConfig) -> Option<String>
     Some(doc.render())
 }
 
+/// Settings that a rule reads from another rule upstream: (rule, source rule, setting names).
+const CROSS_RULE_SETTINGS: &[(&str, &str, &[&str])] = &[
+    (
+        "DDL_ALIGN_ENTITY_PARAMETERS",
+        "DDL_POSITION_DEFINE",
+        &["ParamsIndent"],
+    ),
+    (
+        "DDL_ALIGN_SOURCE_PARAMETERS",
+        "DDL_POSITION_DEFINE",
+        &["ParamsIndent"],
+    ),
+    (
+        "DDL_ALIGN_FUNCTION_PARAMETERS",
+        "DDL_POSITION_DEFINE",
+        &["ParamsIndent"],
+    ),
+    (
+        "DDL_ALIGN_ENTITY_PARAMETERS",
+        "DDL_SPACES_AROUND_SIGNS",
+        &["SpaceBeforeColon", "SpaceAfterColon"],
+    ),
+    (
+        "DDL_ALIGN_SOURCE_PARAMETERS",
+        "DDL_SPACES_AROUND_SIGNS",
+        &["SpaceBeforeColon", "SpaceAfterColon"],
+    ),
+    (
+        "DDL_ALIGN_FUNCTION_PARAMETERS",
+        "DDL_SPACES_AROUND_SIGNS",
+        &["SpaceBeforeColon", "SpaceAfterColon"],
+    ),
+    (
+        "DDL_ALIGN_ENTITY_PARAMETERS",
+        "DDL_SPACES_AROUND_BRACKETS",
+        &["SpacesInsideFuncParens"],
+    ),
+    (
+        "DDL_ALIGN_SOURCE_PARAMETERS",
+        "DDL_SPACES_AROUND_BRACKETS",
+        &["SpacesInsideFuncParens"],
+    ),
+    (
+        "DDL_ALIGN_FUNCTION_PARAMETERS",
+        "DDL_SPACES_AROUND_BRACKETS",
+        &["SpacesInsideFuncParens"],
+    ),
+    (
+        "DDL_ALIGN_LOGICAL_EXPRESSIONS",
+        "DDL_SPACES_AROUND_BRACKETS",
+        &["SpacesInsideArithParens"],
+    ),
+];
+
+/// `config` of rule `id`, completed with the settings it takes from other rules.
+fn with_cross_rule_settings(
+    id: &str,
+    config: &RuleConfig,
+    configs: &BTreeMap<String, Option<RuleConfig>>,
+) -> RuleConfig {
+    let mut result = config.clone();
+    for (target, source, names) in CROSS_RULE_SETTINGS {
+        if *target != id {
+            continue;
+        }
+        if let Some(Some(source_config)) = configs.get(*source) {
+            for name in *names {
+                if let Some(v) = source_config.get(*name) {
+                    result
+                        .entry((*name).to_string())
+                        .or_insert_with(|| v.clone());
+                }
+            }
+        }
+    }
+    result
+}
+
+/// [`format`], guarded by [`same_tokens`]: an `Err` means a rule changed more than whitespace,
+/// layout or letter case, and the original source must be kept.
+pub fn format_checked(
+    src: &str,
+    configs: &BTreeMap<String, Option<RuleConfig>>,
+) -> Result<String, String> {
+    let out = format(src, configs);
+    same_tokens(src, &out).map(|()| out)
+}
+
 /// Run all implemented rules in order. `configs` maps a rule id to its options (defaults for
 /// absent ones); a rule mapped to `None` is switched off. The source is re-parsed between rules,
 /// because a rule may move tokens.
@@ -91,7 +179,8 @@ pub fn format(src: &str, configs: &BTreeMap<String, Option<RuleConfig>>) -> Stri
             Some(Some(c)) => c,
             None => &default,
         };
-        if let Some(out) = run_rule(id, &text, config) {
+        let config = with_cross_rule_settings(id, config, configs);
+        if let Some(out) = run_rule(id, &text, &config) {
             text = out;
         }
     }

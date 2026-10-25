@@ -11,3 +11,7 @@ workspace = true
 [dependencies]
 abapfmt_formatter = { path = "../abapfmt_formatter" }
 abapfmt_config = { path = "../abapfmt_config" }
+
+[[bin]]
+name = "abapfmt"
+path = "src/main.rs"

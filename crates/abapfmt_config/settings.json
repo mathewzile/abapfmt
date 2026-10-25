@@ -1,0 +1,2515 @@
+{
+ "ABAP_DOC_LANG": {
+  "RemoveNonEnglishLang": {
+   "t": "bool"
+  }
+ },
+ "ABAP_DOC_PARAMETERS": {
+  "AddParameters": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "ALWAYS_AS_NON_SYNCHRONIZED",
+    "ONLY_FOR_NON_SYNCHRONIZED",
+    "NEVER"
+   ]
+  },
+  "AddExceptions": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "ALWAYS_AS_NON_SYNCHRONIZED",
+    "ONLY_FOR_NON_SYNCHRONIZED",
+    "NEVER"
+   ]
+  },
+  "OnlyAddToExistingDetails": {
+   "t": "bool"
+  },
+  "DeleteParameters": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_DESCRIPTION_EMPTY",
+    "NEVER"
+   ]
+  },
+  "DeleteExceptions": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_DESCRIPTION_EMPTY",
+    "NEVER"
+   ]
+  }
+ },
+ "ADD_TO_ETC": {
+  "AddToReplacementStyle": {
+   "t": "enum",
+   "names": [
+    "KEEP",
+    "REPLACE_WITHOUT_ASSIGNMENT_OP"
+   ]
+  },
+  "ProcessChains": {
+   "t": "bool"
+  }
+ },
+ "ALIGN_ABAP_DOC": {
+  "AlignAcrossEmptyLines": {
+   "t": "bool"
+  },
+  "AlignAcrossNonEmptyLines": {
+   "t": "bool"
+  }
+ },
+ "ALIGN_ALIASES_FOR": {},
+ "ALIGN_ASSIGNMENTS": {
+  "AlignAcrossEmptyLines": {
+   "t": "bool"
+  },
+  "AlignAcrossCommentLines": {
+   "t": "bool"
+  }
+ },
+ "ALIGN_CLEAR_FREE_AND_SORT": {
+  "MaxLineLength": {
+   "t": "int"
+  },
+  "DistinctLineClear": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "ONLY_WITH_ADDITIONS",
+    "NEVER",
+    "KEEP_AS_IS"
+   ]
+  },
+  "DistinctLineFree": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "NEVER",
+    "KEEP_AS_IS"
+   ]
+  },
+  "DistinctLineSort": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "ONLY_WITH_ADDITIONS",
+    "NEVER",
+    "KEEP_AS_IS"
+   ]
+  },
+  "DistinctLineCatch": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "NEVER",
+    "KEEP_AS_IS"
+   ]
+  }
+ },
+ "ALIGN_COND_EXPRESSIONS": {
+  "MaxLineLength": {
+   "t": "int"
+  },
+  "OneLinerStyle": {
+   "t": "enum",
+   "names": [
+    "CREATE",
+    "KEEP",
+    "SPLIT"
+   ]
+  },
+  "SimpleStyle": {
+   "t": "enum",
+   "names": [
+    "VERTICAL_LAYOUT",
+    "LIKE_COMPLEX"
+   ]
+  },
+  "TabularStyle": {
+   "t": "enum",
+   "names": [
+    "CREATE",
+    "KEEP",
+    "SPLIT"
+   ]
+  },
+  "GapAfterElse": {
+   "t": "bool"
+  },
+  "ThenOnWhenLine": {
+   "t": "bool"
+  },
+  "ContinueAfterElse": {
+   "t": "bool"
+  },
+  "ValueInset": {
+   "t": "enum",
+   "names": [
+    "ADD_0",
+    "ADD_2",
+    "ADD_5",
+    "ADD_7"
+   ]
+  }
+ },
+ "ALIGN_DECLARATIONS": {
+  "ExecuteOnClassDefinitionSections": {
+   "t": "bool"
+  },
+  "AlignChainAction": {
+   "t": "enum",
+   "names": [
+    "ALIGN_NAME_TYPE_LENGTH_ETC",
+    "ALIGN_NAME_AND_TYPE",
+    "ALIGN_NAME_ONLY"
+   ]
+  },
+  "AlignNonChainsAction": {
+   "t": "enum",
+   "names": [
+    "ALIGN_NAME_TYPE_LENGTH_ETC",
+    "ALIGN_NAME_AND_TYPE",
+    "ALIGN_NAME_ONLY"
+   ]
+  },
+  "AlignStructureAction": {
+   "t": "enum",
+   "names": [
+    "ALIGN_NAME_TYPE_LENGTH_ETC",
+    "ALIGN_NAME_AND_TYPE",
+    "ALIGN_NAME_ONLY"
+   ]
+  },
+  "StructureAlignStyle": {
+   "t": "enum",
+   "names": [
+    "resuming",
+    "starting"
+   ]
+  },
+  "AlignEnumAction": {
+   "t": "enum",
+   "names": [
+    "ALIGN_NAME_AND_VALUE",
+    "ALIGN_NAME_ONLY"
+   ]
+  },
+  "ContainingPosition": {
+   "t": "enum",
+   "names": [
+    "UNCHANGED",
+    "CONTINUE",
+    "CONTINUE_AND_BREAK",
+    "BELOW_KEYWORD_PLUS_2",
+    "BELOW_IDENTIFIER_PLUS_2",
+    "BELOW_TYPE",
+    "BELOW_ANY_STRUCTURE"
+   ]
+  },
+  "FillPercentageToJustifyOwnColumn": {
+   "t": "int"
+  },
+  "MaxLineLength": {
+   "t": "int"
+  },
+  "CondenseInnerSpaces": {
+   "t": "bool"
+  }
+ },
+ "ALIGN_FORM_DECLARATION": {
+  "ParamCountBehindFormName": {
+   "t": "int"
+  },
+  "ContinueAfterParamGroupKeyword": {
+   "t": "bool"
+  },
+  "AlignTypes": {
+   "t": "bool"
+  },
+  "AddEmptyLine": {
+   "t": "bool"
+  },
+  "RemoveEmptyLine": {
+   "t": "bool"
+  }
+ },
+ "ALIGN_LOGICAL_EXPRESSIONS": {
+  "AlignIfWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignElseIfWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignCheckWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignWhileWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignWhereWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignUntilWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignSqlOnWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignSqlWhereWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignSqlHavingWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignSqlWhenWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "RightAlignComparisonOps": {
+   "t": "bool"
+  },
+  "OnlyAlignSameObjects": {
+   "t": "bool"
+  },
+  "MaxInnerSpaces": {
+   "t": "int"
+  }
+ },
+ "ALIGN_METHODS_DECLARATION": {
+  "ContinueAfterKeyword": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "ContinueAfterMethodName": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "ContinueAfterAccess": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "FillPercentageToJustifyOwnColumn": {
+   "t": "int"
+  },
+  "HandleOneLiners": {
+   "t": "enum",
+   "names": [
+    "CREATE",
+    "KEEP_EXISTING",
+    "SAME_AS_MULTI_LINERS"
+   ]
+  },
+  "AlignConsecutive": {
+   "t": "enum",
+   "names": [
+    "NEVER",
+    "ONE_LINERS",
+    "ALL_TABULAR"
+   ]
+  },
+  "SeparateWithEmptyLine": {
+   "t": "bool"
+  }
+ },
+ "ALIGN_METHODS_FOR_TESTING": {
+  "ContinueAfterKeyword": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "ContinueAfterMethodName": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  }
+ },
+ "ALIGN_METHODS_REDEFINITION": {
+  "ContinueAfterKeyword": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "ContinueAfterMethodName": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  }
+ },
+ "ALIGN_PARAMETERS": {
+  "MaxLineLength": {
+   "t": "int"
+  },
+  "MaxLineLengthForSingleLine": {
+   "t": "int"
+  },
+  "MaxParamCountBehindProceduralCall": {
+   "t": "int"
+  },
+  "MaxParamCountBehindFunctionalCall": {
+   "t": "int"
+  },
+  "PutProceduralCallKeywordsOnOwnLine": {
+   "t": "bool"
+  },
+  "PutFunctionalCallKeywordsOnOwnLine": {
+   "t": "bool"
+  },
+  "AlignAssignments": {
+   "t": "bool"
+  },
+  "AlignAcrossTableRows": {
+   "t": "bool"
+  },
+  "KeepParametersOnSingleLine": {
+   "t": "enum",
+   "names": [
+    "NEVER",
+    "IF_BELOW_MAX_LINE_LENGTH",
+    "ALWAYS"
+   ]
+  },
+  "KeepOtherOneLiners": {
+   "t": "enum",
+   "names": [
+    "NEVER",
+    "IF_BELOW_MAX_LINE_LENGTH",
+    "ALWAYS"
+   ]
+  },
+  "AllowContentLeftOfAssignOp": {
+   "t": "enum",
+   "names": [
+    "NEVER",
+    "TO_KEEP_MAX_LINE_LENGTH",
+    "ALWAYS"
+   ]
+  }
+ },
+ "ALIGN_PERFORM": {
+  "MaxLineLength": {
+   "t": "int"
+  },
+  "ParamCountAfterPerform": {
+   "t": "int"
+  },
+  "BreakAfterAdditions": {
+   "t": "bool"
+  },
+  "AlignWithFormName": {
+   "t": "bool"
+  },
+  "ContinueAfterParamGroupKeyword": {
+   "t": "bool"
+  },
+  "ParamCountToCondense": {
+   "t": "int"
+  }
+ },
+ "ALIGN_SELECT_CLAUSES": {
+  "MaxLineLength": {
+   "t": "int"
+  },
+  "MainQueryOneLinerAction": {
+   "t": "enum",
+   "names": [
+    "CREATE",
+    "KEEP_EXISTING",
+    "ALWAYS_SPLIT"
+   ]
+  },
+  "SubQueryOneLinerAction": {
+   "t": "enum",
+   "names": [
+    "CREATE",
+    "KEEP_EXISTING",
+    "ALWAYS_SPLIT"
+   ]
+  },
+  "MaxSelectListLengthBeforeFrom": {
+   "t": "int"
+  },
+  "MaxSelectListLengthBeforeInto": {
+   "t": "int"
+  },
+  "NewLineForFromWithJoins": {
+   "t": "bool"
+  },
+  "SelectClauseIndent": {
+   "t": "enum",
+   "names": [
+    "PLUS_2",
+    "PLUS_4",
+    "PLUS_7"
+   ]
+  },
+  "SelectUnionIndent": {
+   "t": "enum",
+   "names": [
+    "PLUS_0",
+    "PLUS_2",
+    "PLUS_4",
+    "PLUS_7"
+   ]
+  },
+  "NextSelectPos": {
+   "t": "enum",
+   "names": [
+    "CONTINUE",
+    "CONTINUE_OR_BELOW_SECOND",
+    "BELOW_PLUS_0",
+    "BELOW_PLUS_2",
+    "BELOW_PLUS_4",
+    "BELOW_SECOND_WORD"
+   ]
+  },
+  "SelectUnionIntoIndent": {
+   "t": "enum",
+   "names": [
+    "PLUS_0",
+    "PLUS_2",
+    "PLUS_4",
+    "PLUS_7"
+   ]
+  }
+ },
+ "ALIGN_SELECT_FROM": {
+  "FirstTableNamePosition": {
+   "t": "enum",
+   "names": [
+    "CONTINUE",
+    "BELOW_PLUS_0",
+    "BELOW_PLUS_2"
+   ]
+  },
+  "SelectJoinIndent": {
+   "t": "enum",
+   "names": [
+    "PLUS_0",
+    "PLUS_2",
+    "PLUS_4"
+   ]
+  },
+  "FurtherTableNamePositions": {
+   "t": "enum",
+   "names": [
+    "CONTINUE",
+    "BELOW_PLUS_0",
+    "BELOW_PLUS_2"
+   ]
+  },
+  "SelectOnPosition": {
+   "t": "enum",
+   "names": [
+    "CONTINUE",
+    "BELOW_JOIN",
+    "BELOW_JOIN_PLUS_2",
+    "BELOW_JOIN_WORD_2"
+   ]
+  },
+  "AlignAsAcrossJoins": {
+   "t": "bool"
+  },
+  "AlignOnAcrossJoins": {
+   "t": "bool"
+  },
+  "SelectClientPosition": {
+   "t": "enum",
+   "names": [
+    "CONTINUE",
+    "KEEP_AS_IS",
+    "OWN_LINE_AFTER_JOINS",
+    "OWN_LINE"
+   ]
+  }
+ },
+ "ALIGN_SELECT_LISTS": {
+  "MaxLineLength": {
+   "t": "int"
+  },
+  "ComplexSelectListLayout": {
+   "t": "enum",
+   "names": [
+    "MULTI_LINE",
+    "ONE_LINE",
+    "DERIVE",
+    "KEEP_AS_IS"
+   ]
+  },
+  "SimpleSelectListLayout": {
+   "t": "enum",
+   "names": [
+    "MULTI_LINE",
+    "ONE_LINE",
+    "DERIVE",
+    "KEEP_AS_IS"
+   ]
+  },
+  "ComplexGroupByListLayout": {
+   "t": "enum",
+   "names": [
+    "MULTI_LINE",
+    "ONE_LINE",
+    "DERIVE",
+    "KEEP_AS_IS"
+   ]
+  },
+  "SimpleGroupByListLayout": {
+   "t": "enum",
+   "names": [
+    "MULTI_LINE",
+    "ONE_LINE",
+    "DERIVE",
+    "KEEP_AS_IS"
+   ]
+  },
+  "ComplexOrderByListLayout": {
+   "t": "enum",
+   "names": [
+    "MULTI_LINE",
+    "ONE_LINE",
+    "DERIVE",
+    "KEEP_AS_IS"
+   ]
+  },
+  "SimpleOrderByListLayout": {
+   "t": "enum",
+   "names": [
+    "MULTI_LINE",
+    "ONE_LINE",
+    "DERIVE",
+    "KEEP_AS_IS"
+   ]
+  },
+  "SelectIntoLayout": {
+   "t": "enum",
+   "names": [
+    "MULTI_LINE",
+    "ONE_LINE",
+    "DERIVE",
+    "KEEP_AS_IS"
+   ]
+  },
+  "ConsiderTildeAsComplex": {
+   "t": "bool"
+  },
+  "AlignAsInSelectList": {
+   "t": "bool"
+  },
+  "AlignAdditionsInOrderByList": {
+   "t": "bool"
+  }
+ },
+ "ALIGN_WITH_SECOND_WORD": {},
+ "ASSERT_CLASS": {
+  "AssertClassName": {
+   "t": "str"
+  },
+  "ProcessChains": {
+   "t": "bool"
+  }
+ },
+ "ASSERT_EQUALS_BOOLEAN": {
+  "RemoveActIfOnlyParameter": {
+   "t": "bool"
+  }
+ },
+ "ASSERT_EQUALS_SUBRC": {
+  "RemoveExpEqualsZero": {
+   "t": "bool"
+  }
+ },
+ "ASSERT_PARAMETER_ORDER": {
+  "ComparisonParamOrder": {
+   "t": "enum",
+   "names": [
+    "EXP_FIRST",
+    "ACT_FIRST",
+    "KEEP_AS_IS"
+   ]
+  },
+  "NumTextTableParamOrder": {
+   "t": "enum",
+   "names": [
+    "EXP_FIRST",
+    "ACT_FIRST",
+    "KEEP_AS_IS"
+   ]
+  },
+  "ReturnCodeParamOrder": {
+   "t": "enum",
+   "names": [
+    "EXP_FIRST",
+    "ACT_FIRST",
+    "KEEP_AS_IS"
+   ]
+  },
+  "AssertClassName": {
+   "t": "str"
+  }
+ },
+ "CALCULATION_ASSIGNMENT": {
+  "ConvertMinusToMultiplication": {
+   "t": "bool"
+  },
+  "AllowMinusBeforeMultOrDiv": {
+   "t": "bool"
+  },
+  "AllowVariableAtEnd": {
+   "t": "bool"
+  }
+ },
+ "CALL_METHOD": {
+  "ProcessChains": {
+   "t": "bool"
+  }
+ },
+ "CAMEL_CASE_IN_CDS_TEST": {
+  "ProcessClassName": {
+   "t": "bool"
+  },
+  "ProcessVariableNames": {
+   "t": "bool"
+  },
+  "ProcessLiterals": {
+   "t": "bool"
+  },
+  "ProcessComments": {
+   "t": "bool"
+  },
+  "AddPseudoCommentNoWhere": {
+   "t": "bool"
+  }
+ },
+ "CAMEL_CASE_NAME": {
+  "ProcessViewNames": {
+   "t": "bool"
+  },
+  "ProcessFieldNames": {
+   "t": "bool"
+  },
+  "ProcessComments": {
+   "t": "bool"
+  },
+  "MinLengthOfSureMatch": {
+   "t": "int"
+  },
+  "RequireApprovalForSureMatch": {
+   "t": "bool"
+  },
+  "ContextAllKnownAction": {
+   "t": "enum",
+   "names": [
+    "CHANGE_ALL_KNOWN",
+    "CHANGE_ALL_APPROVED",
+    "CHANGE_SURE_ONLY"
+   ]
+  },
+  "ContextWithUnknownAction": {
+   "t": "enum",
+   "names": [
+    "CHANGE_ALL_KNOWN",
+    "CHANGE_ALL_APPROVED",
+    "CHANGE_SURE_ONLY",
+    "CHANGE_NONE"
+   ]
+  },
+  "DeviationAction": {
+   "t": "enum",
+   "names": [
+    "CHANGE_IF_KNOWN",
+    "CHANGE_IF_APPROVED",
+    "NONE"
+   ]
+  },
+  "CustomViewNamesFile": {
+   "t": "str"
+  },
+  "CustomFieldNamesFile": {
+   "t": "str"
+  }
+ },
+ "CDS_TEST_CLASS_LINES": {
+  "RemoveAbapDoc": {
+   "t": "bool"
+  },
+  "RemoveToDoComments": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_VALUE_HAS_CONTENT",
+    "NEVER"
+   ]
+  },
+  "EmptyLineAboveInsertTestData": {
+   "t": "bool"
+  },
+  "EmptyLineAboveSelect": {
+   "t": "bool"
+  },
+  "EmptyLineBelowSelect": {
+   "t": "bool"
+  },
+  "MovePrepareMethods": {
+   "t": "bool"
+  }
+ },
+ "CHAIN_OF_ONE": {
+  "ExecuteOnClassDefinitionSections": {
+   "t": "bool"
+  },
+  "ExecuteOnLocalDeclarations": {
+   "t": "bool"
+  },
+  "ExecuteOnNonDeclarations": {
+   "t": "bool"
+  }
+ },
+ "CHECK_IN_LOOP": {
+  "ConvertAbapFalseAndAbapTrue": {
+   "t": "bool"
+  },
+  "NegationStyle": {
+   "t": "enum",
+   "names": []
+  },
+  "KeepCondition": {
+   "t": "enum",
+   "names": [
+    "NEVER",
+    "KEEP_AT_LOOP_START"
+   ]
+  },
+  "ProcessChains": {
+   "t": "bool"
+  }
+ },
+ "CHECK_OUTSIDE_LOOP": {
+  "ConvertAbapFalseAndAbapTrue": {
+   "t": "bool"
+  },
+  "NegationStyle": {
+   "t": "enum",
+   "names": []
+  },
+  "KeepCondition": {
+   "t": "enum",
+   "names": [
+    "NEVER",
+    "KEEP_AT_METHOD_START",
+    "KEEP_AFTER_DECLARATIONS",
+    "KEEP_AFTER_DECLARATIONS_AND_CLEAR"
+   ]
+  },
+  "AllowCheckAfterCheckpoints": {
+   "t": "bool"
+  },
+  "ProcessChains": {
+   "t": "bool"
+  }
+ },
+ "CLASS_DEFINITION": {
+  "MaxLineLength": {
+   "t": "int"
+  },
+  "IndentStyle": {
+   "t": "enum",
+   "names": [
+    "PLUS_2",
+    "PLUS_4",
+    "BELOW_NAME",
+    "BELOW_DEFINITION"
+   ]
+  },
+  "OneLinerAction": {
+   "t": "enum",
+   "names": [
+    "CREATE_ON_SAME_LINE",
+    "CREATE_ON_NEXT_LINE",
+    "KEEP",
+    "SPLIT"
+   ]
+  },
+  "NewLineForPublic": {
+   "t": "bool"
+  },
+  "NewLineForInheriting": {
+   "t": "bool"
+  },
+  "NewLineForAbstractOrFinal": {
+   "t": "bool"
+  },
+  "NewLineForCreate": {
+   "t": "bool"
+  },
+  "NewLineForSharedMemory": {
+   "t": "bool"
+  },
+  "NewLineForTesting": {
+   "t": "bool"
+  },
+  "NewLineForRiskAndDuration": {
+   "t": "bool"
+  },
+  "NewLineForBehavior": {
+   "t": "bool"
+  },
+  "NewLineForFriends": {
+   "t": "bool"
+  },
+  "NewLineForLocalFriends": {
+   "t": "bool"
+  },
+  "NewLineForFriendNames": {
+   "t": "bool"
+  }
+ },
+ "CLOSING_BRACKETS_POSITION": {},
+ "COMMENT_TYPE": {
+  "MeasureForLeadingAsterisks": {
+   "t": "enum",
+   "names": [
+    "KEEP",
+    "CONVERT_TO_HYPHEN",
+    "CONVERT_TO_EQUALS",
+    "DELETE"
+   ]
+  },
+  "MeasureForTrailingAsterisks": {
+   "t": "enum",
+   "names": [
+    "KEEP",
+    "CONVERT_TO_HYPHEN",
+    "CONVERT_TO_EQUALS",
+    "DELETE"
+   ]
+  }
+ },
+ "COMPARISON_OPERATOR": {
+  "PreferredOperatorSet": {
+   "t": "enum",
+   "names": [
+    "SYMBOLIC",
+    "TEXTUAL"
+   ]
+  },
+  "ReplaceRegularOperators": {
+   "t": "bool"
+  },
+  "ReplaceObsoleteOperators": {
+   "t": "bool"
+  }
+ },
+ "CONDENSE": {
+  "SpecifyValName": {
+   "t": "bool"
+  },
+  "SpecifyDel": {
+   "t": "bool"
+  },
+  "SpecifyFromForNoGaps": {
+   "t": "bool"
+  },
+  "KeepParamsOnOneLine": {
+   "t": "bool"
+  },
+  "SkipUnknownTypes": {
+   "t": "bool"
+  }
+ },
+ "CREATE_OBJECT": {
+  "ProcessChains": {
+   "t": "bool"
+  }
+ },
+ "DDL_ALIGN_DATA_SOURCES": {
+  "AlignDataSources": {
+   "t": "bool"
+  },
+  "AlignAliases": {
+   "t": "bool"
+  },
+  "AlignOnConditions": {
+   "t": "bool"
+  },
+  "AlignAssociationsWithJoins": {
+   "t": "bool"
+  },
+  "AlignAssociationTo": {
+   "t": "bool"
+  },
+  "ConsiderAllParamAssignLines": {
+   "t": "bool"
+  }
+ },
+ "DDL_ALIGN_ENTITY_PARAMETERS": {
+  "AlignColons": {
+   "t": "bool"
+  },
+  "AlignTypes": {
+   "t": "bool"
+  }
+ },
+ "DDL_ALIGN_FIELD_LISTS": {
+  "MaxLineLength": {
+   "t": "int"
+  },
+  "NameListPos": {
+   "t": "enum",
+   "names": [
+    "CONTINUE",
+    "LINE_START_PLUS_2",
+    "LINE_START_PLUS_4",
+    "VIEW_NAME_PLUS_2",
+    "VIEW_NAME_PLUS_4",
+    "KEEP_AS_IS"
+   ]
+  },
+  "NameListLayout": {
+   "t": "enum",
+   "names": [
+    "MULTI_LINE",
+    "ONE_LINE",
+    "DERIVE",
+    "KEEP_AS_IS"
+   ]
+  },
+  "GroupByListPos": {
+   "t": "enum",
+   "names": [
+    "CONTINUE",
+    "LINE_START_PLUS_2",
+    "LINE_START_PLUS_4",
+    "KEEP_AS_IS"
+   ]
+  },
+  "ComplexGroupByListLayout": {
+   "t": "enum",
+   "names": [
+    "MULTI_LINE",
+    "ONE_LINE",
+    "DERIVE",
+    "KEEP_AS_IS"
+   ]
+  },
+  "SimpleGroupByListLayout": {
+   "t": "enum",
+   "names": [
+    "MULTI_LINE",
+    "ONE_LINE",
+    "DERIVE",
+    "KEEP_AS_IS"
+   ]
+  },
+  "ConsiderDotAsComplex": {
+   "t": "bool"
+  }
+ },
+ "DDL_ALIGN_FUNCTION_PARAMETERS": {
+  "ParameterPos": {
+   "t": "enum",
+   "names": [
+    "CONTINUE",
+    "FUNCTION_NAME_PLUS_2",
+    "FUNCTION_NAME_PLUS_4",
+    "KEEP_AS_IS"
+   ]
+  },
+  "AlignAssignmentOps": {
+   "t": "bool"
+  },
+  "AlignActualParams": {
+   "t": "bool"
+  }
+ },
+ "DDL_ALIGN_LOGICAL_EXPRESSIONS": {
+  "AlignJoinOn": {
+   "t": "bool"
+  },
+  "AlignAssociationOn": {
+   "t": "bool"
+  },
+  "AlignWhen": {
+   "t": "bool"
+  },
+  "AlignPathExpressions": {
+   "t": "bool"
+  },
+  "AlignWhere": {
+   "t": "bool"
+  },
+  "AlignHaving": {
+   "t": "bool"
+  },
+  "AlignOnWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignFilterWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignWhenWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignWhereWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "AlignHavingWithBoolOps": {
+   "t": "enum",
+   "names": [
+    "DO_NOT_ALIGN",
+    "LEFT_ALIGN",
+    "RIGHT_ALIGN"
+   ]
+  },
+  "RightAlignComparisonOps": {
+   "t": "bool"
+  },
+  "MaxInnerSpaces": {
+   "t": "int"
+  }
+ },
+ "DDL_ALIGN_SELECT_LIST": {
+  "AlignKeyKeyword": {
+   "t": "bool"
+  },
+  "AlignAliases": {
+   "t": "bool"
+  },
+  "ConsiderSimpleElementsWithoutAlias": {
+   "t": "bool"
+  },
+  "ConsiderComplexElementsWithoutAlias": {
+   "t": "bool"
+  },
+  "ConsiderAllElementLines": {
+   "t": "bool"
+  },
+  "MaxAliasStart": {
+   "t": "int"
+  },
+  "AlignTextualComments": {
+   "t": "bool"
+  },
+  "AlignCommentedOutCode": {
+   "t": "bool"
+  }
+ },
+ "DDL_ALIGN_SOURCE_PARAMETERS": {
+  "ParameterPos": {
+   "t": "enum",
+   "names": [
+    "CONTINUE",
+    "LINE_START_PLUS_2",
+    "LINE_START_PLUS_4",
+    "SOURCE_NAME_PLUS_2",
+    "SOURCE_NAME_PLUS_4",
+    "KEEP_AS_IS"
+   ]
+  },
+  "AlignAssignmentOps": {
+   "t": "bool"
+  },
+  "AlignActualParams": {
+   "t": "bool"
+  },
+  "AsAliasPos": {
+   "t": "enum",
+   "names": [
+    "CONTINUE",
+    "LINE_START",
+    "LINE_START_PLUS_2",
+    "SOURCE_NAME",
+    "SOURCE_NAME_PLUS_2",
+    "KEEP_AS_IS"
+   ]
+  }
+ },
+ "DDL_ANNO_LAYOUT": {
+  "SpaceAfterColon": {
+   "t": "bool"
+  },
+  "SpaceInsideBraces": {
+   "t": "bool"
+  },
+  "SpaceInsideBrackets": {
+   "t": "bool"
+  },
+  "MaxLineLength": {
+   "t": "int"
+  },
+  "MaxOneLinerElemCountMain": {
+   "t": "int"
+  },
+  "MaxOneLinerElemCountList": {
+   "t": "int"
+  },
+  "AlignValues": {
+   "t": "bool"
+  },
+  "AlignTablesInArrays": {
+   "t": "bool"
+  }
+ },
+ "DDL_ANNO_NESTING": {
+  "NestingMinDepth": {
+   "t": "enum",
+   "names": [
+    "LEVEL_2",
+    "LEVEL_3",
+    "LEVEL_4",
+    "LEVEL_5",
+    "LEVEL_6",
+    "LEVEL_7",
+    "NEVER",
+    "FILL_UP_EXISTING",
+    "KEEP_AS_IS"
+   ]
+  },
+  "NestingAllowList": {
+   "t": "str"
+  },
+  "NestingBlockList": {
+   "t": "str"
+  },
+  "SortOrder": {
+   "t": "enum",
+   "names": [
+    "BY_FIRST_ELEM",
+    "BY_TWO_ELEMS",
+    "BY_ALL_ELEMS",
+    "KEEP"
+   ]
+  },
+  "EmptyLinesMain": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "FOR_MULTI_LINE_OR_NEW_FIRST_ELEM",
+    "FOR_NEW_FIRST_ELEM",
+    "NEVER",
+    "KEEP_AS_IS"
+   ]
+  },
+  "EmptyLinesList": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "FOR_MULTI_LINE_OR_NEW_FIRST_ELEM",
+    "FOR_NEW_FIRST_ELEM",
+    "NEVER",
+    "KEEP_AS_IS"
+   ]
+  }
+ },
+ "DDL_CAMEL_CASE_NAME": {
+  "FixEntityName": {
+   "t": "bool"
+  },
+  "FixAliases": {
+   "t": "bool"
+  },
+  "FixFieldNames": {
+   "t": "bool"
+  },
+  "FixRefsInAnnotations": {
+   "t": "bool"
+  },
+  "OnlyApprovedNames": {
+   "t": "bool"
+  },
+  "RequireAllFieldsKnown": {
+   "t": "bool"
+  }
+ },
+ "DDL_EMPTY_LINES_BETWEEN": {
+  "BetweenEntityAnnosAndDefine": {
+   "t": "enum",
+   "names": [
+    "ALWAYS_AT_LEAST_ONE",
+    "ALWAYS_EXACTLY_ONE",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "BetweenParametersAndAsSelect": {
+   "t": "enum",
+   "names": [
+    "ALWAYS_AT_LEAST_ONE",
+    "ALWAYS_EXACTLY_ONE",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "BetweenSelectFromAndJoins": {
+   "t": "enum",
+   "names": [
+    "ALWAYS_AT_LEAST_ONE",
+    "ALWAYS_EXACTLY_ONE",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "BetweenJoinsAndAssociations": {
+   "t": "enum",
+   "names": [
+    "ALWAYS_AT_LEAST_ONE",
+    "ALWAYS_EXACTLY_ONE",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "BeforeSelectListStart": {
+   "t": "enum",
+   "names": [
+    "ALWAYS_AT_LEAST_ONE",
+    "ALWAYS_EXACTLY_ONE",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "AfterSelectListStart": {
+   "t": "enum",
+   "names": [
+    "ALWAYS_AT_LEAST_ONE",
+    "ALWAYS_EXACTLY_ONE",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "BeforeSelectListEnd": {
+   "t": "enum",
+   "names": [
+    "ALWAYS_AT_LEAST_ONE",
+    "ALWAYS_EXACTLY_ONE",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "AfterSelectListEnd": {
+   "t": "enum",
+   "names": [
+    "ALWAYS_AT_LEAST_ONE",
+    "ALWAYS_EXACTLY_ONE",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "RemoveAtDocumentEnd": {
+   "t": "bool"
+  },
+  "MaxConsecutiveEmptyLines": {
+   "t": "int"
+  }
+ },
+ "DDL_EMPTY_LINES_WITHIN": {
+  "SurroundParameterLineCountMin": {
+   "t": "int"
+  },
+  "SurroundJoinLineCountMin": {
+   "t": "int"
+  },
+  "SurroundAssociationLineCountMin": {
+   "t": "int"
+  },
+  "SurroundElementLineCountMin": {
+   "t": "int"
+  },
+  "SurroundClauseLineCountMin": {
+   "t": "int"
+  },
+  "DetachKeyFields": {
+   "t": "bool"
+  },
+  "DetachExposedAssociations": {
+   "t": "bool"
+  },
+  "CondenseParameters": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_ONLY_ONE_LINERS",
+    "IF_ONLY_DETACHED_ONE_LINERS",
+    "NEVER"
+   ]
+  },
+  "CondenseJoins": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_ONLY_ONE_LINERS",
+    "IF_ONLY_DETACHED_ONE_LINERS",
+    "NEVER"
+   ]
+  },
+  "CondenseAssociations": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_ONLY_ONE_LINERS",
+    "IF_ONLY_DETACHED_ONE_LINERS",
+    "NEVER"
+   ]
+  },
+  "CondenseElements": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_ONLY_ONE_LINERS",
+    "IF_ONLY_DETACHED_ONE_LINERS",
+    "NEVER"
+   ]
+  },
+  "CondenseClauses": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_ONLY_ONE_LINERS",
+    "IF_ONLY_DETACHED_ONE_LINERS",
+    "NEVER"
+   ]
+  }
+ },
+ "DDL_POSITION_ASSOCIATION": {
+  "BreakBeforeKeywords": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS"
+   ]
+  },
+  "KeywordsIndent": {
+   "t": "int"
+  },
+  "BreakBeforeDataSource": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "DataSourceIndent": {
+   "t": "int"
+  },
+  "BreakBeforeCondition": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_MULTI_LINE_FOUND",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "ConditionIndent": {
+   "t": "int"
+  },
+  "BreakBeforeFilter": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS"
+   ]
+  },
+  "FilterIndent": {
+   "t": "int"
+  }
+ },
+ "DDL_POSITION_BRACES": {
+  "BreakBeforeOpeningBrace": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "OpeningBraceIndent": {
+   "t": "int"
+  },
+  "BreakBeforeClosingBrace": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "ClosingBraceIndent": {
+   "t": "int"
+  },
+  "BreakBeforeFrom": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS"
+   ]
+  },
+  "FromIndent": {
+   "t": "int"
+  }
+ },
+ "DDL_POSITION_CLAUSES": {
+  "BreakBeforeWhereEtc": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS"
+   ]
+  },
+  "WhereEtcIndent": {
+   "t": "int"
+  },
+  "BreakBeforeUnionEtc": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS"
+   ]
+  },
+  "UnionEtcIndent": {
+   "t": "int"
+  }
+ },
+ "DDL_POSITION_DEFINE": {
+  "BreakBeforeDefine": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS"
+   ]
+  },
+  "DefineIndent": {
+   "t": "int"
+  },
+  "BreakBeforeEntityName": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "EntityNameIndent": {
+   "t": "int"
+  },
+  "BreakBeforeWithParams": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "WithParamsIndent": {
+   "t": "int"
+  },
+  "ParamsIndent": {
+   "t": "int"
+  }
+ },
+ "DDL_POSITION_JOIN": {
+  "BreakBeforeKeywords": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS"
+   ]
+  },
+  "KeywordsIndent": {
+   "t": "int"
+  },
+  "BreakBeforeDataSource": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "DataSourceIndent": {
+   "t": "int"
+  },
+  "BreakBeforeCondition": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_MULTI_LINE_FOUND",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "ConditionIndent": {
+   "t": "int"
+  }
+ },
+ "DDL_POSITION_SELECT": {
+  "BreakBeforeAsSelectFrom": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "AsSelectFromIndent": {
+   "t": "int"
+  },
+  "BreakBeforeSelectFrom": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SelectFromIndent": {
+   "t": "int"
+  },
+  "BreakBeforeAsProjectionOn": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "AsProjectionOnIndent": {
+   "t": "int"
+  },
+  "BreakBeforeDataSource": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "DataSourceIndent": {
+   "t": "int"
+  }
+ },
+ "DDL_SPACES_AROUND_BRACKETS": {
+  "SpacesAroundCardBrackets": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpacesInsideCardBrackets": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpacesBeforePathBrackets": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpacesInsidePathBrackets": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpacesBeforeFuncParens": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpacesInsideFuncParens": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpacesBeforeTypeParens": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpacesInsideTypeParens": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpacesInsideArithParens": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  }
+ },
+ "DDL_SPACES_AROUND_SIGNS": {
+  "SpaceBeforeCommentSign": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpaceAfterCommentSign": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpaceBeforeColon": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpaceAfterColon": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpaceBeforeComma": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpaceAfterComma": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpaceAfterCommaInAbapType": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  },
+  "SpaceAroundArithmeticOps": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "NEVER"
+   ]
+  }
+ },
+ "DDL_TYPO": {
+  "CorrectTypos": {
+   "t": "bool"
+  },
+  "ConvertBritishToAmerican": {
+   "t": "bool"
+  },
+  "ProcessComments": {
+   "t": "bool"
+  },
+  "ProcessAnnotations": {
+   "t": "bool"
+  },
+  "ProcessAnnotationRefs": {
+   "t": "bool"
+  }
+ },
+ "DECLARATION_CHAIN": {
+  "ExecuteOnInterfaces": {
+   "t": "bool"
+  },
+  "ExecuteOnClassDefinitionSections": {
+   "t": "bool"
+  },
+  "ExecuteOnLocalDeclarations": {
+   "t": "bool"
+  },
+  "KeepTablesWithStructures": {
+   "t": "bool"
+  },
+  "ExecuteOnSimpleCommands": {
+   "t": "bool"
+  },
+  "ExecuteOnComplexCommands": {
+   "t": "bool"
+  }
+ },
+ "DESCRIBE_TABLE": {},
+ "EMPTY_COMMAND": {},
+ "EMPTY_LINES_IN_CLASS_DEFINITION": {
+  "AddEmptyLineAboveSections": {
+   "t": "bool"
+  },
+  "RemoveEmptyLineBelowSections": {
+   "t": "bool"
+  },
+  "RemoveEmptyLineAboveEndClass": {
+   "t": "bool"
+  },
+  "RemoveIncludeWarnings": {
+   "t": "bool"
+  },
+  "MaxEmptyLines": {
+   "t": "int"
+  },
+  "AddLineBetweenDefTypes": {
+   "t": "enum",
+   "names": [
+    "NEVER",
+    "ADD_IGNORE_STATIC",
+    "ADD_CONSIDER_STATIC"
+   ]
+  }
+ },
+ "EMPTY_LINES_OUTSIDE_METHODS": {
+  "EmptyLinesBetweenClasses": {
+   "t": "int"
+  },
+  "EmptyLinesBetweenMethods": {
+   "t": "int"
+  },
+  "EmptyLinesBetweenClassAndMethod": {
+   "t": "int"
+  }
+ },
+ "EMPTY_LINES_WITHIN_METHODS": {
+  "MaxEmptyLinesAtMethodStart": {
+   "t": "int"
+  },
+  "MaxEmptyLinesWithinMethods": {
+   "t": "int"
+  },
+  "MaxEmptyLinesAtMethodEnd": {
+   "t": "int"
+  },
+  "EmptyLineAboveFirstExecutable": {
+   "t": "bool"
+  }
+ },
+ "EMPTY_SECTIONS": {
+  "EmptySectionsMeasure": {
+   "t": "enum",
+   "names": [
+    "REMOVE_PROTECTED_OF_FINAL_CLASS",
+    "REMOVE_ANY_FROM_NON_EMPTY_CLASS",
+    "REMOVE_ANY"
+   ]
+  }
+ },
+ "END_OF_COMMENT": {
+  "EndOfCommentActionInsideMethod": {
+   "t": "enum",
+   "names": [
+    "KEEP",
+    "REMOVE_REDUNDANT",
+    "REMOVE_ALL"
+   ]
+  },
+  "EndOfCommentActionOutsideMethod": {
+   "t": "enum",
+   "names": [
+    "KEEP",
+    "REMOVE_REDUNDANT",
+    "REMOVE_ALL"
+   ]
+  },
+  "LineLimitInsideMethod": {
+   "t": "int"
+  }
+ },
+ "EQUALS_SIGN_CHAIN": {},
+ "ESCAPE_CHAR_FOR_PARAMS": {
+  "UseEscapeCharForParams": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "KEEP_AS_IS",
+    "ONLY_FOR_ABAP_WORDS",
+    "ONLY_AVOID_ERRORS"
+   ]
+  }
+ },
+ "EXIT_OUTSIDE_LOOP": {
+  "ApplyToProcedures": {
+   "t": "bool"
+  },
+  "ApplyToEventBlocks": {
+   "t": "bool"
+  }
+ },
+ "EXPORTING_KEYWORD": {},
+ "FINAL_VARIABLE": {},
+ "IF_BLOCK_AT_LOOP_END": {
+  "MinLineCount": {
+   "t": "int"
+  },
+  "MinLinePercentage": {
+   "t": "int"
+  },
+  "KeepExceptionalLogicInIf": {
+   "t": "bool"
+  },
+  "NegationStyle": {
+   "t": "enum",
+   "names": []
+  },
+  "ConvertAbapFalseAndAbapTrue": {
+   "t": "bool"
+  },
+  "EnsureEmptyLineAfterEndIf": {
+   "t": "bool"
+  }
+ },
+ "IF_BLOCK_AT_METHOD_END": {
+  "MinLineCount": {
+   "t": "int"
+  },
+  "MinLinePercentage": {
+   "t": "int"
+  },
+  "KeepExceptionalLogicInIf": {
+   "t": "bool"
+  },
+  "NegationStyle": {
+   "t": "enum",
+   "names": []
+  },
+  "ConvertAbapFalseAndAbapTrue": {
+   "t": "bool"
+  },
+  "EnsureEmptyLineAfterEndIf": {
+   "t": "bool"
+  }
+ },
+ "IMPLICIT_TYPE": {
+  "ExecuteOnTypes": {
+   "t": "bool"
+  },
+  "ExecuteOnConstantsAndStatics": {
+   "t": "bool"
+  },
+  "ExecuteOnDataAndClassData": {
+   "t": "bool"
+  },
+  "ReplaceParenthesisWithLength": {
+   "t": "bool"
+  }
+ },
+ "INSET": {
+  "ExecuteOnClassDefinitionSections": {
+   "t": "bool"
+  },
+  "AlignWithFollowingElse": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_BLANK_LINE_ABOVE",
+    "NEVER"
+   ]
+  },
+  "AlignWithFollowingWhen": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_BLANK_LINE_ABOVE",
+    "NEVER"
+   ]
+  },
+  "AlignWithFollowingCatch": {
+   "t": "enum",
+   "names": [
+    "ALWAYS",
+    "IF_BLANK_LINE_ABOVE",
+    "NEVER"
+   ]
+  }
+ },
+ "LOCAL_DECLARATION_ORDER": {
+  "TypesOrder": {
+   "t": "enum",
+   "names": [
+    "METHOD_START_KEEP_ORDER"
+   ]
+  },
+  "ConstantsOrder": {
+   "t": "enum",
+   "names": [
+    "METHOD_START_KEEP_ORDER",
+    "METHOD_START_CHANGE_ORDER",
+    "ENCLOSING_BLOCK_CHANGE_ORDER"
+   ]
+  },
+  "StaticsOrder": {
+   "t": "enum",
+   "names": [
+    "METHOD_START_KEEP_ORDER",
+    "METHOD_START_CHANGE_ORDER",
+    "ENCLOSING_BLOCK_CHANGE_ORDER"
+   ]
+  },
+  "DataOrder": {
+   "t": "enum",
+   "names": [
+    "METHOD_START_KEEP_ORDER",
+    "METHOD_START_CHANGE_ORDER",
+    "ENCLOSING_BLOCK_CHANGE_ORDER"
+   ]
+  },
+  "FieldSymbolsOrder": {
+   "t": "enum",
+   "names": [
+    "METHOD_START_KEEP_ORDER",
+    "METHOD_START_CHANGE_ORDER",
+    "ENCLOSING_BLOCK_CHANGE_ORDER"
+   ]
+  },
+  "DistinctBlocks": {
+   "t": "bool"
+  },
+  "EmptyLine": {
+   "t": "bool"
+  },
+  "MoveComments": {
+   "t": "bool"
+  },
+  "RearrangeChains": {
+   "t": "bool"
+  },
+  "ConsiderComments": {
+   "t": "bool"
+  }
+ },
+ "LOGICAL_OPERATOR_POSITION": {
+  "MoveKeyword": {
+   "t": "bool"
+  },
+  "MoveBooleanOperators": {
+   "t": "bool"
+  }
+ },
+ "MOVE_TO": {
+  "ProcessChains": {
+   "t": "bool"
+  }
+ },
+ "NEEDLESS_CLEAR": {
+  "ActionAtStart": {
+   "t": "enum",
+   "names": [
+    "DELETE",
+    "ADD_TODO_COMMENT",
+    "IGNORE"
+   ]
+  },
+  "ActionAtEnd": {
+   "t": "enum",
+   "names": [
+    "DELETE",
+    "ADD_TODO_COMMENT",
+    "IGNORE"
+   ]
+  },
+  "KeepStrucBeforeAssign": {
+   "t": "bool"
+  }
+ },
+ "NEEDLESS_PARENTHESES": {
+  "RemoveAroundAll": {
+   "t": "bool"
+  },
+  "RemoveAroundRelExpr": {
+   "t": "bool"
+  },
+  "RemoveOrParenthesisAnd": {
+   "t": "bool"
+  },
+  "RemoveAroundSameOp": {
+   "t": "bool"
+  },
+  "RemoveAroundNot": {
+   "t": "bool"
+  }
+ },
+ "NEEDLESS_SPACES": {
+  "SearchAcrossEmptyLines": {
+   "t": "bool"
+  },
+  "SearchAcrossCommentLines": {
+   "t": "bool"
+  },
+  "ProcessLineEndComments": {
+   "t": "bool"
+  },
+  "ProcessEmptyBrackets": {
+   "t": "bool"
+  }
+ },
+ "NOT_IS": {},
+ "ONE_COMMAND_PER_LINE": {
+  "KeepOneLinersAfterWhen": {
+   "t": "bool"
+  },
+  "KeepMultiLinersAfterWhen": {
+   "t": "bool"
+  }
+ },
+ "PRAGMA_POSITION": {
+  "MovePragmaFromLineStartToEnd": {
+   "t": "bool"
+  }
+ },
+ "PSEUDO_COMMENT": {},
+ "RAISE_TYPE": {},
+ "READ_TABLE": {
+  "ReplaceWithAssign": {
+   "t": "bool"
+  },
+  "ReplaceWithLineExists": {
+   "t": "bool"
+  },
+  "ReplaceWithLineIndex": {
+   "t": "bool"
+  },
+  "ReplaceInsertIntoIndex": {
+   "t": "bool"
+  },
+  "UseComponentsKeyword": {
+   "t": "bool"
+  }
+ },
+ "RECEIVING_KEYWORD": {},
+ "SELF_REFERENCE_ME": {},
+ "SPACES_IN_EMPTY_BRACKETS": {
+  "RemoveMultiSpaceIfEmpty": {
+   "t": "bool"
+  },
+  "SeparateFromKeywords": {
+   "t": "bool"
+  },
+  "SeparateFromOperators": {
+   "t": "bool"
+  },
+  "SeparateFromComments": {
+   "t": "bool"
+  },
+  "SeparateFromCharLiterals": {
+   "t": "bool"
+  },
+  "SeparateCondensedCases": {
+   "t": "bool"
+  }
+ },
+ "SPACE_AROUND_COMMENT_SIGN": {
+  "SpaceBeforeCommentSign": {
+   "t": "bool"
+  },
+  "SpaceAfterCommentSign": {
+   "t": "bool"
+  }
+ },
+ "SPACE_BEFORE_PERIOD": {
+  "ExecuteOnComma": {
+   "t": "bool"
+  },
+  "ExecuteOnPeriod": {
+   "t": "bool"
+  },
+  "MoveAcrossCommentLines": {
+   "t": "bool"
+  },
+  "ExecuteOnClassDefinitionSections": {
+   "t": "bool"
+  }
+ },
+ "STRING_TEMPLATE": {
+  "StringTemplateCondition": {
+   "t": "enum",
+   "names": [
+    "SHORTER",
+    "SHORTER_OR_EQUAL",
+    "ALWAYS"
+   ]
+  },
+  "AlwaysConvertLiterals": {
+   "t": "bool"
+  },
+  "RequireOperandsOnSameLine": {
+   "t": "bool"
+  },
+  "IgnoreMultiLineOperands": {
+   "t": "bool"
+  },
+  "KeepControlCharsSeparate": {
+   "t": "bool"
+  }
+ },
+ "TRANSLATE": {
+  "ReplaceTranslateToUpperLower": {
+   "t": "bool"
+  },
+  "ReplaceTranslateUsing": {
+   "t": "bool"
+  },
+  "ReplaceUnevenMasks": {
+   "t": "bool"
+  },
+  "ProcessChains": {
+   "t": "bool"
+  },
+  "SkipUnknownTypes": {
+   "t": "bool"
+  }
+ },
+ "TYPO": {
+  "CorrectTypos": {
+   "t": "bool"
+  },
+  "ConvertBritishToAmerican": {
+   "t": "bool"
+  },
+  "ProcessAbapDoc": {
+   "t": "bool"
+  },
+  "ProcessShorttexts": {
+   "t": "bool"
+  },
+  "ProcessComments": {
+   "t": "bool"
+  },
+  "AddTodoBeforeMessage": {
+   "t": "bool"
+  },
+  "MeasureForLiterals": {
+   "t": "enum",
+   "names": [
+    "CHANGE_DIRECTLY",
+    "ADD_TODO_COMMENT",
+    "KEEP_UNCHANGED"
+   ]
+  }
+ },
+ "UNUSED_PARAMETERS": {
+  "ImportingParamScope": {
+   "t": "enum",
+   "names": [
+    "ALL_METHODS",
+    "NON_INTERFACE_METHODS",
+    "PROTECTED_OR_PRIVATE",
+    "PRIVATE_ONLY",
+    "NEVER"
+   ]
+  },
+  "ExportingParamScope": {
+   "t": "enum",
+   "names": [
+    "ALL_METHODS",
+    "NON_INTERFACE_METHODS",
+    "PROTECTED_OR_PRIVATE",
+    "PRIVATE_ONLY",
+    "NEVER"
+   ]
+  },
+  "ChangingParamScope": {
+   "t": "enum",
+   "names": [
+    "ALL_METHODS",
+    "NON_INTERFACE_METHODS",
+    "PROTECTED_OR_PRIVATE",
+    "PRIVATE_ONLY",
+    "NEVER"
+   ]
+  },
+  "ReturningParamScope": {
+   "t": "enum",
+   "names": [
+    "ALL_METHODS",
+    "NON_INTERFACE_METHODS",
+    "PROTECTED_OR_PRIVATE",
+    "PRIVATE_ONLY",
+    "NEVER"
+   ]
+  },
+  "IgnoreEmptyMethods": {
+   "t": "bool"
+  },
+  "IgnoreExportingByValue": {
+   "t": "bool"
+  }
+ },
+ "UNUSED_VARIABLES": {
+  "MeasureForVarsNeverUsed": {
+   "t": "enum",
+   "names": [
+    "DELETE",
+    "COMMENT_OUT_WITH_ASTERISK",
+    "COMMENT_OUT_WITH_QUOT",
+    "ADD_TODO_COMMENT",
+    "IGNORE"
+   ]
+  },
+  "MeasureForVarsOnlyUsedInComment": {
+   "t": "enum",
+   "names": [
+    "DELETE",
+    "COMMENT_OUT_WITH_ASTERISK",
+    "COMMENT_OUT_WITH_QUOT",
+    "ADD_TODO_COMMENT",
+    "IGNORE"
+   ]
+  },
+  "MeasureForAssignedVars": {
+   "t": "enum",
+   "names": [
+    "ADD_TODO_COMMENT",
+    "IGNORE"
+   ]
+  },
+  "MeasureForAssignedVarsOnlyUsedInComment": {
+   "t": "enum",
+   "names": [
+    "ADD_TODO_COMMENT",
+    "IGNORE"
+   ]
+  },
+  "MeasureForVarsOnlyAssignedInMessageInto": {
+   "t": "enum",
+   "names": [
+    "ADD_PRAGMA_NEEDED",
+    "ADD_TODO_COMMENT",
+    "IGNORE"
+   ]
+  },
+  "MeasureForConstantsNeverUsed": {
+   "t": "enum",
+   "names": [
+    "DELETE",
+    "COMMENT_OUT_WITH_ASTERISK",
+    "COMMENT_OUT_WITH_QUOT",
+    "ADD_TODO_COMMENT",
+    "IGNORE"
+   ]
+  },
+  "MeasureForConstantsOnlyUsedInComment": {
+   "t": "enum",
+   "names": [
+    "DELETE",
+    "COMMENT_OUT_WITH_ASTERISK",
+    "COMMENT_OUT_WITH_QUOT",
+    "ADD_TODO_COMMENT",
+    "IGNORE"
+   ]
+  }
+ },
+ "UPPER_AND_LOWER_CASE": {
+  "DeriveCaseMethod": {
+   "t": "enum",
+   "names": [
+    "NONE",
+    "FROM_FIRST_TOKEN",
+    "FROM_MAJORITY"
+   ]
+  },
+  "DefinitionKeywordStyle": {
+   "t": "enum",
+   "names": [
+    "UNCHANGED",
+    "LOWER_CASE",
+    "UPPER_CASE"
+   ]
+  },
+  "DefinitionIdentifierStyle": {
+   "t": "enum",
+   "names": [
+    "UNCHANGED",
+    "LOWER_CASE",
+    "UPPER_CASE"
+   ]
+  },
+  "ImplementationKeywordStyle": {
+   "t": "enum",
+   "names": [
+    "UNCHANGED",
+    "LOWER_CASE",
+    "UPPER_CASE"
+   ]
+  },
+  "ImplementationIdentifierStyle": {
+   "t": "enum",
+   "names": [
+    "UNCHANGED",
+    "LOWER_CASE",
+    "UPPER_CASE"
+   ]
+  },
+  "PragmaStyle": {
+   "t": "enum",
+   "names": [
+    "UNCHANGED",
+    "LOWER_CASE",
+    "UPPER_CASE"
+   ]
+  },
+  "PragmaParameterStyle": {
+   "t": "enum",
+   "names": [
+    "UNCHANGED",
+    "LOWER_CASE",
+    "UPPER_CASE"
+   ]
+  },
+  "KeepMixedCaseInIdentifiers": {
+   "t": "bool"
+  }
+ },
+ "VALUE_STATEMENT": {
+  "MoveIntegerLiterals": {
+   "t": "bool"
+  },
+  "MoveFloatLiterals": {
+   "t": "bool"
+  },
+  "MoveStringLiterals": {
+   "t": "bool"
+  },
+  "MoveIdentifiers": {
+   "t": "bool"
+  },
+  "MoveComplexExpressions": {
+   "t": "bool"
+  },
+  "MoveMethodCalls": {
+   "t": "bool"
+  },
+  "SkipIfRowsCommentedOut": {
+   "t": "bool"
+  }
+ }
+}

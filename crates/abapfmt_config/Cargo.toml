@@ -9,4 +9,5 @@ publish.workspace = true
 workspace = true
 
 [dependencies]
-
+abapfmt_formatter = { path = "../abapfmt_formatter" }
+serde_json = "1"

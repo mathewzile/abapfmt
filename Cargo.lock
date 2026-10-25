@@ -13,12 +13,15 @@ dependencies = [
 [[package]]
 name = "abapfmt_config"
 version = "0.0.0"
+dependencies = [
+ "abapfmt_formatter",
+ "serde_json",
+]
 
 [[package]]
 name = "abapfmt_formatter"
 version = "0.0.0"
 dependencies = [
- "abapfmt_config",
  "abapfmt_lexer",
  "abapfmt_syntax",
  "serde_json",

@@ -11,7 +11,6 @@ workspace = true
 [dependencies]
 abapfmt_lexer = { path = "../abapfmt_lexer" }
 abapfmt_syntax = { path = "../abapfmt_syntax" }
-abapfmt_config = { path = "../abapfmt_config" }
 
 [dev-dependencies]
 serde_json = "1"
