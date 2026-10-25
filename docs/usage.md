@@ -76,3 +76,25 @@ Install the resulting `.vsix`, then set it as the formatter:
 Format Document, Format Selection and format on save (including `editor.formatOnSaveMode:
 "modifications"`) all use the language server (`abapfmt lsp`). Set `abapfmt.path` to use a
 different executable.
+
+## Known limitations
+
+These are deliberate choices or accepted approximations; none of them is planned to change.
+
+- **Rules that rewrite code are not implemented** (for example chain removal, `RemoveIncludeWarnings`,
+  merging comments, `DDL_ANNO_NESTING`). abapfmt changes only whitespace, line layout and letter
+  case, and refuses to write a result in which any other token differs.
+- **Chained statements** (`CALL METHOD: ...`, `CHECK: ...`) are not aligned by `ALIGN_PARAMETERS` and
+  `ALIGN_LOGICAL_EXPRESSIONS`; abap-cleaner has no tests for them either, and aligning them gives
+  worse results than leaving them alone.
+- **Line width:** a line that cannot be broken at a token boundary stays over `lineWidth`. Chains,
+  comments and CDS sources are not reflowed, and the choice of break points is a heuristic.
+- **Commented-out code in CDS select lists:** whether a comment between elements is commented-out
+  code or text is decided by a simple heuristic, not by abap-cleaner's word-frequency classifier.
+  It agrees with all of abap-cleaner's test cases for these rules.
+- **One configuration per workspace:** documents of all remote systems (ADT) share the workspace's
+  `abapfmt.json`; there are no per-system settings.
+- **Speed:** about 30,000 lines per second (see `benchmarks.md`). Each rule that changes the text
+  causes one more parse; this is not a problem at these speeds and is not being optimised further.
+- **The VS Code extension** is packaged for the platform it was built on only. Build it on each
+  platform you need.
