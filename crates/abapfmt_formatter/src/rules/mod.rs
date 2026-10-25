@@ -4,6 +4,7 @@ use crate::RuleFn;
 mod align_aliases_for;
 mod align_assignments;
 pub(crate) mod align_declarations;
+mod align_form_declaration;
 mod align_with_second_word;
 mod case;
 mod empty_lines;
@@ -45,6 +46,10 @@ pub const ALL: &[(&str, RuleFn)] = &[
         align_with_second_word::align_with_second_word,
     ),
     ("ALIGN_ALIASES_FOR", align_aliases_for::align_aliases_for),
+    (
+        "ALIGN_FORM_DECLARATION",
+        align_form_declaration::align_form_declaration,
+    ),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];

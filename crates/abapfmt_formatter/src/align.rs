@@ -238,6 +238,26 @@ impl Table {
         self.column_count(col) == 0
     }
 
+    /// `AlignColumn.setForceLineBreakAfter(overrideWidthWith1, offsetForNextColumn)`
+    pub fn set_force_line_break_after(
+        &mut self,
+        col: usize,
+        width1: bool,
+        next_offset: Option<i64>,
+    ) {
+        self.cols[col].force_line_break_after = true;
+        self.cols[col].override_width_with_1 = width1;
+        if let Some(off) = next_offset {
+            self.set_force_indent(col + 1, Some(col), off);
+        }
+    }
+
+    /// `AlignColumn.setForceIndent(baseColumn, offset)`; `None` as base means the basic indent.
+    pub fn set_force_indent(&mut self, col: usize, base: Option<usize>, offset: i64) {
+        self.cols[col].force_indent_base = base;
+        self.cols[col].force_indent_offset = offset;
+    }
+
     pub fn set_minimum_width(&mut self, col: usize, w: i64) {
         self.cols[col].minimum_width = w;
     }
