@@ -71,6 +71,10 @@ pub fn run_rule(rule_id: &str, src: &str, config: &RuleConfig) -> Option<String>
     let Some(mut doc) = Doc::new(src) else {
         return Some(src.to_string());
     };
+    // DDL rules only apply to CDS sources and ABAP rules only to ABAP
+    if rule_id.starts_with("DDL_") != doc.syn.ddl.is_some() {
+        return Some(src.to_string());
+    }
     rule(&mut doc, config);
     Some(doc.render())
 }

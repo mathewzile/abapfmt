@@ -3,7 +3,7 @@
 //! A [`Doc`] is the parsed source plus, per token, the number of line breaks and spaces before it
 //! and an optional replacement text (for case/comment-sign changes). Rendering copies the original
 //! whitespace of every token whose layout was not touched, so untouched code stays byte-identical.
-use abapfmt_syntax::{Command, Options, Syntax, parse};
+use abapfmt_syntax::{Command, Options, Syntax, is_ddl_source, parse, parse_ddl};
 
 pub struct Doc<'a> {
     pub syn: Syntax<'a>,
@@ -26,7 +26,11 @@ pub struct Doc<'a> {
 
 impl<'a> Doc<'a> {
     pub fn new(src: &'a str) -> Option<Doc<'a>> {
-        let syn = parse(src, Options::default()).ok()?;
+        let syn = if is_ddl_source(src) {
+            parse_ddl(src)?
+        } else {
+            parse(src, Options::default()).ok()?
+        };
         let lines: Vec<u32> = syn.tokens.iter().map(|t| t.lines_before).collect();
         let spaces: Vec<u32> = syn.tokens.iter().map(|t| t.spaces_before).collect();
         let n = lines.len();

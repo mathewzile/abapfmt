@@ -7,7 +7,11 @@
 #![forbid(unsafe_code)]
 
 mod blocks;
+mod ddl;
+mod ddl_tables;
 mod operators;
+
+pub use ddl::{DdlInfo, is_ddl_source, parse_ddl};
 
 use abapfmt_grammar::{Class, ParsedStatement, is_grammar_word, parse_statements};
 use abapfmt_lexer::{LexError, Token, TokenKind, lex};
@@ -78,6 +82,26 @@ pub struct Command {
 }
 
 impl Command {
+    /// A command of a DDL source; none of the ABAP block information applies.
+    pub(crate) fn plain(first: usize, last: usize, is_comment_only: bool) -> Command {
+        Command {
+            first,
+            last,
+            colon: None,
+            statement: None,
+            fully_matched: true,
+            is_comment_only,
+            level: 0,
+            starts_event_block: false,
+            ends_event_block: false,
+            in_class_definition: false,
+            in_interface_definition: false,
+            in_oo_context: false,
+            depth_after: 0,
+            indent_rel: 0,
+            root_no_base: false,
+        }
+    }
     fn is(&self, names: &[&str]) -> bool {
         self.statement.is_some_and(|s| names.contains(&s))
     }
@@ -132,6 +156,8 @@ pub struct Syntax<'a> {
     pub bracket_match: Vec<Option<usize>>,
     /// Innermost opening bracket token that encloses a token.
     pub parent: Vec<Option<usize>>,
+    /// Command hierarchy, for CDS DDL / DCL sources only.
+    pub ddl: Option<DdlInfo>,
 }
 
 impl Syntax<'_> {
@@ -424,6 +450,7 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
         commands,
         bracket_match,
         parent,
+        ddl: None,
     })
 }
 
