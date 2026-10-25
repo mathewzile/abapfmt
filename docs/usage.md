@@ -50,7 +50,17 @@ tabular style, where some overlength is tolerated because the table stays readab
 `MaxLineLengthForSingleLine` of `ALIGN_PARAMETERS` (a value set there wins), and the reflow leaves
 lines that start with a table row within this length alone.
 
-Rule ids and option names are those of abap-cleaner; enum options are written by name. `false`
+`abapfmt --print-config` prints the complete configuration: every rule with all of its options and
+their defaults, ready to be saved as `abapfmt.json` and edited. With `--config FILE` it prints the
+effective configuration of that file instead, which also converts an abap-cleaner profile to
+`abapfmt.json`:
+
+```
+abapfmt --print-config > abapfmt.json
+abapfmt --print-config --config essential.cfj > abapfmt.json
+```
+
+Options that are not set in the configuration have abap-cleaner's default. Rule ids and option names are those of abap-cleaner; enum options are written by name. `false`
 (or `"enabled": false`) switches a rule off. Rules that abapfmt does not implement (those that
 rewrite code) are rejected in `abapfmt.json`.
 

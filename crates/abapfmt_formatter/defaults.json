@@ -1,0 +1,635 @@
+{
+ "ABAP_DOC_LANG": {
+  "RemoveNonEnglishLang": false
+ },
+ "ABAP_DOC_PARAMETERS": {
+  "AddParameters": "ONLY_FOR_NON_SYNCHRONIZED",
+  "AddExceptions": "ONLY_FOR_NON_SYNCHRONIZED",
+  "OnlyAddToExistingDetails": false,
+  "DeleteParameters": "IF_DESCRIPTION_EMPTY",
+  "DeleteExceptions": "IF_DESCRIPTION_EMPTY"
+ },
+ "ADD_TO_ETC": {
+  "AddToReplacementStyle": "REPLACE_WITHOUT_ASSIGNMENT_OP",
+  "ProcessChains": true
+ },
+ "ALIGN_ABAP_DOC": {
+  "AlignAcrossEmptyLines": true,
+  "AlignAcrossNonEmptyLines": true
+ },
+ "ALIGN_ASSIGNMENTS": {
+  "AlignAcrossEmptyLines": true,
+  "AlignAcrossCommentLines": true
+ },
+ "ALIGN_CLEAR_FREE_AND_SORT": {
+  "MaxLineLength": 120,
+  "DistinctLineClear": "ALWAYS",
+  "DistinctLineFree": "ALWAYS",
+  "DistinctLineSort": "ALWAYS",
+  "DistinctLineCatch": "ALWAYS"
+ },
+ "ALIGN_COND_EXPRESSIONS": {
+  "MaxLineLength": 120,
+  "OneLinerStyle": "KEEP",
+  "SimpleStyle": "VERTICAL_LAYOUT",
+  "TabularStyle": "CREATE",
+  "GapAfterElse": true,
+  "ThenOnWhenLine": true,
+  "ContinueAfterElse": false,
+  "ValueInset": "ADD_2"
+ },
+ "ALIGN_DECLARATIONS": {
+  "ExecuteOnClassDefinitionSections": true,
+  "AlignChainAction": "ALIGN_NAME_TYPE_LENGTH_ETC",
+  "AlignNonChainsAction": "ALIGN_NAME_TYPE_LENGTH_ETC",
+  "AlignStructureAction": "ALIGN_NAME_TYPE_LENGTH_ETC",
+  "StructureAlignStyle": "PER_LEVEL",
+  "AlignEnumAction": "ALIGN_NAME_AND_VALUE",
+  "ContainingPosition": "BELOW_KEYWORD_PLUS_2",
+  "FillPercentageToJustifyOwnColumn": 20,
+  "MaxLineLength": 130,
+  "CondenseInnerSpaces": true
+ },
+ "ALIGN_FORM_DECLARATION": {
+  "ParamCountBehindFormName": 3,
+  "ContinueAfterParamGroupKeyword": true,
+  "AlignTypes": true,
+  "AddEmptyLine": true,
+  "RemoveEmptyLine": true
+ },
+ "ALIGN_LOGICAL_EXPRESSIONS": {
+  "AlignIfWithBoolOps": "DO_NOT_ALIGN",
+  "AlignElseIfWithBoolOps": "DO_NOT_ALIGN",
+  "AlignCheckWithBoolOps": "DO_NOT_ALIGN",
+  "AlignWhileWithBoolOps": "DO_NOT_ALIGN",
+  "AlignWhereWithBoolOps": "DO_NOT_ALIGN",
+  "AlignUntilWithBoolOps": "DO_NOT_ALIGN",
+  "AlignSqlOnWithBoolOps": "LEFT_ALIGN",
+  "AlignSqlWhereWithBoolOps": "RIGHT_ALIGN",
+  "AlignSqlHavingWithBoolOps": "RIGHT_ALIGN",
+  "AlignSqlWhenWithBoolOps": "DO_NOT_ALIGN",
+  "RightAlignComparisonOps": true,
+  "OnlyAlignSameObjects": false,
+  "MaxInnerSpaces": 20
+ },
+ "ALIGN_METHODS_DECLARATION": {
+  "ContinueAfterKeyword": "KEEP_AS_IS",
+  "ContinueAfterMethodName": "KEEP_AS_IS",
+  "ContinueAfterAccess": "ALWAYS",
+  "FillPercentageToJustifyOwnColumn": 40,
+  "HandleOneLiners": "KEEP_EXISTING",
+  "AlignConsecutive": "ONE_LINERS",
+  "SeparateWithEmptyLine": true
+ },
+ "ALIGN_METHODS_FOR_TESTING": {
+  "ContinueAfterKeyword": "ALWAYS",
+  "ContinueAfterMethodName": "ALWAYS"
+ },
+ "ALIGN_METHODS_REDEFINITION": {
+  "ContinueAfterKeyword": "ALWAYS",
+  "ContinueAfterMethodName": "ALWAYS"
+ },
+ "ALIGN_PARAMETERS": {
+  "MaxLineLength": 120,
+  "MaxLineLengthForSingleLine": 160,
+  "MaxParamCountBehindProceduralCall": 0,
+  "MaxParamCountBehindFunctionalCall": 100,
+  "PutProceduralCallKeywordsOnOwnLine": false,
+  "PutFunctionalCallKeywordsOnOwnLine": false,
+  "AlignAssignments": true,
+  "AlignAcrossTableRows": true,
+  "KeepParametersOnSingleLine": "IF_BELOW_MAX_LINE_LENGTH",
+  "KeepOtherOneLiners": "NEVER",
+  "AllowContentLeftOfAssignOp": "TO_KEEP_MAX_LINE_LENGTH"
+ },
+ "ALIGN_PERFORM": {
+  "MaxLineLength": 120,
+  "ParamCountAfterPerform": 3,
+  "BreakAfterAdditions": false,
+  "AlignWithFormName": false,
+  "ContinueAfterParamGroupKeyword": true,
+  "ParamCountToCondense": 16
+ },
+ "ALIGN_SELECT_CLAUSES": {
+  "MaxLineLength": 120,
+  "MainQueryOneLinerAction": "KEEP_EXISTING",
+  "SubQueryOneLinerAction": "KEEP_EXISTING",
+  "MaxSelectListLengthBeforeFrom": 30,
+  "MaxSelectListLengthBeforeInto": 30,
+  "NewLineForFromWithJoins": true,
+  "SelectClauseIndent": "PLUS_2",
+  "SelectUnionIndent": "PLUS_0",
+  "NextSelectPos": "BELOW_PLUS_0",
+  "SelectUnionIntoIndent": "PLUS_0"
+ },
+ "ALIGN_SELECT_FROM": {
+  "FirstTableNamePosition": "CONTINUE",
+  "SelectJoinIndent": "PLUS_2",
+  "FurtherTableNamePositions": "BELOW_PLUS_2",
+  "SelectOnPosition": "CONTINUE",
+  "AlignAsAcrossJoins": false,
+  "AlignOnAcrossJoins": false,
+  "SelectClientPosition": "OWN_LINE_AFTER_JOINS"
+ },
+ "ALIGN_SELECT_LISTS": {
+  "MaxLineLength": 120,
+  "ComplexSelectListLayout": "MULTI_LINE",
+  "SimpleSelectListLayout": "DERIVE",
+  "ComplexGroupByListLayout": "MULTI_LINE",
+  "SimpleGroupByListLayout": "DERIVE",
+  "ComplexOrderByListLayout": "MULTI_LINE",
+  "SimpleOrderByListLayout": "DERIVE",
+  "SelectIntoLayout": "DERIVE",
+  "ConsiderTildeAsComplex": true,
+  "AlignAsInSelectList": true,
+  "AlignAdditionsInOrderByList": false
+ },
+ "ASSERT_CLASS": {
+  "AssertClassName": "cx_assert",
+  "ProcessChains": true
+ },
+ "ASSERT_EQUALS_BOOLEAN": {
+  "RemoveActIfOnlyParameter": true
+ },
+ "ASSERT_EQUALS_SUBRC": {
+  "RemoveExpEqualsZero": true
+ },
+ "ASSERT_PARAMETER_ORDER": {
+  "ComparisonParamOrder": "EXP_FIRST",
+  "NumTextTableParamOrder": "EXP_FIRST",
+  "ReturnCodeParamOrder": "EXP_FIRST",
+  "AssertClassName": ""
+ },
+ "CALCULATION_ASSIGNMENT": {
+  "ConvertMinusToMultiplication": false,
+  "AllowMinusBeforeMultOrDiv": true,
+  "AllowVariableAtEnd": true
+ },
+ "CALL_METHOD": {
+  "ProcessChains": true
+ },
+ "CAMEL_CASE_IN_CDS_TEST": {
+  "ProcessClassName": true,
+  "ProcessVariableNames": true,
+  "ProcessLiterals": true,
+  "ProcessComments": true,
+  "AddPseudoCommentNoWhere": true
+ },
+ "CAMEL_CASE_NAME": {
+  "ProcessViewNames": true,
+  "ProcessFieldNames": true,
+  "ProcessComments": true,
+  "MinLengthOfSureMatch": 11,
+  "RequireApprovalForSureMatch": false,
+  "ContextAllKnownAction": "CHANGE_ALL_KNOWN",
+  "ContextWithUnknownAction": "CHANGE_NONE",
+  "DeviationAction": "CHANGE_IF_APPROVED"
+ },
+ "CDS_TEST_CLASS_LINES": {
+  "RemoveAbapDoc": true,
+  "RemoveToDoComments": "IF_VALUE_HAS_CONTENT",
+  "EmptyLineAboveInsertTestData": true,
+  "EmptyLineAboveSelect": true,
+  "EmptyLineBelowSelect": true,
+  "MovePrepareMethods": false
+ },
+ "CHAIN_OF_ONE": {
+  "ExecuteOnClassDefinitionSections": true,
+  "ExecuteOnLocalDeclarations": true,
+  "ExecuteOnNonDeclarations": true
+ },
+ "CHECK_IN_LOOP": {
+  "ConvertAbapFalseAndAbapTrue": true,
+  "NegationStyle": "AVOID_INNER_NEGATIONS",
+  "KeepCondition": "NEVER",
+  "ProcessChains": true
+ },
+ "CHECK_OUTSIDE_LOOP": {
+  "ConvertAbapFalseAndAbapTrue": true,
+  "NegationStyle": "AVOID_INNER_NEGATIONS",
+  "KeepCondition": "KEEP_AFTER_DECLARATIONS",
+  "AllowCheckAfterCheckpoints": true,
+  "ProcessChains": true
+ },
+ "CLASS_DEFINITION": {
+  "MaxLineLength": 120,
+  "IndentStyle": "PLUS_2",
+  "OneLinerAction": "KEEP",
+  "NewLineForPublic": true,
+  "NewLineForInheriting": true,
+  "NewLineForAbstractOrFinal": false,
+  "NewLineForCreate": true,
+  "NewLineForSharedMemory": true,
+  "NewLineForTesting": true,
+  "NewLineForRiskAndDuration": false,
+  "NewLineForBehavior": true,
+  "NewLineForFriends": true,
+  "NewLineForLocalFriends": false,
+  "NewLineForFriendNames": true
+ },
+ "COMMENT_TYPE": {
+  "MeasureForLeadingAsterisks": "DELETE",
+  "MeasureForTrailingAsterisks": "CONVERT_TO_HYPHEN"
+ },
+ "COMPARISON_OPERATOR": {
+  "PreferredOperatorSet": "SYMBOLIC",
+  "ReplaceRegularOperators": true,
+  "ReplaceObsoleteOperators": true
+ },
+ "CONDENSE": {
+  "SpecifyValName": false,
+  "SpecifyDel": false,
+  "SpecifyFromForNoGaps": true,
+  "KeepParamsOnOneLine": false,
+  "SkipUnknownTypes": true
+ },
+ "CREATE_OBJECT": {
+  "ProcessChains": true
+ },
+ "DDL_ALIGN_DATA_SOURCES": {
+  "AlignDataSources": true,
+  "AlignAliases": true,
+  "AlignOnConditions": true,
+  "AlignAssociationsWithJoins": false,
+  "AlignAssociationTo": true,
+  "ConsiderAllParamAssignLines": false
+ },
+ "DDL_ALIGN_ENTITY_PARAMETERS": {
+  "AlignColons": true,
+  "AlignTypes": true
+ },
+ "DDL_ALIGN_FIELD_LISTS": {
+  "MaxLineLength": 120,
+  "NameListPos": "LINE_START_PLUS_2",
+  "NameListLayout": "MULTI_LINE",
+  "GroupByListPos": "CONTINUE",
+  "ComplexGroupByListLayout": "MULTI_LINE",
+  "SimpleGroupByListLayout": "MULTI_LINE",
+  "ConsiderDotAsComplex": true
+ },
+ "DDL_ALIGN_FUNCTION_PARAMETERS": {
+  "ParameterPos": "CONTINUE",
+  "AlignAssignmentOps": true,
+  "AlignActualParams": true
+ },
+ "DDL_ALIGN_LOGICAL_EXPRESSIONS": {
+  "AlignJoinOn": true,
+  "AlignAssociationOn": true,
+  "AlignWhen": true,
+  "AlignPathExpressions": true,
+  "AlignWhere": true,
+  "AlignHaving": true,
+  "AlignOnWithBoolOps": "LEFT_ALIGN",
+  "AlignFilterWithBoolOps": "RIGHT_ALIGN",
+  "AlignWhenWithBoolOps": "RIGHT_ALIGN",
+  "AlignWhereWithBoolOps": "RIGHT_ALIGN",
+  "AlignHavingWithBoolOps": "RIGHT_ALIGN",
+  "RightAlignComparisonOps": true,
+  "MaxInnerSpaces": 20
+ },
+ "DDL_ALIGN_SELECT_LIST": {
+  "AlignKeyKeyword": true,
+  "AlignAliases": true,
+  "ConsiderSimpleElementsWithoutAlias": true,
+  "ConsiderComplexElementsWithoutAlias": false,
+  "ConsiderAllElementLines": false,
+  "MaxAliasStart": 120,
+  "AlignTextualComments": true,
+  "AlignCommentedOutCode": true
+ },
+ "DDL_ALIGN_SOURCE_PARAMETERS": {
+  "ParameterPos": "SOURCE_NAME_PLUS_2",
+  "AlignAssignmentOps": true,
+  "AlignActualParams": true,
+  "AsAliasPos": "CONTINUE"
+ },
+ "DDL_ANNO_LAYOUT": {
+  "SpaceAfterColon": true,
+  "SpaceInsideBraces": true,
+  "SpaceInsideBrackets": true,
+  "MaxLineLength": 120,
+  "MaxOneLinerElemCountMain": 4,
+  "MaxOneLinerElemCountList": 4,
+  "AlignValues": false,
+  "AlignTablesInArrays": true
+ },
+ "DDL_ANNO_NESTING": {
+  "NestingMinDepth": "LEVEL_3",
+  "NestingAllowList": "",
+  "NestingBlockList": "",
+  "SortOrder": "BY_TWO_ELEMS",
+  "EmptyLinesMain": "FOR_MULTI_LINE_OR_NEW_FIRST_ELEM",
+  "EmptyLinesList": "NEVER"
+ },
+ "DDL_CAMEL_CASE_NAME": {
+  "FixEntityName": true,
+  "FixAliases": true,
+  "FixFieldNames": true,
+  "FixRefsInAnnotations": true,
+  "OnlyApprovedNames": true,
+  "RequireAllFieldsKnown": true
+ },
+ "DDL_EMPTY_LINES_BETWEEN": {
+  "BetweenEntityAnnosAndDefine": "ALWAYS_AT_LEAST_ONE",
+  "BetweenParametersAndAsSelect": "ALWAYS_AT_LEAST_ONE",
+  "BetweenSelectFromAndJoins": "ALWAYS_EXACTLY_ONE",
+  "BetweenJoinsAndAssociations": "ALWAYS_AT_LEAST_ONE",
+  "BeforeSelectListStart": "ALWAYS_AT_LEAST_ONE",
+  "AfterSelectListStart": "NEVER",
+  "BeforeSelectListEnd": "NEVER",
+  "AfterSelectListEnd": "ALWAYS_AT_LEAST_ONE",
+  "RemoveAtDocumentEnd": true,
+  "MaxConsecutiveEmptyLines": 2
+ },
+ "DDL_EMPTY_LINES_WITHIN": {
+  "SurroundParameterLineCountMin": 2,
+  "SurroundJoinLineCountMin": 2,
+  "SurroundAssociationLineCountMin": 2,
+  "SurroundElementLineCountMin": 2,
+  "SurroundClauseLineCountMin": 2,
+  "DetachKeyFields": true,
+  "DetachExposedAssociations": true,
+  "CondenseParameters": "IF_ONLY_DETACHED_ONE_LINERS",
+  "CondenseJoins": "IF_ONLY_DETACHED_ONE_LINERS",
+  "CondenseAssociations": "IF_ONLY_DETACHED_ONE_LINERS",
+  "CondenseElements": "IF_ONLY_DETACHED_ONE_LINERS",
+  "CondenseClauses": "NEVER"
+ },
+ "DDL_POSITION_ASSOCIATION": {
+  "BreakBeforeKeywords": "ALWAYS",
+  "KeywordsIndent": 2,
+  "BreakBeforeDataSource": "NEVER",
+  "DataSourceIndent": 2,
+  "BreakBeforeCondition": "IF_MULTI_LINE_FOUND",
+  "ConditionIndent": 4,
+  "BreakBeforeFilter": "ALWAYS",
+  "FilterIndent": 4
+ },
+ "DDL_POSITION_BRACES": {
+  "BreakBeforeOpeningBrace": "ALWAYS",
+  "OpeningBraceIndent": 0,
+  "BreakBeforeClosingBrace": "ALWAYS",
+  "ClosingBraceIndent": 0,
+  "BreakBeforeFrom": "ALWAYS",
+  "FromIndent": 2
+ },
+ "DDL_POSITION_CLAUSES": {
+  "BreakBeforeWhereEtc": "ALWAYS",
+  "WhereEtcIndent": 0,
+  "BreakBeforeUnionEtc": "ALWAYS",
+  "UnionEtcIndent": 0
+ },
+ "DDL_POSITION_DEFINE": {
+  "BreakBeforeDefine": "ALWAYS",
+  "DefineIndent": 0,
+  "BreakBeforeEntityName": "NEVER",
+  "EntityNameIndent": 2,
+  "BreakBeforeWithParams": "ALWAYS",
+  "WithParamsIndent": 2,
+  "ParamsIndent": 4
+ },
+ "DDL_POSITION_JOIN": {
+  "BreakBeforeKeywords": "ALWAYS",
+  "KeywordsIndent": 4,
+  "BreakBeforeDataSource": "NEVER",
+  "DataSourceIndent": 4,
+  "BreakBeforeCondition": "IF_MULTI_LINE_FOUND",
+  "ConditionIndent": 6
+ },
+ "DDL_POSITION_SELECT": {
+  "BreakBeforeAsSelectFrom": "ALWAYS",
+  "AsSelectFromIndent": 2,
+  "BreakBeforeSelectFrom": "ALWAYS",
+  "SelectFromIndent": 2,
+  "BreakBeforeAsProjectionOn": "ALWAYS",
+  "AsProjectionOnIndent": 2,
+  "BreakBeforeDataSource": "NEVER",
+  "DataSourceIndent": 4
+ },
+ "DDL_SPACES_AROUND_BRACKETS": {
+  "SpacesAroundCardBrackets": "ALWAYS",
+  "SpacesInsideCardBrackets": "NEVER",
+  "SpacesBeforePathBrackets": "NEVER",
+  "SpacesInsidePathBrackets": "NEVER",
+  "SpacesBeforeFuncParens": "NEVER",
+  "SpacesInsideFuncParens": "NEVER",
+  "SpacesBeforeTypeParens": "NEVER",
+  "SpacesInsideTypeParens": "NEVER",
+  "SpacesInsideArithParens": "NEVER"
+ },
+ "DDL_SPACES_AROUND_SIGNS": {
+  "SpaceBeforeCommentSign": "ALWAYS",
+  "SpaceAfterCommentSign": "ALWAYS",
+  "SpaceBeforeColon": "KEEP_AS_IS",
+  "SpaceAfterColon": "ALWAYS",
+  "SpaceBeforeComma": "NEVER",
+  "SpaceAfterComma": "ALWAYS",
+  "SpaceAfterCommaInAbapType": "NEVER",
+  "SpaceAroundArithmeticOps": "ALWAYS"
+ },
+ "DDL_TYPO": {
+  "CorrectTypos": true,
+  "ConvertBritishToAmerican": true,
+  "ProcessComments": true,
+  "ProcessAnnotations": true,
+  "ProcessAnnotationRefs": false
+ },
+ "DECLARATION_CHAIN": {
+  "ExecuteOnInterfaces": true,
+  "ExecuteOnClassDefinitionSections": true,
+  "ExecuteOnLocalDeclarations": true,
+  "KeepTablesWithStructures": true,
+  "ExecuteOnSimpleCommands": false,
+  "ExecuteOnComplexCommands": true
+ },
+ "EMPTY_LINES_IN_CLASS_DEFINITION": {
+  "AddEmptyLineAboveSections": true,
+  "RemoveEmptyLineBelowSections": true,
+  "RemoveEmptyLineAboveEndClass": false,
+  "RemoveIncludeWarnings": true,
+  "MaxEmptyLines": 1,
+  "AddLineBetweenDefTypes": "ADD_CONSIDER_STATIC"
+ },
+ "EMPTY_LINES_OUTSIDE_METHODS": {
+  "EmptyLinesBetweenClasses": 2,
+  "EmptyLinesBetweenMethods": 1,
+  "EmptyLinesBetweenClassAndMethod": 0
+ },
+ "EMPTY_LINES_WITHIN_METHODS": {
+  "MaxEmptyLinesAtMethodStart": 0,
+  "MaxEmptyLinesWithinMethods": 1,
+  "MaxEmptyLinesAtMethodEnd": 0,
+  "EmptyLineAboveFirstExecutable": true
+ },
+ "EMPTY_SECTIONS": {
+  "EmptySectionsMeasure": "REMOVE_ANY_FROM_NON_EMPTY_CLASS"
+ },
+ "END_OF_COMMENT": {
+  "EndOfCommentActionInsideMethod": "REMOVE_REDUNDANT",
+  "EndOfCommentActionOutsideMethod": "REMOVE_REDUNDANT",
+  "LineLimitInsideMethod": 50
+ },
+ "ESCAPE_CHAR_FOR_PARAMS": {
+  "UseEscapeCharForParams": "ONLY_FOR_ABAP_WORDS"
+ },
+ "EXIT_OUTSIDE_LOOP": {
+  "ApplyToProcedures": true,
+  "ApplyToEventBlocks": true
+ },
+ "IF_BLOCK_AT_LOOP_END": {
+  "MinLineCount": 10,
+  "MinLinePercentage": 50,
+  "KeepExceptionalLogicInIf": true,
+  "NegationStyle": "AVOID_INNER_NEGATIONS",
+  "ConvertAbapFalseAndAbapTrue": true,
+  "EnsureEmptyLineAfterEndIf": true
+ },
+ "IF_BLOCK_AT_METHOD_END": {
+  "MinLineCount": 10,
+  "MinLinePercentage": 50,
+  "KeepExceptionalLogicInIf": true,
+  "NegationStyle": "AVOID_INNER_NEGATIONS",
+  "ConvertAbapFalseAndAbapTrue": true,
+  "EnsureEmptyLineAfterEndIf": true
+ },
+ "IMPLICIT_TYPE": {
+  "ExecuteOnTypes": true,
+  "ExecuteOnConstantsAndStatics": true,
+  "ExecuteOnDataAndClassData": true,
+  "ReplaceParenthesisWithLength": true
+ },
+ "INSET": {
+  "ExecuteOnClassDefinitionSections": true,
+  "AlignWithFollowingElse": "IF_BLANK_LINE_ABOVE",
+  "AlignWithFollowingWhen": "IF_BLANK_LINE_ABOVE",
+  "AlignWithFollowingCatch": "IF_BLANK_LINE_ABOVE"
+ },
+ "LOCAL_DECLARATION_ORDER": {
+  "TypesOrder": "METHOD_START_KEEP_ORDER",
+  "ConstantsOrder": "METHOD_START_KEEP_ORDER",
+  "StaticsOrder": "METHOD_START_CHANGE_ORDER",
+  "DataOrder": "METHOD_START_CHANGE_ORDER",
+  "FieldSymbolsOrder": "METHOD_START_CHANGE_ORDER",
+  "DistinctBlocks": true,
+  "EmptyLine": true,
+  "MoveComments": true,
+  "RearrangeChains": true,
+  "ConsiderComments": false
+ },
+ "LOGICAL_OPERATOR_POSITION": {
+  "MoveKeyword": true,
+  "MoveBooleanOperators": true
+ },
+ "MOVE_TO": {
+  "ProcessChains": true
+ },
+ "NEEDLESS_CLEAR": {
+  "ActionAtStart": "DELETE",
+  "ActionAtEnd": "ADD_TODO_COMMENT",
+  "KeepStrucBeforeAssign": true
+ },
+ "NEEDLESS_PARENTHESES": {
+  "RemoveAroundAll": true,
+  "RemoveAroundRelExpr": false,
+  "RemoveOrParenthesisAnd": false,
+  "RemoveAroundSameOp": false,
+  "RemoveAroundNot": false
+ },
+ "NEEDLESS_SPACES": {
+  "SearchAcrossEmptyLines": true,
+  "SearchAcrossCommentLines": true,
+  "ProcessLineEndComments": false,
+  "ProcessEmptyBrackets": true
+ },
+ "ONE_COMMAND_PER_LINE": {
+  "KeepOneLinersAfterWhen": true,
+  "KeepMultiLinersAfterWhen": false
+ },
+ "PRAGMA_POSITION": {
+  "MovePragmaFromLineStartToEnd": false
+ },
+ "READ_TABLE": {
+  "ReplaceWithAssign": true,
+  "ReplaceWithLineExists": true,
+  "ReplaceWithLineIndex": true,
+  "ReplaceInsertIntoIndex": false,
+  "UseComponentsKeyword": false
+ },
+ "SPACES_IN_EMPTY_BRACKETS": {
+  "RemoveMultiSpaceIfEmpty": true,
+  "SeparateFromKeywords": true,
+  "SeparateFromOperators": true,
+  "SeparateFromComments": true,
+  "SeparateFromCharLiterals": true,
+  "SeparateCondensedCases": true
+ },
+ "SPACE_AROUND_COMMENT_SIGN": {
+  "SpaceBeforeCommentSign": true,
+  "SpaceAfterCommentSign": true
+ },
+ "SPACE_BEFORE_PERIOD": {
+  "ExecuteOnComma": true,
+  "ExecuteOnPeriod": true,
+  "MoveAcrossCommentLines": true,
+  "ExecuteOnClassDefinitionSections": true
+ },
+ "STRING_TEMPLATE": {
+  "StringTemplateCondition": "SHORTER_OR_EQUAL",
+  "AlwaysConvertLiterals": true,
+  "RequireOperandsOnSameLine": false,
+  "IgnoreMultiLineOperands": true,
+  "KeepControlCharsSeparate": true
+ },
+ "TRANSLATE": {
+  "ReplaceTranslateToUpperLower": true,
+  "ReplaceTranslateUsing": true,
+  "ReplaceUnevenMasks": true,
+  "ProcessChains": true,
+  "SkipUnknownTypes": true
+ },
+ "TYPO": {
+  "CorrectTypos": true,
+  "ConvertBritishToAmerican": true,
+  "ProcessAbapDoc": true,
+  "ProcessShorttexts": true,
+  "ProcessComments": true,
+  "AddTodoBeforeMessage": true,
+  "MeasureForLiterals": "ADD_TODO_COMMENT"
+ },
+ "UNUSED_PARAMETERS": {
+  "ImportingParamScope": "NON_INTERFACE_METHODS",
+  "ExportingParamScope": "ALL_METHODS",
+  "ChangingParamScope": "NON_INTERFACE_METHODS",
+  "ReturningParamScope": "NEVER",
+  "IgnoreEmptyMethods": true,
+  "IgnoreExportingByValue": true
+ },
+ "UNUSED_VARIABLES": {
+  "MeasureForVarsNeverUsed": "DELETE",
+  "MeasureForVarsOnlyUsedInComment": "COMMENT_OUT_WITH_ASTERISK",
+  "MeasureForAssignedVars": "ADD_TODO_COMMENT",
+  "MeasureForAssignedVarsOnlyUsedInComment": "ADD_TODO_COMMENT",
+  "MeasureForVarsOnlyAssignedInMessageInto": "ADD_PRAGMA_NEEDED",
+  "MeasureForConstantsNeverUsed": "COMMENT_OUT_WITH_ASTERISK",
+  "MeasureForConstantsOnlyUsedInComment": "COMMENT_OUT_WITH_ASTERISK"
+ },
+ "UPPER_AND_LOWER_CASE": {
+  "DeriveCaseMethod": "NONE",
+  "DefinitionKeywordStyle": "UPPER_CASE",
+  "DefinitionIdentifierStyle": "LOWER_CASE",
+  "ImplementationKeywordStyle": "UPPER_CASE",
+  "ImplementationIdentifierStyle": "LOWER_CASE",
+  "PragmaStyle": "UPPER_CASE",
+  "PragmaParameterStyle": "UPPER_CASE",
+  "KeepMixedCaseInIdentifiers": true
+ },
+ "VALUE_STATEMENT": {
+  "MoveIntegerLiterals": true,
+  "MoveFloatLiterals": true,
+  "MoveStringLiterals": true,
+  "MoveIdentifiers": true,
+  "MoveComplexExpressions": true,
+  "MoveMethodCalls": false,
+  "SkipIfRowsCommentedOut": true
+ }
+}

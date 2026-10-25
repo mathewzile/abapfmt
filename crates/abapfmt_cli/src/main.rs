@@ -28,6 +28,9 @@ OPTIONS:
         --stdin-filepath <P>    Path of the stdin code, for the configuration lookup
         --config <FILE>         Use this abapfmt.json or abap-cleaner profile (.cfj)
         --no-config             Do not look for abapfmt.json
+        --print-config          Print the complete configuration (all rules with all options):
+                                the defaults, or the settings of --config FILE; this also converts
+                                an abap-cleaner profile (.cfj) to abapfmt.json
     -h, --help                  Print this help
     -V, --version               Print the version
 ";
@@ -44,6 +47,7 @@ struct Options {
     stdin_filepath: Option<PathBuf>,
     config: Option<PathBuf>,
     no_config: bool,
+    print_config: bool,
     paths: Vec<PathBuf>,
 }
 
@@ -64,6 +68,7 @@ fn parse_args(args: impl Iterator<Item = String>) -> Result<Option<Options>, Str
             "--check" => o.check = true,
             "--stdin" => o.stdin = true,
             "--no-config" => o.no_config = true,
+            "--print-config" => o.print_config = true,
             "--stdin-filepath" => {
                 o.stdin_filepath =
                     Some(args.next().ok_or("--stdin-filepath needs a value")?.into());
@@ -72,6 +77,9 @@ fn parse_args(args: impl Iterator<Item = String>) -> Result<Option<Options>, Str
             s if s.starts_with('-') => return Err(format!("unknown option {s}")),
             _ => o.paths.push(arg.into()),
         }
+    }
+    if o.print_config {
+        return Ok(Some(o));
     }
     if o.stdin && (o.write || o.check || !o.paths.is_empty()) {
         return Err("--stdin cannot be combined with paths, --write or --check".into());
@@ -163,6 +171,17 @@ fn run() -> Result<ExitCode, String> {
     let Some(options) = parse_args(std::env::args().skip(1))? else {
         return Ok(ExitCode::SUCCESS);
     };
+    if options.print_config {
+        let loaded = match &options.config {
+            Some(path) => abapfmt_config::load_file(path)?,
+            None => abapfmt_config::Loaded::default(),
+        };
+        for w in &loaded.warnings {
+            eprintln!("warning: {w}");
+        }
+        print!("{}", loaded.config.to_json());
+        return Ok(ExitCode::SUCCESS);
+    }
     let mut configs = Configs {
         options: &options,
         cache: Vec::new(),

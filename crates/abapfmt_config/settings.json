@@ -1,7 +1,8 @@
 {
  "ABAP_DOC_LANG": {
   "RemoveNonEnglishLang": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   }
  },
  "ABAP_DOC_PARAMETERS": {
@@ -12,7 +13,8 @@
     "ALWAYS_AS_NON_SYNCHRONIZED",
     "ONLY_FOR_NON_SYNCHRONIZED",
     "NEVER"
-   ]
+   ],
+   "d": "ONLY_FOR_NON_SYNCHRONIZED"
   },
   "AddExceptions": {
    "t": "enum",
@@ -21,10 +23,12 @@
     "ALWAYS_AS_NON_SYNCHRONIZED",
     "ONLY_FOR_NON_SYNCHRONIZED",
     "NEVER"
-   ]
+   ],
+   "d": "ONLY_FOR_NON_SYNCHRONIZED"
   },
   "OnlyAddToExistingDetails": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "DeleteParameters": {
    "t": "enum",
@@ -32,7 +36,8 @@
     "ALWAYS",
     "IF_DESCRIPTION_EMPTY",
     "NEVER"
-   ]
+   ],
+   "d": "IF_DESCRIPTION_EMPTY"
   },
   "DeleteExceptions": {
    "t": "enum",
@@ -40,7 +45,8 @@
     "ALWAYS",
     "IF_DESCRIPTION_EMPTY",
     "NEVER"
-   ]
+   ],
+   "d": "IF_DESCRIPTION_EMPTY"
   }
  },
  "ADD_TO_ETC": {
@@ -49,32 +55,39 @@
    "names": [
     "KEEP",
     "REPLACE_WITHOUT_ASSIGNMENT_OP"
-   ]
+   ],
+   "d": "REPLACE_WITHOUT_ASSIGNMENT_OP"
   },
   "ProcessChains": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "ALIGN_ABAP_DOC": {
   "AlignAcrossEmptyLines": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignAcrossNonEmptyLines": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "ALIGN_ALIASES_FOR": {},
  "ALIGN_ASSIGNMENTS": {
   "AlignAcrossEmptyLines": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignAcrossCommentLines": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "ALIGN_CLEAR_FREE_AND_SORT": {
   "MaxLineLength": {
-   "t": "int"
+   "t": "int",
+   "d": 120
   },
   "DistinctLineClear": {
    "t": "enum",
@@ -83,7 +96,8 @@
     "ONLY_WITH_ADDITIONS",
     "NEVER",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "DistinctLineFree": {
    "t": "enum",
@@ -91,7 +105,8 @@
     "ALWAYS",
     "NEVER",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "DistinctLineSort": {
    "t": "enum",
@@ -100,7 +115,8 @@
     "ONLY_WITH_ADDITIONS",
     "NEVER",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "DistinctLineCatch": {
    "t": "enum",
@@ -108,12 +124,14 @@
     "ALWAYS",
     "NEVER",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   }
  },
  "ALIGN_COND_EXPRESSIONS": {
   "MaxLineLength": {
-   "t": "int"
+   "t": "int",
+   "d": 120
   },
   "OneLinerStyle": {
    "t": "enum",
@@ -121,14 +139,16 @@
     "CREATE",
     "KEEP",
     "SPLIT"
-   ]
+   ],
+   "d": "KEEP"
   },
   "SimpleStyle": {
    "t": "enum",
    "names": [
     "VERTICAL_LAYOUT",
     "LIKE_COMPLEX"
-   ]
+   ],
+   "d": "VERTICAL_LAYOUT"
   },
   "TabularStyle": {
    "t": "enum",
@@ -136,16 +156,20 @@
     "CREATE",
     "KEEP",
     "SPLIT"
-   ]
+   ],
+   "d": "CREATE"
   },
   "GapAfterElse": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ThenOnWhenLine": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ContinueAfterElse": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "ValueInset": {
    "t": "enum",
@@ -154,12 +178,14 @@
     "ADD_2",
     "ADD_5",
     "ADD_7"
-   ]
+   ],
+   "d": "ADD_2"
   }
  },
  "ALIGN_DECLARATIONS": {
   "ExecuteOnClassDefinitionSections": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignChainAction": {
    "t": "enum",
@@ -167,7 +193,8 @@
     "ALIGN_NAME_TYPE_LENGTH_ETC",
     "ALIGN_NAME_AND_TYPE",
     "ALIGN_NAME_ONLY"
-   ]
+   ],
+   "d": "ALIGN_NAME_TYPE_LENGTH_ETC"
   },
   "AlignNonChainsAction": {
    "t": "enum",
@@ -175,7 +202,8 @@
     "ALIGN_NAME_TYPE_LENGTH_ETC",
     "ALIGN_NAME_AND_TYPE",
     "ALIGN_NAME_ONLY"
-   ]
+   ],
+   "d": "ALIGN_NAME_TYPE_LENGTH_ETC"
   },
   "AlignStructureAction": {
    "t": "enum",
@@ -183,21 +211,25 @@
     "ALIGN_NAME_TYPE_LENGTH_ETC",
     "ALIGN_NAME_AND_TYPE",
     "ALIGN_NAME_ONLY"
-   ]
+   ],
+   "d": "ALIGN_NAME_TYPE_LENGTH_ETC"
   },
   "StructureAlignStyle": {
    "t": "enum",
    "names": [
-    "resuming",
-    "starting"
-   ]
+    "ACROSS_LEVELS",
+    "PER_LEVEL",
+    "PER_SECTION"
+   ],
+   "d": "PER_LEVEL"
   },
   "AlignEnumAction": {
    "t": "enum",
    "names": [
     "ALIGN_NAME_AND_VALUE",
     "ALIGN_NAME_ONLY"
-   ]
+   ],
+   "d": "ALIGN_NAME_AND_VALUE"
   },
   "ContainingPosition": {
    "t": "enum",
@@ -209,33 +241,42 @@
     "BELOW_IDENTIFIER_PLUS_2",
     "BELOW_TYPE",
     "BELOW_ANY_STRUCTURE"
-   ]
+   ],
+   "d": "BELOW_KEYWORD_PLUS_2"
   },
   "FillPercentageToJustifyOwnColumn": {
-   "t": "int"
+   "t": "int",
+   "d": 20
   },
   "MaxLineLength": {
-   "t": "int"
+   "t": "int",
+   "d": 130
   },
   "CondenseInnerSpaces": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "ALIGN_FORM_DECLARATION": {
   "ParamCountBehindFormName": {
-   "t": "int"
+   "t": "int",
+   "d": 3
   },
   "ContinueAfterParamGroupKeyword": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignTypes": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AddEmptyLine": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "RemoveEmptyLine": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "ALIGN_LOGICAL_EXPRESSIONS": {
@@ -245,7 +286,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "DO_NOT_ALIGN"
   },
   "AlignElseIfWithBoolOps": {
    "t": "enum",
@@ -253,7 +295,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "DO_NOT_ALIGN"
   },
   "AlignCheckWithBoolOps": {
    "t": "enum",
@@ -261,7 +304,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "DO_NOT_ALIGN"
   },
   "AlignWhileWithBoolOps": {
    "t": "enum",
@@ -269,7 +313,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "DO_NOT_ALIGN"
   },
   "AlignWhereWithBoolOps": {
    "t": "enum",
@@ -277,7 +322,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "DO_NOT_ALIGN"
   },
   "AlignUntilWithBoolOps": {
    "t": "enum",
@@ -285,7 +331,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "DO_NOT_ALIGN"
   },
   "AlignSqlOnWithBoolOps": {
    "t": "enum",
@@ -293,7 +340,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "LEFT_ALIGN"
   },
   "AlignSqlWhereWithBoolOps": {
    "t": "enum",
@@ -301,7 +349,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "RIGHT_ALIGN"
   },
   "AlignSqlHavingWithBoolOps": {
    "t": "enum",
@@ -309,7 +358,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "RIGHT_ALIGN"
   },
   "AlignSqlWhenWithBoolOps": {
    "t": "enum",
@@ -317,16 +367,20 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "DO_NOT_ALIGN"
   },
   "RightAlignComparisonOps": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "OnlyAlignSameObjects": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "MaxInnerSpaces": {
-   "t": "int"
+   "t": "int",
+   "d": 20
   }
  },
  "ALIGN_METHODS_DECLARATION": {
@@ -336,7 +390,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "KEEP_AS_IS"
   },
   "ContinueAfterMethodName": {
    "t": "enum",
@@ -344,7 +399,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "KEEP_AS_IS"
   },
   "ContinueAfterAccess": {
    "t": "enum",
@@ -352,10 +408,12 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "FillPercentageToJustifyOwnColumn": {
-   "t": "int"
+   "t": "int",
+   "d": 40
   },
   "HandleOneLiners": {
    "t": "enum",
@@ -363,7 +421,8 @@
     "CREATE",
     "KEEP_EXISTING",
     "SAME_AS_MULTI_LINERS"
-   ]
+   ],
+   "d": "KEEP_EXISTING"
   },
   "AlignConsecutive": {
    "t": "enum",
@@ -371,10 +430,12 @@
     "NEVER",
     "ONE_LINERS",
     "ALL_TABULAR"
-   ]
+   ],
+   "d": "ONE_LINERS"
   },
   "SeparateWithEmptyLine": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "ALIGN_METHODS_FOR_TESTING": {
@@ -384,7 +445,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "ContinueAfterMethodName": {
    "t": "enum",
@@ -392,7 +454,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   }
  },
  "ALIGN_METHODS_REDEFINITION": {
@@ -402,7 +465,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "ContinueAfterMethodName": {
    "t": "enum",
@@ -410,33 +474,42 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   }
  },
  "ALIGN_PARAMETERS": {
   "MaxLineLength": {
-   "t": "int"
+   "t": "int",
+   "d": 120
   },
   "MaxLineLengthForSingleLine": {
-   "t": "int"
+   "t": "int",
+   "d": 160
   },
   "MaxParamCountBehindProceduralCall": {
-   "t": "int"
+   "t": "int",
+   "d": 0
   },
   "MaxParamCountBehindFunctionalCall": {
-   "t": "int"
+   "t": "int",
+   "d": 100
   },
   "PutProceduralCallKeywordsOnOwnLine": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "PutFunctionalCallKeywordsOnOwnLine": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "AlignAssignments": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignAcrossTableRows": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "KeepParametersOnSingleLine": {
    "t": "enum",
@@ -444,7 +517,8 @@
     "NEVER",
     "IF_BELOW_MAX_LINE_LENGTH",
     "ALWAYS"
-   ]
+   ],
+   "d": "IF_BELOW_MAX_LINE_LENGTH"
   },
   "KeepOtherOneLiners": {
    "t": "enum",
@@ -452,7 +526,8 @@
     "NEVER",
     "IF_BELOW_MAX_LINE_LENGTH",
     "ALWAYS"
-   ]
+   ],
+   "d": "NEVER"
   },
   "AllowContentLeftOfAssignOp": {
    "t": "enum",
@@ -460,32 +535,40 @@
     "NEVER",
     "TO_KEEP_MAX_LINE_LENGTH",
     "ALWAYS"
-   ]
+   ],
+   "d": "TO_KEEP_MAX_LINE_LENGTH"
   }
  },
  "ALIGN_PERFORM": {
   "MaxLineLength": {
-   "t": "int"
+   "t": "int",
+   "d": 120
   },
   "ParamCountAfterPerform": {
-   "t": "int"
+   "t": "int",
+   "d": 3
   },
   "BreakAfterAdditions": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "AlignWithFormName": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "ContinueAfterParamGroupKeyword": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ParamCountToCondense": {
-   "t": "int"
+   "t": "int",
+   "d": 16
   }
  },
  "ALIGN_SELECT_CLAUSES": {
   "MaxLineLength": {
-   "t": "int"
+   "t": "int",
+   "d": 120
   },
   "MainQueryOneLinerAction": {
    "t": "enum",
@@ -493,7 +576,8 @@
     "CREATE",
     "KEEP_EXISTING",
     "ALWAYS_SPLIT"
-   ]
+   ],
+   "d": "KEEP_EXISTING"
   },
   "SubQueryOneLinerAction": {
    "t": "enum",
@@ -501,16 +585,20 @@
     "CREATE",
     "KEEP_EXISTING",
     "ALWAYS_SPLIT"
-   ]
+   ],
+   "d": "KEEP_EXISTING"
   },
   "MaxSelectListLengthBeforeFrom": {
-   "t": "int"
+   "t": "int",
+   "d": 30
   },
   "MaxSelectListLengthBeforeInto": {
-   "t": "int"
+   "t": "int",
+   "d": 30
   },
   "NewLineForFromWithJoins": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SelectClauseIndent": {
    "t": "enum",
@@ -518,7 +606,8 @@
     "PLUS_2",
     "PLUS_4",
     "PLUS_7"
-   ]
+   ],
+   "d": "PLUS_2"
   },
   "SelectUnionIndent": {
    "t": "enum",
@@ -527,7 +616,8 @@
     "PLUS_2",
     "PLUS_4",
     "PLUS_7"
-   ]
+   ],
+   "d": "PLUS_0"
   },
   "NextSelectPos": {
    "t": "enum",
@@ -538,7 +628,8 @@
     "BELOW_PLUS_2",
     "BELOW_PLUS_4",
     "BELOW_SECOND_WORD"
-   ]
+   ],
+   "d": "BELOW_PLUS_0"
   },
   "SelectUnionIntoIndent": {
    "t": "enum",
@@ -547,7 +638,8 @@
     "PLUS_2",
     "PLUS_4",
     "PLUS_7"
-   ]
+   ],
+   "d": "PLUS_0"
   }
  },
  "ALIGN_SELECT_FROM": {
@@ -557,7 +649,8 @@
     "CONTINUE",
     "BELOW_PLUS_0",
     "BELOW_PLUS_2"
-   ]
+   ],
+   "d": "CONTINUE"
   },
   "SelectJoinIndent": {
    "t": "enum",
@@ -565,7 +658,8 @@
     "PLUS_0",
     "PLUS_2",
     "PLUS_4"
-   ]
+   ],
+   "d": "PLUS_2"
   },
   "FurtherTableNamePositions": {
    "t": "enum",
@@ -573,7 +667,8 @@
     "CONTINUE",
     "BELOW_PLUS_0",
     "BELOW_PLUS_2"
-   ]
+   ],
+   "d": "BELOW_PLUS_2"
   },
   "SelectOnPosition": {
    "t": "enum",
@@ -582,13 +677,16 @@
     "BELOW_JOIN",
     "BELOW_JOIN_PLUS_2",
     "BELOW_JOIN_WORD_2"
-   ]
+   ],
+   "d": "CONTINUE"
   },
   "AlignAsAcrossJoins": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "AlignOnAcrossJoins": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "SelectClientPosition": {
    "t": "enum",
@@ -597,12 +695,14 @@
     "KEEP_AS_IS",
     "OWN_LINE_AFTER_JOINS",
     "OWN_LINE"
-   ]
+   ],
+   "d": "OWN_LINE_AFTER_JOINS"
   }
  },
  "ALIGN_SELECT_LISTS": {
   "MaxLineLength": {
-   "t": "int"
+   "t": "int",
+   "d": 120
   },
   "ComplexSelectListLayout": {
    "t": "enum",
@@ -611,7 +711,8 @@
     "ONE_LINE",
     "DERIVE",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "MULTI_LINE"
   },
   "SimpleSelectListLayout": {
    "t": "enum",
@@ -620,7 +721,8 @@
     "ONE_LINE",
     "DERIVE",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "DERIVE"
   },
   "ComplexGroupByListLayout": {
    "t": "enum",
@@ -629,7 +731,8 @@
     "ONE_LINE",
     "DERIVE",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "MULTI_LINE"
   },
   "SimpleGroupByListLayout": {
    "t": "enum",
@@ -638,7 +741,8 @@
     "ONE_LINE",
     "DERIVE",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "DERIVE"
   },
   "ComplexOrderByListLayout": {
    "t": "enum",
@@ -647,7 +751,8 @@
     "ONE_LINE",
     "DERIVE",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "MULTI_LINE"
   },
   "SimpleOrderByListLayout": {
    "t": "enum",
@@ -656,7 +761,8 @@
     "ONE_LINE",
     "DERIVE",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "DERIVE"
   },
   "SelectIntoLayout": {
    "t": "enum",
@@ -665,35 +771,43 @@
     "ONE_LINE",
     "DERIVE",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "DERIVE"
   },
   "ConsiderTildeAsComplex": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignAsInSelectList": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignAdditionsInOrderByList": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   }
  },
  "ALIGN_WITH_SECOND_WORD": {},
  "ASSERT_CLASS": {
   "AssertClassName": {
-   "t": "str"
+   "t": "str",
+   "d": "cx_assert"
   },
   "ProcessChains": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "ASSERT_EQUALS_BOOLEAN": {
   "RemoveActIfOnlyParameter": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "ASSERT_EQUALS_SUBRC": {
   "RemoveExpEqualsZero": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "ASSERT_PARAMETER_ORDER": {
@@ -703,7 +817,8 @@
     "EXP_FIRST",
     "ACT_FIRST",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "EXP_FIRST"
   },
   "NumTextTableParamOrder": {
    "t": "enum",
@@ -711,7 +826,8 @@
     "EXP_FIRST",
     "ACT_FIRST",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "EXP_FIRST"
   },
   "ReturnCodeParamOrder": {
    "t": "enum",
@@ -719,60 +835,76 @@
     "EXP_FIRST",
     "ACT_FIRST",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "EXP_FIRST"
   },
   "AssertClassName": {
-   "t": "str"
+   "t": "str",
+   "d": ""
   }
  },
  "CALCULATION_ASSIGNMENT": {
   "ConvertMinusToMultiplication": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "AllowMinusBeforeMultOrDiv": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AllowVariableAtEnd": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "CALL_METHOD": {
   "ProcessChains": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "CAMEL_CASE_IN_CDS_TEST": {
   "ProcessClassName": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessVariableNames": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessLiterals": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessComments": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AddPseudoCommentNoWhere": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "CAMEL_CASE_NAME": {
   "ProcessViewNames": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessFieldNames": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessComments": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MinLengthOfSureMatch": {
-   "t": "int"
+   "t": "int",
+   "d": 11
   },
   "RequireApprovalForSureMatch": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "ContextAllKnownAction": {
    "t": "enum",
@@ -780,7 +912,8 @@
     "CHANGE_ALL_KNOWN",
     "CHANGE_ALL_APPROVED",
     "CHANGE_SURE_ONLY"
-   ]
+   ],
+   "d": "CHANGE_ALL_KNOWN"
   },
   "ContextWithUnknownAction": {
    "t": "enum",
@@ -789,7 +922,8 @@
     "CHANGE_ALL_APPROVED",
     "CHANGE_SURE_ONLY",
     "CHANGE_NONE"
-   ]
+   ],
+   "d": "CHANGE_NONE"
   },
   "DeviationAction": {
    "t": "enum",
@@ -797,7 +931,8 @@
     "CHANGE_IF_KNOWN",
     "CHANGE_IF_APPROVED",
     "NONE"
-   ]
+   ],
+   "d": "CHANGE_IF_APPROVED"
   },
   "CustomViewNamesFile": {
    "t": "str"
@@ -808,7 +943,8 @@
  },
  "CDS_TEST_CLASS_LINES": {
   "RemoveAbapDoc": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "RemoveToDoComments": {
    "t": "enum",
@@ -816,58 +952,80 @@
     "ALWAYS",
     "IF_VALUE_HAS_CONTENT",
     "NEVER"
-   ]
+   ],
+   "d": "IF_VALUE_HAS_CONTENT"
   },
   "EmptyLineAboveInsertTestData": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "EmptyLineAboveSelect": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "EmptyLineBelowSelect": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MovePrepareMethods": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   }
  },
  "CHAIN_OF_ONE": {
   "ExecuteOnClassDefinitionSections": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ExecuteOnLocalDeclarations": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ExecuteOnNonDeclarations": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "CHECK_IN_LOOP": {
   "ConvertAbapFalseAndAbapTrue": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NegationStyle": {
    "t": "enum",
-   "names": []
+   "names": [
+    "ALWAYS_WITH_AND_OR",
+    "AVOID_INNER_NEGATIONS",
+    "NEVER"
+   ],
+   "d": "AVOID_INNER_NEGATIONS"
   },
   "KeepCondition": {
    "t": "enum",
    "names": [
     "NEVER",
     "KEEP_AT_LOOP_START"
-   ]
+   ],
+   "d": "NEVER"
   },
   "ProcessChains": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "CHECK_OUTSIDE_LOOP": {
   "ConvertAbapFalseAndAbapTrue": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NegationStyle": {
    "t": "enum",
-   "names": []
+   "names": [
+    "ALWAYS_WITH_AND_OR",
+    "AVOID_INNER_NEGATIONS",
+    "NEVER"
+   ],
+   "d": "AVOID_INNER_NEGATIONS"
   },
   "KeepCondition": {
    "t": "enum",
@@ -876,18 +1034,22 @@
     "KEEP_AT_METHOD_START",
     "KEEP_AFTER_DECLARATIONS",
     "KEEP_AFTER_DECLARATIONS_AND_CLEAR"
-   ]
+   ],
+   "d": "KEEP_AFTER_DECLARATIONS"
   },
   "AllowCheckAfterCheckpoints": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessChains": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "CLASS_DEFINITION": {
   "MaxLineLength": {
-   "t": "int"
+   "t": "int",
+   "d": 120
   },
   "IndentStyle": {
    "t": "enum",
@@ -896,7 +1058,8 @@
     "PLUS_4",
     "BELOW_NAME",
     "BELOW_DEFINITION"
-   ]
+   ],
+   "d": "PLUS_2"
   },
   "OneLinerAction": {
    "t": "enum",
@@ -905,40 +1068,52 @@
     "CREATE_ON_NEXT_LINE",
     "KEEP",
     "SPLIT"
-   ]
+   ],
+   "d": "KEEP"
   },
   "NewLineForPublic": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NewLineForInheriting": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NewLineForAbstractOrFinal": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "NewLineForCreate": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NewLineForSharedMemory": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NewLineForTesting": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NewLineForRiskAndDuration": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "NewLineForBehavior": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NewLineForFriends": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NewLineForLocalFriends": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "NewLineForFriendNames": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "CLOSING_BRACKETS_POSITION": {},
@@ -950,7 +1125,8 @@
     "CONVERT_TO_HYPHEN",
     "CONVERT_TO_EQUALS",
     "DELETE"
-   ]
+   ],
+   "d": "DELETE"
   },
   "MeasureForTrailingAsterisks": {
    "t": "enum",
@@ -959,7 +1135,8 @@
     "CONVERT_TO_HYPHEN",
     "CONVERT_TO_EQUALS",
     "DELETE"
-   ]
+   ],
+   "d": "CONVERT_TO_HYPHEN"
   }
  },
  "COMPARISON_OPERATOR": {
@@ -968,68 +1145,86 @@
    "names": [
     "SYMBOLIC",
     "TEXTUAL"
-   ]
+   ],
+   "d": "SYMBOLIC"
   },
   "ReplaceRegularOperators": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ReplaceObsoleteOperators": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "CONDENSE": {
   "SpecifyValName": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "SpecifyDel": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "SpecifyFromForNoGaps": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "KeepParamsOnOneLine": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "SkipUnknownTypes": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "CREATE_OBJECT": {
   "ProcessChains": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "DDL_ALIGN_DATA_SOURCES": {
   "AlignDataSources": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignAliases": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignOnConditions": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignAssociationsWithJoins": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "AlignAssociationTo": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ConsiderAllParamAssignLines": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   }
  },
  "DDL_ALIGN_ENTITY_PARAMETERS": {
   "AlignColons": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignTypes": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "DDL_ALIGN_FIELD_LISTS": {
   "MaxLineLength": {
-   "t": "int"
+   "t": "int",
+   "d": 120
   },
   "NameListPos": {
    "t": "enum",
@@ -1040,7 +1235,8 @@
     "VIEW_NAME_PLUS_2",
     "VIEW_NAME_PLUS_4",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "LINE_START_PLUS_2"
   },
   "NameListLayout": {
    "t": "enum",
@@ -1049,7 +1245,8 @@
     "ONE_LINE",
     "DERIVE",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "MULTI_LINE"
   },
   "GroupByListPos": {
    "t": "enum",
@@ -1058,7 +1255,8 @@
     "LINE_START_PLUS_2",
     "LINE_START_PLUS_4",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "CONTINUE"
   },
   "ComplexGroupByListLayout": {
    "t": "enum",
@@ -1067,7 +1265,8 @@
     "ONE_LINE",
     "DERIVE",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "MULTI_LINE"
   },
   "SimpleGroupByListLayout": {
    "t": "enum",
@@ -1076,10 +1275,12 @@
     "ONE_LINE",
     "DERIVE",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "MULTI_LINE"
   },
   "ConsiderDotAsComplex": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "DDL_ALIGN_FUNCTION_PARAMETERS": {
@@ -1090,33 +1291,42 @@
     "FUNCTION_NAME_PLUS_2",
     "FUNCTION_NAME_PLUS_4",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "CONTINUE"
   },
   "AlignAssignmentOps": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignActualParams": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "DDL_ALIGN_LOGICAL_EXPRESSIONS": {
   "AlignJoinOn": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignAssociationOn": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignWhen": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignPathExpressions": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignWhere": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignHaving": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignOnWithBoolOps": {
    "t": "enum",
@@ -1124,7 +1334,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "LEFT_ALIGN"
   },
   "AlignFilterWithBoolOps": {
    "t": "enum",
@@ -1132,7 +1343,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "RIGHT_ALIGN"
   },
   "AlignWhenWithBoolOps": {
    "t": "enum",
@@ -1140,7 +1352,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "RIGHT_ALIGN"
   },
   "AlignWhereWithBoolOps": {
    "t": "enum",
@@ -1148,7 +1361,8 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "RIGHT_ALIGN"
   },
   "AlignHavingWithBoolOps": {
    "t": "enum",
@@ -1156,39 +1370,50 @@
     "DO_NOT_ALIGN",
     "LEFT_ALIGN",
     "RIGHT_ALIGN"
-   ]
+   ],
+   "d": "RIGHT_ALIGN"
   },
   "RightAlignComparisonOps": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MaxInnerSpaces": {
-   "t": "int"
+   "t": "int",
+   "d": 20
   }
  },
  "DDL_ALIGN_SELECT_LIST": {
   "AlignKeyKeyword": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignAliases": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ConsiderSimpleElementsWithoutAlias": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ConsiderComplexElementsWithoutAlias": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "ConsiderAllElementLines": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "MaxAliasStart": {
-   "t": "int"
+   "t": "int",
+   "d": 120
   },
   "AlignTextualComments": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignCommentedOutCode": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "DDL_ALIGN_SOURCE_PARAMETERS": {
@@ -1201,13 +1426,16 @@
     "SOURCE_NAME_PLUS_2",
     "SOURCE_NAME_PLUS_4",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "SOURCE_NAME_PLUS_2"
   },
   "AlignAssignmentOps": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignActualParams": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AsAliasPos": {
    "t": "enum",
@@ -1218,33 +1446,42 @@
     "SOURCE_NAME",
     "SOURCE_NAME_PLUS_2",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "CONTINUE"
   }
  },
  "DDL_ANNO_LAYOUT": {
   "SpaceAfterColon": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SpaceInsideBraces": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SpaceInsideBrackets": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MaxLineLength": {
-   "t": "int"
+   "t": "int",
+   "d": 120
   },
   "MaxOneLinerElemCountMain": {
-   "t": "int"
+   "t": "int",
+   "d": 4
   },
   "MaxOneLinerElemCountList": {
-   "t": "int"
+   "t": "int",
+   "d": 4
   },
   "AlignValues": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "AlignTablesInArrays": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "DDL_ANNO_NESTING": {
@@ -1260,13 +1497,16 @@
     "NEVER",
     "FILL_UP_EXISTING",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "LEVEL_3"
   },
   "NestingAllowList": {
-   "t": "str"
+   "t": "str",
+   "d": ""
   },
   "NestingBlockList": {
-   "t": "str"
+   "t": "str",
+   "d": ""
   },
   "SortOrder": {
    "t": "enum",
@@ -1275,7 +1515,8 @@
     "BY_TWO_ELEMS",
     "BY_ALL_ELEMS",
     "KEEP"
-   ]
+   ],
+   "d": "BY_TWO_ELEMS"
   },
   "EmptyLinesMain": {
    "t": "enum",
@@ -1285,7 +1526,8 @@
     "FOR_NEW_FIRST_ELEM",
     "NEVER",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "FOR_MULTI_LINE_OR_NEW_FIRST_ELEM"
   },
   "EmptyLinesList": {
    "t": "enum",
@@ -1295,27 +1537,34 @@
     "FOR_NEW_FIRST_ELEM",
     "NEVER",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "NEVER"
   }
  },
  "DDL_CAMEL_CASE_NAME": {
   "FixEntityName": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "FixAliases": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "FixFieldNames": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "FixRefsInAnnotations": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "OnlyApprovedNames": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "RequireAllFieldsKnown": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "DDL_EMPTY_LINES_BETWEEN": {
@@ -1326,7 +1575,8 @@
     "ALWAYS_EXACTLY_ONE",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS_AT_LEAST_ONE"
   },
   "BetweenParametersAndAsSelect": {
    "t": "enum",
@@ -1335,7 +1585,8 @@
     "ALWAYS_EXACTLY_ONE",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS_AT_LEAST_ONE"
   },
   "BetweenSelectFromAndJoins": {
    "t": "enum",
@@ -1344,7 +1595,8 @@
     "ALWAYS_EXACTLY_ONE",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS_EXACTLY_ONE"
   },
   "BetweenJoinsAndAssociations": {
    "t": "enum",
@@ -1353,7 +1605,8 @@
     "ALWAYS_EXACTLY_ONE",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS_AT_LEAST_ONE"
   },
   "BeforeSelectListStart": {
    "t": "enum",
@@ -1362,7 +1615,8 @@
     "ALWAYS_EXACTLY_ONE",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS_AT_LEAST_ONE"
   },
   "AfterSelectListStart": {
    "t": "enum",
@@ -1371,7 +1625,8 @@
     "ALWAYS_EXACTLY_ONE",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "BeforeSelectListEnd": {
    "t": "enum",
@@ -1380,7 +1635,8 @@
     "ALWAYS_EXACTLY_ONE",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "AfterSelectListEnd": {
    "t": "enum",
@@ -1389,36 +1645,46 @@
     "ALWAYS_EXACTLY_ONE",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS_AT_LEAST_ONE"
   },
   "RemoveAtDocumentEnd": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MaxConsecutiveEmptyLines": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   }
  },
  "DDL_EMPTY_LINES_WITHIN": {
   "SurroundParameterLineCountMin": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "SurroundJoinLineCountMin": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "SurroundAssociationLineCountMin": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "SurroundElementLineCountMin": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "SurroundClauseLineCountMin": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "DetachKeyFields": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "DetachExposedAssociations": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "CondenseParameters": {
    "t": "enum",
@@ -1427,7 +1693,8 @@
     "IF_ONLY_ONE_LINERS",
     "IF_ONLY_DETACHED_ONE_LINERS",
     "NEVER"
-   ]
+   ],
+   "d": "IF_ONLY_DETACHED_ONE_LINERS"
   },
   "CondenseJoins": {
    "t": "enum",
@@ -1436,7 +1703,8 @@
     "IF_ONLY_ONE_LINERS",
     "IF_ONLY_DETACHED_ONE_LINERS",
     "NEVER"
-   ]
+   ],
+   "d": "IF_ONLY_DETACHED_ONE_LINERS"
   },
   "CondenseAssociations": {
    "t": "enum",
@@ -1445,7 +1713,8 @@
     "IF_ONLY_ONE_LINERS",
     "IF_ONLY_DETACHED_ONE_LINERS",
     "NEVER"
-   ]
+   ],
+   "d": "IF_ONLY_DETACHED_ONE_LINERS"
   },
   "CondenseElements": {
    "t": "enum",
@@ -1454,7 +1723,8 @@
     "IF_ONLY_ONE_LINERS",
     "IF_ONLY_DETACHED_ONE_LINERS",
     "NEVER"
-   ]
+   ],
+   "d": "IF_ONLY_DETACHED_ONE_LINERS"
   },
   "CondenseClauses": {
    "t": "enum",
@@ -1463,7 +1733,8 @@
     "IF_ONLY_ONE_LINERS",
     "IF_ONLY_DETACHED_ONE_LINERS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   }
  },
  "DDL_POSITION_ASSOCIATION": {
@@ -1472,10 +1743,12 @@
    "names": [
     "ALWAYS",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "KeywordsIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "BreakBeforeDataSource": {
    "t": "enum",
@@ -1483,10 +1756,12 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "DataSourceIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "BreakBeforeCondition": {
    "t": "enum",
@@ -1495,20 +1770,24 @@
     "IF_MULTI_LINE_FOUND",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "IF_MULTI_LINE_FOUND"
   },
   "ConditionIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 4
   },
   "BreakBeforeFilter": {
    "t": "enum",
    "names": [
     "ALWAYS",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "FilterIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 4
   }
  },
  "DDL_POSITION_BRACES": {
@@ -1518,10 +1797,12 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "OpeningBraceIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 0
   },
   "BreakBeforeClosingBrace": {
    "t": "enum",
@@ -1529,20 +1810,24 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "ClosingBraceIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 0
   },
   "BreakBeforeFrom": {
    "t": "enum",
    "names": [
     "ALWAYS",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "FromIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   }
  },
  "DDL_POSITION_CLAUSES": {
@@ -1551,20 +1836,24 @@
    "names": [
     "ALWAYS",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "WhereEtcIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 0
   },
   "BreakBeforeUnionEtc": {
    "t": "enum",
    "names": [
     "ALWAYS",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "UnionEtcIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 0
   }
  },
  "DDL_POSITION_DEFINE": {
@@ -1573,10 +1862,12 @@
    "names": [
     "ALWAYS",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "DefineIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 0
   },
   "BreakBeforeEntityName": {
    "t": "enum",
@@ -1584,10 +1875,12 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "EntityNameIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "BreakBeforeWithParams": {
    "t": "enum",
@@ -1595,13 +1888,16 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "WithParamsIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "ParamsIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 4
   }
  },
  "DDL_POSITION_JOIN": {
@@ -1610,10 +1906,12 @@
    "names": [
     "ALWAYS",
     "KEEP_AS_IS"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "KeywordsIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 4
   },
   "BreakBeforeDataSource": {
    "t": "enum",
@@ -1621,10 +1919,12 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "DataSourceIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 4
   },
   "BreakBeforeCondition": {
    "t": "enum",
@@ -1633,10 +1933,12 @@
     "IF_MULTI_LINE_FOUND",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "IF_MULTI_LINE_FOUND"
   },
   "ConditionIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 6
   }
  },
  "DDL_POSITION_SELECT": {
@@ -1646,10 +1948,12 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "AsSelectFromIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "BreakBeforeSelectFrom": {
    "t": "enum",
@@ -1657,10 +1961,12 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "SelectFromIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "BreakBeforeAsProjectionOn": {
    "t": "enum",
@@ -1668,10 +1974,12 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "AsProjectionOnIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "BreakBeforeDataSource": {
    "t": "enum",
@@ -1679,10 +1987,12 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "DataSourceIndent": {
-   "t": "int"
+   "t": "int",
+   "d": 4
   }
  },
  "DDL_SPACES_AROUND_BRACKETS": {
@@ -1692,7 +2002,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "SpacesInsideCardBrackets": {
    "t": "enum",
@@ -1700,7 +2011,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "SpacesBeforePathBrackets": {
    "t": "enum",
@@ -1708,7 +2020,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "SpacesInsidePathBrackets": {
    "t": "enum",
@@ -1716,7 +2029,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "SpacesBeforeFuncParens": {
    "t": "enum",
@@ -1724,7 +2038,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "SpacesInsideFuncParens": {
    "t": "enum",
@@ -1732,7 +2047,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "SpacesBeforeTypeParens": {
    "t": "enum",
@@ -1740,7 +2056,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "SpacesInsideTypeParens": {
    "t": "enum",
@@ -1748,7 +2065,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "SpacesInsideArithParens": {
    "t": "enum",
@@ -1756,7 +2074,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   }
  },
  "DDL_SPACES_AROUND_SIGNS": {
@@ -1766,7 +2085,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "SpaceAfterCommentSign": {
    "t": "enum",
@@ -1774,7 +2094,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "SpaceBeforeColon": {
    "t": "enum",
@@ -1782,7 +2103,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "KEEP_AS_IS"
   },
   "SpaceAfterColon": {
    "t": "enum",
@@ -1790,7 +2112,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "SpaceBeforeComma": {
    "t": "enum",
@@ -1798,7 +2121,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "SpaceAfterComma": {
    "t": "enum",
@@ -1806,7 +2130,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   },
   "SpaceAfterCommaInAbapType": {
    "t": "enum",
@@ -1814,7 +2139,8 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "SpaceAroundArithmeticOps": {
    "t": "enum",
@@ -1822,63 +2148,80 @@
     "ALWAYS",
     "KEEP_AS_IS",
     "NEVER"
-   ]
+   ],
+   "d": "ALWAYS"
   }
  },
  "DDL_TYPO": {
   "CorrectTypos": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ConvertBritishToAmerican": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessComments": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessAnnotations": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessAnnotationRefs": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   }
  },
  "DECLARATION_CHAIN": {
   "ExecuteOnInterfaces": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ExecuteOnClassDefinitionSections": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ExecuteOnLocalDeclarations": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "KeepTablesWithStructures": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ExecuteOnSimpleCommands": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "ExecuteOnComplexCommands": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "DESCRIBE_TABLE": {},
  "EMPTY_COMMAND": {},
  "EMPTY_LINES_IN_CLASS_DEFINITION": {
   "AddEmptyLineAboveSections": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "RemoveEmptyLineBelowSections": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "RemoveEmptyLineAboveEndClass": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "RemoveIncludeWarnings": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MaxEmptyLines": {
-   "t": "int"
+   "t": "int",
+   "d": 1
   },
   "AddLineBetweenDefTypes": {
    "t": "enum",
@@ -1886,32 +2229,40 @@
     "NEVER",
     "ADD_IGNORE_STATIC",
     "ADD_CONSIDER_STATIC"
-   ]
+   ],
+   "d": "ADD_CONSIDER_STATIC"
   }
  },
  "EMPTY_LINES_OUTSIDE_METHODS": {
   "EmptyLinesBetweenClasses": {
-   "t": "int"
+   "t": "int",
+   "d": 2
   },
   "EmptyLinesBetweenMethods": {
-   "t": "int"
+   "t": "int",
+   "d": 1
   },
   "EmptyLinesBetweenClassAndMethod": {
-   "t": "int"
+   "t": "int",
+   "d": 0
   }
  },
  "EMPTY_LINES_WITHIN_METHODS": {
   "MaxEmptyLinesAtMethodStart": {
-   "t": "int"
+   "t": "int",
+   "d": 0
   },
   "MaxEmptyLinesWithinMethods": {
-   "t": "int"
+   "t": "int",
+   "d": 1
   },
   "MaxEmptyLinesAtMethodEnd": {
-   "t": "int"
+   "t": "int",
+   "d": 0
   },
   "EmptyLineAboveFirstExecutable": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "EMPTY_SECTIONS": {
@@ -1921,7 +2272,8 @@
     "REMOVE_PROTECTED_OF_FINAL_CLASS",
     "REMOVE_ANY_FROM_NON_EMPTY_CLASS",
     "REMOVE_ANY"
-   ]
+   ],
+   "d": "REMOVE_ANY_FROM_NON_EMPTY_CLASS"
   }
  },
  "END_OF_COMMENT": {
@@ -1931,7 +2283,8 @@
     "KEEP",
     "REMOVE_REDUNDANT",
     "REMOVE_ALL"
-   ]
+   ],
+   "d": "REMOVE_REDUNDANT"
   },
   "EndOfCommentActionOutsideMethod": {
    "t": "enum",
@@ -1939,10 +2292,12 @@
     "KEEP",
     "REMOVE_REDUNDANT",
     "REMOVE_ALL"
-   ]
+   ],
+   "d": "REMOVE_REDUNDANT"
   },
   "LineLimitInsideMethod": {
-   "t": "int"
+   "t": "int",
+   "d": 50
   }
  },
  "EQUALS_SIGN_CHAIN": {},
@@ -1954,78 +2309,106 @@
     "KEEP_AS_IS",
     "ONLY_FOR_ABAP_WORDS",
     "ONLY_AVOID_ERRORS"
-   ]
+   ],
+   "d": "ONLY_FOR_ABAP_WORDS"
   }
  },
  "EXIT_OUTSIDE_LOOP": {
   "ApplyToProcedures": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ApplyToEventBlocks": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "EXPORTING_KEYWORD": {},
  "FINAL_VARIABLE": {},
  "IF_BLOCK_AT_LOOP_END": {
   "MinLineCount": {
-   "t": "int"
+   "t": "int",
+   "d": 10
   },
   "MinLinePercentage": {
-   "t": "int"
+   "t": "int",
+   "d": 50
   },
   "KeepExceptionalLogicInIf": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NegationStyle": {
    "t": "enum",
-   "names": []
+   "names": [
+    "ALWAYS_WITH_AND_OR",
+    "AVOID_INNER_NEGATIONS",
+    "NEVER"
+   ],
+   "d": "AVOID_INNER_NEGATIONS"
   },
   "ConvertAbapFalseAndAbapTrue": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "EnsureEmptyLineAfterEndIf": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "IF_BLOCK_AT_METHOD_END": {
   "MinLineCount": {
-   "t": "int"
+   "t": "int",
+   "d": 10
   },
   "MinLinePercentage": {
-   "t": "int"
+   "t": "int",
+   "d": 50
   },
   "KeepExceptionalLogicInIf": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "NegationStyle": {
    "t": "enum",
-   "names": []
+   "names": [
+    "ALWAYS_WITH_AND_OR",
+    "AVOID_INNER_NEGATIONS",
+    "NEVER"
+   ],
+   "d": "AVOID_INNER_NEGATIONS"
   },
   "ConvertAbapFalseAndAbapTrue": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "EnsureEmptyLineAfterEndIf": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "IMPLICIT_TYPE": {
   "ExecuteOnTypes": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ExecuteOnConstantsAndStatics": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ExecuteOnDataAndClassData": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ReplaceParenthesisWithLength": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "INSET": {
   "ExecuteOnClassDefinitionSections": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AlignWithFollowingElse": {
    "t": "enum",
@@ -2033,7 +2416,8 @@
     "ALWAYS",
     "IF_BLANK_LINE_ABOVE",
     "NEVER"
-   ]
+   ],
+   "d": "IF_BLANK_LINE_ABOVE"
   },
   "AlignWithFollowingWhen": {
    "t": "enum",
@@ -2041,7 +2425,8 @@
     "ALWAYS",
     "IF_BLANK_LINE_ABOVE",
     "NEVER"
-   ]
+   ],
+   "d": "IF_BLANK_LINE_ABOVE"
   },
   "AlignWithFollowingCatch": {
    "t": "enum",
@@ -2049,7 +2434,8 @@
     "ALWAYS",
     "IF_BLANK_LINE_ABOVE",
     "NEVER"
-   ]
+   ],
+   "d": "IF_BLANK_LINE_ABOVE"
   }
  },
  "LOCAL_DECLARATION_ORDER": {
@@ -2057,7 +2443,8 @@
    "t": "enum",
    "names": [
     "METHOD_START_KEEP_ORDER"
-   ]
+   ],
+   "d": "METHOD_START_KEEP_ORDER"
   },
   "ConstantsOrder": {
    "t": "enum",
@@ -2065,7 +2452,8 @@
     "METHOD_START_KEEP_ORDER",
     "METHOD_START_CHANGE_ORDER",
     "ENCLOSING_BLOCK_CHANGE_ORDER"
-   ]
+   ],
+   "d": "METHOD_START_KEEP_ORDER"
   },
   "StaticsOrder": {
    "t": "enum",
@@ -2073,7 +2461,8 @@
     "METHOD_START_KEEP_ORDER",
     "METHOD_START_CHANGE_ORDER",
     "ENCLOSING_BLOCK_CHANGE_ORDER"
-   ]
+   ],
+   "d": "METHOD_START_CHANGE_ORDER"
   },
   "DataOrder": {
    "t": "enum",
@@ -2081,7 +2470,8 @@
     "METHOD_START_KEEP_ORDER",
     "METHOD_START_CHANGE_ORDER",
     "ENCLOSING_BLOCK_CHANGE_ORDER"
-   ]
+   ],
+   "d": "METHOD_START_CHANGE_ORDER"
   },
   "FieldSymbolsOrder": {
    "t": "enum",
@@ -2089,35 +2479,44 @@
     "METHOD_START_KEEP_ORDER",
     "METHOD_START_CHANGE_ORDER",
     "ENCLOSING_BLOCK_CHANGE_ORDER"
-   ]
+   ],
+   "d": "METHOD_START_CHANGE_ORDER"
   },
   "DistinctBlocks": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "EmptyLine": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MoveComments": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "RearrangeChains": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ConsiderComments": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   }
  },
  "LOGICAL_OPERATOR_POSITION": {
   "MoveKeyword": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MoveBooleanOperators": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "MOVE_TO": {
   "ProcessChains": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "NEEDLESS_CLEAR": {
@@ -2127,7 +2526,8 @@
     "DELETE",
     "ADD_TODO_COMMENT",
     "IGNORE"
-   ]
+   ],
+   "d": "DELETE"
   },
   "ActionAtEnd": {
    "t": "enum",
@@ -2135,118 +2535,149 @@
     "DELETE",
     "ADD_TODO_COMMENT",
     "IGNORE"
-   ]
+   ],
+   "d": "ADD_TODO_COMMENT"
   },
   "KeepStrucBeforeAssign": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "NEEDLESS_PARENTHESES": {
   "RemoveAroundAll": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "RemoveAroundRelExpr": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "RemoveOrParenthesisAnd": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "RemoveAroundSameOp": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "RemoveAroundNot": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   }
  },
  "NEEDLESS_SPACES": {
   "SearchAcrossEmptyLines": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SearchAcrossCommentLines": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessLineEndComments": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "ProcessEmptyBrackets": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "NOT_IS": {},
  "ONE_COMMAND_PER_LINE": {
   "KeepOneLinersAfterWhen": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "KeepMultiLinersAfterWhen": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   }
  },
  "PRAGMA_POSITION": {
   "MovePragmaFromLineStartToEnd": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   }
  },
  "PSEUDO_COMMENT": {},
  "RAISE_TYPE": {},
  "READ_TABLE": {
   "ReplaceWithAssign": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ReplaceWithLineExists": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ReplaceWithLineIndex": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ReplaceInsertIntoIndex": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "UseComponentsKeyword": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   }
  },
  "RECEIVING_KEYWORD": {},
  "SELF_REFERENCE_ME": {},
  "SPACES_IN_EMPTY_BRACKETS": {
   "RemoveMultiSpaceIfEmpty": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SeparateFromKeywords": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SeparateFromOperators": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SeparateFromComments": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SeparateFromCharLiterals": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SeparateCondensedCases": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "SPACE_AROUND_COMMENT_SIGN": {
   "SpaceBeforeCommentSign": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SpaceAfterCommentSign": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "SPACE_BEFORE_PERIOD": {
   "ExecuteOnComma": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ExecuteOnPeriod": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MoveAcrossCommentLines": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ExecuteOnClassDefinitionSections": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "STRING_TEMPLATE": {
@@ -2256,56 +2687,72 @@
     "SHORTER",
     "SHORTER_OR_EQUAL",
     "ALWAYS"
-   ]
+   ],
+   "d": "SHORTER_OR_EQUAL"
   },
   "AlwaysConvertLiterals": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "RequireOperandsOnSameLine": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "IgnoreMultiLineOperands": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "KeepControlCharsSeparate": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "TRANSLATE": {
   "ReplaceTranslateToUpperLower": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ReplaceTranslateUsing": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ReplaceUnevenMasks": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessChains": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "SkipUnknownTypes": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "TYPO": {
   "CorrectTypos": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ConvertBritishToAmerican": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessAbapDoc": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessShorttexts": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "ProcessComments": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "AddTodoBeforeMessage": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MeasureForLiterals": {
    "t": "enum",
@@ -2313,7 +2760,8 @@
     "CHANGE_DIRECTLY",
     "ADD_TODO_COMMENT",
     "KEEP_UNCHANGED"
-   ]
+   ],
+   "d": "ADD_TODO_COMMENT"
   }
  },
  "UNUSED_PARAMETERS": {
@@ -2325,7 +2773,8 @@
     "PROTECTED_OR_PRIVATE",
     "PRIVATE_ONLY",
     "NEVER"
-   ]
+   ],
+   "d": "NON_INTERFACE_METHODS"
   },
   "ExportingParamScope": {
    "t": "enum",
@@ -2335,7 +2784,8 @@
     "PROTECTED_OR_PRIVATE",
     "PRIVATE_ONLY",
     "NEVER"
-   ]
+   ],
+   "d": "ALL_METHODS"
   },
   "ChangingParamScope": {
    "t": "enum",
@@ -2345,7 +2795,8 @@
     "PROTECTED_OR_PRIVATE",
     "PRIVATE_ONLY",
     "NEVER"
-   ]
+   ],
+   "d": "NON_INTERFACE_METHODS"
   },
   "ReturningParamScope": {
    "t": "enum",
@@ -2355,13 +2806,16 @@
     "PROTECTED_OR_PRIVATE",
     "PRIVATE_ONLY",
     "NEVER"
-   ]
+   ],
+   "d": "NEVER"
   },
   "IgnoreEmptyMethods": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "IgnoreExportingByValue": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "UNUSED_VARIABLES": {
@@ -2373,7 +2827,8 @@
     "COMMENT_OUT_WITH_QUOT",
     "ADD_TODO_COMMENT",
     "IGNORE"
-   ]
+   ],
+   "d": "DELETE"
   },
   "MeasureForVarsOnlyUsedInComment": {
    "t": "enum",
@@ -2383,21 +2838,24 @@
     "COMMENT_OUT_WITH_QUOT",
     "ADD_TODO_COMMENT",
     "IGNORE"
-   ]
+   ],
+   "d": "COMMENT_OUT_WITH_ASTERISK"
   },
   "MeasureForAssignedVars": {
    "t": "enum",
    "names": [
     "ADD_TODO_COMMENT",
     "IGNORE"
-   ]
+   ],
+   "d": "ADD_TODO_COMMENT"
   },
   "MeasureForAssignedVarsOnlyUsedInComment": {
    "t": "enum",
    "names": [
     "ADD_TODO_COMMENT",
     "IGNORE"
-   ]
+   ],
+   "d": "ADD_TODO_COMMENT"
   },
   "MeasureForVarsOnlyAssignedInMessageInto": {
    "t": "enum",
@@ -2405,7 +2863,8 @@
     "ADD_PRAGMA_NEEDED",
     "ADD_TODO_COMMENT",
     "IGNORE"
-   ]
+   ],
+   "d": "ADD_PRAGMA_NEEDED"
   },
   "MeasureForConstantsNeverUsed": {
    "t": "enum",
@@ -2415,7 +2874,8 @@
     "COMMENT_OUT_WITH_QUOT",
     "ADD_TODO_COMMENT",
     "IGNORE"
-   ]
+   ],
+   "d": "COMMENT_OUT_WITH_ASTERISK"
   },
   "MeasureForConstantsOnlyUsedInComment": {
    "t": "enum",
@@ -2425,7 +2885,8 @@
     "COMMENT_OUT_WITH_QUOT",
     "ADD_TODO_COMMENT",
     "IGNORE"
-   ]
+   ],
+   "d": "COMMENT_OUT_WITH_ASTERISK"
   }
  },
  "UPPER_AND_LOWER_CASE": {
@@ -2435,7 +2896,8 @@
     "NONE",
     "FROM_FIRST_TOKEN",
     "FROM_MAJORITY"
-   ]
+   ],
+   "d": "NONE"
   },
   "DefinitionKeywordStyle": {
    "t": "enum",
@@ -2443,7 +2905,8 @@
     "UNCHANGED",
     "LOWER_CASE",
     "UPPER_CASE"
-   ]
+   ],
+   "d": "UPPER_CASE"
   },
   "DefinitionIdentifierStyle": {
    "t": "enum",
@@ -2451,7 +2914,8 @@
     "UNCHANGED",
     "LOWER_CASE",
     "UPPER_CASE"
-   ]
+   ],
+   "d": "LOWER_CASE"
   },
   "ImplementationKeywordStyle": {
    "t": "enum",
@@ -2459,7 +2923,8 @@
     "UNCHANGED",
     "LOWER_CASE",
     "UPPER_CASE"
-   ]
+   ],
+   "d": "UPPER_CASE"
   },
   "ImplementationIdentifierStyle": {
    "t": "enum",
@@ -2467,7 +2932,8 @@
     "UNCHANGED",
     "LOWER_CASE",
     "UPPER_CASE"
-   ]
+   ],
+   "d": "LOWER_CASE"
   },
   "PragmaStyle": {
    "t": "enum",
@@ -2475,7 +2941,8 @@
     "UNCHANGED",
     "LOWER_CASE",
     "UPPER_CASE"
-   ]
+   ],
+   "d": "UPPER_CASE"
   },
   "PragmaParameterStyle": {
    "t": "enum",
@@ -2483,33 +2950,42 @@
     "UNCHANGED",
     "LOWER_CASE",
     "UPPER_CASE"
-   ]
+   ],
+   "d": "UPPER_CASE"
   },
   "KeepMixedCaseInIdentifiers": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  },
  "VALUE_STATEMENT": {
   "MoveIntegerLiterals": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MoveFloatLiterals": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MoveStringLiterals": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MoveIdentifiers": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MoveComplexExpressions": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   },
   "MoveMethodCalls": {
-   "t": "bool"
+   "t": "bool",
+   "d": false
   },
   "SkipIfRowsCommentedOut": {
-   "t": "bool"
+   "t": "bool",
+   "d": true
   }
  }
 }

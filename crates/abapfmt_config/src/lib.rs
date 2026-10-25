@@ -106,6 +106,52 @@ fn settings() -> &'static Settings {
     })
 }
 
+fn to_json(value: &ConfigValue) -> Value {
+    match value {
+        ConfigValue::Bool(b) => Value::Bool(*b),
+        ConfigValue::Int(i) => Value::from(*i),
+        ConfigValue::Str(s) => Value::String(s.clone()),
+    }
+}
+
+impl Config {
+    /// The complete configuration as `abapfmt.json`: every implemented rule with all of its
+    /// options (those of this configuration, otherwise the defaults), in the order the rules run.
+    /// Rules that are switched off are written as `false`.
+    pub fn to_json(&self) -> String {
+        let mut rules = serde_json::Map::new();
+        for (id, _) in abapfmt_formatter::rules() {
+            let value = match self.rules.get(*id) {
+                Some(None) => Value::Bool(false),
+                explicit => {
+                    let mut options = serde_json::Map::new();
+                    let mut values = abapfmt_formatter::default_options(id);
+                    values.extend(explicit.and_then(|c| c.clone()).unwrap_or_default());
+                    for (name, value) in &values {
+                        options.insert(name.clone(), to_json(value));
+                    }
+                    Value::Object(options)
+                }
+            };
+            rules.insert((*id).to_string(), value);
+        }
+        let mut root = serde_json::Map::new();
+        root.insert(
+            "lineWidth".into(),
+            self.line_width
+                .map_or(Value::String("off".into()), Value::from),
+        );
+        root.insert(
+            "tabularLineWidth".into(),
+            Value::from(self.tabular_line_width),
+        );
+        root.insert("rules".into(), Value::Object(rules));
+        serde_json::to_string_pretty(&Value::Object(root)).expect("JSON can be written")
+            + "
+"
+    }
+}
+
 fn is_implemented(rule: &str) -> bool {
     abapfmt_formatter::rules().iter().any(|(id, _)| *id == rule)
 }
@@ -336,6 +382,39 @@ mod tests {
                 .line_width,
             None
         );
+    }
+
+    /// The complete default configuration is what formatting uses without any configuration.
+    #[test]
+    fn printed_default_config_formats_like_no_config() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/samples");
+        let printed = parse_json(&Config::default().to_json()).unwrap();
+        assert!(printed.warnings.is_empty(), "{:?}", printed.warnings);
+        let none = Config::default();
+        for file in [
+            "cleanup-sample.abap",
+            "cleanup-sample.acds",
+            "test-1-input.abap",
+        ] {
+            let src = std::fs::read_to_string(root.join(file)).unwrap();
+            let a = abapfmt_formatter::format_checked(&src, &none.rules, &none.options());
+            let b = abapfmt_formatter::format_checked(
+                &src,
+                &printed.config.rules,
+                &printed.config.options(),
+            );
+            assert_eq!(a, b, "{file}");
+        }
+    }
+
+    /// Converting a profile to JSON and reading it again changes nothing.
+    #[test]
+    fn profile_round_trips_through_json() {
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../fixtures/profiles/essential.cfj");
+        let original = load_file(&path).unwrap().config;
+        let again = parse_json(&original.to_json()).unwrap().config;
+        assert_eq!(again.to_json(), original.to_json());
     }
 
     /// A profile exported from abap-cleaner 1.29 (the "Essential" profile).

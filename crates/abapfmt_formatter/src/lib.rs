@@ -24,6 +24,29 @@ pub enum ConfigValue {
     Str(String),
 }
 
+/// The upstream default of every option of `rule` (generated from the upstream rule classes by
+/// `.spike/gen_settings.mjs`). Options that are not set in a configuration take these values.
+pub fn default_options(rule: &str) -> RuleConfig {
+    static DEFAULTS: std::sync::OnceLock<serde_json::Value> = std::sync::OnceLock::new();
+    let root = DEFAULTS.get_or_init(|| {
+        serde_json::from_str(include_str!("../defaults.json")).expect("defaults.json is valid")
+    });
+    root[rule]
+        .as_object()
+        .into_iter()
+        .flatten()
+        .filter_map(|(name, v)| {
+            let value = match v {
+                serde_json::Value::Bool(b) => ConfigValue::Bool(*b),
+                serde_json::Value::Number(n) => ConfigValue::Int(n.as_i64()?),
+                serde_json::Value::String(s) => ConfigValue::Str(s.clone()),
+                _ => return None,
+            };
+            Some((name.clone(), value))
+        })
+        .collect()
+}
+
 /// Option name (upstream `Config*` name without the prefix) to value.
 pub type RuleConfig = BTreeMap<String, ConfigValue>;
 
@@ -249,7 +272,6 @@ impl Default for Options {
 /// absent ones); a rule mapped to `None` is switched off. The source is re-parsed between rules,
 /// because a rule may move tokens.
 pub fn format(src: &str, configs: &BTreeMap<String, Option<RuleConfig>>) -> String {
-    let default = RuleConfig::new();
     let all = rules();
     let mut text = src.to_string();
     let mut next = 0;
@@ -265,12 +287,14 @@ pub fn format(src: &str, configs: &BTreeMap<String, Option<RuleConfig>>) -> Stri
             if id.starts_with("DDL_") != is_ddl {
                 continue;
             }
-            let config = match configs.get(*id) {
+            // options that the configuration does not set have the upstream default
+            let mut config = default_options(id);
+            match configs.get(*id) {
                 Some(None) => continue,
-                Some(Some(c)) => c,
-                None => &default,
-            };
-            let config = with_cross_rule_settings(id, config, configs);
+                Some(Some(c)) => config.extend(c.clone()),
+                None => {}
+            }
+            let config = with_cross_rule_settings(id, &config, configs);
             let before = doc.snapshot();
             rule(&mut doc, &config);
             if !doc.is_unchanged_since(&before) {
