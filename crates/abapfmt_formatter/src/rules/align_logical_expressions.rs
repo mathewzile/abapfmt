@@ -628,14 +628,13 @@ impl TreeAlign {
                         matched = Some(c);
                     }
                 }
-                if col.ty == ColType::OpenBracketForBoolOp {
-                    if col.brack_level < brack_level
+                if col.ty == ColType::OpenBracketForBoolOp
+                    && (col.brack_level < brack_level
                         || col.brack_level == brack_level
                             && ty != ColType::BoolOperator
-                            && ty != ColType::OpenBracketForBoolOp
-                    {
-                        break;
-                    }
+                            && ty != ColType::OpenBracketForBoolOp)
+                {
+                    break;
                 }
                 cur = col.prev;
             }
@@ -844,19 +843,13 @@ fn read_var_name(text: &str, start: usize, in_oo: bool) -> String {
     let mut first = true;
     while end < chars.len() {
         let c = chars[end];
-        let ok = if c.is_ascii_alphabetic() || c == '_' || c == '/' {
-            true
-        } else if !first && c.is_ascii_digit() {
-            true
-        } else if (first && c == '<') || c == '>' {
-            true
-        } else if c == '%' && chars.get(end + 1) == Some(&'_') {
-            true
-        } else if in_oo {
-            false
-        } else {
-            matches!(c, '%' | '$' | '*' | '?') || first && c == '&' || !first && c == '#'
-        };
+        let ok = c.is_ascii_alphabetic()
+            || matches!(c, '_' | '/' | '>')
+            || !first && c.is_ascii_digit()
+            || first && c == '<'
+            || c == '%' && chars.get(end + 1) == Some(&'_')
+            || !in_oo
+                && (matches!(c, '%' | '$' | '*' | '?') || first && c == '&' || !first && c == '#');
         if !ok {
             break;
         }
