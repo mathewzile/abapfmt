@@ -57,9 +57,8 @@ pub fn align_form_declaration(doc: &mut Doc, config: &RuleConfig) {
             {
                 table.set_cell(line, PARAMETER_NAME, Cell::new(doc, t, t));
                 token = next_non_comment_sibling(doc, t, last);
-            } else if is_any_kw(doc, t, &["VALUE(", "RESUMABLE("])
-                || doc.syn.text(t).to_ascii_uppercase() == "VALUE("
-                || doc.syn.text(t).to_ascii_uppercase() == "RESUMABLE("
+            } else if doc.syn.text(t).eq_ignore_ascii_case("VALUE(")
+                || doc.syn.text(t).eq_ignore_ascii_case("RESUMABLE(")
             {
                 let end = term_last(doc, t);
                 table.set_cell(line, PARAMETER_NAME, Cell::new(doc, t, end));
