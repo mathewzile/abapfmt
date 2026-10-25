@@ -1560,10 +1560,7 @@ fn skip_select_comment(doc: &Doc, comment: usize) -> bool {
         return true;
     }
     // and comments that do not end with a comma (with no closing parenthesis behind it)
-    match text.rfind(',') {
-        Some(p) if p > 0 && !text[p..].contains(')') => false,
-        _ => true,
-    }
+    !matches!(text.rfind(','), Some(p) if p > 0 && !text[p..].contains(')'))
 }
 
 fn comment_starts_new_element(doc: &Doc, comment: usize) -> bool {
