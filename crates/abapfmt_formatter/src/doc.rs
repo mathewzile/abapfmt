@@ -226,10 +226,22 @@ impl<'a> Doc<'a> {
         min_spaces: i64,
         stop_at_lower_indent: bool,
     ) {
+        self.add_indent_range(from, cmd_last + 1, add, min_spaces, stop_at_lower_indent);
+    }
+
+    /// `Command.addIndent` for the tokens `from..end` (`end` excluded).
+    pub fn add_indent_range(
+        &mut self,
+        from: usize,
+        end: usize,
+        add: i64,
+        min_spaces: i64,
+        stop_at_lower_indent: bool,
+    ) {
         if add == 0 {
             return;
         }
-        for t in from..=cmd_last {
+        for t in from..end {
             let asterisk = self.syn.types[t] == abapfmt_syntax::TokenType::Comment
                 && self.lines[t] > 0
                 && self.syn.text(t).starts_with('*');

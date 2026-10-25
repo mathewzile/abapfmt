@@ -11,6 +11,7 @@ mod align_form_declaration;
 mod align_logical_expressions;
 mod align_methods_declaration;
 mod align_methods_without_params;
+mod align_parameters;
 mod align_perform;
 mod align_select_clauses;
 mod align_select_from;
@@ -93,6 +94,7 @@ pub const ALL: &[(&str, RuleFn)] = &[
         "ALIGN_LOGICAL_EXPRESSIONS",
         align_logical_expressions::align_logical_expressions,
     ),
+    ("ALIGN_PARAMETERS", align_parameters::align_parameters),
     ("ALIGN_DECLARATIONS", align_declarations::align_declarations),
     ("UPPER_AND_LOWER_CASE", case::upper_and_lower_case),
 ];

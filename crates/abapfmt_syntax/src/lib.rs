@@ -403,6 +403,17 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
         }
     }
 
+    // a word that is assigned to inside brackets, as in `replace_regexpr( value = text )`, is a name
+    for idx in 0..n.saturating_sub(1) {
+        if types[idx] == TokenType::Keyword
+            && parent[idx].is_some()
+            && types[idx + 1] == TokenType::AssignmentOp
+            && tokens[idx + 1].text(src) == "="
+        {
+            types[idx] = TokenType::Identifier;
+            sources[idx] = Source::Fallback;
+        }
+    }
     operators::distinguish_operators(src, &tokens, &commands, &bracket_match, &parent, &mut types);
 
     Ok(Syntax {

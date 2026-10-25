@@ -298,6 +298,47 @@ impl Table {
         }
     }
 
+    /// `AlignColumn.getEffectiveIndent`
+    pub fn effective_indent(&self, col: usize) -> i64 {
+        self.cols[col].effective_indent
+    }
+
+    pub fn first_token(&self) -> Option<usize> {
+        self.lines.first().and_then(Line::first_token)
+    }
+
+    /// `AlignTable.getFirstTokenColumnIndex`
+    pub fn first_token_column_index(&self) -> Option<usize> {
+        self.lines
+            .first()
+            .and_then(|l| l.cells.iter().position(Option::is_some))
+    }
+
+    /// `AlignTable.removeAllLinesOfParent`
+    pub fn remove_all_lines_of_parent(&mut self, doc: &Doc, parent: usize) {
+        self.lines.retain(|l| {
+            l.first_token()
+                .is_some_and(|t| doc.syn.parent[t] != Some(parent))
+        });
+    }
+
+    /// `AlignLine.addWidthToEnd`
+    pub fn add_width_to_end(&mut self, doc: &Doc, line: usize, add: i64) {
+        let Some(ci) = self.lines[line].last_cell_index() else {
+            return;
+        };
+        let cell = self.lines[line].cells[ci].as_mut().unwrap();
+        if cell.override_width.is_some() {
+            return;
+        }
+        let start = doc.start_x(0, cell.first);
+        let last_line_width = end_x(doc, cell.last) - start;
+        let max_line_width = max_end_index_in_any_line(doc, cell.first, cell.last) - start;
+        if last_line_width + add > max_line_width {
+            cell.override_width = Some(last_line_width + add);
+        }
+    }
+
     pub fn column_force_line_break_after(&self, col: usize) -> bool {
         self.cols[col].force_line_break_after
     }

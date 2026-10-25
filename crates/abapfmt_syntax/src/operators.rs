@@ -176,7 +176,8 @@ impl State<'_> {
         } else if !matches!(
             ty,
             TokenType::Literal | TokenType::Identifier | TokenType::OtherOp
-        ) {
+        ) && !(ty == TokenType::Keyword && self.may_be_misread_name(first))
+        {
             return None;
         }
         if self.is_kw(token, "CASE") {
@@ -205,6 +206,13 @@ impl State<'_> {
             token = self.next_sibling_while_level_opener(token);
         }
         Some(token)
+    }
+
+    /// A keyword that is followed by a comma, a closing bracket or the end of the command is
+    /// most likely a name, as in `replace_regexpr( value = text )`.
+    fn may_be_misread_name(&self, t: usize) -> bool {
+        self.next_code_token(t)
+            .is_none_or(|n| matches!(self.text(n), "," | "." | ")") || self.closes(n))
     }
 
     fn is_in_after_let(&self, t: usize, first: usize) -> bool {
@@ -559,5 +567,30 @@ pub(crate) fn distinguish_operators(
         } else {
             st.distinguish(false, first, None, None, None, None, first);
         }
+    }
+}
+
+impl crate::Syntax<'_> {
+    /// `Token.findLastTokenOfExpression`: the last token of the (logical, relational or
+    /// arithmetic) expression that starts with `first_tok` inside the command `cmd_first..=cmd_last`;
+    /// `None` where abap-cleaner reports an unexpected syntax.
+    pub fn last_of_expression(
+        &self,
+        first_tok: usize,
+        cmd_first: usize,
+        cmd_last: usize,
+    ) -> Option<usize> {
+        let mut types = self.types.clone();
+        let st = State {
+            cx: Cx {
+                src: self.src,
+                tokens: &self.tokens,
+                bm: &self.bracket_match,
+                parent: &self.parent,
+                last: cmd_last,
+            },
+            types: &mut types,
+        };
+        st.last_of_expression(first_tok, cmd_first)
     }
 }
