@@ -3,7 +3,7 @@
 //! Port of abap-cleaner's `NeedlessSpacesRule`. The sections that are better handled by the
 //! dedicated alignment rules (parameter lists, logical expressions, COND/SWITCH, declarations ...)
 //! are skipped; of the expression structure, only what that needs is recognised here (see
-//! [`last_of_logical_expression`]).
+//! `last_token_of_logical_expression`).
 use std::collections::{BTreeMap, HashMap, HashSet};
 
 use abapfmt_syntax::{Command, TokenType};
@@ -223,93 +223,15 @@ fn end_of_params(doc: &Doc, cmd: &Command, t: usize) -> Option<usize> {
     Some(close)
 }
 
-fn last_code_token(doc: &Doc, cmd: &Command) -> Option<usize> {
-    (cmd.first..=cmd.last).rev().find(|j| !is_comment(doc, *j))
-}
-
-/// If `t` starts a logical expression, its last code token. Covers IF/ELSEIF/CHECK/WHILE,
-/// WHERE of LOOP/MODIFY/DELETE/FOR, ASSERT, xsdbool/boolc, and WHEN/UNTIL/WHILE/WHERE inside
-/// constructor expressions. Not covered: boolean expressions on the right-hand side of an
-/// assignment and ABAP SQL conditions.
-fn last_of_logical_expression(doc: &Doc, cmd: &Command, t: usize) -> Option<usize> {
-    let first = doc.first_code_token(cmd)?;
-    let first_kw = kw(doc, cmd);
-    let before_period = || last_code_token(doc, cmd).and_then(|l| prev_code(doc, cmd.first, l));
-
-    if t == first && matches!(first_kw.as_str(), "IF" | "ELSEIF" | "CHECK" | "WHILE") {
-        return before_period();
-    }
-    let top_level = doc.syn.parent[t].is_none();
-    if top_level
-        && text_is(doc, t, &["WHERE"])
-        && (matches_seq(doc, cmd, &[Pat::Word("LOOP"), Pat::Word("AT")])
-            || matches!(first_kw.as_str(), "MODIFY" | "DELETE" | "FOR"))
-    {
-        let end = (t + 1..=cmd.last)
-            .filter(|j| doc.syn.parent[*j].is_none())
-            .find_map(|j| {
-                let next_is =
-                    |w| next_code(doc, j, cmd.last).is_some_and(|n| text_is(doc, n, &[w]));
-                if text_is(doc, j, &["GROUP"]) && next_is("BY")
-                    || text_is(doc, j, &["USING"]) && next_is("KEY")
-                {
-                    Some((j, true))
-                } else if text_is(doc, j, &["TRANSPORTING", "FROM"]) {
-                    Some((j, false))
-                } else {
-                    None
-                }
-            });
-        return match end {
-            None => before_period(),
-            Some((j, _)) => prev_code(doc, cmd.first, j),
-        };
-    }
-    if first_kw == "ASSERT" {
-        if text_is(doc, t, &["CONDITION"])
-            || (t == first
-                && !(first + 1..=cmd.last)
-                    .any(|j| doc.syn.parent[j].is_none() && text_is(doc, j, &["CONDITION"])))
-        {
-            return before_period();
-        }
-        return None;
-    }
-
-    // xsdbool( ... ) and boolc( ... )
-    if text_is(doc, t, &["boolc(", "xsdbool("]) {
-        return closer(doc, t).and_then(|c| prev_code(doc, cmd.first, c));
-    }
-
-    // WHEN / UNTIL / WHILE / WHERE inside constructor expressions
-    let parent = doc.syn.parent[t]?;
-    let ctor = prev_sibling(doc, cmd.first, parent)?;
-    if doc.syn.types[ctor] != TokenType::Keyword {
-        return None;
-    }
-    let sibling_after = |words: &[&str]| {
-        (t + 1..=cmd.last).find(|j| doc.syn.parent[*j] == Some(parent) && text_is(doc, *j, words))
-    };
-    if text_is(doc, t, &["WHEN"]) && text_is(doc, ctor, &["COND"]) {
-        sibling_after(&["THEN"]).and_then(|j| prev_code(doc, cmd.first, j))
-    } else if text_is(doc, t, &["UNTIL", "WHILE"])
-        && text_is(doc, ctor, &["REDUCE", "NEW", "VALUE"])
-    {
-        sibling_after(&["LET", "NEXT", "FOR"]).and_then(|j| prev_code(doc, cmd.first, j))
-    } else if text_is(doc, t, &["WHERE"]) && text_is(doc, ctor, &["FILTER"]) {
-        closer(doc, parent).and_then(|c| prev_code(doc, cmd.first, c))
-    } else {
-        None
-    }
-}
-
 fn skip_until_token(doc: &Doc, cmd: &Command, t: usize) -> Option<usize> {
     // scope of AlignParametersRule
     if let Some(end) = end_of_params(doc, cmd, t) {
         return Some(end);
     }
     // scope of AlignLogicalExpressionsRule
-    if let Some(end) = last_of_logical_expression(doc, cmd, t) {
+    if let Some(end) =
+        super::align_logical_expressions::last_token_of_logical_expression(doc, cmd, t)
+    {
         return next_code(doc, end, cmd.last);
     }
     let close = closer(doc, t);

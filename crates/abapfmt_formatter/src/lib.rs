@@ -282,6 +282,44 @@ pub fn format(src: &str, configs: &BTreeMap<String, Option<RuleConfig>>) -> Stri
 /// comments and pragmas are compared as separate streams (comments ignoring whitespace inside them,
 /// pragmas ignoring case), because rules may move a closing bracket or period in front of a
 /// trailing comment or pragma and re-indent commented-out code.
+/// ALIGN_PERFORM moves `IF FOUND` in front of the parameters of a PERFORM; this is the only
+/// reordering of tokens that a rule makes, so `IF FOUND` is put to the end of every PERFORM
+/// statement before the tokens are compared.
+fn move_if_found_to_end(code: Vec<String>) -> Vec<String> {
+    let mut result = Vec::with_capacity(code.len());
+    let mut statement: Vec<String> = Vec::new();
+    for token in code {
+        let ends = token == ".";
+        statement.push(token);
+        if !ends {
+            continue;
+        }
+        if statement[0] == "PERFORM" {
+            let mut moved = Vec::new();
+            let mut kept = Vec::with_capacity(statement.len());
+            let mut i = 0;
+            while i < statement.len() {
+                if statement[i] == "IF" && statement.get(i + 1).is_some_and(|t| t == "FOUND") {
+                    moved.extend(["IF".to_string(), "FOUND".to_string()]);
+                    i += 2;
+                } else {
+                    kept.push(std::mem::take(&mut statement[i]));
+                    i += 1;
+                }
+            }
+            let period = kept.pop();
+            result.extend(kept);
+            result.extend(moved);
+            result.extend(period);
+        } else {
+            result.append(&mut statement);
+        }
+        statement.clear();
+    }
+    result.extend(statement);
+    result
+}
+
 pub fn same_tokens(before: &str, after: &str) -> Result<(), String> {
     let tokenize = |src: &str| {
         if abapfmt_syntax::is_ddl_source(src) {
@@ -304,7 +342,7 @@ pub fn same_tokens(before: &str, after: &str) -> Result<(), String> {
                 _ => code.push(text.to_ascii_uppercase()),
             }
         }
-        (code, comments, pragmas)
+        (move_if_found_to_end(code), comments, pragmas)
     };
     let ((ca, ma, pa), (cb, mb, pb)) = (split(before, &a), split(after, &b));
     // DDL annotations may be written as one token ("@Anno.sub") that was several tokens before
