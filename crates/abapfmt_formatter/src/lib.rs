@@ -167,10 +167,25 @@ pub fn format_checked(
 ) -> Result<String, String> {
     let mut out = format(src, configs);
     if let Some(width) = options.line_width {
-        out = reflow::reflow(&out, width);
+        let reflowed = reflow::reflow(&out, width);
+        if reflowed != out {
+            out = reflowed;
+            // the rules lay out the broken lines again; repeat until the result is stable, so that
+            // formatting the output once more changes nothing
+            for _ in 0..MAX_REFLOW_ROUNDS {
+                let next = reflow::reflow(&format(&out, configs), width);
+                if next == out {
+                    break;
+                }
+                out = next;
+            }
+        }
     }
     same_tokens(src, &out).map(|()| out)
 }
+
+/// Rounds of rules and reflow after the first reflow.
+const MAX_REFLOW_ROUNDS: usize = 4;
 
 /// Settings that do not belong to a rule.
 #[derive(Clone, Debug, PartialEq, Eq)]

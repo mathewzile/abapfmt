@@ -7,7 +7,7 @@ use abapfmt_syntax::{Command, Options, Syntax, is_ddl_source, parse, parse_ddl};
 
 /// The part of a [`Doc`] that rules change.
 #[derive(PartialEq)]
-pub struct Snapshot(Vec<u32>, Vec<u32>, Vec<Option<String>>, Vec<usize>);
+pub struct Snapshot(Vec<u32>, Vec<u32>, Vec<Option<String>>, Vec<usize>, bool);
 
 pub struct Doc<'a> {
     pub syn: Syntax<'a>,
@@ -22,6 +22,8 @@ pub struct Doc<'a> {
     orig_lines: Vec<u32>,
     orig_spaces: Vec<u32>,
     eol: &'static str,
+    /// Empty lines after the last token are removed.
+    trim_end: bool,
     /// Indentation of the first command of the code (before any rule changed it).
     base_indent: u32,
     /// The code has an introductory statement (REPORT ...) or a class, so `base_indent` is not used.
@@ -80,6 +82,7 @@ impl<'a> Doc<'a> {
             base_indent,
             has_intro_or_class,
             orig_lines: lines.clone(),
+            trim_end: false,
             orig_spaces: spaces.clone(),
             lines,
             spaces,
@@ -90,6 +93,48 @@ impl<'a> Doc<'a> {
         })
     }
 
+    /// Exchanges the tokens `i` and `i + 1` (a comment and an opening bracket, say) together with
+    /// their layout and the bracket structure; the exchanged tokens and the one after them are
+    /// always written with the layout set by rules. `i + 1` must be the opening bracket `open`
+    /// (with a matching closing bracket) and `i` a token that is not a bracket. Returns the new
+    /// index of the bracket, `i`; `None` (nothing changed) if tokens of the pair were moved before.
+    pub fn swap_comment_and_open_bracket(&mut self, i: usize) -> Option<usize> {
+        let open = i + 1;
+        if self.order[i] != i || self.order[open] != open {
+            return None;
+        }
+        let close = self.syn.bracket_match[open]?;
+        let outer = self.syn.parent[open];
+        self.syn.tokens.swap(i, open);
+        self.syn.types.swap(i, open);
+        self.syn.sources.swap(i, open);
+        self.lines.swap(i, open);
+        self.spaces.swap(i, open);
+        self.text.swap(i, open);
+        for k in [i, open, open + 1] {
+            if k < self.orig_lines.len() {
+                self.orig_lines[k] = u32::MAX;
+            }
+        }
+        for p in &mut self.syn.parent[open + 1..close] {
+            if *p == Some(open) {
+                *p = Some(i);
+            }
+        }
+        self.syn.bracket_match[i] = Some(close);
+        self.syn.bracket_match[close] = Some(i);
+        self.syn.bracket_match[open] = None;
+        self.syn.parent[i] = outer;
+        // the comment is now inside the brackets
+        self.syn.parent[open] = Some(i);
+        Some(i)
+    }
+
+    /// Removes empty lines (and trailing spaces) after the last token.
+    pub fn trim_document_end(&mut self) {
+        self.trim_end = true;
+    }
+
     /// The layout state, to tell whether a rule changed anything.
     pub fn snapshot(&self) -> Snapshot {
         Snapshot(
@@ -97,11 +142,16 @@ impl<'a> Doc<'a> {
             self.spaces.clone(),
             self.text.clone(),
             self.order.clone(),
+            self.trim_end,
         )
     }
 
     pub fn is_unchanged_since(&self, s: &Snapshot) -> bool {
-        self.lines == s.0 && self.spaces == s.1 && self.text == s.2 && self.order == s.3
+        self.lines == s.0
+            && self.spaces == s.1
+            && self.text == s.2
+            && self.order == s.3
+            && self.trim_end == s.4
     }
 
     pub fn commands(&self) -> &[Command] {
@@ -347,14 +397,13 @@ impl<'a> Doc<'a> {
         let mut out = String::with_capacity(src.len());
         for &i in &self.order {
             let t = &self.syn.tokens[i];
-            let before = if i == 0 {
-                0
-            } else {
-                self.syn.tokens[i - 1].end as usize
-            };
-            let gap = &src[before..t.start as usize];
             if self.lines[i] == self.orig_lines[i] && self.spaces[i] == self.orig_spaces[i] {
-                out.push_str(gap);
+                let before = if i == 0 {
+                    0
+                } else {
+                    self.syn.tokens[i - 1].end as usize
+                };
+                out.push_str(&src[before..t.start as usize]);
             } else {
                 for _ in 0..self.lines[i] {
                     out.push_str(self.eol);
@@ -364,7 +413,15 @@ impl<'a> Doc<'a> {
             out.push_str(self.token_text(i));
         }
         let tail = self.syn.tokens.last().map_or(0, |t| t.end as usize);
-        out.push_str(&src[tail..]);
+        let rest = &src[tail..];
+        if self.trim_end && rest.trim().is_empty() {
+            // keep one line break if there was one, so that the file still ends with a line break
+            if rest.contains('\n') {
+                out.push_str(self.eol);
+            }
+        } else {
+            out.push_str(rest);
+        }
         out
     }
 }

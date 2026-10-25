@@ -35,6 +35,10 @@ pub fn between_sections(doc: &mut Doc, config: &RuleConfig) {
     let after_list_end = empty_line(config, "AfterSelectListEnd", "ALWAYS_AT_LEAST_ONE");
     let max_empty = config.int("MaxConsecutiveEmptyLines", 2);
 
+    if config.bool("RemoveAtDocumentEnd", true) {
+        doc.trim_document_end();
+    }
+
     let n = doc.syn.commands.len();
     for ci in 0..n {
         // multiple empty lines within the command

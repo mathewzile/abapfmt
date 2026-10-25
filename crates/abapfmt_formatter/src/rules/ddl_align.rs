@@ -129,16 +129,31 @@ fn join_columns(
 }
 
 /// `moveOpeningParenthesis`: move "(" behind the view / function name.
-fn move_opening_parenthesis(doc: &mut Doc, open: usize) {
+/// Moves the opening parenthesis behind the view or function name; returns its new index (it
+/// changes if a line-end comment in the way is moved behind the parenthesis).
+fn move_opening_parenthesis(doc: &mut Doc, open: usize) -> usize {
     if doc.lines[open] == 0 {
-        return;
+        return open;
     }
     let prev = open - 1;
     let first_child = (open + 1 < doc.syn.tokens.len() && doc.syn.parent[open + 1] == Some(open))
         .then_some(open + 1);
     if is_comment(doc, prev) {
-        // a comment in the way is not moved
-        return;
+        // if there is a comment in the way, handle at least the most frequent case of a line-end
+        // comment: it moves behind the parenthesis
+        let before_comment_is_code =
+            prev > 0 && !is_comment(doc, prev - 1) && doc.syn.types[prev - 1] != TokenType::Pragma;
+        if let Some(fc) = first_child
+            && before_comment_is_code
+            && let Some(new_open) = doc.swap_comment_and_open_bracket(prev)
+        {
+            // the swap took the layout of the parenthesis along
+            let (l, s) = (doc.lines[new_open], doc.spaces[new_open]);
+            set_ws(doc, fc, l, s);
+            set_ws(doc, new_open, 0, 0);
+            return new_open;
+        }
+        return open;
     }
     if let Some(fc) = first_child
         && doc.lines[fc] == 0
@@ -147,6 +162,7 @@ fn move_opening_parenthesis(doc: &mut Doc, open: usize) {
         set_ws(doc, fc, l, s);
     }
     set_ws(doc, open, 0, 0);
+    open
 }
 
 fn move_closing_parenthesis(doc: &mut Doc, sh: Shared, close: usize, fallback_indent: i64) {
@@ -472,7 +488,7 @@ pub fn source_parameters(doc: &mut Doc, config: &RuleConfig) {
             let Some(open) = source_open_paren(doc, t, last) else {
                 break;
             };
-            move_opening_parenthesis(doc, open);
+            let open = move_opening_parenthesis(doc, open);
             align_parameters(doc, sh, open, ":", pos, align_ops, align_params);
             move_token_after_closing_parens(doc, open, as_alias_pos);
             token = next_sibling_any(doc, open, last);
@@ -522,7 +538,7 @@ pub fn function_parameters(doc: &mut Doc, config: &RuleConfig) {
                 && doc.syn.text(p) == "("
                 && !aligned.contains(&p)
             {
-                move_opening_parenthesis(doc, p);
+                let p = move_opening_parenthesis(doc, p);
                 align_parameters(doc, sh, p, "=>", pos, align_ops, align_params);
                 move_token_after_closing_parens(doc, t, NextPos::KeepAsIs);
                 aligned.insert(p);
