@@ -196,17 +196,41 @@ impl Default for Options {
 /// because a rule may move tokens.
 pub fn format(src: &str, configs: &BTreeMap<String, Option<RuleConfig>>) -> String {
     let default = RuleConfig::new();
+    let all = rules();
     let mut text = src.to_string();
-    for (id, _) in rules() {
-        let config = match configs.get(*id) {
-            Some(None) => continue,
-            Some(Some(c)) => c,
-            None => &default,
+    let mut next = 0;
+    // the source is parsed again only after a rule has changed it
+    while next < all.len() {
+        let Some(mut doc) = Doc::new(&text) else {
+            break;
         };
-        let config = with_cross_rule_settings(id, config, configs);
-        if let Some(out) = run_rule(id, &text, &config) {
-            text = out;
+        let is_ddl = doc.syn.ddl.is_some();
+        let mut changed_at = None;
+        for (k, (id, rule)) in all.iter().enumerate().skip(next) {
+            // DDL rules only apply to CDS sources and ABAP rules only to ABAP
+            if id.starts_with("DDL_") != is_ddl {
+                continue;
+            }
+            let config = match configs.get(*id) {
+                Some(None) => continue,
+                Some(Some(c)) => c,
+                None => &default,
+            };
+            let config = with_cross_rule_settings(id, config, configs);
+            let before = doc.snapshot();
+            rule(&mut doc, &config);
+            if !doc.is_unchanged_since(&before) {
+                changed_at = Some(k);
+                break;
+            }
         }
+        let Some(k) = changed_at else {
+            break;
+        };
+        let out = doc.render();
+        drop(doc);
+        text = out;
+        next = k + 1;
     }
     text
 }

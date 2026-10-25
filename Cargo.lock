@@ -23,6 +23,7 @@ dependencies = [
 name = "abapfmt_formatter"
 version = "0.0.0"
 dependencies = [
+ "abapfmt_grammar",
  "abapfmt_lexer",
  "abapfmt_syntax",
  "serde_json",

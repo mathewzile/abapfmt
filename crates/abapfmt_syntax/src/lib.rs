@@ -311,10 +311,9 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
     }
     // attach grammar results to commands
     for (last_tok, matched, name) in &cmd_matched {
-        if let Some(c) = commands
-            .iter_mut()
-            .find(|c| (c.first..=c.last).contains(last_tok))
-        {
+        // commands are in token order
+        let at = commands.partition_point(|c| c.last < *last_tok);
+        if let Some(c) = commands.get_mut(at).filter(|c| c.first <= *last_tok) {
             c.fully_matched &= *matched;
             if c.statement.is_none() {
                 c.statement = *name;
@@ -390,6 +389,11 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
     }
 
     // native SQL between EXEC SQL and ENDEXEC is not ABAP
+    let exec_sql_ends: std::collections::HashSet<usize> = commands
+        .iter()
+        .filter(|c| c.statement == Some("ExecSQL"))
+        .map(|c| c.last)
+        .collect();
     let mut native = false;
     for idx in 0..n {
         if native {
@@ -401,10 +405,7 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
                 types[idx] = TokenType::NonAbap;
                 sources[idx] = Source::Lexer;
             }
-        } else if commands
-            .iter()
-            .any(|c| c.last == idx && c.statement == Some("ExecSQL"))
-        {
+        } else if exec_sql_ends.contains(&idx) {
             native = true;
         }
     }

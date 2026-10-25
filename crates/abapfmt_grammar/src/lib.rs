@@ -12,7 +12,7 @@ pub mod lexer;
 mod parse;
 #[rustfmt::skip]
 mod tables;
-pub use parse::{ParsedStatement, parse_statements};
+pub use parse::{ParsedStatement, clear_memo, parse_statements};
 pub use tables::{ABAPLINT_VERSION, EXPRESSIONS, NODES, RELEASES, STATEMENTS, Tk};
 
 /// A combinator node. Children are indices into [`NODES`].

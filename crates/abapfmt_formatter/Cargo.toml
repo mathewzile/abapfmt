@@ -14,3 +14,4 @@ abapfmt_syntax = { path = "../abapfmt_syntax" }
 
 [dev-dependencies]
 serde_json = "1"
+abapfmt_grammar = { path = "../abapfmt_grammar" }

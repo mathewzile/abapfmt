@@ -2,8 +2,47 @@
 //! stream at `.`/`,`, expand `:` chains, drop pragmas and match each statement against the
 //! generated grammar. Macros and native SQL are not expanded; such statements stay unmatched and
 //! are left to the fallback refiner.
+use std::collections::HashMap;
+use std::sync::Mutex;
+
 use crate::lexer::{GToken, LexClass, lex};
 use crate::{Class, Options, Token, match_statement};
+
+type Memo = (Option<&'static str>, Vec<Option<Class>>);
+
+/// Results of the matcher by statement text. A formatter run parses the same statements again and
+/// again, because its rules change only whitespace and letter case; the matcher is the expensive
+/// part of a parse.
+static MEMO: Mutex<Option<HashMap<String, Memo>>> = Mutex::new(None);
+const MEMO_LIMIT: usize = 100_000;
+
+fn memo_key(toks: &[Token], opts: Options) -> String {
+    let mut key = format!("{opts:?}");
+    for t in toks {
+        key.push('\u{1}');
+        key.push(char::from(t.kind as u8));
+        key.push_str(t.text);
+    }
+    key
+}
+
+fn match_memoized(toks: &[Token], opts: Options) -> Memo {
+    let key = memo_key(toks, opts);
+    if let Some(m) = MEMO.lock().unwrap().as_ref().and_then(|c| c.get(&key)) {
+        return m.clone();
+    }
+    let result = match match_statement(toks, opts) {
+        Some(m) => (Some(m.statement), m.classes),
+        None => (None, Vec::new()),
+    };
+    let mut guard = MEMO.lock().unwrap();
+    let cache = guard.get_or_insert_with(HashMap::new);
+    if cache.len() >= MEMO_LIMIT {
+        cache.clear();
+    }
+    cache.insert(key, result.clone());
+    result
+}
 
 #[derive(Debug)]
 pub struct ParsedStatement {
@@ -75,10 +114,11 @@ fn parse_one(src: &str, tokens: Vec<GToken>, opts: Options) -> ParsedStatement {
                 kind: tokens[*i].kind,
             })
             .collect();
-        if let Some(m) = match_statement(&toks, opts) {
-            statement = Some(m.statement);
+        let (matched, m_classes) = match_memoized(&toks, opts);
+        if let Some(name) = matched {
+            statement = Some(name);
             for (k, i) in idx.iter().enumerate() {
-                classes[*i] = m.classes[k];
+                classes[*i] = m_classes[k];
             }
         }
     }
@@ -107,4 +147,9 @@ pub fn parse_statements(src: &str, opts: Options) -> Vec<ParsedStatement> {
             .join()
             .expect("parser thread panicked")
     })
+}
+
+/// Empties the statement cache (for benchmarks).
+pub fn clear_memo() {
+    *MEMO.lock().unwrap() = None;
 }

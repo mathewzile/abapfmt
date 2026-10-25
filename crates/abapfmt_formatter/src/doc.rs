@@ -5,6 +5,10 @@
 //! whitespace of every token whose layout was not touched, so untouched code stays byte-identical.
 use abapfmt_syntax::{Command, Options, Syntax, is_ddl_source, parse, parse_ddl};
 
+/// The part of a [`Doc`] that rules change.
+#[derive(PartialEq)]
+pub struct Snapshot(Vec<u32>, Vec<u32>, Vec<Option<String>>, Vec<usize>);
+
 pub struct Doc<'a> {
     pub syn: Syntax<'a>,
     /// Line breaks before each token.
@@ -84,6 +88,20 @@ impl<'a> Doc<'a> {
             eol: if src.contains("\r\n") { "\r\n" } else { "\n" },
             syn,
         })
+    }
+
+    /// The layout state, to tell whether a rule changed anything.
+    pub fn snapshot(&self) -> Snapshot {
+        Snapshot(
+            self.lines.clone(),
+            self.spaces.clone(),
+            self.text.clone(),
+            self.order.clone(),
+        )
+    }
+
+    pub fn is_unchanged_since(&self, s: &Snapshot) -> bool {
+        self.lines == s.0 && self.spaces == s.1 && self.text == s.2 && self.order == s.3
     }
 
     pub fn commands(&self) -> &[Command] {
