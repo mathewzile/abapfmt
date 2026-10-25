@@ -33,7 +33,8 @@ the workspace). All systems of a workspace therefore share one configuration. Th
     "DDL_ALIGN_FIELD_LISTS": { "NameListPos": "LINE_START_PLUS_4" },
     "INSET": false
   },
-  "lineWidth": 120
+  "lineWidth": 120,
+  "tabularLineWidth": 160
 }
 ```
 
@@ -42,6 +43,12 @@ all rules have run, statements with longer lines get line breaks at token bounda
 where the nesting is shallowest. Lines that fit are left alone. `"lineWidth": "off"` switches this
 off, so that only the line length options of the individual rules apply. CDS sources are not
 reflowed; their rules have their own `MaxLineLength` options. Chains and comments are not broken.
+A line that cannot be broken at a token boundary stays as it is, even if it exceeds the width.
+
+`tabularLineWidth` (default 160, as in abap-cleaner) is the maximum length of the rows of a table in
+tabular style, where some overlength is tolerated because the table stays readable. It is used as
+`MaxLineLengthForSingleLine` of `ALIGN_PARAMETERS` (a value set there wins), and the reflow leaves
+lines that start with a table row within this length alone.
 
 Rule ids and option names are those of abap-cleaner; enum options are written by name. `false`
 (or `"enabled": false`) switches a rule off. Rules that abapfmt does not implement (those that

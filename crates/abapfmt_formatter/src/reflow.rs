@@ -53,14 +53,14 @@ fn is_operator(text: &str) -> bool {
 }
 
 /// Reflows the ABAP source `src`; returns it unchanged if there is nothing to do.
-pub fn reflow(src: &str, width: usize) -> String {
+pub fn reflow(src: &str, width: usize, tabular: usize) -> String {
     let Some(mut doc) = Doc::new(src) else {
         return src.to_string();
     };
     if doc.syn.ddl.is_some() {
         return src.to_string();
     }
-    let width = width as i64;
+    let (width, tabular) = (width as i64, tabular as i64);
     let mut changed = false;
     for ci in 0..doc.syn.commands.len() {
         let cmd = doc.syn.commands[ci].clone();
@@ -69,7 +69,7 @@ pub fn reflow(src: &str, width: usize) -> String {
         }
         // every break shortens a line, so the number of tokens bounds the iterations
         for _ in cmd.first..=cmd.last {
-            if !break_first_overlong_line(&mut doc, cmd.first, cmd.last, width) {
+            if !break_first_overlong_line(&mut doc, cmd.first, cmd.last, width, tabular) {
                 break;
             }
             changed = true;
@@ -84,7 +84,13 @@ pub fn reflow(src: &str, width: usize) -> String {
 
 /// Breaks the first line of the command that is too long; false if there is none (or it cannot
 /// be broken).
-fn break_first_overlong_line(doc: &mut Doc, first: usize, last: usize, width: i64) -> bool {
+fn break_first_overlong_line(
+    doc: &mut Doc,
+    first: usize,
+    last: usize,
+    width: i64,
+    tabular: i64,
+) -> bool {
     let mut ls = first;
     while ls <= last {
         // the line is [ls, le]
@@ -97,7 +103,13 @@ fn break_first_overlong_line(doc: &mut Doc, first: usize, last: usize, width: i6
         while code_end > ls && is_comment(doc, code_end) {
             code_end -= 1;
         }
-        if end_x(doc, code_end) > width && break_line(doc, first, ls, code_end, width) {
+        // a row of a table in tabular style may be longer
+        let limit = if doc.syn.text(ls) == "(" {
+            width.max(tabular)
+        } else {
+            width
+        };
+        if end_x(doc, code_end) > limit && break_line(doc, first, ls, code_end, limit) {
             return true;
         }
         ls = le + 1;
@@ -157,23 +169,23 @@ mod tests {
     #[test]
     fn short_lines_are_untouched() {
         let src = "DATA lv_a TYPE i.\n";
-        assert_eq!(reflow(src, 120), src);
+        assert_eq!(reflow(src, 120, 160), src);
     }
 
     #[test]
     fn long_statements_break_before_keywords() {
         let src =
             "SELECT carrid, connid FROM spfli INTO TABLE @DATA(lt_flights) WHERE carrid = 'LH'.\n";
-        let out = reflow(src, 40);
+        let out = reflow(src, 40, 40);
         assert!(out.lines().all(|l| l.len() <= 40), "{out}");
         assert!(out.lines().count() > 1);
-        assert_eq!(reflow(&out, 40), out, "idempotent");
+        assert_eq!(reflow(&out, 40, 40), out, "idempotent");
     }
 
     #[test]
     fn breaking_keeps_the_tokens() {
         let src = "lv_result = zcl_helper=>get_value( iv_first = 1 iv_second = lv_other iv_third = 3 ).\n";
-        let out = reflow(src, 50);
+        let out = reflow(src, 50, 50);
         assert_eq!(
             out.split_whitespace().collect::<Vec<_>>(),
             src.split_whitespace().collect::<Vec<_>>()

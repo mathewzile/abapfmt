@@ -165,15 +165,17 @@ pub fn format_checked(
     configs: &BTreeMap<String, Option<RuleConfig>>,
     options: &Options,
 ) -> Result<String, String> {
+    let configs = &with_tabular_width(configs, options.tabular_line_width);
+    let tabular = options.tabular_line_width;
     let mut out = format(src, configs);
     if let Some(width) = options.line_width {
-        let reflowed = reflow::reflow(&out, width);
+        let reflowed = reflow::reflow(&out, width, tabular);
         if reflowed != out {
             out = reflowed;
             // the rules lay out the broken lines again; repeat until the result is stable, so that
             // formatting the output once more changes nothing
             for _ in 0..MAX_REFLOW_ROUNDS {
-                let next = reflow::reflow(&format(&out, configs), width);
+                let next = reflow::reflow(&format(&out, configs), width, tabular);
                 if next == out {
                     break;
                 }
@@ -193,6 +195,30 @@ pub struct Options {
     /// Statements with longer lines are broken after all rules have run; `None` switches the
     /// reflow off, so that only the per-rule line length options apply. Applies to ABAP only.
     pub line_width: Option<usize>,
+    /// Maximum line length of the rows of tables in tabular style (`MaxLineLengthForSingleLine`
+    /// of ALIGN_PARAMETERS, unless the rule configures its own value). The reflow lets lines
+    /// that start with a row of such a table stay within this length.
+    pub tabular_line_width: usize,
+}
+
+/// The default width of rows in tabular style, as in abap-cleaner: tabular style improves
+/// readability, therefore some overlength is tolerated there.
+pub const DEFAULT_TABULAR_LINE_WIDTH: usize = 160;
+
+/// `configs` with `width` as the table row length of ALIGN_PARAMETERS, if not set there.
+fn with_tabular_width(
+    configs: &BTreeMap<String, Option<RuleConfig>>,
+    width: usize,
+) -> BTreeMap<String, Option<RuleConfig>> {
+    let mut result = configs.clone();
+    let entry = result
+        .entry("ALIGN_PARAMETERS".to_string())
+        .or_insert_with(|| Some(RuleConfig::new()));
+    if let Some(c) = entry {
+        c.entry("MaxLineLengthForSingleLine".to_string())
+            .or_insert(ConfigValue::Int(width as i64));
+    }
+    result
 }
 
 /// The default line width, as recommended by the Clean ABAP style guide.
@@ -202,6 +228,7 @@ impl Default for Options {
     fn default() -> Options {
         Options {
             line_width: Some(DEFAULT_LINE_WIDTH),
+            tabular_line_width: DEFAULT_TABULAR_LINE_WIDTH,
         }
     }
 }

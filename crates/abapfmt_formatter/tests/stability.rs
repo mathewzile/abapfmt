@@ -11,6 +11,7 @@ fn narrow_line_width_is_stable() {
     for width in [60, 80, 100, 120] {
         let options = Options {
             line_width: Some(width),
+            ..Options::default()
         };
         let once = format_checked(&sample, &configs, &options).unwrap();
         let twice = format_checked(&once, &configs, &options).unwrap();

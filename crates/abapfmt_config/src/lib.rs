@@ -25,6 +25,8 @@ pub struct Config {
     pub rules: BTreeMap<String, Option<RuleConfig>>,
     /// Maximum line width (default 120); `None` switches the reflow off.
     pub line_width: Option<usize>,
+    /// Maximum length of table rows in tabular style (default 160).
+    pub tabular_line_width: usize,
 }
 
 impl Default for Config {
@@ -32,6 +34,7 @@ impl Default for Config {
         Config {
             rules: BTreeMap::new(),
             line_width: Some(abapfmt_formatter::DEFAULT_LINE_WIDTH),
+            tabular_line_width: abapfmt_formatter::DEFAULT_TABULAR_LINE_WIDTH,
         }
     }
 }
@@ -41,6 +44,16 @@ impl Config {
     pub fn options(&self) -> abapfmt_formatter::Options {
         abapfmt_formatter::Options {
             line_width: self.line_width,
+            // the rule option, if set, wins over the top-level setting
+            tabular_line_width: match self
+                .rules
+                .get("ALIGN_PARAMETERS")
+                .and_then(|r| r.as_ref())
+                .and_then(|r| r.get("MaxLineLengthForSingleLine"))
+            {
+                Some(abapfmt_formatter::ConfigValue::Int(w)) if *w > 0 => *w as usize,
+                _ => self.tabular_line_width,
+            },
         }
     }
 }
@@ -151,6 +164,12 @@ pub fn parse_json(text: &str) -> Result<Loaded, String> {
                     _ => return Err("\"lineWidth\" must be a number or \"off\"".into()),
                 };
             }
+            "tabularLineWidth" => match value.as_u64() {
+                Some(w) if (40..=1000).contains(&w) => {
+                    loaded.config.tabular_line_width = w as usize;
+                }
+                _ => return Err("\"tabularLineWidth\" must be between 40 and 1000".into()),
+            },
             "rules" => {
                 let rules = value.as_object().ok_or("\"rules\" must be an object")?;
                 for (id, options) in rules {
@@ -317,6 +336,20 @@ mod tests {
                 .line_width,
             None
         );
+    }
+
+    #[test]
+    fn tabular_line_width_defaults_to_160_and_the_rule_option_wins() {
+        assert_eq!(Config::default().options().tabular_line_width, 160);
+        let c = parse_json(r#"{"tabularLineWidth":140}"#).unwrap().config;
+        assert_eq!(c.options().tabular_line_width, 140);
+        let c = parse_json(
+            r#"{"tabularLineWidth":140,"rules":{"ALIGN_PARAMETERS":{"MaxLineLengthForSingleLine":130}}}"#,
+        )
+        .unwrap()
+        .config;
+        assert_eq!(c.options().tabular_line_width, 130);
+        assert!(parse_json(r#"{"tabularLineWidth":"off"}"#).is_err());
     }
 
     #[test]

@@ -638,7 +638,7 @@ fn align_asterisk_comment(
 pub fn align_parameters(doc: &mut Doc, config: &RuleConfig) {
     let o = Opts {
         max_line_length: config.int("MaxLineLength", 120),
-        max_line_length_single: config.int("MaxLineLengthForSingleLine", 120),
+        max_line_length_single: config.int("MaxLineLengthForSingleLine", 160),
         max_params_procedural: config.int("MaxParamCountBehindProceduralCall", 0),
         max_params_functional: config.int("MaxParamCountBehindFunctionalCall", 100),
         keywords_own_line_procedural: config.bool("PutProceduralCallKeywordsOnOwnLine", false),
