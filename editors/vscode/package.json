@@ -56,7 +56,7 @@
         "abapfmt.configPath": {
           "type": "string",
           "default": "",
-          "markdownDescription": "Path of the `abapfmt.json` (or abap-cleaner `.cfj` profile) to use, relative to the first workspace folder. Empty searches for `abapfmt.json`, `.vscode/abapfmt.json` or `.github/abapfmt.json` next to the file and in its parent folders, and then in the workspace folders (for documents of remote file systems)."
+          "markdownDescription": "Path of the `abapfmt.json` (or abap-cleaner `.cfj` profile) to use, relative to the first workspace folder. Empty searches for `abapfmt.json` or `.vscode/abapfmt.json` next to the file and in its parent folders, and then in the workspace folders (for documents of remote file systems)."
         },
         "abapfmt.trace.server": {
           "type": "string",

@@ -114,8 +114,8 @@ fn local_files_use_the_config_of_their_checkout() {
 #[test]
 fn remote_documents_use_the_workspace_config() {
     let root = temp_dir("remote");
-    std::fs::create_dir_all(root.join(".github")).unwrap();
-    std::fs::write(root.join(".github/abapfmt.json"), RULE_OFF).unwrap();
+    std::fs::create_dir_all(root.join(".vscode")).unwrap();
+    std::fs::write(root.join(".vscode/abapfmt.json"), RULE_OFF).unwrap();
     let mut c = Client::start(json!({
         "capabilities": {},
         "workspaceFolders": [

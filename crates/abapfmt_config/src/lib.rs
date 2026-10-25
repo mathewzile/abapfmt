@@ -17,11 +17,7 @@ use abapfmt_formatter::{ConfigValue, RuleConfig};
 use serde_json::Value;
 
 /// Where a directory may keep its configuration, in order of precedence.
-pub const CONFIG_LOCATIONS: &[&str] = &[
-    "abapfmt.json",
-    ".vscode/abapfmt.json",
-    ".github/abapfmt.json",
-];
+pub const CONFIG_LOCATIONS: &[&str] = &["abapfmt.json", ".vscode/abapfmt.json"];
 
 /// The options per rule id; a rule mapped to `None` is switched off, absent rules use defaults.
 #[derive(Clone, Debug, PartialEq)]
@@ -324,14 +320,14 @@ mod tests {
     }
 
     #[test]
-    fn config_is_found_in_vscode_and_github_folders() {
+    fn config_is_found_in_the_vscode_folder() {
         let root = std::env::temp_dir().join(format!("abapfmt-config-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&root);
-        std::fs::create_dir_all(root.join(".github")).unwrap();
+        std::fs::create_dir_all(root.join(".vscode")).unwrap();
         std::fs::create_dir_all(root.join("src/deep")).unwrap();
-        std::fs::write(root.join(".github/abapfmt.json"), "{}").unwrap();
+        std::fs::write(root.join(".vscode/abapfmt.json"), "{}").unwrap();
         let found = find_config(&root.join("src/deep")).unwrap();
-        assert!(found.ends_with(std::path::Path::new(".github").join("abapfmt.json")));
+        assert!(found.ends_with(std::path::Path::new(".vscode").join("abapfmt.json")));
         assert_eq!(
             find_config_in_workspace(&[root.join("src"), root.clone()]),
             Some(found)
@@ -343,7 +339,7 @@ mod tests {
             !config_in_dir(&root)
                 .unwrap()
                 .to_string_lossy()
-                .contains(".github")
+                .contains(".vscode")
         );
     }
 

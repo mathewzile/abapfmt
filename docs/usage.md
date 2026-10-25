@@ -17,15 +17,14 @@ case is left untouched).
 ## Configuration
 
 abapfmt looks for the configuration in the directory of the file and in each parent directory,
-nearest first. In every directory it checks `abapfmt.json`, `.vscode/abapfmt.json` and
-`.github/abapfmt.json`, in this order. This covers ABAP files that are committed to a repository.
+nearest first. In every directory it checks `abapfmt.json` and `.vscode/abapfmt.json`, in this order. This covers ABAP files that are committed to a repository.
 `--config <file>` and `--no-config` override the search.
 
 In the editor, documents of remote file systems (for example ABAP systems opened through ADT) have
 no directory to search from; for them, and for local files without a configuration, the server uses
 the configuration found in the workspace folders (same locations, e.g. `.vscode/abapfmt.json` of
 the workspace). All systems of a workspace therefore share one configuration. The setting
-`abapfmt.configPath` names a file explicitly and takes precedence.
+`abapfmt.configPath` names a file explicitly (anywhere, for example `.github/abapfmt.json`) and takes precedence.
 
 ```json
 {

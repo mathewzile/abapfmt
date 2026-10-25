@@ -183,7 +183,7 @@ fn format_document(
 /// The configuration for a document, in this order:
 /// 1. the explicitly configured file;
 /// 2. for local files, the nearest `abapfmt.json` in the directory of the file or its ancestors
-///    (also in their `.vscode` and `.github` folders), as for a checked-out repository;
+///    (also in their `.vscode` folders), as for a checked-out repository;
 /// 3. the configuration of the workspace folders, which applies to documents of remote file
 ///    systems (e.g. ABAP systems opened through ADT) and to files outside of any configured tree;
 /// 4. the defaults.
