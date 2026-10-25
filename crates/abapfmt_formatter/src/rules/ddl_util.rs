@@ -356,3 +356,58 @@ pub fn last_token_of_ddl_logical_expression(doc: &Doc, ci: usize, t: usize) -> O
         Some(e) => (cmd_first..e).rev().find(|j| !is_comment(doc, *j)),
     }
 }
+
+/// `Token.getNextSibling`: the next token on the same level, comments included.
+pub fn next_sibling_any(doc: &Doc, i: usize, last: usize) -> Option<usize> {
+    let pi = doc.syn.parent[i];
+    for j in i + 1..=last {
+        let pj = doc.syn.parent[j];
+        if pj == pi {
+            return Some(j);
+        } else if !pj.is_some_and(|p| p >= i) {
+            return None;
+        }
+    }
+    None
+}
+
+/// `Command.isDdlListElement(openers, closers)`.
+fn is_list_element(doc: &Doc, ci: usize, openers: &[&str], closers: &[&str]) -> bool {
+    let Some(parent) = cmd_parent(doc, ci) else {
+        return false;
+    };
+    if cmd_parent(doc, parent).is_some() {
+        return false;
+    }
+    let opener_ok = last_code(doc, parent).is_some_and(|t| {
+        openers
+            .iter()
+            .any(|o| doc.syn.text(t).eq_ignore_ascii_case(o))
+    });
+    if !opener_ok || is_annotation(doc, ci) || is_comment_line(doc, ci) {
+        return false;
+    }
+    let next = (ci + 1..doc.syn.commands.len()).find(|c| !is_comment_line(doc, *c));
+    if let Some(n) = next
+        && first_code(doc, n).is_some_and(|t| {
+            closers
+                .iter()
+                .any(|c| doc.syn.text(t).eq_ignore_ascii_case(c))
+        })
+    {
+        return true;
+    }
+    if last_code(doc, ci).is_some_and(|t| matches!(doc.syn.text(t), "," | ";")) {
+        return true;
+    }
+    next.is_some_and(|n| first_code(doc, n).is_some_and(|t| doc.syn.text(t).starts_with("@<")))
+}
+
+pub fn is_parameters_element(doc: &Doc, ci: usize) -> bool {
+    is_list_element(doc, ci, &["PARAMETERS"], &["AS", "RETURNS", "{"])
+}
+
+#[allow(dead_code)]
+pub fn is_select_element(doc: &Doc, ci: usize) -> bool {
+    is_list_element(doc, ci, &["{", "SELECT", "DISTINCT"], &["}", "FROM"])
+}

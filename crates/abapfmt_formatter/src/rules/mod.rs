@@ -18,6 +18,7 @@ mod align_select_from;
 mod align_select_lists;
 mod align_with_second_word;
 mod case;
+mod ddl_align;
 mod ddl_empty_lines;
 mod ddl_position;
 mod ddl_spaces;
@@ -31,6 +32,12 @@ mod spaces;
 
 /// In the order the rules run (upstream's registry order).
 pub const ALL: &[(&str, RuleFn)] = &[
+    ("DDL_ALIGN_ENTITY_PARAMETERS", ddl_align::entity_parameters),
+    ("DDL_ALIGN_SOURCE_PARAMETERS", ddl_align::source_parameters),
+    (
+        "DDL_ALIGN_FUNCTION_PARAMETERS",
+        ddl_align::function_parameters,
+    ),
     ("DDL_POSITION_DEFINE", ddl_position::define),
     ("DDL_POSITION_SELECT", ddl_position::select),
     ("DDL_POSITION_BRACES", ddl_position::braces),

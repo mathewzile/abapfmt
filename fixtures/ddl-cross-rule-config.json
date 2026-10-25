@@ -1,0 +1,41 @@
+{
+ "ddl/alignment/DdlAlignEntityParameters.json::testSpaceBeforeButNotAfterColon": {
+  "SpaceBeforeColon": "ChangeType.ALWAYS",
+  "SpaceAfterColon": "ChangeType.NEVER"
+ },
+ "ddl/alignment/DdlAlignEntityParameters.json::testIndentByEightSpaces": {
+  "ParamsIndent": 8
+ },
+ "ddl/alignment/DdlAlignLogicalExpressions.json::testSpacesInsideParentheses": {
+  "SpacesInsideArithParens": "ChangeType.ALWAYS"
+ },
+ "ddl/alignment/DdlAlignLogicalExpressions.json::testParenthesisWithTwoExprsOnOneLine": {
+  "SpacesInsideArithParens": "ChangeType.NEVER"
+ },
+ "ddl/alignment/DdlAlignLogicalExpressions.json::testAlignWhereWithSpacesInsideParens": {
+  "SpacesInsideArithParens": "ChangeType.ALWAYS"
+ },
+ "ddl/alignment/DdlAlignSourceParameters.json::testDoNotAlignPutSpaceBeforeColon": {
+  "SpaceBeforeColon": "ChangeType.ALWAYS"
+ },
+ "ddl/alignment/DdlAlignSourceParameters.json::testDoNotAlignNoSpaceAroundColon": {
+  "SpaceBeforeColon": "ChangeType.NEVER",
+  "SpaceAfterColon": "ChangeType.NEVER"
+ },
+ "ddl/alignment/DdlAlignSourceParameters.json::testSpacesInsideParentheses": {
+  "SpacesInsideFuncParens": "ChangeType.ALWAYS"
+ },
+ "ddl/alignment/DdlAlignSourceParameters.json::testCommentsAboveParentheses": {
+  "SpacesInsideFuncParens": "ChangeType.ALWAYS"
+ },
+ "ddl/alignment/DdlAlignSourceParameters.json::testKeepUnevenSpacesInsideFuncParens": {
+  "SpacesInsideFuncParens": "ChangeType.KEEP_AS_IS"
+ },
+ "ddl/alignment/DdlAlignSourceParameters.json::testKeepUnevenSpacesInsideFuncParens2": {
+  "SpacesInsideFuncParens": "ChangeType.KEEP_AS_IS"
+ },
+ "ddl/alignment/DdlAlignSourceParameters.json::testSpaceAfterColonDoNotAlign": {
+  "SpaceBeforeColon": "ChangeType.ALWAYS",
+  "SpaceAfterColon": "ChangeType.NEVER"
+ }
+}

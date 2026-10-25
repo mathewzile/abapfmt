@@ -392,6 +392,18 @@ impl Table {
         condense: bool,
         remove_line_breaks: bool,
     ) {
+        self.join_into_previous_columns_with(doc, col, condense, 1, remove_line_breaks);
+    }
+
+    /// `AlignColumn.joinIntoPreviousColumns(condense, condensedSpacesLeft, removeLineBreaksBetweenCells)`
+    pub fn join_into_previous_columns_with(
+        &mut self,
+        doc: &mut Doc,
+        col: usize,
+        condense: bool,
+        spaces: i64,
+        remove_line_breaks: bool,
+    ) {
         assert!(col > 0);
         for li in 0..self.lines.len() {
             let Some(cell) = self.lines[li].cells[col].take() else {
@@ -402,7 +414,7 @@ impl Table {
                     if condense && (remove_line_breaks || !doc.first_in_line(cell.first)) {
                         let prev = cell.first - 1;
                         if !is_comment(doc, prev) {
-                            cell.set_whitespace(doc, 0, 1, true, false, None);
+                            cell.set_whitespace(doc, 0, spaces, true, false, None);
                         } else {
                             let prev_code = (0..prev)
                                 .rev()
@@ -523,6 +535,27 @@ impl Table {
         keep_multiline: bool,
         condense_inner: bool,
     ) {
+        self.align_ex(
+            doc,
+            basic_indent,
+            first_line_breaks,
+            keep_multiline,
+            condense_inner,
+            false,
+        );
+    }
+
+    /// `AlignTable.align(...)`; `force_first_line_breaks`: keep a line break at table start even if
+    /// the table continues after an opening "(".
+    pub fn align_ex(
+        &mut self,
+        doc: &mut Doc,
+        basic_indent: i64,
+        first_line_breaks: u32,
+        keep_multiline: bool,
+        condense_inner: bool,
+        force_first_line_breaks: bool,
+    ) {
         let keep_multiline = keep_multiline || !self.can_align_to_mono_line(doc);
         for c in &mut self.cols {
             c.effective_indent = 0;
@@ -532,7 +565,7 @@ impl Table {
             .first()
             .and_then(|l| l.first_token())
             .is_some_and(|t| t == 0);
-        let min_spaces_left = 1;
+        let min_spaces_left = if doc.syn.ddl.is_some() { 0 } else { 1 };
         let widths: Vec<i64> = (0..self.cols.len())
             .map(|c| self.width_with_space(doc, c, keep_multiline))
             .collect();
@@ -545,13 +578,23 @@ impl Table {
             } else {
                 basic_indent
             };
-            if let Some(ft) = self.lines[li].first_token()
+            // the token before the line's first token, if it is in the same command
+            if force_first_line_breaks && is_first_line && first_line_breaks > 0 {
+                // a line break after "(" is intentional
+            } else if let Some(ft) = self.lines[li].first_token()
                 && ft > 0
+                && doc.syn.commands[doc.syn.commands.partition_point(|c| c.last < ft)].first < ft
             {
                 let prev_end = end_x(doc, ft - 1);
                 if prev_end + 1 == basic_indent {
                     line_breaks = 0;
                     spaces_left = 1;
+                } else if prev_end == basic_indent
+                    && min_spaces_left == 0
+                    && doc.syn.text(ft - 1) == "("
+                {
+                    line_breaks = 0;
+                    spaces_left = 0;
                 }
             }
 

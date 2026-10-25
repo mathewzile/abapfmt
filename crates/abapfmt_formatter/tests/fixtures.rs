@@ -51,7 +51,15 @@ fn config_of(v: &Value) -> RuleConfig {
         .unwrap_or_default()
 }
 
+/// Settings of *other* rules that an upstream test changes (`fixtures/ddl-cross-rule-config.json`);
+/// the fixture export only carries the options of the rule under test.
+fn cross_rule_config(root: &Path) -> std::collections::BTreeMap<String, Value> {
+    serde_json::from_str(&std::fs::read_to_string(root.join("ddl-cross-rule-config.json")).unwrap())
+        .unwrap()
+}
+
 fn load(root: &Path) -> Vec<Case> {
+    let cross = cross_rule_config(root);
     let mut files = Vec::new();
     collect(&root.join("rules"), &mut files);
     files.sort();
@@ -65,12 +73,17 @@ fn load(root: &Path) -> Vec<Case> {
             .replace('\\', "/");
         let rule = v["ruleId"].as_str().unwrap().to_string();
         for c in v["cases"].as_array().unwrap() {
+            let key = format!("{rel}::{}", c["name"].as_str().unwrap());
+            let mut config = config_of(&c["config"]);
+            if let Some(extra) = cross.get(&key) {
+                config.extend(config_of(extra));
+            }
             cases.push(Case {
-                key: format!("{rel}::{}", c["name"].as_str().unwrap()),
+                key,
                 rule: rule.clone(),
                 src: c["src"].as_str().unwrap_or_default().to_string(),
                 exp: c["exp"].as_str().unwrap_or_default().to_string(),
-                config: config_of(&c["config"]),
+                config,
                 skipped: c.get("skipped").is_some(),
             });
         }
