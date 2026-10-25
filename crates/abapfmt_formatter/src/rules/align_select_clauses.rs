@@ -240,15 +240,14 @@ fn execute_on(doc: &mut Doc, o: &Opts, arena: &[Query], qi: usize, cmd_last: usi
             }
         } else if clause_type == Clause::From && doc.lines[clause.first] == 0 {
             // keep simple FROM behind SELECT
-            if !o.new_line_for_from_with_joins {
-                continue;
-            } else if clause.first > 0
-                && doc.syn.types[clause.first - 1] == TokenType::Keyword
-                && doc
-                    .syn
-                    .text(clause.first - 1)
-                    .eq_ignore_ascii_case("SELECT")
-                && o.clause_indent == 7
+            if !o.new_line_for_from_with_joins
+                || clause.first > 0
+                    && doc.syn.types[clause.first - 1] == TokenType::Keyword
+                    && doc
+                        .syn
+                        .text(clause.first - 1)
+                        .eq_ignore_ascii_case("SELECT")
+                    && o.clause_indent == 7
             {
                 continue;
             }
@@ -272,11 +271,9 @@ fn execute_on(doc: &mut Doc, o: &Opts, arena: &[Query], qi: usize, cmd_last: usi
         if clause.first < clause.last {
             let next = clause.first + 1;
             let is_code = doc.syn.types[next] != TokenType::Comment;
-            if clause_type == Clause::Where && is_code && doc.lines[next] > 0 {
-                set_term_token_whitespace(doc, clause, next, 0, 1);
-            } else if clause_type == Clause::Into
-                && is_code
-                && (doc.lines[next] > 0 || doc.spaces[next] > 1)
+            if is_code
+                && (clause_type == Clause::Where && doc.lines[next] > 0
+                    || clause_type == Clause::Into && (doc.lines[next] > 0 || doc.spaces[next] > 1))
             {
                 set_term_token_whitespace(doc, clause, next, 0, 1);
             }

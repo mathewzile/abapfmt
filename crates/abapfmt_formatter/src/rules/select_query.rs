@@ -340,8 +340,7 @@ pub(crate) fn create_query_chains(doc: &Doc, cmd: &Command) -> (Vec<Query>, Vec<
             let mut prev_query: Option<usize> = None;
             let mut query_start = Some(token);
             let mut opening: HashSet<usize> = HashSet::new();
-            loop {
-                let Some(qs) = query_start else { break };
+            while let Some(qs) = query_start {
                 let mut q = Query {
                     start_query,
                     prev: prev_query,
@@ -408,4 +407,123 @@ pub(crate) fn create_query_chains(doc: &Doc, cmd: &Command) -> (Vec<Query>, Vec<
         }
     }
     (arena, chains)
+}
+
+/// The next sibling token that is not a comment; `None` after the last child of a level
+/// (unlike `next_non_comment_sibling`, which would return the parent's closing token).
+pub(crate) fn next_code_sibling(doc: &Doc, t: usize, last: usize) -> Option<usize> {
+    let mut cur = t;
+    loop {
+        let n = if opens_level(doc, cur) {
+            doc.syn.bracket_match[cur]?
+        } else {
+            cur + 1
+        };
+        if n > last || (!opens_level(doc, cur) && closes_level(doc, n)) {
+            return None;
+        }
+        if !is_comment(doc, n) {
+            return Some(n);
+        }
+        cur = n;
+    }
+}
+
+/// `Token.getLastTokenOfLogicalExpression` for ABAP SQL conditions: `t` is the WHERE / HAVING /
+/// ON keyword; returns the last token of the condition.
+pub(crate) fn sql_condition_end(doc: &Doc, t: usize, last: usize) -> Option<usize> {
+    const INSIDE: &[&str] = &[
+        "NOT", "AND", "OR", "IS", "BETWEEN", "IN", "LIKE", "ALL", "ANY", "SOME", "NULL", "INITIAL",
+        "ESCAPE", "EXISTS", "CASE", "WHEN", "THEN", "ELSE", "END",
+    ];
+    const AGGREGATES: &[&str] = &[
+        "AVG(",
+        "MEDIAN(",
+        "MAX(",
+        "MIN(",
+        "SUM(",
+        "PRODUCT(",
+        "STDDEV(",
+        "VAR(",
+        "CORR(",
+        "CORR_SPEARMAN(",
+        "STRING_AGG(",
+        "COUNT(",
+        "GROUPING(",
+        "ALLOW_PRECISION_LOSS(",
+    ];
+    const CONSTRUCTORS: &[&str] = &[
+        "NEW",
+        "VALUE",
+        "CONV",
+        "CORRESPONDING",
+        "CAST",
+        "REF",
+        "EXACT",
+        "REDUCE",
+        "FILTER",
+        "COND",
+        "SWITCH",
+    ];
+    const NEXT_CLAUSE: &[&str] = &[
+        "UNION",
+        "INTERSECT",
+        "EXCEPT",
+        "FIELDS",
+        "FOR",
+        "WHERE",
+        "GROUP",
+        "HAVING",
+        "ORDER",
+        "INTO",
+        "APPENDING",
+        "USING",
+        "UP",
+        "%_HINTS",
+        "PRIVILEGED",
+        "OFFSET",
+        "BYPASSING",
+        "CONNECTION",
+        "OPTIONS",
+        "INNER",
+        "LEFT",
+        "RIGHT",
+        "JOIN",
+        "CROSS",
+        "ON",
+        "CLIENT",
+        "SOURCE",
+        "CHILD",
+        "PERIOD",
+        "SIBLINGS",
+        "DEPTH",
+        "MULTIPLE",
+        "ORPHANS",
+        "CYCLES",
+        "LOAD",
+        "GENERATE",
+        "DISTANCE",
+        "MEASURES",
+        "WITH",
+    ];
+    let text_in =
+        |e: usize, set: &[&str]| set.iter().any(|s| doc.syn.text(e).eq_ignore_ascii_case(s));
+    let mut end = next_code_sibling(doc, t, last);
+    while let Some(e) = end.filter(|e| doc.syn.types[*e] != TokenType::Period) {
+        if doc.syn.types[e] != TokenType::Keyword {
+            // the condition can only end with a keyword, a period or a closing parenthesis
+        } else if text_in(e, INSIDE) || text_in(e, AGGREGATES) || text_in(e, CONSTRUCTORS) {
+        } else {
+            break;
+        }
+        let Some(n) = next_code_sibling(doc, e, last) else {
+            return Some(e);
+        };
+        end = Some(n);
+    }
+    let e = end?;
+    if doc.syn.types[e] != TokenType::Period && !text_in(e, NEXT_CLAUSE) {
+        return None;
+    }
+    (0..e).rev().find(|j| !is_comment(doc, *j))
 }
