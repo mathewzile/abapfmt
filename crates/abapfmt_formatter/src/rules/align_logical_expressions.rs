@@ -133,6 +133,23 @@ pub(crate) fn last_token_of_logical_expression(
         }
     }
 
+    // 4. Boolean expressions at the right-hand side of (explicit or implicit) assignments
+    if let Some(nc) = next_code(doc, t, last)
+        && starts_rhs_of_assignment(doc, cmd, nc)
+        && let Some(last_of_expr) = doc.syn.last_of_expression(nc, cmd.first, last)
+    {
+        let cx = Ctx {
+            cmd_first: cmd.first,
+            cmd_last: last,
+            is_sql,
+        };
+        if let Some(exp) = LogExp::create(doc, &cx, None, nc, last_of_expr)
+            && exp.contains_boolean_op_or_comparison()
+        {
+            return Some(last_of_expr);
+        }
+    }
+
     // 5. ABAP SQL conditions
     if is_sql {
         if kw(doc, t, "WHEN") {
@@ -142,6 +159,90 @@ pub(crate) fn last_token_of_logical_expression(
         }
     }
     None
+}
+
+/// `Token.startsRhsOfAssignment`
+fn starts_rhs_of_assignment(doc: &Doc, cmd: &Command, t: usize) -> bool {
+    let Some(prev) = (cmd.first..t).rev().find(|j| is_code(doc, *j)) else {
+        return false;
+    };
+    if doc.syn.types[prev] == TokenType::AssignmentOp {
+        return true;
+    }
+    let parent = doc.syn.parent[t];
+    if parent != Some(prev) {
+        return false;
+    }
+    let attached_next = |x: usize| x < cmd.last && doc.lines[x + 1] == 0 && doc.spaces[x + 1] == 0;
+    let opens_call = doc.syn.types[prev] == TokenType::Identifier
+        && opens(doc, prev)
+        && doc.syn.text(prev).ends_with('(')
+        && !attached_next(prev);
+    if opens_call
+        && !prev_code(doc, prev).is_some_and(|p| {
+            doc.syn.types[p] == TokenType::Keyword
+                && [
+                    "NEW",
+                    "VALUE",
+                    "CONV",
+                    "CORRESPONDING",
+                    "CAST",
+                    "REF",
+                    "EXACT",
+                    "REDUCE",
+                    "FILTER",
+                    "COND",
+                    "SWITCH",
+                ]
+                .iter()
+                .any(|k| text_is(doc, p, k))
+        })
+    {
+        return !starts_lhs_of_assignment(doc, cmd, t);
+    }
+    if doc.syn.text(prev) != "(" {
+        return false;
+    }
+    let Some(pp) = doc.syn.parent[prev] else {
+        return false;
+    };
+    let is_ctor = (doc.syn.text(pp) == "#("
+        || doc.syn.types[pp] == TokenType::Identifier
+            && opens(doc, pp)
+            && doc.syn.text(pp).ends_with('('))
+        && !attached_next(pp)
+        && prev_code(doc, pp).is_some_and(|p| {
+            doc.syn.types[p] == TokenType::Keyword
+                && [
+                    "NEW",
+                    "VALUE",
+                    "CONV",
+                    "CORRESPONDING",
+                    "CAST",
+                    "REF",
+                    "EXACT",
+                    "REDUCE",
+                    "FILTER",
+                    "COND",
+                    "SWITCH",
+                ]
+                .iter()
+                .any(|k| text_is(doc, p, k))
+        });
+    is_ctor && !starts_lhs_of_assignment(doc, cmd, t)
+}
+
+/// `Token.startsLhsOfAssignment`
+fn starts_lhs_of_assignment(doc: &Doc, cmd: &Command, t: usize) -> bool {
+    if doc.syn.types[t] != TokenType::Identifier || closes(doc, t) {
+        return false;
+    }
+    let mut end = t;
+    while let Some(c) = doc.syn.bracket_match[end].filter(|c| *c > end) {
+        end = c;
+    }
+    next_code_sibling(doc, end, cmd.last)
+        .is_some_and(|op| doc.syn.types[op] == TokenType::AssignmentOp)
 }
 
 // ---- logical expression ----
@@ -318,6 +419,15 @@ impl LogExp {
             }
         }
         Some(e)
+    }
+
+    /// `LogicalExpression.containsBooleanOpOrComparison`
+    fn contains_boolean_op_or_comparison(&self) -> bool {
+        if self.binding == Binding::Comparison {
+            matches!(self.rel, RelType::Comparison | RelType::PredicateExpression)
+        } else {
+            true
+        }
     }
 
     fn add_inner(&mut self, doc: &Doc, cx: &Ctx, start: usize, end: usize) -> Option<()> {
