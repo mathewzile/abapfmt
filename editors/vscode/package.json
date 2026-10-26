@@ -5,6 +5,11 @@
   "version": "0.0.1",
   "publisher": "abapfmt",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mathewzile/abapfmt.git",
+    "directory": "editors/vscode"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
