@@ -956,6 +956,18 @@ impl TreeAlign {
                     }
                 }
                 cell.set_whitespace(doc, doc.lines[first], spaces_left, true, true, None);
+                if self.cols[ci].ty == ColType::RelTerm2 {
+                    // gaps within a line of the term, as in "IS  NOT  INITIAL"
+                    for t in cell.first + 1..=cell.last {
+                        if doc.lines[t] == 0
+                            && doc.spaces[t] > 1
+                            && !is_comment(doc, t)
+                            && !is_comment(doc, t - 1)
+                        {
+                            doc.spaces[t] = 1;
+                        }
+                    }
+                }
             }
         }
     }

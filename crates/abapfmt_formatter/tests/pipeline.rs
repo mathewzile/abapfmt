@@ -19,3 +19,10 @@ fn samples_survive_the_pipeline() {
         assert_eq!(once, twice, "{f}: not idempotent");
     }
 }
+
+#[test]
+fn predicate_keywords_are_single_spaced() {
+    let src = "CLASS c IMPLEMENTATION.\n  METHOD m.\n    IF a IS  NOT  INITIAL.\n    ENDIF.\n  ENDMETHOD.\nENDCLASS.\n";
+    let out = format(src, &BTreeMap::new());
+    assert!(out.contains("IF a IS NOT INITIAL."), "{out}");
+}
