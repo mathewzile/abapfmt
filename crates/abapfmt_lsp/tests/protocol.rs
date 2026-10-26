@@ -51,7 +51,12 @@ impl Client {
 
     fn request(&mut self, id: i64, method: &str, params: Value) -> Value {
         self.send(&json!({"jsonrpc": "2.0", "id": id, "method": method, "params": params}));
-        self.receive()
+        loop {
+            let message = self.receive();
+            if message.get("id").is_some() {
+                return message;
+            }
+        }
     }
 
     fn notify(&mut self, method: &str, params: Value) {

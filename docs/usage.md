@@ -25,6 +25,8 @@ no directory to search from; for them, and for local files without a configurati
 the configuration found in the workspace folders (same locations, e.g. `.vscode/abapfmt.json` of
 the workspace). All systems of a workspace therefore share one configuration. The setting
 `abapfmt.configPath` names a file explicitly (anywhere, for example `config/abapfmt.json`) and takes precedence.
+Each time a document is formatted, the server logs which configuration it used (or that it fell back
+to the defaults) to the **abapfmt** output channel (View > Output).
 
 ```json
 {

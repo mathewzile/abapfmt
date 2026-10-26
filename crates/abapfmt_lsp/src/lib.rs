@@ -8,13 +8,14 @@ use abapfmt_config::Config;
 use abapfmt_formatter::format_checked;
 use lsp_server::{Connection, Message, Notification, Request, Response};
 use lsp_types::notification::{
-    DidChangeTextDocument, DidCloseTextDocument, DidOpenTextDocument, Notification as _,
+    DidChangeTextDocument, DidCloseTextDocument, DidOpenTextDocument, LogMessage, Notification as _,
 };
 use lsp_types::request::{Formatting, RangeFormatting, Request as _};
 use lsp_types::{
     DidChangeTextDocumentParams, DidCloseTextDocumentParams, DidOpenTextDocumentParams,
-    DocumentFormattingParams, DocumentRangeFormattingParams, OneOf, Position, Range,
-    ServerCapabilities, TextDocumentSyncCapability, TextDocumentSyncKind, TextEdit, Uri,
+    DocumentFormattingParams, DocumentRangeFormattingParams, LogMessageParams, MessageType, OneOf,
+    Position, Range, ServerCapabilities, TextDocumentSyncCapability, TextDocumentSyncKind,
+    TextEdit, Uri,
 };
 use similar::{DiffOp, TextDiff};
 
@@ -98,11 +99,25 @@ fn main_loop(connection: &Connection, settings: &Settings) -> Result<(), String>
                 {
                     return Ok(());
                 }
-                let response = handle_request(&documents, settings, req);
+                let (response, log) = handle_request(&documents, settings, req);
                 connection
                     .sender
                     .send(Message::Response(response))
                     .map_err(|e| e.to_string())?;
+                if let Some(message) = log {
+                    // shown in the client's output channel
+                    let note = Notification::new(
+                        LogMessage::METHOD.to_string(),
+                        LogMessageParams {
+                            typ: MessageType::INFO,
+                            message,
+                        },
+                    );
+                    connection
+                        .sender
+                        .send(Message::Notification(note))
+                        .map_err(|e| e.to_string())?;
+                }
             }
             Message::Notification(note) => handle_notification(&mut documents, note),
             Message::Response(_) => {}
@@ -142,7 +157,7 @@ fn handle_request(
     documents: &HashMap<String, String>,
     settings: &Settings,
     req: Request,
-) -> Response {
+) -> (Response, Option<String>) {
     let id = req.id.clone();
     let result = match req.method.as_str() {
         Formatting::METHOD => serde_json::from_value::<DocumentFormattingParams>(req.params)
@@ -156,12 +171,15 @@ fn handle_request(
                 })
         }
         other => {
-            return Response::new_err(id, -32601, format!("method not supported: {other}"));
+            return (
+                Response::new_err(id, -32601, format!("method not supported: {other}")),
+                None,
+            );
         }
     };
     match result {
-        Ok(edits) => Response::new_ok(id, edits),
-        Err(message) => Response::new_err(id, REQUEST_FAILED, message),
+        Ok((edits, log)) => (Response::new_ok(id, edits), Some(log)),
+        Err(message) => (Response::new_err(id, REQUEST_FAILED, message), None),
     }
 }
 
@@ -170,14 +188,17 @@ fn format_document(
     settings: &Settings,
     uri: &Uri,
     range: Option<Range>,
-) -> Result<Vec<TextEdit>, String> {
+) -> Result<(Vec<TextEdit>, String), String> {
     let src = documents
         .get(uri.as_str())
         .ok_or_else(|| format!("document is not open: {}", uri.as_str()))?;
-    let config = load_config(settings, uri)?;
+    let (config, used) = load_config(settings, uri)?;
     let formatted = format_checked(src, &config.rules, &config.options())?;
     let lines = range.map(|r| (r.start.line, r.end.line));
-    Ok(line_edits(src, &formatted, lines))
+    Ok((
+        line_edits(src, &formatted, lines),
+        format!("{}: {used}", uri.as_str()),
+    ))
 }
 
 /// The configuration for a document, in this order:
@@ -187,7 +208,9 @@ fn format_document(
 /// 3. the configuration of the workspace folders, which applies to documents of remote file
 ///    systems (e.g. ABAP systems opened through ADT) and to files outside of any configured tree;
 /// 4. the defaults.
-fn load_config(settings: &Settings, uri: &Uri) -> Result<Config, String> {
+///
+/// Also returns a description of what was used, for the client's log.
+fn load_config(settings: &Settings, uri: &Uri) -> Result<(Config, String), String> {
     let local_dir = uri_to_path(uri).and_then(|p| p.parent().map(PathBuf::from));
     let path = settings
         .config_path
@@ -195,8 +218,12 @@ fn load_config(settings: &Settings, uri: &Uri) -> Result<Config, String> {
         .or_else(|| local_dir.and_then(|d| abapfmt_config::find_config(&d)))
         .or_else(|| abapfmt_config::find_config_in_workspace(&settings.workspace_folders));
     match path {
-        Some(path) => abapfmt_config::load_file(&path).map(|l| l.config),
-        None => Ok(Config::default()),
+        Some(path) => abapfmt_config::load_file(&path)
+            .map(|l| (l.config, format!("using {}", path.display()))),
+        None => Ok((
+            Config::default(),
+            "no abapfmt.json found, using defaults".to_string(),
+        )),
     }
 }
 

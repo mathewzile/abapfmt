@@ -10,6 +10,8 @@ struct Client {
     child: Child,
     stdin: ChildStdin,
     stdout: BufReader<ChildStdout>,
+    /// `window/logMessage` texts received so far
+    logs: Vec<String>,
 }
 
 impl Client {
@@ -25,6 +27,7 @@ impl Client {
             child,
             stdin,
             stdout,
+            logs: Vec::new(),
         };
         c.request(1, "initialize", init_params);
         c.notify("initialized", json!({}));
@@ -39,6 +42,19 @@ impl Client {
 
     fn request(&mut self, id: i64, method: &str, params: Value) -> Value {
         self.send(&json!({"jsonrpc": "2.0", "id": id, "method": method, "params": params}));
+        loop {
+            let message = self.receive();
+            if message["method"] == "window/logMessage" {
+                self.logs
+                    .push(message["params"]["message"].as_str().unwrap().to_string());
+            }
+            if message.get("id").is_some() {
+                return message;
+            }
+        }
+    }
+
+    fn receive(&mut self) -> Value {
         let mut length = 0;
         loop {
             let mut line = String::new();
@@ -72,6 +88,16 @@ impl Client {
             json!({"textDocument": {"uri": uri}, "options": {"tabSize": 2, "insertSpaces": true}}),
         );
         r["result"].as_array().unwrap().len()
+    }
+
+    fn finish_checking_logs(mut self, expected: &[&str]) {
+        self.request(99, "shutdown", Value::Null);
+        for (log, want) in self.logs.iter().zip(expected) {
+            assert!(log.contains(want), "{log} should contain {want}");
+        }
+        assert_eq!(self.logs.len(), expected.len(), "{:?}", self.logs);
+        self.notify("exit", Value::Null);
+        assert!(self.child.wait().unwrap().success());
     }
 
     fn finish(mut self) {
@@ -108,7 +134,10 @@ fn local_files_use_the_config_of_their_checkout() {
     // a file outside of the checkout uses the defaults
     let other = file_uri(&temp_dir("elsewhere").join("zcl_b.abap"));
     assert_eq!(c.edit_count(3, &other, UNFORMATTED), 1);
-    c.finish();
+    c.finish_checking_logs(&[
+        "zcl_a.abap: using ",
+        "zcl_b.abap: no abapfmt.json found, using defaults",
+    ]);
 }
 
 #[test]
