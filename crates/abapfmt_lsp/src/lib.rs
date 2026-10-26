@@ -218,8 +218,11 @@ fn load_config(settings: &Settings, uri: &Uri) -> Result<(Config, String), Strin
         .or_else(|| local_dir.and_then(|d| abapfmt_config::find_config(&d)))
         .or_else(|| abapfmt_config::find_config_in_workspace(&settings.workspace_folders));
     match path {
-        Some(path) => abapfmt_config::load_file(&path)
-            .map(|l| (l.config, format!("using {}", path.display()))),
+        Some(path) => abapfmt_config::load_file(&path).map(|l| {
+            // forward slashes only: the path may have been joined from both kinds
+            let shown = path.display().to_string().replace('\\', "/");
+            (l.config, format!("using {shown}"))
+        }),
         None => Ok((
             Config::default(),
             "no abapfmt.json found, using defaults".to_string(),
