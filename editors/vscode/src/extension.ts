@@ -41,10 +41,16 @@ export async function activate(context: ExtensionContext): Promise<void> {
     return;
   }
 
+  // created up front so that it is listed even before the server has logged anything
+  const outputChannel = window.createOutputChannel('abapfmt');
+  context.subscriptions.push(outputChannel);
+  outputChannel.appendLine(`abapfmt: starting ${command} lsp`);
+
   const serverOptions: ServerOptions = { command, args: ['lsp'] };
   // no scheme: local files as well as documents of remote file systems (e.g. ABAP systems via ADT)
   const clientOptions: LanguageClientOptions = {
     documentSelector: [{ language: 'abap' }, { language: 'abap-cds' }],
+    outputChannel,
     initializationOptions: {
       configPath: workspace.getConfiguration('abapfmt').get<string>('configPath') ?? '',
     },
