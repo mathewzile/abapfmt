@@ -20,7 +20,9 @@ result is checked token by token before it reaches your editor.
 
 ## Getting started
 
-1. Install the extension (*Extensions: Install from VSIX…* with `abapfmt-<version>.vsix`).
+1. Download `abapfmt-<version>.vsix` from the
+   [releases](https://github.com/mathewzile/abapfmt/releases) and install it with
+   *Extensions: Install from VSIX…*.
 2. Make abapfmt the formatter for ABAP in your user or workspace `settings.json`:
 
    ```json
@@ -84,8 +86,7 @@ used, open **View → Output** and select **abapfmt**.
 | `abapfmt.configPath` | `""` | Configuration file (`abapfmt.json` or `.cfj`) to use for all documents. Relative paths resolve against the first workspace folder. |
 | `abapfmt.trace.server` | `"off"` | `messages` or `verbose` logs the language-server traffic to the output channel. |
 
-`abapfmt.path` and `abapfmt.configPath` are read when the extension starts. After you change them,
-run **Developer: Reload Window**.
+Changing `abapfmt.path` or `abapfmt.configPath` restarts the formatter; no reload is needed.
 
 ## Troubleshooting
 
@@ -93,14 +94,15 @@ run **Developer: Reload Window**.
 |---|---|
 | *"There is no formatter for 'abap' files installed"* or another formatter runs | Set `editor.defaultFormatter` to `abapfmt.abapfmt` for `[abap]` and `[abap-cds]`. |
 | *"no build for … is bundled"* | Your platform (for example ARM Linux or Windows) is not bundled. Build abapfmt (`cargo build --release -p abapfmt_cli`) and set `abapfmt.path`. |
-| Formatting does nothing, and the output channel shows a token-check error | abapfmt refused a result that would have changed code. Your file is unchanged. Please report the snippet. |
+| The output channel shows *"rule … skipped, its result would have changed the code"* | A rule produced a result that would have changed your code, so abapfmt switched that rule off for this file. The other rules still applied. Please report the snippet and the rule. |
+| Formatting does nothing, and the output channel shows *"source cannot be tokenized"* | The file has an incomplete token, for example `lv_c(20` without the closing parenthesis. Fix it and format again. |
 | The wrong rules are applied | Check the output channel for the configuration that was used. For ADT documents, put the configuration in the workspace folder or set `abapfmt.configPath`. |
 
 ## Limitations
 
 - Only formatting is done. ABAP cleaner rules that rewrite code (for example removing chains or
   changing declarations) are not available, and `abapfmt.json` rejects them.
-- Format Selection changes only the selected lines, but the whole file must be formattable.
+- Format Selection changes only the selected lines, but the whole file must be tokenizable.
 - Chained statements (`CALL METHOD: …`) are not aligned. CDS sources and comments are not wrapped
   to `lineWidth`.
 - All remote (ADT) systems in a workspace share one configuration.

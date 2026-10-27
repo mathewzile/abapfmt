@@ -108,9 +108,13 @@ comments and CDS sources are not reflowed.
 - Two known exceptions are normalised before the comparison: `ALIGN_PERFORM` moving `IF FOUND`,
   and CDS annotation paths being joined (`@Anno. sub` → `@Anno.sub`).
 
-If any check fails, the CLI exits with code 2 and leaves the file untouched, and the language
-server returns an error. A bug in a rule can therefore produce a missing edit, but never
-corrupted code.
+The CLI and the language server call `format_safe`. If the check of the whole result fails, it
+runs the rules again with a token check after every rule that changed the text. It switches off
+each rule that fails, and then the `lineWidth` reflow if the result still fails, and formats again
+with the rest. The safe result is used, and the skipped rules are reported: as warnings in the
+editor's output channel, and on stderr with exit code 2 in the CLI, so CI notices. Only a source
+that cannot be tokenized is rejected as a whole. A bug in a rule can therefore cost that rule's
+edits, but never corrupt code.
 
 ## Configuration (`abapfmt_config`)
 
@@ -142,13 +146,33 @@ The server (`lsp-server`, stdio) advertises only full text sync, `documentFormat
 - **Range formatting** also formats the whole document, because alignment and indentation depend
   on the surrounding code. It then returns only the edits that touch the selected lines. VS Code's
   `formatOnSaveMode: "modifications"` uses the same path.
-- Each request logs the configuration it used to the client's **abapfmt** output channel.
+- Each request logs the configuration it used, and any skipped rule, to the client's **abapfmt**
+  output channel.
 
-The VS Code extension (`editors/vscode/src/extension.ts`, about 70 lines) contributes the `abap`
+The VS Code extension (`editors/vscode/src/extension.ts`, about 100 lines) contributes the `abap`
 and `abap-cds` languages and starts `bin/<platform>-<arch>/abapfmt lsp`, or the executable named by
-`abapfmt.path`. It passes `abapfmt.configPath` as an initialization option. Its document selector
-has no scheme, so documents of remote file systems are formatted too. CI builds the four platform
-binaries and packs them into one VSIX.
+`abapfmt.path`. It passes `abapfmt.configPath` as an initialization option, and starts a new server
+when either setting changes. Its document selector has no scheme, so documents of remote file
+systems are formatted too.
+
+## Command line
+
+The CLI resolves the configuration of every file first, in order, so that each one is loaded and
+warned about once. It then formats the files on all cores (`std::thread::scope`, one worker per
+core), and reports results in the order of the files, so output is deterministic. The parser's
+statement cache is shared behind a lock.
+
+## Release and maintenance
+
+- `.github/workflows/build.yml` tests on Windows, Linux and macOS, builds the four platform
+  binaries and packs them into one VSIX. On a `v*` tag it also publishes a GitHub release with the
+  VSIX and an archive of the CLI per platform. `scripts/check-version.mjs` makes sure that
+  `Cargo.toml`, `package.json` and the tag name the same version.
+- `.github/workflows/refresh-grammar.yml` runs every week. When npm has a newer `@abaplint/core`,
+  it regenerates `tables.rs`, runs the tests and opens a pull request with the result (a draft if
+  the tests fail). The repository must allow GitHub Actions to create pull requests.
+- The ABAP cleaner side stays manual. `tools/import-java-fixtures.mjs` imports the tests of a new
+  upstream version, but rule changes have to be ported by hand.
 
 ## Testing strategy
 
@@ -167,7 +191,8 @@ binaries and packs them into one VSIX.
 
 - **Safety is checked, not assumed.** The token check makes the riskiest failure (changing code)
   impossible to ship silently. This is what makes format on save trustworthy for ABAP, where a
-  changed token can change behaviour without a syntax error.
+  changed token can change behaviour without a syntax error. A failing rule is contained: only its
+  edits are lost, and it is named in the output.
 - **Accurate keyword detection without a hand-written parser.** Generating the grammar from
   abaplint gives full statement coverage, and supporting new syntax means regenerating from a newer
   version. The fallback ensures an unknown statement degrades to a guess rather than an error.
@@ -179,37 +204,32 @@ binaries and packs them into one VSIX.
   repositories and in transports.
 - **One binary, thin client.** The CLI, CI checks and the editor all run the same code. The
   extension has nothing to maintain beyond start-up.
-- **Performance.** At about 30k lines per second (4–6× faster than the TypeScript port; 1.2 s vs 7.6 s for 32k
-  lines), format on save is instant for any realistic ABAP object.
+- **Performance.** At about 30k lines per second per core (4–6× faster than the TypeScript port;
+  1.2 s vs 7.6 s for 32k lines), format on save is instant for any realistic ABAP object. The CLI
+  uses all cores (0.35 s for 200 files with 32k lines on 12 cores).
 
 ### Trade-offs and risks
 
-- **Repeated parsing.** The text is parsed again after each rule that changes it (13 of 46 on the
-  sample). This is simple and correct, but it costs time. Rules that merge their changes into a
-  shared `Doc` would remove most of that cost. It is not needed at current speeds.
-- **Pinned dependencies.** The grammar is pinned at abaplint 2.120.63 and the rule semantics at ABAP
-  cleaner v1.29.0. Newer ABAP statements fall back to guessing until the grammar is regenerated,
-  and upstream rule fixes have to be ported by hand. The fixture importer and generator keep both
-  steps mechanical, but someone has to run them.
-- **Reflow is heuristic.** Break points are chosen by bracket depth and operator rules, not by a
-  pretty-printing algorithm with a cost model. Results are stable and idempotent, but not always
-  the break a person would pick. Chains, comments and CDS are not reflowed at all.
-- **Range formatting depends on the whole document.** Range formatting returns only the selected
-  lines' edits, but the whole document must format successfully. A token-check failure anywhere
-  in the file means no edits at all.
-- **CLI is single-threaded.** The plan called for parallel file processing, but files are
-  currently formatted one after another. This is fine for typical repositories but leaves speed
-  unused on large ones.
-- **Extension settings are read at start-up.** `abapfmt.path` and `abapfmt.configPath` are read
-  only when the extension activates. Changes take effect after *Developer: Reload Window*.
-- **No published distribution yet.** There is no Marketplace listing or release binary. Users
-  install the VSIX from a CI artifact.
+- **Repeated parsing (deferred).** The text is parsed again after each rule that changes it (13 of
+  46 on the sample). With the warm statement cache a re-parse takes about 1 ms for 800 lines, so
+  rules that merge their changes into a shared `Doc` would save little and risk subtle
+  differences. It is not worth it at current speeds.
+- **Pinned dependencies.** The grammar is pinned to one abaplint version and the rule semantics to
+  ABAP cleaner v1.29.0. Newer ABAP statements fall back to guessing until the grammar is
+  regenerated. The weekly refresh workflow proposes that as a pull request. Upstream rule fixes
+  still have to be ported by hand.
+- **Reflow is heuristic (deferred).** Break points are chosen by bracket depth and operator rules,
+  not by a pretty-printing algorithm with a cost model. Results are stable and idempotent, but not
+  always the break a person would pick. Chains, comments and CDS are not reflowed at all. A
+  redesign needs example files where the current breaks are bad.
+- **Range formatting needs a tokenizable document.** Range formatting returns only the selected
+  lines' edits, but it formats the whole document. A failing rule is skipped, but a document that
+  cannot be tokenized (for example an unclosed `lv_c(20` while typing) gets no edits.
+- **GitHub releases only.** The extension is not on the Marketplace or Open VSX. That needs a
+  publisher account and a token stored as a repository secret.
 
 ### Possible next steps
 
-1. Publish releases: attach the VSIX and CLI binaries to tagged GitHub releases
-   and publish to the Marketplace and Open VSX.
-2. Restart the language server when `abapfmt.*` settings change.
-3. Format files in parallel in the CLI.
-4. Automate the grammar refresh, for example with a scheduled CI job that regenerates the grammar
-   from the latest abaplint and runs the corpus gate.
+1. Publish to the Marketplace and Open VSX from the release job.
+2. A cost-based reflow, driven by real examples of bad breaks.
+3. Alignment of chained statements.

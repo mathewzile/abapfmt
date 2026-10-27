@@ -10,9 +10,20 @@ abapfmt --stdin < in.abap       # format stdin
 ```
 
 ABAP (`.abap`) and CDS (`.acds`, `.asddls`, `.asdcls`, `.ddls`, `.dcls`, `.ddl`, `.dcl`) files are
-found in directories. Exit codes: 0 success, 1 `--check` found unformatted files, 2 error (a file
-that cannot be tokenized or whose formatting would change more than whitespace, layout or letter
-case is left untouched).
+found in directories and formatted on all cores; results are reported in the order of the files.
+
+Exit codes: 0 success, 1 `--check` found unformatted files, 2 error. An error is a file that
+cannot be read or tokenized (it is left untouched), or a file for which a rule had to be skipped.
+
+Every result is checked: apart from whitespace, line layout and letter case, it must have the same
+tokens as the input. If a rule's result fails that check (a bug in abapfmt), the rule is switched
+off for that file, the other rules still apply, and a warning names the rule:
+
+```
+warning: src/zcl_x.abap: rule ALIGN_PARAMETERS skipped, its result would have changed the code (...)
+```
+
+With `--write` the safe result is written; the exit code is still 2, so that CI notices.
 
 ## Configuration
 
@@ -71,12 +82,15 @@ it activates that abapfmt does not implement are ignored with a warning.
 
 ## VS Code
 
-**One extension for all platforms.** The GitHub Actions workflow `.github/workflows/build.yml` builds
-abapfmt for Windows (x64), Linux (x64) and macOS (Intel and Apple Silicon), runs the tests on each,
-and packages a single `abapfmt-<version>.vsix` that contains all four builds (download it from the
-`abapfmt-vsix` artifact of the run). The extension starts the build for the platform it runs on.
-Start the workflow from the Actions tab (Run workflow), or push a tag such as `v0.1.0`. Nothing has
-to be installed locally for this.
+**One extension for all platforms.** Download `abapfmt-<version>.vsix` from the
+[GitHub releases](https://github.com/mathewzile/abapfmt/releases). It contains the builds for
+Windows (x64), Linux (x64) and macOS (Intel and Apple Silicon), and the extension starts the one
+for the platform it runs on. The releases also have the CLI on its own for each platform.
+
+**Releasing.** The workflow `.github/workflows/build.yml` builds and tests on every platform and
+packages the VSIX (also as the `abapfmt-vsix` artifact of any run). To publish a release, set the
+same version in `Cargo.toml` (`[workspace.package]`) and `editors/vscode/package.json`, then push
+the tag `v<version>`. The workflow fails if the versions and the tag differ.
 
 **Local build for this platform only** (for development), from `editors/vscode`:
 
@@ -94,7 +108,9 @@ Install the resulting `.vsix`, then set it as the formatter:
 
 Format Document, Format Selection and format on save (including `editor.formatOnSaveMode:
 "modifications"`) all use the language server (`abapfmt lsp`). Set `abapfmt.path` to use a
-different executable.
+different executable. Changing `abapfmt.path` or `abapfmt.configPath` restarts the server. A rule
+that had to be skipped is reported as a warning in the **abapfmt** output channel; the other
+rules still apply.
 
 ## Known limitations
 
@@ -102,7 +118,7 @@ These are deliberate choices or accepted approximations; none of them is planned
 
 - **Rules that rewrite code are not implemented** (for example chain removal, `RemoveIncludeWarnings`,
   merging comments, `DDL_ANNO_NESTING`). abapfmt changes only whitespace, line layout and letter
-  case, and refuses to write a result in which any other token differs.
+  case, and never uses a result in which any other token differs.
 - **Chained statements** (`CALL METHOD: ...`, `CHECK: ...`) are not aligned by `ALIGN_PARAMETERS` and
   `ALIGN_LOGICAL_EXPRESSIONS`; abap-cleaner has no tests for them either, and aligning them gives
   worse results than leaving them alone.

@@ -34,22 +34,24 @@ endclass.                                        ENDMETHOD.
   (`DDL_POSITION_*`, `DDL_ALIGN_*`, `DDL_SPACES_*`, `DDL_EMPTY_LINES_*`, `DDL_ANNO_LAYOUT`).
 - **Line width**: ABAP statements longer than `lineWidth` (default 120) get line breaks.
 - **Safe**: a token check runs on every result, and the formatter never writes a result that
-  changes code.
+  changes code. If a rule fails the check, only that rule is skipped, and it is named in a
+  warning.
 - **Accurate keyword detection**: abapfmt tells keywords from identifiers using abaplint's
   statement grammar, so `READ TABLE lines INTO line INDEX index.` comes out right.
-- **Fast**: about 30,000 lines per second on a single thread (see
+- **Fast**: about 30,000 lines per second per core, and the CLI formats files on all cores (see
   [docs/benchmarks.md](docs/benchmarks.md)).
 - **Editor support**: Format Document, Format Selection and format on save in VS Code. This
   includes `formatOnSaveMode: "modifications"` and ABAP systems opened through ADT.
 
 ## Installation
 
-There are no published releases yet. You can get abapfmt in two ways.
+Download from the [GitHub releases](https://github.com/mathewzile/abapfmt/releases):
 
-**VS Code extension (all platforms).** Open *Actions → build → Run workflow* on GitHub, or push a
-`v*` tag. When the run finishes, download the `abapfmt-vsix` artifact and run
-*Extensions: Install from VSIX…* in VS Code. The VSIX includes the `abapfmt` executable for
-Windows x64, Linux x64, macOS Intel and macOS Apple Silicon.
+- **VS Code extension (all platforms).** `abapfmt-<version>.vsix`. Install it with
+  *Extensions: Install from VSIX…* in VS Code. It includes the `abapfmt` executable for Windows
+  x64, Linux x64, macOS Intel and macOS Apple Silicon.
+- **Command line.** `abapfmt-<version>-<platform>.zip` (Windows) or `.tar.gz`. Unpack the
+  `abapfmt` executable to a folder on your `PATH`.
 
 **From source.** This needs the stable Rust toolchain (edition 2024):
 
@@ -77,7 +79,7 @@ and `target`.
 |---|---|
 | 0 | Success |
 | 1 | `--check` found files that are not formatted |
-| 2 | Error, for example a file that cannot be tokenized or that failed the token check. Such files are left unchanged. |
+| 2 | Error: a file that cannot be read or tokenized (left unchanged), or a file for which a rule had to be skipped (the safe result is still used) |
 
 ### VS Code
 
@@ -155,11 +157,14 @@ cargo run --release -p abapfmt_formatter --example bench   # throughput
   passing. Run `UPDATE_BASELINE=1 cargo test` to record new passes.
 - **Invariants tested on every fixture.** The output has the same tokens as the input, and
   formatting the output again changes nothing.
-- **Grammar.** `crates/abapfmt_grammar/src/tables.rs` is generated from `@abaplint/core` 2.120.63
-  by `tools/gen-grammar/gen.cjs`. Do not edit it by hand. For newer ABAP syntax, bump the version
-  and regenerate (see [docs/phase2-grammar-spike.md](docs/phase2-grammar-spike.md)).
+- **Grammar.** `crates/abapfmt_grammar/src/tables.rs` is generated from `@abaplint/core` by
+  `tools/gen-grammar/gen.cjs`. Do not edit it by hand. The weekly `refresh-grammar` workflow opens
+  a pull request when a newer abaplint is available. To regenerate by hand, see
+  [docs/phase2-grammar-spike.md](docs/phase2-grammar-spike.md).
 - **CI.** `.github/workflows/build.yml` tests on Windows, Linux and macOS, then packages one VSIX
   for all platforms.
+- **Releases.** Set the same version in `Cargo.toml` and `editors/vscode/package.json`, then push
+  the tag `v<version>`. CI publishes a GitHub release with the VSIX and the CLI archives.
 - Every crate declares `#![forbid(unsafe_code)]`.
 
 ## Known limitations
