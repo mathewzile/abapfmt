@@ -1,0 +1,96 @@
+name: refresh-grammar
+
+# Regenerates crates/abapfmt_grammar/src/tables.rs from the latest @abaplint/core and opens a pull
+# request with the test result. Pull requests opened with GITHUB_TOKEN do not start other workflows,
+# so the tests run here. Needs "Allow GitHub Actions to create and approve pull requests"
+# (Settings > Actions > General).
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+      - name: Compare versions
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest=$(npm view @abaplint/core version)
+          current=$(sed -n 's/^pub const ABAPLINT_VERSION: &str = "\(.*\)";$/\1/p' crates/abapfmt_grammar/src/tables.rs)
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          if [ "$latest" = "$current" ]; then
+            echo "up to date: $current"
+          elif git ls-remote --exit-code --heads origin "grammar/abaplint-$latest" > /dev/null; then
+            echo "a branch for $latest exists already"
+          else
+            echo "refresh=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Regenerate the grammar
+        if: steps.version.outputs.refresh
+        env:
+          CURRENT: ${{ steps.version.outputs.current }}
+          LATEST: ${{ steps.version.outputs.latest }}
+        run: |
+          work="$RUNNER_TEMP/abaplint"
+          mkdir -p "$work"
+          (cd "$work" && npm pack "@abaplint/core@$LATEST" > /dev/null && tar -xzf "abaplint-core-$LATEST.tgz")
+          node tools/gen-grammar/gen.cjs "$work/package" "$work/out"
+          cp "$work/out/grammar_tables.rs" crates/abapfmt_grammar/src/tables.rs
+          sed -i "s/@abaplint\/core $CURRENT/@abaplint\/core $LATEST/" NOTICE
+      - name: Test
+        id: test
+        if: steps.version.outputs.refresh
+        run: |
+          if cargo test --workspace --release > "$RUNNER_TEMP/test.log" 2>&1; then
+            echo "result=passed" >> "$GITHUB_OUTPUT"
+          else
+            echo "result=failed" >> "$GITHUB_OUTPUT"
+          fi
+          tail -n 40 "$RUNNER_TEMP/test.log"
+          cargo run -q --release -p abapfmt_syntax --example unmatched -- fixtures/samples/*.abap \
+            | tail -n 1 > "$RUNNER_TEMP/unmatched.txt"
+      - name: Open the pull request
+        if: steps.version.outputs.refresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURRENT: ${{ steps.version.outputs.current }}
+          LATEST: ${{ steps.version.outputs.latest }}
+          RESULT: ${{ steps.test.outputs.result }}
+        run: |
+          branch="grammar/abaplint-$LATEST"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$branch"
+          git commit -am "chore(grammar): regenerate from @abaplint/core $LATEST"
+          git push origin "$branch"
+          {
+            echo "Regenerated \`crates/abapfmt_grammar/src/tables.rs\` from @abaplint/core $CURRENT → $LATEST."
+            echo
+            echo "- \`cargo test --workspace --release\`: **$RESULT**"
+            echo "- Samples: $(cat "$RUNNER_TEMP/unmatched.txt")"
+            echo
+            if [ "$RESULT" = failed ]; then
+              echo '<details><summary>Test log (last 80 lines)</summary>'
+              echo
+              echo '```'
+              tail -n 80 "$RUNNER_TEMP/test.log"
+              echo '```'
+              echo '</details>'
+            fi
+          } > "$RUNNER_TEMP/body.md"
+          draft=()
+          if [ "$RESULT" = failed ]; then draft=(--draft); fi
+          gh pr create "${draft[@]}" --base main --head "$branch" \
+            --title "chore(grammar): abaplint $LATEST" --body-file "$RUNNER_TEMP/body.md"
