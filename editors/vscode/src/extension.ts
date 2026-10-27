@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { ExtensionContext, window, workspace } from 'vscode';
+import { ExtensionContext, OutputChannel, window, workspace } from 'vscode';
 import {
   LanguageClient,
   LanguageClientOptions,
@@ -32,7 +32,8 @@ function serverCommand(context: ExtensionContext): string | undefined {
   return configured ? configured : bundledCommand(context);
 }
 
-export async function activate(context: ExtensionContext): Promise<void> {
+/** Starts the language server with the current settings; shows an error if there is no executable. */
+async function startClient(context: ExtensionContext, outputChannel: OutputChannel): Promise<void> {
   const command = serverCommand(context);
   if (!command) {
     void window.showErrorMessage(
@@ -40,10 +41,6 @@ export async function activate(context: ExtensionContext): Promise<void> {
     );
     return;
   }
-
-  // created up front so that it is listed even before the server has logged anything
-  const outputChannel = window.createOutputChannel('abapfmt');
-  context.subscriptions.push(outputChannel);
   outputChannel.appendLine(`abapfmt: starting ${command} lsp`);
 
   const serverOptions: ServerOptions = { command, args: ['lsp'] };
@@ -56,11 +53,41 @@ export async function activate(context: ExtensionContext): Promise<void> {
     },
   };
   client = new LanguageClient('abapfmt', 'abapfmt', serverOptions, clientOptions);
-  context.subscriptions.push({ dispose: () => void client?.stop() });
-  await client.start();
+  try {
+    await client.start();
+  } catch (e) {
+    client = undefined;
+    void window.showErrorMessage(`abapfmt: cannot start ${command}: ${e instanceof Error ? e.message : e}`);
+  }
+}
+
+async function stopClient(): Promise<void> {
+  const running = client;
+  client = undefined;
+  await running?.stop();
+}
+
+export async function activate(context: ExtensionContext): Promise<void> {
+  // created up front so that it is listed even before the server has logged anything; shared by
+  // every client that a settings change starts
+  const outputChannel = window.createOutputChannel('abapfmt');
+  context.subscriptions.push(outputChannel);
+  context.subscriptions.push({ dispose: () => void stopClient() });
+
+  // both settings are passed to the server at start-up, so a change needs a new server
+  context.subscriptions.push(
+    workspace.onDidChangeConfiguration(async (e) => {
+      if (e.affectsConfiguration('abapfmt.path') || e.affectsConfiguration('abapfmt.configPath')) {
+        outputChannel.appendLine('abapfmt: restarting (settings changed)');
+        await stopClient();
+        await startClient(context, outputChannel);
+      }
+    }),
+  );
+
+  await startClient(context, outputChannel);
 }
 
 export async function deactivate(): Promise<void> {
-  await client?.stop();
-  client = undefined;
+  await stopClient();
 }
