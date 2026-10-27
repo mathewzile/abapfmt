@@ -1,7 +1,7 @@
 name: build
 
 # Builds abapfmt for every platform, runs the tests, and packages one VS Code extension (VSIX) that
-# contains all builds. Run it manually (Actions > build > Run workflow) or push a tag like v0.1.0;
+# contains all builds. Run it manually (Actions > build > Run workflow) or push a tag like v1.0.0;
 # a tag also publishes a GitHub release with the VSIX and an archive of the CLI per platform. The
 # tag must match the version in Cargo.toml and package.json.
 on:

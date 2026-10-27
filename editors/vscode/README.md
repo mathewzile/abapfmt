@@ -27,11 +27,11 @@ result is checked token by token before it reaches your editor.
 
    ```json
    "[abap]": {
-     "editor.defaultFormatter": "abapfmt.abapfmt",
+     "editor.defaultFormatter": "Uprizing.abapfmt",
      "editor.formatOnSave": true
    },
    "[abap-cds]": {
-     "editor.defaultFormatter": "abapfmt.abapfmt"
+     "editor.defaultFormatter": "Uprizing.abapfmt"
    }
    ```
 
@@ -92,7 +92,7 @@ Changing `abapfmt.path` or `abapfmt.configPath` restarts the formatter; no reloa
 
 | Symptom | What to do |
 |---|---|
-| *"There is no formatter for 'abap' files installed"* or another formatter runs | Set `editor.defaultFormatter` to `abapfmt.abapfmt` for `[abap]` and `[abap-cds]`. |
+| *"There is no formatter for 'abap' files installed"* or another formatter runs | Set `editor.defaultFormatter` to `Uprizing.abapfmt` for `[abap]` and `[abap-cds]`. |
 | *"no build for … is bundled"* | Your platform (for example ARM Linux or Windows) is not bundled. Build abapfmt (`cargo build --release -p abapfmt_cli`) and set `abapfmt.path`. |
 | The output channel shows *"rule … skipped, its result would have changed the code"* | A rule produced a result that would have changed your code, so abapfmt switched that rule off for this file. The other rules still applied. Please report the snippet and the rule. |
 | Formatting does nothing, and the output channel shows *"source cannot be tokenized"* | The file has an incomplete token, for example `lv_c(20` without the closing parenthesis. Fix it and format again. |
