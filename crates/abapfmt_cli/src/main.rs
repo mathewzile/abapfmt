@@ -6,7 +6,7 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use abapfmt_config::{Config, Loaded};
-use abapfmt_formatter::format_checked;
+use abapfmt_formatter::{Skipped, format_safe};
 
 const HELP: &str = "\
 abapfmt - an ABAP and CDS formatter
@@ -163,6 +163,18 @@ fn has_known_extension(p: &Path) -> bool {
         .is_some_and(|e| EXTENSIONS.iter().any(|x| x.eq_ignore_ascii_case(e)))
 }
 
+/// Prints a warning for each rule that was switched off to keep the code unchanged; true if
+/// there were any (the file then counts as an error, although its safe result is used).
+fn report_skipped(name: &str, skipped: &[Skipped]) -> bool {
+    for s in skipped {
+        eprintln!(
+            "warning: {name}: rule {} skipped, its result would have changed the code ({})",
+            s.rule, s.error
+        );
+    }
+    !skipped.is_empty()
+}
+
 fn run() -> Result<ExitCode, String> {
     if std::env::args().nth(1).as_deref() == Some("lsp") {
         abapfmt_lsp::run()?;
@@ -195,13 +207,17 @@ fn run() -> Result<ExitCode, String> {
         let file = options.stdin_filepath.clone().unwrap_or_default();
         let out = {
             let config = configs.for_file(&file)?;
-            format_checked(&src, &config.rules, &config.options())
+            format_safe(&src, &config.rules, &config.options())
         }
         .map_err(|e| format!("stdin: {e}"))?;
         std::io::stdout()
-            .write_all(out.as_bytes())
+            .write_all(out.text.as_bytes())
             .map_err(|e| e.to_string())?;
-        return Ok(ExitCode::SUCCESS);
+        return Ok(if report_skipped("stdin", &out.skipped) {
+            ExitCode::from(2)
+        } else {
+            ExitCode::SUCCESS
+        });
     }
 
     let mut files = Vec::new();
@@ -223,7 +239,7 @@ fn run() -> Result<ExitCode, String> {
             }
         };
         let config = configs.for_file(file)?;
-        let out = match format_checked(&src, &config.rules, &config.options()) {
+        let out = match format_safe(&src, &config.rules, &config.options()) {
             Ok(o) => o,
             Err(e) => {
                 eprintln!("error: {}: {e}", file.display());
@@ -231,6 +247,10 @@ fn run() -> Result<ExitCode, String> {
                 continue;
             }
         };
+        if report_skipped(&file.display().to_string(), &out.skipped) {
+            failed += 1;
+        }
+        let out = out.text;
         if options.check {
             if out != src {
                 println!("{}", file.display());

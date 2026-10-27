@@ -268,11 +268,84 @@ impl Default for Options {
     }
 }
 
+/// A rule (or `"lineWidth"` for the reflow) that [`format_safe`] switched off, because its result
+/// did not have the same tokens as its input.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Skipped {
+    pub rule: String,
+    pub error: String,
+}
+
+/// The result of [`format_safe`].
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Formatted {
+    pub text: String,
+    /// Empty unless a rule had to be switched off to get a safe result.
+    pub skipped: Vec<Skipped>,
+}
+
+/// [`format_checked`], but a rule whose result fails the token check is switched off instead of
+/// rejecting the whole source. `Err` only if the source cannot be tokenized or no safe result is
+/// found.
+pub fn format_safe(
+    src: &str,
+    configs: &BTreeMap<String, Option<RuleConfig>>,
+    options: &Options,
+) -> Result<Formatted, String> {
+    let first_error = match format_checked(src, configs, options) {
+        Ok(text) => {
+            return Ok(Formatted {
+                text,
+                skipped: Vec::new(),
+            });
+        }
+        Err(e) => e,
+    };
+    // the source itself cannot be tokenized: there is nothing to compare a result with
+    same_tokens(src, src)?;
+    let configs = &with_tabular_width(configs, options.tabular_line_width);
+    let (_, mut skipped) = format_with(rules(), src, configs, true);
+    let mut reduced = configs.clone();
+    for s in &skipped {
+        reduced.insert(s.rule.clone(), None);
+    }
+    if let Ok(text) = format_checked(src, &reduced, options) {
+        return Ok(Formatted { text, skipped });
+    }
+    // the rules are fine on their own, so the reflow (or its interplay with the rules) is at fault
+    let without_reflow = Options {
+        line_width: None,
+        ..options.clone()
+    };
+    match format_checked(src, &reduced, &without_reflow) {
+        Ok(text) => {
+            skipped.push(Skipped {
+                rule: "lineWidth".to_string(),
+                error: first_error,
+            });
+            Ok(Formatted { text, skipped })
+        }
+        Err(e) => Err(e),
+    }
+}
+
 /// Run all implemented rules in order. `configs` maps a rule id to its options (defaults for
 /// absent ones); a rule mapped to `None` is switched off. The source is re-parsed between rules,
 /// because a rule may move tokens.
 pub fn format(src: &str, configs: &BTreeMap<String, Option<RuleConfig>>) -> String {
-    let all = rules();
+    format_with(rules(), src, configs, false).0
+}
+
+/// [`format`] with the given rules. With `guard`, the result of every rule that changed the text
+/// is checked with [`same_tokens`]; a rule that fails is switched off for the rest of the run and
+/// returned.
+fn format_with(
+    all: &[(&str, RuleFn)],
+    src: &str,
+    configs: &BTreeMap<String, Option<RuleConfig>>,
+    guard: bool,
+) -> (String, Vec<Skipped>) {
+    let mut skipped: Vec<Skipped> = Vec::new();
     let mut text = src.to_string();
     let mut next = 0;
     // the source is parsed again only after a rule has changed it
@@ -294,24 +367,36 @@ pub fn format(src: &str, configs: &BTreeMap<String, Option<RuleConfig>>) -> Stri
                 Some(Some(c)) => config.extend(c.clone()),
                 None => {}
             }
+            if skipped.iter().any(|s| s.rule == *id) {
+                continue;
+            }
             let config = with_cross_rule_settings(id, &config, configs);
             let before = doc.snapshot();
             rule(&mut doc, &config);
             if !doc.is_unchanged_since(&before) {
                 // a rule that asked to run again continues with itself on the changed source
-                changed_at = Some(if doc.rerun { k } else { k + 1 });
+                changed_at = Some((k, if doc.rerun { k } else { k + 1 }));
                 break;
             }
         }
-        let Some(resume) = changed_at else {
+        let Some((rule_at, resume)) = changed_at else {
             break;
         };
         let out = doc.render();
         drop(doc);
+        if guard && let Err(error) = same_tokens(&text, &out) {
+            // continue with the next rule on the text before this one
+            skipped.push(Skipped {
+                rule: all[rule_at].0.to_string(),
+                error,
+            });
+            next = rule_at + 1;
+            continue;
+        }
         text = out;
         next = resume;
     }
-    text
+    (text, skipped)
 }
 
 /// Is `after` the same token stream as `before`? Only whitespace and the case of words,
@@ -421,5 +506,54 @@ mod tests {
         assert!(same_tokens("x = 'a'.", "x = 'A'.").is_err());
         assert!(same_tokens("x = 1.", "x = 2.").is_err());
         assert!(same_tokens("x = 1.", "x = 1. y = 2.").is_err());
+    }
+
+    /// A broken rule: renames the first identifier.
+    fn rename_identifier(doc: &mut Doc, _: &RuleConfig) {
+        let t = doc
+            .syn
+            .types
+            .iter()
+            .position(|t| *t == abapfmt_syntax::TokenType::Identifier);
+        if let Some(t) = t {
+            doc.text[t] = Some("renamed".to_string());
+        }
+    }
+
+    #[test]
+    fn a_rule_that_changes_tokens_is_skipped() {
+        let case = rules()
+            .iter()
+            .find(|(id, _)| *id == "UPPER_AND_LOWER_CASE")
+            .unwrap()
+            .1;
+        let all: &[(&str, RuleFn)] = &[
+            ("BROKEN", rename_identifier),
+            ("UPPER_AND_LOWER_CASE", case),
+        ];
+        let src = "data value type i.\n";
+        let (out, skipped) = format_with(all, src, &BTreeMap::new(), true);
+        assert_eq!(out, "DATA value TYPE i.\n");
+        assert_eq!(skipped.len(), 1);
+        assert_eq!(skipped[0].rule, "BROKEN");
+        // unguarded, the broken result goes through (and format_checked would reject it)
+        let (out, _) = format_with(all, src, &BTreeMap::new(), false);
+        assert!(same_tokens(src, &out).is_err());
+    }
+
+    #[test]
+    fn format_safe_skips_nothing_on_working_rules() {
+        let src = "data value type i.\n";
+        let f = format_safe(src, &BTreeMap::new(), &Options::default()).unwrap();
+        assert_eq!(f.text, "DATA value TYPE i.\n");
+        assert!(f.skipped.is_empty());
+        assert!(
+            format_safe(
+                "DATA lv_chars(20 TYPE c.",
+                &BTreeMap::new(),
+                &Options::default()
+            )
+            .is_err()
+        );
     }
 }

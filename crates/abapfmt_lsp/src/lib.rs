@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 
 use abapfmt_config::Config;
-use abapfmt_formatter::format_checked;
+use abapfmt_formatter::format_safe;
 use lsp_server::{Connection, Message, Notification, Request, Response};
 use lsp_types::notification::{
     DidChangeTextDocument, DidCloseTextDocument, DidOpenTextDocument, LogMessage, Notification as _,
@@ -104,15 +104,9 @@ fn main_loop(connection: &Connection, settings: &Settings) -> Result<(), String>
                     .sender
                     .send(Message::Response(response))
                     .map_err(|e| e.to_string())?;
-                if let Some(message) = log {
+                for params in log {
                     // shown in the client's output channel
-                    let note = Notification::new(
-                        LogMessage::METHOD.to_string(),
-                        LogMessageParams {
-                            typ: MessageType::INFO,
-                            message,
-                        },
-                    );
+                    let note = Notification::new(LogMessage::METHOD.to_string(), params);
                     connection
                         .sender
                         .send(Message::Notification(note))
@@ -157,7 +151,7 @@ fn handle_request(
     documents: &HashMap<String, String>,
     settings: &Settings,
     req: Request,
-) -> (Response, Option<String>) {
+) -> (Response, Vec<LogMessageParams>) {
     let id = req.id.clone();
     let result = match req.method.as_str() {
         Formatting::METHOD => serde_json::from_value::<DocumentFormattingParams>(req.params)
@@ -173,13 +167,13 @@ fn handle_request(
         other => {
             return (
                 Response::new_err(id, -32601, format!("method not supported: {other}")),
-                None,
+                Vec::new(),
             );
         }
     };
     match result {
-        Ok((edits, log)) => (Response::new_ok(id, edits), Some(log)),
-        Err(message) => (Response::new_err(id, REQUEST_FAILED, message), None),
+        Ok((edits, log)) => (Response::new_ok(id, edits), log),
+        Err(message) => (Response::new_err(id, REQUEST_FAILED, message), Vec::new()),
     }
 }
 
@@ -188,17 +182,28 @@ fn format_document(
     settings: &Settings,
     uri: &Uri,
     range: Option<Range>,
-) -> Result<(Vec<TextEdit>, String), String> {
+) -> Result<(Vec<TextEdit>, Vec<LogMessageParams>), String> {
     let src = documents
         .get(uri.as_str())
         .ok_or_else(|| format!("document is not open: {}", uri.as_str()))?;
     let (config, used) = load_config(settings, uri)?;
-    let formatted = format_checked(src, &config.rules, &config.options())?;
+    let formatted = format_safe(src, &config.rules, &config.options())?;
     let lines = range.map(|r| (r.start.line, r.end.line));
-    Ok((
-        line_edits(src, &formatted, lines),
-        format!("{}: {used}", uri.as_str()),
-    ))
+    let mut log = vec![LogMessageParams {
+        typ: MessageType::INFO,
+        message: format!("{}: {used}", uri.as_str()),
+    }];
+    // the other rules still applied; a skipped rule is a bug worth reporting
+    log.extend(formatted.skipped.iter().map(|s| LogMessageParams {
+        typ: MessageType::WARNING,
+        message: format!(
+            "{}: rule {} skipped, its result would have changed the code ({})",
+            uri.as_str(),
+            s.rule,
+            s.error
+        ),
+    }));
+    Ok((line_edits(src, &formatted.text, lines), log))
 }
 
 /// The configuration for a document, in this order:
