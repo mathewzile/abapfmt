@@ -2,7 +2,7 @@
   "name": "abapfmt",
   "displayName": "abapfmt",
   "description": "Formatter for ABAP and CDS (DDL/DCL) code: document and range formatting powered by the abapfmt language server.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "abapfmt",
   "license": "Apache-2.0",
   "repository": {
@@ -79,8 +79,8 @@
   "scripts": {
     "compile": "tsc -p ./ --noEmit && esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --sourcemap",
     "bundle": "node scripts/bundle-binary.mjs",
-    "package": "npm run compile && npm run bundle && vsce package --allow-missing-repository --skip-license",
-    "package:all": "npm run compile && node scripts/check-binaries.mjs && vsce package --allow-missing-repository --skip-license"
+    "package": "npm run compile && npm run bundle && vsce package --skip-license",
+    "package:all": "npm run compile && node scripts/check-binaries.mjs && vsce package --skip-license"
   },
   "dependencies": {
     "vscode-languageclient": "^9.0.1"
