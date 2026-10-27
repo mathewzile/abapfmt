@@ -3,7 +3,7 @@
   "displayName": "abapfmt",
   "description": "Formatter for ABAP and CDS (DDL/DCL) code: document and range formatting powered by the abapfmt language server.",
   "version": "1.0.0",
-  "publisher": "Uprizing",
+  "publisher": "mysug",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

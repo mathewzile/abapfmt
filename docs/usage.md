@@ -102,8 +102,8 @@ cd editors/vscode && npm install && npm run package
 Install the resulting `.vsix`, then set it as the formatter:
 
 ```json
-"[abap]":     { "editor.defaultFormatter": "Uprizing.abapfmt", "editor.formatOnSave": true },
-"[abap-cds]": { "editor.defaultFormatter": "Uprizing.abapfmt" }
+"[abap]":     { "editor.defaultFormatter": "mysug.abapfmt", "editor.formatOnSave": true },
+"[abap-cds]": { "editor.defaultFormatter": "mysug.abapfmt" }
 ```
 
 Format Document, Format Selection and format on save (including `editor.formatOnSaveMode:

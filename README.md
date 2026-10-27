@@ -86,8 +86,8 @@ and `target`.
 Install the extension, then make abapfmt the formatter in `settings.json`:
 
 ```json
-"[abap]":     { "editor.defaultFormatter": "Uprizing.abapfmt", "editor.formatOnSave": true },
-"[abap-cds]": { "editor.defaultFormatter": "Uprizing.abapfmt" }
+"[abap]":     { "editor.defaultFormatter": "mysug.abapfmt", "editor.formatOnSave": true },
+"[abap-cds]": { "editor.defaultFormatter": "mysug.abapfmt" }
 ```
 
 See [editors/vscode/README.md](editors/vscode/README.md) for the settings and troubleshooting.
