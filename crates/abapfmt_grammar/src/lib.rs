@@ -1,4 +1,4 @@
-//! Phase 2 spike: abaplint's statement grammar as generated tables plus a matcher that mirrors
+//! Generated tables of abaplint's statement grammar plus a matcher that mirrors
 //! abaplint's combinator semantics (`2_statements/combi.ts`), so a statement's words can be typed
 //! KEYWORD (matched by `str()`) or IDENTIFIER (matched by `regex()`).
 //!

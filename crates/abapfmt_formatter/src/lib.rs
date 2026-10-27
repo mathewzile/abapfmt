@@ -24,8 +24,8 @@ pub enum ConfigValue {
     Str(String),
 }
 
-/// The upstream default of every option of `rule` (generated from the upstream rule classes by
-/// `.spike/gen_settings.mjs`). Options that are not set in a configuration take these values.
+/// The upstream default of every option of `rule` (`defaults.json`, read from the upstream rule
+/// classes of ABAP cleaner v1.29.0). Options that are not set in a configuration take these values.
 pub fn default_options(rule: &str) -> RuleConfig {
     static DEFAULTS: std::sync::OnceLock<serde_json::Value> = std::sync::OnceLock::new();
     let root = DEFAULTS.get_or_init(|| {

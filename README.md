@@ -160,7 +160,7 @@ cargo run --release -p abapfmt_formatter --example bench   # throughput
 - **Grammar.** `crates/abapfmt_grammar/src/tables.rs` is generated from `@abaplint/core` by
   `tools/gen-grammar/gen.cjs`. Do not edit it by hand. The weekly `refresh-grammar` workflow opens
   a pull request when a newer abaplint is available. To regenerate by hand, see
-  [docs/phase2-grammar-spike.md](docs/phase2-grammar-spike.md).
+  [docs/grammar.md](docs/grammar.md).
 - **CI.** `.github/workflows/build.yml` tests on Windows, Linux and macOS, then packages one VSIX
   for all platforms.
 - **Releases.** Set the same version in `Cargo.toml` and `editors/vscode/package.json`, then push

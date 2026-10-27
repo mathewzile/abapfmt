@@ -1,8 +1,8 @@
 # Architecture and design evaluation
 
 This document describes how abapfmt is built, why it is built this way, and where the approach is
-strong or weak. For usage, see [usage.md](usage.md). For the original plan and phases, see
-[plan.md](plan.md).
+strong or weak. For usage, see [usage.md](usage.md). For the generated grammar, see
+[grammar.md](grammar.md).
 
 ## Goal and the one rule
 

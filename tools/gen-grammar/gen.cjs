@@ -1,4 +1,4 @@
-// Phase 2 spike: turn abaplint's statement/expression grammar into a JSON IR.
+// Turn abaplint's statement/expression grammar into a JSON IR.
 //
 // Usage: node tools/gen-grammar/gen.cjs <abaplint-core-package-dir> <out-dir>
 //
