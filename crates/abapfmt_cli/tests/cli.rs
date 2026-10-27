@@ -51,6 +51,35 @@ fn check_and_write() {
 }
 
 #[test]
+fn many_files_are_reported_in_order() {
+    let dir = temp_dir("many");
+    let mut expected = Vec::new();
+    for i in 0..24 {
+        let name = format!("f{i:02}.abap");
+        // every other file is formatted already; one cannot be tokenized
+        let text = match i {
+            7 => "DATA lv_chars(20 TYPE c.\n",
+            _ if i % 2 == 0 => UNFORMATTED,
+            _ => FORMATTED,
+        };
+        if i % 2 == 0 {
+            expected.push(name.clone());
+        }
+        std::fs::write(dir.join(&name), text).unwrap();
+    }
+    let out = bin().arg("--check").arg(&dir).output().unwrap();
+    // the unreadable file makes it an error, the others are still checked
+    assert_eq!(out.status.code(), Some(2));
+    let listed: Vec<String> = String::from_utf8(out.stdout)
+        .unwrap()
+        .lines()
+        .map(|l| l.rsplit(['/', '\\']).next().unwrap().to_string())
+        .collect();
+    assert_eq!(listed, expected);
+    assert!(String::from_utf8_lossy(&out.stderr).contains("f07.abap"));
+}
+
+#[test]
 fn nearest_config_switches_rules_off() {
     let dir = temp_dir("config");
     std::fs::write(

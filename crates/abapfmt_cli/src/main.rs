@@ -4,6 +4,7 @@
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 use abapfmt_config::{Config, Loaded};
 use abapfmt_formatter::{Skipped, format_safe};
@@ -101,6 +102,12 @@ struct Configs<'a> {
 
 impl Configs<'_> {
     fn for_file(&mut self, file: &Path) -> Result<&Config, String> {
+        let i = self.index_for_file(file)?;
+        Ok(&self.cache[i].1)
+    }
+
+    /// The index in `cache` of the configuration of `file`.
+    fn index_for_file(&mut self, file: &Path) -> Result<usize, String> {
         let path = if let Some(p) = &self.options.config {
             Some(p.clone())
         } else if self.options.no_config {
@@ -113,7 +120,7 @@ impl Configs<'_> {
             abapfmt_config::find_config(&dir)
         };
         if let Some(i) = self.cache.iter().position(|(p, _)| *p == path) {
-            return Ok(&self.cache[i].1);
+            return Ok(i);
         }
         let config = match &path {
             Some(p) => {
@@ -126,8 +133,88 @@ impl Configs<'_> {
             None => Config::default(),
         };
         self.cache.push((path, config));
-        Ok(&self.cache.last().expect("just pushed").1)
+        Ok(self.cache.len() - 1)
     }
+}
+
+/// What formatting one file produced; reported after all files are done, in input order.
+#[derive(Default)]
+struct Outcome {
+    /// Warnings and errors for stderr.
+    messages: Vec<String>,
+    /// For `--check`: the file is not formatted.
+    unformatted: bool,
+    /// The file could not be formatted, or only with skipped rules.
+    failed: bool,
+    /// Without `--write` or `--check`: the formatted code.
+    output: Option<String>,
+}
+
+fn process(file: &Path, config: &Config, options: &Options) -> Outcome {
+    let mut outcome = Outcome::default();
+    let name = file.display();
+    let src = match std::fs::read_to_string(file) {
+        Ok(s) => s,
+        Err(e) => {
+            outcome.messages.push(format!("error: {name}: {e}"));
+            outcome.failed = true;
+            return outcome;
+        }
+    };
+    let formatted = match format_safe(&src, &config.rules, &config.options()) {
+        Ok(f) => f,
+        Err(e) => {
+            outcome.messages.push(format!("error: {name}: {e}"));
+            outcome.failed = true;
+            return outcome;
+        }
+    };
+    outcome.messages = skipped_messages(&name.to_string(), &formatted.skipped);
+    outcome.failed = !formatted.skipped.is_empty();
+    let out = formatted.text;
+    if options.check {
+        outcome.unformatted = out != src;
+    } else if options.write {
+        if out != src
+            && let Err(e) = std::fs::write(file, &out)
+        {
+            outcome.messages.push(format!("error: {name}: {e}"));
+            outcome.failed = true;
+        }
+    } else {
+        outcome.output = Some(out);
+    }
+    outcome
+}
+
+/// Formats the files on all cores. The results are in the order of `jobs`.
+fn process_all(jobs: &[(&Path, &Config)], options: &Options) -> Vec<Outcome> {
+    let threads = std::thread::available_parallelism()
+        .map_or(1, |n| n.get())
+        .clamp(1, jobs.len().max(1));
+    let next = AtomicUsize::new(0);
+    let mut done: Vec<(usize, Outcome)> = std::thread::scope(|s| {
+        let workers: Vec<_> = (0..threads)
+            .map(|_| {
+                s.spawn(|| {
+                    let mut mine = Vec::new();
+                    loop {
+                        let i = next.fetch_add(1, Ordering::Relaxed);
+                        let Some((file, config)) = jobs.get(i) else {
+                            break mine;
+                        };
+                        mine.push((i, process(file, config, options)));
+                    }
+                })
+            })
+            .collect();
+        workers
+            .into_iter()
+            .flat_map(|w| w.join().expect("worker panicked"))
+            .collect()
+    });
+    done.sort_by_key(|(i, _)| *i);
+    done.into_iter().map(|(_, o)| o).collect()
 }
 
 fn collect_files(path: &Path, out: &mut Vec<PathBuf>) -> Result<(), String> {
@@ -163,16 +250,18 @@ fn has_known_extension(p: &Path) -> bool {
         .is_some_and(|e| EXTENSIONS.iter().any(|x| x.eq_ignore_ascii_case(e)))
 }
 
-/// Prints a warning for each rule that was switched off to keep the code unchanged; true if
-/// there were any (the file then counts as an error, although its safe result is used).
-fn report_skipped(name: &str, skipped: &[Skipped]) -> bool {
-    for s in skipped {
-        eprintln!(
-            "warning: {name}: rule {} skipped, its result would have changed the code ({})",
-            s.rule, s.error
-        );
-    }
-    !skipped.is_empty()
+/// A warning for each rule that was switched off to keep the code unchanged. A file with such
+/// warnings counts as an error, although its safe result is used.
+fn skipped_messages(name: &str, skipped: &[Skipped]) -> Vec<String> {
+    skipped
+        .iter()
+        .map(|s| {
+            format!(
+                "warning: {name}: rule {} skipped, its result would have changed the code ({})",
+                s.rule, s.error
+            )
+        })
+        .collect()
 }
 
 fn run() -> Result<ExitCode, String> {
@@ -213,10 +302,13 @@ fn run() -> Result<ExitCode, String> {
         std::io::stdout()
             .write_all(out.text.as_bytes())
             .map_err(|e| e.to_string())?;
-        return Ok(if report_skipped("stdin", &out.skipped) {
-            ExitCode::from(2)
-        } else {
+        for m in skipped_messages("stdin", &out.skipped) {
+            eprintln!("{m}");
+        }
+        return Ok(if out.skipped.is_empty() {
             ExitCode::SUCCESS
+        } else {
+            ExitCode::from(2)
         });
     }
 
@@ -228,39 +320,30 @@ fn run() -> Result<ExitCode, String> {
         return Err("without --write or --check, exactly one file can be formatted".into());
     }
 
-    let (mut unformatted, mut failed) = (0, 0);
+    // configurations are resolved first, in order, so that each is loaded (and warned about) once
+    let mut indices = Vec::with_capacity(files.len());
     for file in &files {
-        let src = match std::fs::read_to_string(file) {
-            Ok(s) => s,
-            Err(e) => {
-                eprintln!("error: {}: {e}", file.display());
-                failed += 1;
-                continue;
-            }
-        };
-        let config = configs.for_file(file)?;
-        let out = match format_safe(&src, &config.rules, &config.options()) {
-            Ok(o) => o,
-            Err(e) => {
-                eprintln!("error: {}: {e}", file.display());
-                failed += 1;
-                continue;
-            }
-        };
-        if report_skipped(&file.display().to_string(), &out.skipped) {
+        indices.push(configs.index_for_file(file)?);
+    }
+    let jobs: Vec<(&Path, &Config)> = files
+        .iter()
+        .zip(indices)
+        .map(|(f, i)| (f.as_path(), &configs.cache[i].1))
+        .collect();
+
+    let (mut unformatted, mut failed) = (0, 0);
+    for ((file, _), outcome) in jobs.iter().zip(process_all(&jobs, &options)) {
+        for m in &outcome.messages {
+            eprintln!("{m}");
+        }
+        if outcome.failed {
             failed += 1;
         }
-        let out = out.text;
-        if options.check {
-            if out != src {
-                println!("{}", file.display());
-                unformatted += 1;
-            }
-        } else if options.write {
-            if out != src {
-                std::fs::write(file, &out).map_err(|e| format!("{}: {e}", file.display()))?;
-            }
-        } else {
+        if outcome.unformatted {
+            println!("{}", file.display());
+            unformatted += 1;
+        }
+        if let Some(out) = outcome.output {
             std::io::stdout()
                 .write_all(out.as_bytes())
                 .map_err(|e| e.to_string())?;

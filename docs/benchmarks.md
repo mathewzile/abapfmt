@@ -30,3 +30,17 @@ What made the difference, in order of effect:
 Remaining cost is about one parse per rule that changed the text (13 of 46 on the sample), plus
 the final token check and the reflow. Rules that merge their changes into a shared document would
 remove most of that; at about 30k lines/s this is not needed yet.
+
+## Command line, many files
+
+The CLI formats files on all cores (`std::thread::available_parallelism`); results are reported in
+the order of the files. `abapfmt --check` over 200 copies of `cleanup-sample.abap` (32,000 lines,
+identifiers renamed per copy), 12 logical cores:
+
+| | Time |
+|---|---|
+| one file after another | 1.3 s |
+| parallel | 0.35 s |
+
+The speed-up is below the number of cores because the parser's statement cache is shared behind
+one lock.
