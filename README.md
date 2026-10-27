@@ -126,7 +126,7 @@ The full reference, including configuration lookup in the editor, is in
 ```
 source ─► lexer ─► grammar (abaplint, generated) ─► syntax ─► 46 rules ─► reflow ─► token check ─► result
           lossless   KEYWORD vs IDENTIFIER          statements,  whitespace   lineWidth   same tokens,
-          tokens                                    blocks,      and case               or no output
+          tokens                                    blocks,      and case               else the failing rule is skipped
                                                     brackets     only
 ```
 
@@ -135,7 +135,7 @@ source ─► lexer ─► grammar (abaplint, generated) ─► syntax ─► 46
 | `abapfmt_lexer` | Lossless tokenizer, ported from ABAP cleaner's `Tokenizer` |
 | `abapfmt_grammar` | abaplint's statement grammar, generated into Rust tables, plus a matcher |
 | `abapfmt_syntax` | Statements, chains, block nesting, brackets, and the CDS parser |
-| `abapfmt_formatter` | The rules, the line-width reflow and the token check (`format_checked`) |
+| `abapfmt_formatter` | The rules, the line-width reflow and the token check (`format_safe` skips a rule that fails it) |
 | `abapfmt_config` | `abapfmt.json` and `.cfj` loading, configuration lookup |
 | `abapfmt_cli` | The `abapfmt` binary, including the `abapfmt lsp` subcommand |
 | `abapfmt_lsp` | Language server for document and range formatting over stdio |

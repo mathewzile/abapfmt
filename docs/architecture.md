@@ -232,4 +232,6 @@ statement cache is shared behind a lock.
 
 1. Publish to the Marketplace and Open VSX from the release job.
 2. A cost-based reflow, driven by real examples of bad breaks.
-3. Alignment of chained statements.
+
+Chained statements stay unaligned on purpose: ABAP cleaner has no tests for them, and aligning them
+gives worse results than leaving them alone.

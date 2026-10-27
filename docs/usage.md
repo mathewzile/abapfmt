@@ -114,7 +114,8 @@ rules still apply.
 
 ## Known limitations
 
-These are deliberate choices or accepted approximations; none of them is planned to change.
+These are deliberate choices or accepted approximations. `architecture.md` lists what could still
+change and why the rest stays.
 
 - **Rules that rewrite code are not implemented** (for example chain removal, `RemoveIncludeWarnings`,
   merging comments, `DDL_ANNO_NESTING`). abapfmt changes only whitespace, line layout and letter
@@ -129,8 +130,9 @@ These are deliberate choices or accepted approximations; none of them is planned
   It agrees with all of abap-cleaner's test cases for these rules.
 - **One configuration per workspace:** documents of all remote systems (ADT) share the workspace's
   `abapfmt.json`; there are no per-system settings.
-- **Speed:** about 30,000 lines per second (see `benchmarks.md`). Each rule that changes the text
-  causes one more parse; this is not a problem at these speeds and is not being optimised further.
-- **Platforms:** the VSIX from the workflow supports Windows x64, Linux x64, macOS Intel and macOS
-  Apple Silicon. Other platforms (for example Linux or Windows on ARM) need `abapfmt.path` to point at
+- **Speed:** about 30,000 lines per second per core; the CLI formats files on all cores (see
+  `benchmarks.md`). Each rule that changes the text causes one more parse; this is not a problem at
+  these speeds and is not being optimised further.
+- **Platforms:** the VSIX and the CLI archives of the releases support Windows x64, Linux x64,
+  macOS Intel and macOS Apple Silicon. Other platforms (for example Linux or Windows on ARM) need `abapfmt.path` to point at
   a build of abapfmt for that platform.
