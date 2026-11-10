@@ -13,6 +13,7 @@ mod operators;
 
 pub use ddl::{DdlInfo, is_ddl_source, parse_ddl};
 
+use abapfmt_grammar::lexer::LexClass;
 use abapfmt_grammar::{Class, ParsedStatement, is_grammar_word, parse_statements};
 use abapfmt_lexer::{LexError, Token, TokenKind, lex};
 
@@ -241,7 +242,12 @@ pub fn parse(src: &str, opts: Options) -> Result<Syntax<'_>, LexError> {
             }
         }
         if let Some(i) = s.tokens.last().and_then(|g| find(g.start)) {
-            cmd_matched.push((i, s.statement.is_some() || s.tokens.len() == 1, s.statement));
+            // an empty command (`.`, `,.`, `:,.`) has no word to type, so there is nothing to miss
+            let empty = s
+                .tokens
+                .iter()
+                .all(|t| matches!(t.class, LexClass::Punctuation | LexClass::Pragma));
+            cmd_matched.push((i, s.statement.is_some() || empty, s.statement));
         }
     }
 
@@ -628,6 +634,13 @@ mod tests {
         assert_eq!(s.text(s.commands[0].last), "\" tail");
         assert!(s.commands[1].is_comment_only);
         assert_eq!(s.commands[2].statement, Some("Clear"));
+    }
+
+    #[test]
+    fn empty_commands_count_as_matched() {
+        let s = parse(":,. x = 1 ...\n", Options::default()).unwrap();
+        assert!(s.commands.iter().all(|c| c.fully_matched));
+        assert!(s.commands.iter().any(|c| c.statement.is_some()));
     }
 
     #[test]

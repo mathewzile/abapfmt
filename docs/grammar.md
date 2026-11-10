@@ -58,7 +58,7 @@ are cached by the exact tokens of a statement.
 ## Tests
 `crates/abapfmt_grammar/tests/probes.rs` types 33 keyword-collision statements, all correctly.
 `crates/abapfmt_syntax/tests/corpus.rs` parses all fixture snippets and samples: 99.3% of commands
-are matched fully, and no fixture fails because of a fallback word. The remaining misses are
+are matched fully (empty commands such as `.` or `:,.` count as matched, as they have no word to type), and no fixture fails because of a fallback word. The remaining misses are
 macros, native SQL, statements newer than the pinned abaplint (`AUTHORITY-CHECK DISABLE ...`) and
 unusual SELECT lists (`SELECT +1 AS ...`).
 
