@@ -73,6 +73,11 @@ abapfmt --print-config > abapfmt.json
 abapfmt --print-config --config essential.cfj > abapfmt.json
 ```
 
+In VS Code, the command **abapfmt: Create configuration file (abapfmt.json)** does the same in the
+workspace folder, and `abapfmt.json` gets completion and validation from a JSON schema. The schema
+is generated: `abapfmt --print-schema > editors/vscode/abapfmt.schema.json` (a test fails when it
+is out of date).
+
 Options that are not set in the configuration have abap-cleaner's default. Rule ids and option names are those of abap-cleaner; enum options are written by name. `false`
 (or `"enabled": false`) switches a rule off. Rules that abapfmt does not implement (those that
 rewrite code) are rejected in `abapfmt.json`.

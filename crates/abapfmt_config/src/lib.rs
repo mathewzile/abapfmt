@@ -152,6 +152,74 @@ impl Config {
     }
 }
 
+/// The JSON schema of `abapfmt.json`, generated from the implemented rules and their options, for
+/// completion and validation in editors.
+pub fn json_schema() -> String {
+    use serde_json::json;
+    let mut rules = serde_json::Map::new();
+    for (id, _) in abapfmt_formatter::rules() {
+        let defaults = abapfmt_formatter::default_options(id);
+        let mut props = serde_json::Map::new();
+        props.insert(
+            "enabled".into(),
+            json!({ "type": "boolean", "default": true, "description": "false switches the rule off." }),
+        );
+        for (name, kind) in settings().get(*id).into_iter().flatten() {
+            let mut spec = match kind {
+                Kind::Bool => json!({ "type": "boolean" }),
+                Kind::Int => json!({ "type": "integer" }),
+                Kind::Str => json!({ "type": "string" }),
+                Kind::Enum(names) => json!({ "type": "string", "enum": names }),
+            };
+            if let Some(d) = defaults.get(name) {
+                spec["default"] = to_json(d);
+            }
+            props.insert(name.clone(), spec);
+        }
+        rules.insert(
+            (*id).to_string(),
+            json!({
+                "description": "An object with options, or false to switch the rule off.",
+                "anyOf": [
+                    { "type": "boolean" },
+                    { "type": "object", "properties": props, "additionalProperties": false }
+                ]
+            }),
+        );
+    }
+    let schema = json!({
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "abapfmt configuration",
+        "type": "object",
+        "properties": {
+            "$schema": { "type": "string" },
+            "lineWidth": {
+                "description": "Maximum line width of ABAP code; \"off\" switches the reflow off.",
+                "default": abapfmt_formatter::DEFAULT_LINE_WIDTH,
+                "anyOf": [
+                    { "type": "integer", "minimum": 40, "maximum": 1000 },
+                    { "const": "off" }
+                ]
+            },
+            "tabularLineWidth": {
+                "description": "Maximum length of the rows of a table in tabular style.",
+                "type": "integer",
+                "minimum": 40,
+                "maximum": 1000,
+                "default": abapfmt_formatter::DEFAULT_TABULAR_LINE_WIDTH
+            },
+            "rules": {
+                "description": "Options per rule id; absent rules and options use their defaults.",
+                "type": "object",
+                "properties": rules,
+                "additionalProperties": false
+            }
+        },
+        "additionalProperties": false
+    });
+    serde_json::to_string_pretty(&schema).expect("JSON can be written") + "\n"
+}
+
 fn is_implemented(rule: &str) -> bool {
     abapfmt_formatter::rules().iter().any(|(id, _)| *id == rule)
 }
@@ -478,6 +546,20 @@ mod tests {
                 .unwrap()
                 .to_string_lossy()
                 .contains(".vscode")
+        );
+    }
+
+    /// `editors/vscode/abapfmt.schema.json` is generated: `abapfmt --print-schema > ...`.
+    #[test]
+    fn committed_schema_is_current() {
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../editors/vscode/abapfmt.schema.json");
+        let committed = std::fs::read_to_string(path)
+            .unwrap()
+            .replace("\r\n", "\n");
+        assert!(
+            committed == json_schema(),
+            "run: abapfmt --print-schema > editors/vscode/abapfmt.schema.json"
         );
     }
 

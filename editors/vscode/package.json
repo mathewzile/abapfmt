@@ -74,7 +74,23 @@
           "description": "Traces the communication between VS Code and the abapfmt language server."
         }
       }
-    }
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": [
+          "abapfmt.json",
+          ".vscode/abapfmt.json"
+        ],
+        "url": "./abapfmt.schema.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "abapfmt.createConfig",
+        "title": "Create configuration file (abapfmt.json)",
+        "category": "abapfmt"
+      }
+    ]
   },
   "scripts": {
     "compile": "tsc -p ./ --noEmit && esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --sourcemap",

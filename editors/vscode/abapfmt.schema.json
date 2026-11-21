@@ -1,0 +1,2681 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "lineWidth": {
+      "anyOf": [
+        {
+          "maximum": 1000,
+          "minimum": 40,
+          "type": "integer"
+        },
+        {
+          "const": "off"
+        }
+      ],
+      "default": 120,
+      "description": "Maximum line width of ABAP code; \"off\" switches the reflow off."
+    },
+    "rules": {
+      "additionalProperties": false,
+      "description": "Options per rule id; absent rules and options use their defaults.",
+      "properties": {
+        "ALIGN_ABAP_DOC": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignAcrossEmptyLines": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignAcrossNonEmptyLines": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_ALIASES_FOR": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_ASSIGNMENTS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignAcrossCommentLines": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignAcrossEmptyLines": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_CLEAR_FREE_AND_SORT": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "DistinctLineCatch": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "NEVER",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "DistinctLineClear": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "ONLY_WITH_ADDITIONS",
+                    "NEVER",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "DistinctLineFree": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "NEVER",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "DistinctLineSort": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "ONLY_WITH_ADDITIONS",
+                    "NEVER",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "MaxLineLength": {
+                  "default": 120,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_COND_EXPRESSIONS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "ContinueAfterElse": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "GapAfterElse": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "MaxLineLength": {
+                  "default": 120,
+                  "type": "integer"
+                },
+                "OneLinerStyle": {
+                  "default": "KEEP",
+                  "enum": [
+                    "CREATE",
+                    "KEEP",
+                    "SPLIT"
+                  ],
+                  "type": "string"
+                },
+                "SimpleStyle": {
+                  "default": "VERTICAL_LAYOUT",
+                  "enum": [
+                    "VERTICAL_LAYOUT",
+                    "LIKE_COMPLEX"
+                  ],
+                  "type": "string"
+                },
+                "TabularStyle": {
+                  "default": "CREATE",
+                  "enum": [
+                    "CREATE",
+                    "KEEP",
+                    "SPLIT"
+                  ],
+                  "type": "string"
+                },
+                "ThenOnWhenLine": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ValueInset": {
+                  "default": "ADD_2",
+                  "enum": [
+                    "ADD_0",
+                    "ADD_2",
+                    "ADD_5",
+                    "ADD_7"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_DECLARATIONS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignChainAction": {
+                  "default": "ALIGN_NAME_TYPE_LENGTH_ETC",
+                  "enum": [
+                    "ALIGN_NAME_TYPE_LENGTH_ETC",
+                    "ALIGN_NAME_AND_TYPE",
+                    "ALIGN_NAME_ONLY"
+                  ],
+                  "type": "string"
+                },
+                "AlignEnumAction": {
+                  "default": "ALIGN_NAME_AND_VALUE",
+                  "enum": [
+                    "ALIGN_NAME_AND_VALUE",
+                    "ALIGN_NAME_ONLY"
+                  ],
+                  "type": "string"
+                },
+                "AlignNonChainsAction": {
+                  "default": "ALIGN_NAME_TYPE_LENGTH_ETC",
+                  "enum": [
+                    "ALIGN_NAME_TYPE_LENGTH_ETC",
+                    "ALIGN_NAME_AND_TYPE",
+                    "ALIGN_NAME_ONLY"
+                  ],
+                  "type": "string"
+                },
+                "AlignStructureAction": {
+                  "default": "ALIGN_NAME_TYPE_LENGTH_ETC",
+                  "enum": [
+                    "ALIGN_NAME_TYPE_LENGTH_ETC",
+                    "ALIGN_NAME_AND_TYPE",
+                    "ALIGN_NAME_ONLY"
+                  ],
+                  "type": "string"
+                },
+                "CondenseInnerSpaces": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ContainingPosition": {
+                  "default": "BELOW_KEYWORD_PLUS_2",
+                  "enum": [
+                    "UNCHANGED",
+                    "CONTINUE",
+                    "CONTINUE_AND_BREAK",
+                    "BELOW_KEYWORD_PLUS_2",
+                    "BELOW_IDENTIFIER_PLUS_2",
+                    "BELOW_TYPE",
+                    "BELOW_ANY_STRUCTURE"
+                  ],
+                  "type": "string"
+                },
+                "ExecuteOnClassDefinitionSections": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "FillPercentageToJustifyOwnColumn": {
+                  "default": 20,
+                  "type": "integer"
+                },
+                "MaxLineLength": {
+                  "default": 130,
+                  "type": "integer"
+                },
+                "StructureAlignStyle": {
+                  "default": "PER_LEVEL",
+                  "enum": [
+                    "ACROSS_LEVELS",
+                    "PER_LEVEL",
+                    "PER_SECTION"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_FORM_DECLARATION": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AddEmptyLine": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignTypes": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ContinueAfterParamGroupKeyword": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ParamCountBehindFormName": {
+                  "default": 3,
+                  "type": "integer"
+                },
+                "RemoveEmptyLine": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_LOGICAL_EXPRESSIONS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignCheckWithBoolOps": {
+                  "default": "DO_NOT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignElseIfWithBoolOps": {
+                  "default": "DO_NOT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignIfWithBoolOps": {
+                  "default": "DO_NOT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignSqlHavingWithBoolOps": {
+                  "default": "RIGHT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignSqlOnWithBoolOps": {
+                  "default": "LEFT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignSqlWhenWithBoolOps": {
+                  "default": "DO_NOT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignSqlWhereWithBoolOps": {
+                  "default": "RIGHT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignUntilWithBoolOps": {
+                  "default": "DO_NOT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignWhereWithBoolOps": {
+                  "default": "DO_NOT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignWhileWithBoolOps": {
+                  "default": "DO_NOT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "MaxInnerSpaces": {
+                  "default": 20,
+                  "type": "integer"
+                },
+                "OnlyAlignSameObjects": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "RightAlignComparisonOps": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_METHODS_DECLARATION": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignConsecutive": {
+                  "default": "ONE_LINERS",
+                  "enum": [
+                    "NEVER",
+                    "ONE_LINERS",
+                    "ALL_TABULAR"
+                  ],
+                  "type": "string"
+                },
+                "ContinueAfterAccess": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "ContinueAfterKeyword": {
+                  "default": "KEEP_AS_IS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "ContinueAfterMethodName": {
+                  "default": "KEEP_AS_IS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "FillPercentageToJustifyOwnColumn": {
+                  "default": 40,
+                  "type": "integer"
+                },
+                "HandleOneLiners": {
+                  "default": "KEEP_EXISTING",
+                  "enum": [
+                    "CREATE",
+                    "KEEP_EXISTING",
+                    "SAME_AS_MULTI_LINERS"
+                  ],
+                  "type": "string"
+                },
+                "SeparateWithEmptyLine": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_METHODS_FOR_TESTING": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "ContinueAfterKeyword": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "ContinueAfterMethodName": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_METHODS_REDEFINITION": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "ContinueAfterKeyword": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "ContinueAfterMethodName": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_PARAMETERS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignAcrossTableRows": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignAssignments": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AllowContentLeftOfAssignOp": {
+                  "default": "TO_KEEP_MAX_LINE_LENGTH",
+                  "enum": [
+                    "NEVER",
+                    "TO_KEEP_MAX_LINE_LENGTH",
+                    "ALWAYS"
+                  ],
+                  "type": "string"
+                },
+                "KeepOtherOneLiners": {
+                  "default": "NEVER",
+                  "enum": [
+                    "NEVER",
+                    "IF_BELOW_MAX_LINE_LENGTH",
+                    "ALWAYS"
+                  ],
+                  "type": "string"
+                },
+                "KeepParametersOnSingleLine": {
+                  "default": "IF_BELOW_MAX_LINE_LENGTH",
+                  "enum": [
+                    "NEVER",
+                    "IF_BELOW_MAX_LINE_LENGTH",
+                    "ALWAYS"
+                  ],
+                  "type": "string"
+                },
+                "MaxLineLength": {
+                  "default": 120,
+                  "type": "integer"
+                },
+                "MaxLineLengthForSingleLine": {
+                  "default": 160,
+                  "type": "integer"
+                },
+                "MaxParamCountBehindFunctionalCall": {
+                  "default": 100,
+                  "type": "integer"
+                },
+                "MaxParamCountBehindProceduralCall": {
+                  "default": 0,
+                  "type": "integer"
+                },
+                "PutFunctionalCallKeywordsOnOwnLine": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "PutProceduralCallKeywordsOnOwnLine": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_PERFORM": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignWithFormName": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "BreakAfterAdditions": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "ContinueAfterParamGroupKeyword": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "MaxLineLength": {
+                  "default": 120,
+                  "type": "integer"
+                },
+                "ParamCountAfterPerform": {
+                  "default": 3,
+                  "type": "integer"
+                },
+                "ParamCountToCondense": {
+                  "default": 16,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_SELECT_CLAUSES": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "MainQueryOneLinerAction": {
+                  "default": "KEEP_EXISTING",
+                  "enum": [
+                    "CREATE",
+                    "KEEP_EXISTING",
+                    "ALWAYS_SPLIT"
+                  ],
+                  "type": "string"
+                },
+                "MaxLineLength": {
+                  "default": 120,
+                  "type": "integer"
+                },
+                "MaxSelectListLengthBeforeFrom": {
+                  "default": 30,
+                  "type": "integer"
+                },
+                "MaxSelectListLengthBeforeInto": {
+                  "default": 30,
+                  "type": "integer"
+                },
+                "NewLineForFromWithJoins": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "NextSelectPos": {
+                  "default": "BELOW_PLUS_0",
+                  "enum": [
+                    "CONTINUE",
+                    "CONTINUE_OR_BELOW_SECOND",
+                    "BELOW_PLUS_0",
+                    "BELOW_PLUS_2",
+                    "BELOW_PLUS_4",
+                    "BELOW_SECOND_WORD"
+                  ],
+                  "type": "string"
+                },
+                "SelectClauseIndent": {
+                  "default": "PLUS_2",
+                  "enum": [
+                    "PLUS_2",
+                    "PLUS_4",
+                    "PLUS_7"
+                  ],
+                  "type": "string"
+                },
+                "SelectUnionIndent": {
+                  "default": "PLUS_0",
+                  "enum": [
+                    "PLUS_0",
+                    "PLUS_2",
+                    "PLUS_4",
+                    "PLUS_7"
+                  ],
+                  "type": "string"
+                },
+                "SelectUnionIntoIndent": {
+                  "default": "PLUS_0",
+                  "enum": [
+                    "PLUS_0",
+                    "PLUS_2",
+                    "PLUS_4",
+                    "PLUS_7"
+                  ],
+                  "type": "string"
+                },
+                "SubQueryOneLinerAction": {
+                  "default": "KEEP_EXISTING",
+                  "enum": [
+                    "CREATE",
+                    "KEEP_EXISTING",
+                    "ALWAYS_SPLIT"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_SELECT_FROM": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignAsAcrossJoins": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "AlignOnAcrossJoins": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "FirstTableNamePosition": {
+                  "default": "CONTINUE",
+                  "enum": [
+                    "CONTINUE",
+                    "BELOW_PLUS_0",
+                    "BELOW_PLUS_2"
+                  ],
+                  "type": "string"
+                },
+                "FurtherTableNamePositions": {
+                  "default": "BELOW_PLUS_2",
+                  "enum": [
+                    "CONTINUE",
+                    "BELOW_PLUS_0",
+                    "BELOW_PLUS_2"
+                  ],
+                  "type": "string"
+                },
+                "SelectClientPosition": {
+                  "default": "OWN_LINE_AFTER_JOINS",
+                  "enum": [
+                    "CONTINUE",
+                    "KEEP_AS_IS",
+                    "OWN_LINE_AFTER_JOINS",
+                    "OWN_LINE"
+                  ],
+                  "type": "string"
+                },
+                "SelectJoinIndent": {
+                  "default": "PLUS_2",
+                  "enum": [
+                    "PLUS_0",
+                    "PLUS_2",
+                    "PLUS_4"
+                  ],
+                  "type": "string"
+                },
+                "SelectOnPosition": {
+                  "default": "CONTINUE",
+                  "enum": [
+                    "CONTINUE",
+                    "BELOW_JOIN",
+                    "BELOW_JOIN_PLUS_2",
+                    "BELOW_JOIN_WORD_2"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_SELECT_LISTS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignAdditionsInOrderByList": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "AlignAsInSelectList": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ComplexGroupByListLayout": {
+                  "default": "MULTI_LINE",
+                  "enum": [
+                    "MULTI_LINE",
+                    "ONE_LINE",
+                    "DERIVE",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "ComplexOrderByListLayout": {
+                  "default": "MULTI_LINE",
+                  "enum": [
+                    "MULTI_LINE",
+                    "ONE_LINE",
+                    "DERIVE",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "ComplexSelectListLayout": {
+                  "default": "MULTI_LINE",
+                  "enum": [
+                    "MULTI_LINE",
+                    "ONE_LINE",
+                    "DERIVE",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "ConsiderTildeAsComplex": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "MaxLineLength": {
+                  "default": 120,
+                  "type": "integer"
+                },
+                "SelectIntoLayout": {
+                  "default": "DERIVE",
+                  "enum": [
+                    "MULTI_LINE",
+                    "ONE_LINE",
+                    "DERIVE",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "SimpleGroupByListLayout": {
+                  "default": "DERIVE",
+                  "enum": [
+                    "MULTI_LINE",
+                    "ONE_LINE",
+                    "DERIVE",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "SimpleOrderByListLayout": {
+                  "default": "DERIVE",
+                  "enum": [
+                    "MULTI_LINE",
+                    "ONE_LINE",
+                    "DERIVE",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "SimpleSelectListLayout": {
+                  "default": "DERIVE",
+                  "enum": [
+                    "MULTI_LINE",
+                    "ONE_LINE",
+                    "DERIVE",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ALIGN_WITH_SECOND_WORD": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "CLOSING_BRACKETS_POSITION": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_ALIGN_DATA_SOURCES": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignAliases": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignAssociationTo": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignAssociationsWithJoins": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "AlignDataSources": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignOnConditions": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ConsiderAllParamAssignLines": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_ALIGN_ENTITY_PARAMETERS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignColons": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignTypes": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_ALIGN_FIELD_LISTS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "ComplexGroupByListLayout": {
+                  "default": "MULTI_LINE",
+                  "enum": [
+                    "MULTI_LINE",
+                    "ONE_LINE",
+                    "DERIVE",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "ConsiderDotAsComplex": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "GroupByListPos": {
+                  "default": "CONTINUE",
+                  "enum": [
+                    "CONTINUE",
+                    "LINE_START_PLUS_2",
+                    "LINE_START_PLUS_4",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "MaxLineLength": {
+                  "default": 120,
+                  "type": "integer"
+                },
+                "NameListLayout": {
+                  "default": "MULTI_LINE",
+                  "enum": [
+                    "MULTI_LINE",
+                    "ONE_LINE",
+                    "DERIVE",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "NameListPos": {
+                  "default": "LINE_START_PLUS_2",
+                  "enum": [
+                    "CONTINUE",
+                    "LINE_START_PLUS_2",
+                    "LINE_START_PLUS_4",
+                    "VIEW_NAME_PLUS_2",
+                    "VIEW_NAME_PLUS_4",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "SimpleGroupByListLayout": {
+                  "default": "MULTI_LINE",
+                  "enum": [
+                    "MULTI_LINE",
+                    "ONE_LINE",
+                    "DERIVE",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_ALIGN_FUNCTION_PARAMETERS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignActualParams": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignAssignmentOps": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ParameterPos": {
+                  "default": "CONTINUE",
+                  "enum": [
+                    "CONTINUE",
+                    "FUNCTION_NAME_PLUS_2",
+                    "FUNCTION_NAME_PLUS_4",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_ALIGN_LOGICAL_EXPRESSIONS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignAssociationOn": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignFilterWithBoolOps": {
+                  "default": "RIGHT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignHaving": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignHavingWithBoolOps": {
+                  "default": "RIGHT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignJoinOn": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignOnWithBoolOps": {
+                  "default": "LEFT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignPathExpressions": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignWhen": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignWhenWithBoolOps": {
+                  "default": "RIGHT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "AlignWhere": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignWhereWithBoolOps": {
+                  "default": "RIGHT_ALIGN",
+                  "enum": [
+                    "DO_NOT_ALIGN",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ],
+                  "type": "string"
+                },
+                "MaxInnerSpaces": {
+                  "default": 20,
+                  "type": "integer"
+                },
+                "RightAlignComparisonOps": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_ALIGN_SELECT_LIST": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignAliases": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignCommentedOutCode": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignKeyKeyword": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignTextualComments": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ConsiderAllElementLines": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "ConsiderComplexElementsWithoutAlias": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "ConsiderSimpleElementsWithoutAlias": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "MaxAliasStart": {
+                  "default": 120,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_ALIGN_SOURCE_PARAMETERS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignActualParams": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignAssignmentOps": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AsAliasPos": {
+                  "default": "CONTINUE",
+                  "enum": [
+                    "CONTINUE",
+                    "LINE_START",
+                    "LINE_START_PLUS_2",
+                    "SOURCE_NAME",
+                    "SOURCE_NAME_PLUS_2",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "ParameterPos": {
+                  "default": "SOURCE_NAME_PLUS_2",
+                  "enum": [
+                    "CONTINUE",
+                    "LINE_START_PLUS_2",
+                    "LINE_START_PLUS_4",
+                    "SOURCE_NAME_PLUS_2",
+                    "SOURCE_NAME_PLUS_4",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_ANNO_LAYOUT": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignTablesInArrays": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AlignValues": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "MaxLineLength": {
+                  "default": 120,
+                  "type": "integer"
+                },
+                "MaxOneLinerElemCountList": {
+                  "default": 4,
+                  "type": "integer"
+                },
+                "MaxOneLinerElemCountMain": {
+                  "default": 4,
+                  "type": "integer"
+                },
+                "SpaceAfterColon": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "SpaceInsideBraces": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "SpaceInsideBrackets": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_EMPTY_LINES_BETWEEN": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AfterSelectListEnd": {
+                  "default": "ALWAYS_AT_LEAST_ONE",
+                  "enum": [
+                    "ALWAYS_AT_LEAST_ONE",
+                    "ALWAYS_EXACTLY_ONE",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "AfterSelectListStart": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS_AT_LEAST_ONE",
+                    "ALWAYS_EXACTLY_ONE",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BeforeSelectListEnd": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS_AT_LEAST_ONE",
+                    "ALWAYS_EXACTLY_ONE",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BeforeSelectListStart": {
+                  "default": "ALWAYS_AT_LEAST_ONE",
+                  "enum": [
+                    "ALWAYS_AT_LEAST_ONE",
+                    "ALWAYS_EXACTLY_ONE",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BetweenEntityAnnosAndDefine": {
+                  "default": "ALWAYS_AT_LEAST_ONE",
+                  "enum": [
+                    "ALWAYS_AT_LEAST_ONE",
+                    "ALWAYS_EXACTLY_ONE",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BetweenJoinsAndAssociations": {
+                  "default": "ALWAYS_AT_LEAST_ONE",
+                  "enum": [
+                    "ALWAYS_AT_LEAST_ONE",
+                    "ALWAYS_EXACTLY_ONE",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BetweenParametersAndAsSelect": {
+                  "default": "ALWAYS_AT_LEAST_ONE",
+                  "enum": [
+                    "ALWAYS_AT_LEAST_ONE",
+                    "ALWAYS_EXACTLY_ONE",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BetweenSelectFromAndJoins": {
+                  "default": "ALWAYS_EXACTLY_ONE",
+                  "enum": [
+                    "ALWAYS_AT_LEAST_ONE",
+                    "ALWAYS_EXACTLY_ONE",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "MaxConsecutiveEmptyLines": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "RemoveAtDocumentEnd": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_EMPTY_LINES_WITHIN": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "CondenseAssociations": {
+                  "default": "IF_ONLY_DETACHED_ONE_LINERS",
+                  "enum": [
+                    "ALWAYS",
+                    "IF_ONLY_ONE_LINERS",
+                    "IF_ONLY_DETACHED_ONE_LINERS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "CondenseClauses": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "IF_ONLY_ONE_LINERS",
+                    "IF_ONLY_DETACHED_ONE_LINERS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "CondenseElements": {
+                  "default": "IF_ONLY_DETACHED_ONE_LINERS",
+                  "enum": [
+                    "ALWAYS",
+                    "IF_ONLY_ONE_LINERS",
+                    "IF_ONLY_DETACHED_ONE_LINERS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "CondenseJoins": {
+                  "default": "IF_ONLY_DETACHED_ONE_LINERS",
+                  "enum": [
+                    "ALWAYS",
+                    "IF_ONLY_ONE_LINERS",
+                    "IF_ONLY_DETACHED_ONE_LINERS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "CondenseParameters": {
+                  "default": "IF_ONLY_DETACHED_ONE_LINERS",
+                  "enum": [
+                    "ALWAYS",
+                    "IF_ONLY_ONE_LINERS",
+                    "IF_ONLY_DETACHED_ONE_LINERS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "DetachExposedAssociations": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "DetachKeyFields": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "SurroundAssociationLineCountMin": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "SurroundClauseLineCountMin": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "SurroundElementLineCountMin": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "SurroundJoinLineCountMin": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "SurroundParameterLineCountMin": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_POSITION_ASSOCIATION": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "BreakBeforeCondition": {
+                  "default": "IF_MULTI_LINE_FOUND",
+                  "enum": [
+                    "ALWAYS",
+                    "IF_MULTI_LINE_FOUND",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeDataSource": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeFilter": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeKeywords": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "ConditionIndent": {
+                  "default": 4,
+                  "type": "integer"
+                },
+                "DataSourceIndent": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "FilterIndent": {
+                  "default": 4,
+                  "type": "integer"
+                },
+                "KeywordsIndent": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_POSITION_BRACES": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "BreakBeforeClosingBrace": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeFrom": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeOpeningBrace": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "ClosingBraceIndent": {
+                  "default": 0,
+                  "type": "integer"
+                },
+                "FromIndent": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "OpeningBraceIndent": {
+                  "default": 0,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_POSITION_CLAUSES": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "BreakBeforeUnionEtc": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeWhereEtc": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "UnionEtcIndent": {
+                  "default": 0,
+                  "type": "integer"
+                },
+                "WhereEtcIndent": {
+                  "default": 0,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_POSITION_DEFINE": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "BreakBeforeDefine": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeEntityName": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeWithParams": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "DefineIndent": {
+                  "default": 0,
+                  "type": "integer"
+                },
+                "EntityNameIndent": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "ParamsIndent": {
+                  "default": 4,
+                  "type": "integer"
+                },
+                "WithParamsIndent": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_POSITION_JOIN": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "BreakBeforeCondition": {
+                  "default": "IF_MULTI_LINE_FOUND",
+                  "enum": [
+                    "ALWAYS",
+                    "IF_MULTI_LINE_FOUND",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeDataSource": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeKeywords": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS"
+                  ],
+                  "type": "string"
+                },
+                "ConditionIndent": {
+                  "default": 6,
+                  "type": "integer"
+                },
+                "DataSourceIndent": {
+                  "default": 4,
+                  "type": "integer"
+                },
+                "KeywordsIndent": {
+                  "default": 4,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_POSITION_SELECT": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AsProjectionOnIndent": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "AsSelectFromIndent": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "BreakBeforeAsProjectionOn": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeAsSelectFrom": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeDataSource": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "BreakBeforeSelectFrom": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "DataSourceIndent": {
+                  "default": 4,
+                  "type": "integer"
+                },
+                "SelectFromIndent": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_SPACES_AROUND_BRACKETS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "SpacesAroundCardBrackets": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpacesBeforeFuncParens": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpacesBeforePathBrackets": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpacesBeforeTypeParens": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpacesInsideArithParens": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpacesInsideCardBrackets": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpacesInsideFuncParens": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpacesInsidePathBrackets": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpacesInsideTypeParens": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "DDL_SPACES_AROUND_SIGNS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "SpaceAfterColon": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpaceAfterComma": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpaceAfterCommaInAbapType": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpaceAfterCommentSign": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpaceAroundArithmeticOps": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpaceBeforeColon": {
+                  "default": "KEEP_AS_IS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpaceBeforeComma": {
+                  "default": "NEVER",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "SpaceBeforeCommentSign": {
+                  "default": "ALWAYS",
+                  "enum": [
+                    "ALWAYS",
+                    "KEEP_AS_IS",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "EMPTY_LINES_IN_CLASS_DEFINITION": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AddEmptyLineAboveSections": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "AddLineBetweenDefTypes": {
+                  "default": "ADD_CONSIDER_STATIC",
+                  "enum": [
+                    "NEVER",
+                    "ADD_IGNORE_STATIC",
+                    "ADD_CONSIDER_STATIC"
+                  ],
+                  "type": "string"
+                },
+                "MaxEmptyLines": {
+                  "default": 1,
+                  "type": "integer"
+                },
+                "RemoveEmptyLineAboveEndClass": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "RemoveEmptyLineBelowSections": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "RemoveIncludeWarnings": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "EMPTY_LINES_OUTSIDE_METHODS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "EmptyLinesBetweenClassAndMethod": {
+                  "default": 0,
+                  "type": "integer"
+                },
+                "EmptyLinesBetweenClasses": {
+                  "default": 2,
+                  "type": "integer"
+                },
+                "EmptyLinesBetweenMethods": {
+                  "default": 1,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "EMPTY_LINES_WITHIN_METHODS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "EmptyLineAboveFirstExecutable": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "MaxEmptyLinesAtMethodEnd": {
+                  "default": 0,
+                  "type": "integer"
+                },
+                "MaxEmptyLinesAtMethodStart": {
+                  "default": 0,
+                  "type": "integer"
+                },
+                "MaxEmptyLinesWithinMethods": {
+                  "default": 1,
+                  "type": "integer"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "INSET": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "AlignWithFollowingCatch": {
+                  "default": "IF_BLANK_LINE_ABOVE",
+                  "enum": [
+                    "ALWAYS",
+                    "IF_BLANK_LINE_ABOVE",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "AlignWithFollowingElse": {
+                  "default": "IF_BLANK_LINE_ABOVE",
+                  "enum": [
+                    "ALWAYS",
+                    "IF_BLANK_LINE_ABOVE",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "AlignWithFollowingWhen": {
+                  "default": "IF_BLANK_LINE_ABOVE",
+                  "enum": [
+                    "ALWAYS",
+                    "IF_BLANK_LINE_ABOVE",
+                    "NEVER"
+                  ],
+                  "type": "string"
+                },
+                "ExecuteOnClassDefinitionSections": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "NEEDLESS_SPACES": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "ProcessEmptyBrackets": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ProcessLineEndComments": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "SearchAcrossCommentLines": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "SearchAcrossEmptyLines": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "ONE_COMMAND_PER_LINE": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "KeepMultiLinersAfterWhen": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "KeepOneLinersAfterWhen": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "SPACES_IN_EMPTY_BRACKETS": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "RemoveMultiSpaceIfEmpty": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "SeparateCondensedCases": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "SeparateFromCharLiterals": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "SeparateFromComments": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "SeparateFromKeywords": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "SeparateFromOperators": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "SPACE_AROUND_COMMENT_SIGN": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "SpaceAfterCommentSign": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "SpaceBeforeCommentSign": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "SPACE_BEFORE_PERIOD": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "ExecuteOnClassDefinitionSections": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ExecuteOnComma": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "ExecuteOnPeriod": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "MoveAcrossCommentLines": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        },
+        "UPPER_AND_LOWER_CASE": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "DefinitionIdentifierStyle": {
+                  "default": "LOWER_CASE",
+                  "enum": [
+                    "UNCHANGED",
+                    "LOWER_CASE",
+                    "UPPER_CASE"
+                  ],
+                  "type": "string"
+                },
+                "DefinitionKeywordStyle": {
+                  "default": "UPPER_CASE",
+                  "enum": [
+                    "UNCHANGED",
+                    "LOWER_CASE",
+                    "UPPER_CASE"
+                  ],
+                  "type": "string"
+                },
+                "DeriveCaseMethod": {
+                  "default": "NONE",
+                  "enum": [
+                    "NONE",
+                    "FROM_FIRST_TOKEN",
+                    "FROM_MAJORITY"
+                  ],
+                  "type": "string"
+                },
+                "ImplementationIdentifierStyle": {
+                  "default": "LOWER_CASE",
+                  "enum": [
+                    "UNCHANGED",
+                    "LOWER_CASE",
+                    "UPPER_CASE"
+                  ],
+                  "type": "string"
+                },
+                "ImplementationKeywordStyle": {
+                  "default": "UPPER_CASE",
+                  "enum": [
+                    "UNCHANGED",
+                    "LOWER_CASE",
+                    "UPPER_CASE"
+                  ],
+                  "type": "string"
+                },
+                "KeepMixedCaseInIdentifiers": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "PragmaParameterStyle": {
+                  "default": "UPPER_CASE",
+                  "enum": [
+                    "UNCHANGED",
+                    "LOWER_CASE",
+                    "UPPER_CASE"
+                  ],
+                  "type": "string"
+                },
+                "PragmaStyle": {
+                  "default": "UPPER_CASE",
+                  "enum": [
+                    "UNCHANGED",
+                    "LOWER_CASE",
+                    "UPPER_CASE"
+                  ],
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "description": "false switches the rule off.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          ],
+          "description": "An object with options, or false to switch the rule off."
+        }
+      },
+      "type": "object"
+    },
+    "tabularLineWidth": {
+      "default": 160,
+      "description": "Maximum length of the rows of a table in tabular style.",
+      "maximum": 1000,
+      "minimum": 40,
+      "type": "integer"
+    }
+  },
+  "title": "abapfmt configuration",
+  "type": "object"
+}

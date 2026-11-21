@@ -1,6 +1,7 @@
+import { execFile } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ExtensionContext, OutputChannel, window, workspace } from 'vscode';
+import { commands, ExtensionContext, OutputChannel, window, workspace } from 'vscode';
 import {
   LanguageClient,
   LanguageClientOptions,
@@ -67,7 +68,38 @@ async function stopClient(): Promise<void> {
   await running?.stop();
 }
 
+/** Writes the complete default configuration (`abapfmt --print-config`) as abapfmt.json and opens it. */
+async function createConfig(context: ExtensionContext): Promise<void> {
+  const folder = workspace.workspaceFolders?.[0];
+  if (!folder || folder.uri.scheme !== 'file') {
+    void window.showErrorMessage('abapfmt: open a local folder to create abapfmt.json in.');
+    return;
+  }
+  const target = path.join(folder.uri.fsPath, 'abapfmt.json');
+  if (!fs.existsSync(target)) {
+    const command = serverCommand(context);
+    if (!command) {
+      void window.showErrorMessage('abapfmt: no executable found. Set "abapfmt.path".');
+      return;
+    }
+    try {
+      const json = await new Promise<string>((resolve, reject) =>
+        execFile(command, ['--print-config'], { maxBuffer: 16 * 1024 * 1024 }, (err, stdout) =>
+          err ? reject(err) : resolve(stdout),
+        ),
+      );
+      fs.writeFileSync(target, json);
+    } catch (e) {
+      void window.showErrorMessage(`abapfmt: cannot create abapfmt.json: ${e instanceof Error ? e.message : e}`);
+      return;
+    }
+  }
+  await window.showTextDocument(await workspace.openTextDocument(target));
+}
+
 export async function activate(context: ExtensionContext): Promise<void> {
+  context.subscriptions.push(commands.registerCommand('abapfmt.createConfig', () => createConfig(context)));
+
   // created up front so that it is listed even before the server has logged anything; shared by
   // every client that a settings change starts
   const outputChannel = window.createOutputChannel('abapfmt');
