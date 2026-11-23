@@ -9,7 +9,7 @@ abapfmt src/zcl_example.abap    # print the formatted code of one file
 abapfmt --stdin < in.abap       # format stdin
 ```
 
-ABAP (`.abap`) and CDS (`.acds`, `.asddls`, `.asdcls`, `.ddls`, `.dcls`, `.ddl`, `.dcl`) files are
+ABAP (`.abap`) and CDS (`.acds`) files are
 found in directories and formatted on all cores; results are reported in the order of the files.
 
 Exit codes: 0 success, 1 `--check` found unformatted files, 2 error. An error is a file that
@@ -108,7 +108,7 @@ Install the resulting `.vsix`, then set it as the formatter:
 
 ```json
 "[abap]":     { "editor.defaultFormatter": "mysug.abapfmt", "editor.formatOnSave": true },
-"[abap-cds]": { "editor.defaultFormatter": "mysug.abapfmt" }
+"[acds]":     { "editor.defaultFormatter": "mysug.abapfmt" }
 ```
 
 Format Document, Format Selection and format on save (including `editor.formatOnSaveMode:

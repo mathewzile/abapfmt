@@ -19,7 +19,7 @@
   "main": "./out/extension.js",
   "activationEvents": [
     "onLanguage:abap",
-    "onLanguage:abap-cds"
+    "onLanguage:acds"
   ],
   "contributes": {
     "languages": [
@@ -35,19 +35,13 @@
         "configuration": "./language-configuration.json"
       },
       {
-        "id": "abap-cds",
+        "id": "acds",
         "aliases": [
-          "ABAP CDS",
-          "abap-cds"
+          "ABAP CDS"
         ],
         "extensions": [
-          ".acds",
-          ".asddls",
-          ".asdcls",
-          ".ddls",
-          ".dcls"
-        ],
-        "configuration": "./language-configuration.json"
+          ".acds"
+        ]
       }
     ],
     "configuration": {

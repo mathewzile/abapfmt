@@ -30,7 +30,7 @@ result is checked token by token before it reaches your editor.
      "editor.defaultFormatter": "mysug.abapfmt",
      "editor.formatOnSave": true
    },
-   "[abap-cds]": {
+   "[acds]": {
      "editor.defaultFormatter": "mysug.abapfmt"
    }
    ```
@@ -43,7 +43,7 @@ The extension registers these file types if no other extension does:
 | Language | Extensions |
 |---|---|
 | ABAP (`abap`) | `.abap` |
-| ABAP CDS (`abap-cds`) | `.acds`, `.asddls`, `.asdcls`, `.ddls`, `.dcls` |
+| ABAP CDS (`acds`) | `.acds` |
 
 ## Configuration
 
@@ -92,7 +92,7 @@ Changing `abapfmt.path` or `abapfmt.configPath` restarts the formatter; no reloa
 
 | Symptom | What to do |
 |---|---|
-| *"There is no formatter for 'abap' files installed"* or another formatter runs | Set `editor.defaultFormatter` to `mysug.abapfmt` for `[abap]` and `[abap-cds]`. |
+| *"There is no formatter for 'abap' files installed"* or another formatter runs | Set `editor.defaultFormatter` to `mysug.abapfmt` for `[abap]` and `[acds]`. |
 | *"no build for … is bundled"* | Your platform (for example ARM Linux or Windows) is not bundled. Build abapfmt (`cargo build --release -p abapfmt_cli`) and set `abapfmt.path`. |
 | The output channel shows *"rule … skipped, its result would have changed the code"* | A rule produced a result that would have changed your code, so abapfmt switched that rule off for this file. The other rules still applied. Please report the snippet and the rule. |
 | Formatting does nothing, and the output channel shows *"source cannot be tokenized"* | The file has an incomplete token, for example `lv_c(20` without the closing parenthesis. Fix it and format again. |

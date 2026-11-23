@@ -47,7 +47,7 @@ async function startClient(context: ExtensionContext, outputChannel: OutputChann
   const serverOptions: ServerOptions = { command, args: ['lsp'] };
   // no scheme: local files as well as documents of remote file systems (e.g. ABAP systems via ADT)
   const clientOptions: LanguageClientOptions = {
-    documentSelector: [{ language: 'abap' }, { language: 'abap-cds' }],
+    documentSelector: [{ language: 'abap' }, { language: 'acds' }],
     outputChannel,
     initializationOptions: {
       configPath: workspace.getConfiguration('abapfmt').get<string>('configPath') ?? '',

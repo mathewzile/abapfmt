@@ -150,7 +150,7 @@ The server (`lsp-server`, stdio) advertises only full text sync, `documentFormat
   output channel.
 
 The VS Code extension (`editors/vscode/src/extension.ts`, about 100 lines) contributes the `abap`
-and `abap-cds` languages and starts `bin/<platform>-<arch>/abapfmt lsp`, or the executable named by
+and `acds` languages and starts `bin/<platform>-<arch>/abapfmt lsp`, or the executable named by
 `abapfmt.path`. It passes `abapfmt.configPath` as an initialization option, and starts a new server
 when either setting changes. Its document selector has no scheme, so documents of remote file
 systems are formatted too.

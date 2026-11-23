@@ -71,8 +71,7 @@ abapfmt --stdin < in.abap         # format stdin
 abapfmt --print-config > abapfmt.json   # every rule and option, with defaults
 ```
 
-When you pass a directory, abapfmt formats every ABAP (`.abap`) and CDS (`.acds`, `.asddls`,
-`.asdcls`, `.ddls`, `.dcls`, `.ddl`, `.dcl`) file in it. It skips hidden folders, `node_modules`
+When you pass a directory, abapfmt formats every ABAP (`.abap`) and CDS (`.acds`) file in it. It skips hidden folders, `node_modules`
 and `target`.
 
 | Exit code | Meaning |
@@ -87,7 +86,7 @@ Install the extension, then make abapfmt the formatter in `settings.json`:
 
 ```json
 "[abap]":     { "editor.defaultFormatter": "mysug.abapfmt", "editor.formatOnSave": true },
-"[abap-cds]": { "editor.defaultFormatter": "mysug.abapfmt" }
+"[acds]":     { "editor.defaultFormatter": "mysug.abapfmt" }
 ```
 
 See [editors/vscode/README.md](editors/vscode/README.md) for the settings and troubleshooting.

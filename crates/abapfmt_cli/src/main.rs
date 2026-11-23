@@ -37,9 +37,7 @@ OPTIONS:
     -V, --version               Print the version
 ";
 
-const EXTENSIONS: &[&str] = &[
-    "abap", "acds", "asddls", "asdcls", "ddls", "dcls", "ddl", "dcl",
-];
+const EXTENSIONS: &[&str] = &["abap", "acds"];
 
 #[derive(Default)]
 struct Options {
